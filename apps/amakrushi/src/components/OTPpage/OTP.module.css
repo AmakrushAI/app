@@ -1,0 +1,75 @@
+.main {
+  margin: 8px;
+  min-height: 100vh;
+}
+
+.title {
+  margin-top: 7vh;
+  font-family: 'Mulish-Bold';
+  font-size: 36px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--secondarygreen);
+}
+
+.otpVerify {
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--font);
+}
+
+.otpSent {
+  font-weight: 400;
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+.pinInputField {
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid darkgreen;
+  width: 42px;
+  height: 42px;
+}
+
+.backButton {
+  font-weight: 700 ;
+  font-size: 14px !important;
+  color: white ;
+  margin: 6vh auto;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Mulish-regular';
+  width: 26vw !important;
+  padding: 10px ;
+  border: none ;
+  border-radius: 40px !important;
+  background-color: var(--darkgrey) !important;
+}
+
+.submitButton {
+  font-weight: 700 ;
+  font-size: 14px !important;
+  color: white ;
+  margin: 6vh auto;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Mulish-regular';
+  width: 26vw !important;
+  padding: 10px ;
+  border: none ;
+  border-radius: 40px !important;
+  background-color: var(--secondarygreen) !important;
+}
+
+.login {
+  background-color: var(--darkgrey);
+  color: white;
+  text-align: center;
+  padding: 26px 0px;
+  border-radius: 50px 50px 0px 0px;
+}

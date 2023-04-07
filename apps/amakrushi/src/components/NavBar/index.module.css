@@ -1,0 +1,23 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1vh;
+}
+
+.navbar button {
+  background: var(--grey);
+  width: 7vh;
+  height: 3.5vh;
+  font-size: 1.65vh;
+  font-weight: 700;
+}
+.navbar .active {
+  background: var(--secondarygreen);
+  color: white;
+}
+
+.imageContainer {
+  display: flex;
+  flex-direction: row-reverse;
+}
