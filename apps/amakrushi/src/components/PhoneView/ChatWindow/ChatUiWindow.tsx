@@ -10,6 +10,7 @@ import React, {
 } from "react";
 import { RenderComp } from "./Comps";
 import { AppContext } from "../../../context";
+import { getMsgType } from "../../../utils/getMsgType";
 
 const ChatUiWindow: FC = () => {
   const context = useContext(AppContext);
@@ -18,6 +19,7 @@ const ChatUiWindow: FC = () => {
     (type: string, val: any) => {
       if (type === "text" && val.trim()) {
         context?.sendMessage(val.trim());
+        console.log(context);
       }
     },
     [context]
@@ -26,25 +28,35 @@ const ChatUiWindow: FC = () => {
   const normalizeMsgs = useMemo(
     () =>
       context?.messages?.map((msg: any) => ({
-        type: "text",
+        type: getMsgType(msg),
         content: { text: msg?.text, data: { ...msg } },
         position: msg?.position ?? "right",
       })),
     [context?.messages]
   );
+ 
+  const msgToRender=useMemo(()=>{
+   return context?.isMsgReceiving ? [...normalizeMsgs,{
+      type:'loader',
+      position: 'left',
+      botUuid: '1',
+    }] : normalizeMsgs
+  },[context?.isMsgReceiving,normalizeMsgs]);
 
+  console.log("debug:",{msgToRender})
   return (
     <>
       {/* <FullScreenLoader loading={loading} /> */}
       <Chat
+        disableSend={context?.loading}
         //@ts-ignore
-        messages={normalizeMsgs}
+        messages={msgToRender}
         //@ts-ignore
         renderMessageContent={(props): ReactElement => (
           <RenderComp
             key={props}
             msg={props}
-            chatUIMsg={normalizeMsgs}
+            chatUIMsg={msgToRender}
             currentUser={context?.currentUser}
             onSend={handleSend}
           />

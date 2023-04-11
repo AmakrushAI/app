@@ -26,8 +26,8 @@ const RegisterPage = () => {
 
           <Stack spacing={5}>
           <Input
-            height="45px"
-            padding="18px 16px"
+            height="5vh"
+            padding="2vh 1.8vh"
             borderRadius="4px"
             border="2px solid"
             borderColor="var(--secondarygreen)"
@@ -39,8 +39,8 @@ const RegisterPage = () => {
             value={adhaar}
           />
           <Input
-            height="45px"
-            padding="18px 16px"
+            height="5vh"
+            padding="2vh 1.8vh"
             borderRadius="4px"
             border="2px solid"
             borderColor="var(--secondarygreen)"
@@ -51,8 +51,8 @@ const RegisterPage = () => {
             value={name}
           />
           <Input
-            height="45px"
-            padding="18px 16px"
+            height="5vh"
+            padding="2vh 1.8vh"
             borderRadius="4px"
             border="2px solid"
             borderColor="var(--secondarygreen)"
@@ -63,8 +63,8 @@ const RegisterPage = () => {
             value={phone}
           />
           <Input
-            height="45px"
-            padding="18px 16px"
+            height="5vh"
+            padding="2vh 1.8vh"
             borderRadius="4px"
             border="2px solid"
             borderColor="var(--secondarygreen)"
@@ -75,8 +75,8 @@ const RegisterPage = () => {
             value={email}
           />
           <Input
-            height="45px"
-            padding="18px 16px"
+            height="5vh"
+            padding="2vh 1.8vh"
             borderRadius="4px"
             border="2px solid"
             borderColor="var(--secondarygreen)"
@@ -87,7 +87,7 @@ const RegisterPage = () => {
             value={workmail}
           />
           </Stack>
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', maxHeight: '10vh', alignItems: 'center' }}>
           <button
             className={styles.backButton}
             onClick={() => router.push('/login')}>

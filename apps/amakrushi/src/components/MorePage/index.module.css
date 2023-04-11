@@ -1,0 +1,53 @@
+.main {
+  margin: 1vh;
+  min-height: 74vh;
+}
+
+.title {
+  margin-left: 2vh;
+  margin-top: 4vh;
+  font-family: 'Mulish-Bold';
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--secondarygreen);
+}
+
+.user{
+  display: flex;
+  background-color: white;
+  padding: 10px;
+  margin: 10px 2px;
+  align-items: center;
+}
+
+.userInfo {
+  padding: 5px;
+  margin-left: 5%;
+  font-size: 1rem;
+  height: 10vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.userInfo2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 8vh;
+  margin-left: 5%;
+  font-size: 1rem;
+}
+
+.icon1{
+  font-size: 3rem;
+}
+
+.icon2 {
+  font-size: 2rem;
+}
+
+.icon3 {
+  font-size: 2rem;
+  margin-left: auto;
+}
