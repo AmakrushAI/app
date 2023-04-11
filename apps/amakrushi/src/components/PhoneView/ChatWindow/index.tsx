@@ -49,13 +49,8 @@ const context=useContext(AppContext);
 console.log("qwerty:",{context})
   return (
     <>
-      <div style={{ height: "88vh", width: "100%" }}>
-        <ChatUiWindow
-          currentUser={currentUser}
-          messages={messages}
-          currentMessageObj={currentMessageObj}
-          onSend={toSendMessage}
-        />
+      <div style={{ height: "90vh", width: "100%" }}>
+        <ChatUiWindow />
       </div>
     </>
    

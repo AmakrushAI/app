@@ -48,7 +48,7 @@ export const ComposerInput = ({
 
   return (
     <div className={clsx({ 'S--invisible': invisible })}>
-      <Input
+  {!disabled &&    <Input
         className="Composer-input"
         rows={1}
         autoSize
@@ -57,7 +57,7 @@ export const ComposerInput = ({
         ref={inputRef}
         disabled={disabled}
         {...rest}
-      />
+      />}
       {pastedImage && (
         <SendConfirm file={pastedImage} onCancel={handleImageCancel} onSend={handleImageSend} />
       )}
