@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import ReactDom from "react-dom";
 import { Box, Input, Button, Flex } from "@chakra-ui/react";
+import { NextPage } from "next";
 
 interface modalProps {
   undo: (event: React.MouseEvent) => void;
@@ -10,7 +11,7 @@ interface modalProps {
   inputList: string[]
 }
 
-const Modal: React.FC<modalProps> = ({ undo,open, toClose, inputList }) => {
+const Modal: NextPage<modalProps> = ({ undo,open, toClose, inputList }) => {
   if (!open) return null;
 
   return ReactDom.createPortal(
@@ -42,7 +43,7 @@ const Modal: React.FC<modalProps> = ({ undo,open, toClose, inputList }) => {
         <form onSubmit={toClose}>
             <Flex>
               {inputList.map(settingName => {
-                return (<Input name={settingName} placeholder={`${settingName}`} _placeholder={{color: 'black'}}></Input>)
+                return (<Input key={settingName} name={settingName} placeholder={`${settingName}`} _placeholder={{color: 'black'}}></Input>)
               })}
           <Button type="submit">Submit</Button>
             </Flex>

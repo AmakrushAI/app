@@ -6,14 +6,16 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 config.autoAddCss = false; // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
 import NavBar from '../components/NavBar';
 import ContextProvider from '../context/ContextProvider';
-import { ReactNode, useEffect, useState } from 'react';
+import React,{ ReactChildren, ReactNode, useEffect, useState } from 'react';
 import 'chatui/dist/index.css';
 import LaunchPage from '../components/LaunchPage';
 import Menu from '../components/Menu';
-function SafeHydrate({ children }: { children: ReactNode }) {
+function SafeHydrate({ children }: { children: ReactChildren }) {
   return (
     <div suppressHydrationWarning>
-      {typeof window === 'undefined' ? null : children}
+       { 
+       typeof window === 'undefined' ? null : children
+       }
     </div>
   );
 }
