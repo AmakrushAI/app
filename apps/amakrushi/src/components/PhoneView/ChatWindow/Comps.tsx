@@ -7,6 +7,7 @@ import {
   Avatar,
   FileCard,
   Video,
+  //@ts-ignore
 } from 'chatui';
 // import { faStar, faDownload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -67,15 +68,12 @@ export const RenderComp: FC<any> = ({
                   handleSend('text', choice.key);
                 }
               }}
-              // eslint-disable-next-line react/no-children-prop
-              children={
-                <div>
-                  <span className="onHover">
-                    {choice.key} {choice.text}
-                  </span>
-                </div>
-              }
-            />
+            
+            > <div>
+            <span className="onHover">
+              {choice.key} {choice.text}
+            </span>
+          </div> </ListItem>
           ))}
         </List>
       );
@@ -378,10 +376,11 @@ export const RenderComp: FC<any> = ({
     }
     default:
       return (
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+       
+       
         <ScrollView
           data={[]}
+           // @ts-ignore
           renderItem={(item): ReactElement => <Button label={item.text} />}
         />
       );
