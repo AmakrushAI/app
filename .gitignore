@@ -33,5 +33,11 @@ yarn-error.log*
 .turbo
 
 # chatui
+es/*
+lib/*
+dist/*
 es
 lib
+packages/chat-ui/lib/*
+packages/chat-ui/es/*
+packages/chat-ui/dist/*
