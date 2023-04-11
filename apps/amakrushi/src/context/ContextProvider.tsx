@@ -150,7 +150,7 @@ const ContextProvider:FC<{children:ReactElement}> = ({ children }) => {
     
     const sendMessage = useCallback(
       (text: string, media: any, isVisibile = true): void => {
-       alert('hello')
+     
         console.log("socket:",{socketSession})
 
         //@ts-ignore
