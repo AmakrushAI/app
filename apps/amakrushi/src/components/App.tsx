@@ -1,14 +1,13 @@
 import { useState, useEffect, useRef, useContext } from "react";
-
-
 import { io, Socket } from "socket.io-client";
 import Notification from "./OTPpage/Notifications";
 import { useCookies, withCookies } from "react-cookie";
-import { useRouter } from "next/router";
+import router from "next/router";
 
 import { AppContext } from "../context";
 
 import dynamic from "next/dynamic";
+import axios from "axios";
 
 const ChatUiWindow = dynamic(
   () => import("./PhoneView/ChatWindow/ChatUiWindow"),
@@ -31,22 +30,22 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
-    // if (cookies["access_token"] !== undefined) {
-    //   axios.get (`http://localhost:3000/api/auth?token=${cookies["access_token"]}`)
-    //     .then((response) => {
-    //       if (response.data === null) {
-    //         throw "Invalid Access Token";
-    //         // router.push("/login");
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       throw err;
-    //     });
-    //   setAccessToken(cookies["access_token"]);
-    // } else {
-    //   router.push("/login");
-    // }
-  }, []);
+    if (cookies["access_token"] !== undefined) {
+      axios.get(`http://localhost:3000/api/auth?token=${cookies["access_token"]}`)
+        .then((response) => {
+          if (response.data === null) {
+            throw "Invalid Access Token";
+            // router.push("/login");
+          }
+        })
+        .catch((err) => {
+          throw err;
+        });
+      setAccessToken(cookies["access_token"]);
+    } else {
+      router.push("/login");
+    }
+  }, [cookies]);
 
   // useEffect(() => {
   //   if (router.query.state || cookies["access_token"] !== "") {
@@ -62,12 +61,8 @@ const App: React.FC = () => {
   // }, [state])
 
   return (
-    <div style={{ height: "88vh", width: "100%" }}>
-      <ChatUiWindow
-        currentUser={currentUser}
-        messages={messages}
-        onSend={sendMessage}
-      />
+    <div style={{ height: "80vh", width: "100%" }}>
+      <ChatUiWindow />
     </div>
   );
 };

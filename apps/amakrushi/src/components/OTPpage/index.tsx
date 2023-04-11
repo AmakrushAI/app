@@ -23,6 +23,7 @@ const OTPpage: React.FC = () => {
   const [input3, setInput3] = useState('');
   const [input4, setInput4] = useState('');
   const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
+ 
 
   const handleOTPSubmit: React.FormEventHandler = (event: React.FormEvent) => {
     event.preventDefault();
@@ -47,6 +48,9 @@ const OTPpage: React.FC = () => {
               path: '/',
               expires,
             });
+            const phoneNumber = router.query.state;
+            //@ts-ignore
+            localStorage.setItem('phoneNumber', phoneNumber);
             router.push('/');
           } else {
             alert('Incorrect OTP');
