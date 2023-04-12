@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './index.module.css';
 import PhoneImg from '../../assets/images/phone.png';
 import GovtOfOdisha from '../../assets/images/logo-green.png';
-import KrishiMela from '../../assets/images/KrishiMela.png';
+import KrushakOdisha from '../../assets/images/krushak_odisha.png';
 import Image from 'next/image';
 
 function NavBar() {
@@ -43,21 +43,18 @@ function NavBar() {
       </div>
       <div className={`${styles.imageContainer}`}>
         <Image
-          className={styles.loginImage}
           src={PhoneImg}
           alt=""
           width={60}
-          height={70}
-        />
-        <Image
-          className={styles.loginImage}
-          src={KrishiMela}
-          alt=""
-          width={70}
           height={60}
         />
         <Image
-          className={styles.loginImage}
+          src={KrushakOdisha}
+          alt=""
+          width={60}
+          height={60}
+        />
+        <Image
           src={GovtOfOdisha}
           alt=""
           width={70}
