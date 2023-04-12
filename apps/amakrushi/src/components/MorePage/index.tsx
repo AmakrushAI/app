@@ -1,14 +1,15 @@
 import styles from './index.module.css';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faRightFromBracket,
   faUserCircle,
 } from '@fortawesome/free-solid-svg-icons';
-import { FaQuestionCircle, FaThumbsUp, FaUserAlt } from 'react-icons/fa';
+import { FaUserAlt } from 'react-icons/fa';
 import { useCookies } from 'react-cookie';
-import { MdArrowRight } from 'react-icons/md';
+import { MdArrowRight, MdOutlineQuestionMark } from 'react-icons/md';
+import { IoIosThumbsUp } from 'react-icons/io';
 
 const MorePage: React.FC = () => {
   const router = useRouter();
@@ -49,7 +50,7 @@ const MorePage: React.FC = () => {
       </div>
       <div className={styles.user} onClick={() => router.push('/faq')}>
         <div className={styles.icon2}>
-          <FaQuestionCircle />
+        <MdOutlineQuestionMark/>
         </div>
         <div className={styles.userInfo2}>
           <p style={{ fontWeight: 'bold' }}>FAQs</p>
@@ -60,7 +61,7 @@ const MorePage: React.FC = () => {
       </div>
       <div className={styles.user} onClick={() => router.push('/feedback')}>
         <div className={styles.icon2}>
-          <FaThumbsUp />
+          <IoIosThumbsUp/>
         </div>
         <div className={styles.userInfo2}>
           <p style={{ fontWeight: 'bold' }}>Feedback</p>

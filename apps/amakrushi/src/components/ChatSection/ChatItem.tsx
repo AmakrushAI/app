@@ -3,9 +3,10 @@ import { useState } from "react";
 import Profile from "../Profile";
 import { Flex, Box, Text, useColorModeValue } from "@chakra-ui/react";
 import styles from "./ChatItem.module.css";
+import { MdOutlineDelete } from "react-icons/md";
 
 interface chatItemProps {
-  image: string;
+  image: any;
   name: string;
   toChangeUser: (name: string) => void;
   toRemoveUser: (name: string) => void;
@@ -23,7 +24,7 @@ const ChatItem: React.FC<chatItemProps> = ({ image, name, toChangeUser,toRemoveU
 
   return (
     <>
-      <Flex bgColor={bg} className={`${styles.chatContainer} ${active?styles.active:styles.chat__text}`}  cursor="pointer" height="max-content" m="0.5rem">
+      <Flex bgColor={bg} className={`${styles.chatContainer}`}  cursor="pointer" height="max-content" m="0.5rem">
         <Flex
           fontSize="35px"
           flex="1"
@@ -31,24 +32,20 @@ const ChatItem: React.FC<chatItemProps> = ({ image, name, toChangeUser,toRemoveU
           justifyContent="center"
         >
           <Box
-            cursor="pointer"
-            onClick={() => {
-              setShowProfile(true);
-            }}
             borderRadius="50%"
-            bgImage={image}
-            height="60px"
-            width="60px"
+            display= 'flex'
+            alignItems="center"
+            height="7vh"
+            width="7vh"
             bgPosition="center"
             bgRepeat="no-repeat"
             bgSize="cover"
-          />
+          >{image}</Box>
         </Flex>
         <Flex
-          onClick={() => {
-            toChangeUser(name);
-          }}
-          
+          // onClick={() => {
+          //   toChangeUser(name);
+          // }}          
           ml="0.5rem"
           // pl="0.25rem"
           flex="4"
@@ -56,6 +53,7 @@ const ChatItem: React.FC<chatItemProps> = ({ image, name, toChangeUser,toRemoveU
         >
           <p>{name}</p>
         </Flex>
+        <div style={{fontSize: '2rem', display: 'flex', alignItems: 'center'}}><MdOutlineDelete/></div>
       </Flex>
       <Profile
         show={showProfile}

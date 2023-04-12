@@ -39,16 +39,16 @@ export const RenderComp: FC<any> = ({
 }) => {
   const context = useContext(AppContext);
 
-  const onLongPress = useCallback((content: any) => {}, []);
+  // const onLongPress = useCallback((content: any) => {}, []);
 
-  const handleSend = useCallback(
-    (type: string, val: any) => {
-      if (type === 'text' && val.trim()) {
-        onSend(val, null, true, currentUser);
-      }
-    },
-    [onSend, currentUser]
-  );
+  // const handleSend = useCallback(
+  //   (type: string, val: any) => {
+  //     if (type === 'text' && val.trim()) {
+  //       onSend(val, null, true, currentUser);
+  //     }
+  //   },
+  //   [onSend, currentUser]
+  // );
 
   const getLists = useCallback(
     ({ choices, isDisabled }: { choices: any; isDisabled: boolean }) => {
@@ -65,20 +65,21 @@ export const RenderComp: FC<any> = ({
                 if (isDisabled) {
                   toast.error('Cannot answer again');
                 } else {
-                  handleSend('text', choice.key);
+                  context?.setMessages([]);
+                  context?.sendMessage(choice.text);
                 }
               }}
             
             > <div>
             <span className="onHover">
-              {choice.key} {choice.text}
+              {choice.text}
             </span>
           </div> </ListItem>
           ))}
         </List>
       );
     },
-    [handleSend]
+    [context]
   );
 
   // const download = (url: string): void => {
@@ -331,19 +332,18 @@ export const RenderComp: FC<any> = ({
       console.log('qwe12:', { content });
       return (
         <>
-          <div
+          {/* <div
             style={{ width: '95px', marginRight: '4px', textAlign: 'center' }}>
-            {/* <Avatar src={botImage} size="md" /> */}
-          </div>
-          <Bubble type="text">
+            <Avatar src={botImage} size="md" />
+          </div> */}
+          <Bubble type="text" style={{margin: 'auto', background: 'none', lineHeight: '2.5', padding: '0'}}>
             <div style={{ display: 'flex' }}>
-              <span style={{ fontSize: '16px' }}>{content.text}</span>
+            <span style={{ fontSize: '1.5rem', color: 'var(--secondarygreen)', fontWeight: 'bold', margin: 'auto'}}>{content?.data?.payload?.text}</span>
             </div>
-            <div style={{ marginTop: '10px' }} />
             {getLists({
               choices:
                 content?.data?.payload?.buttonChoices ?? content?.data?.choices,
-              isDisabled: content?.data?.disabled,
+              isDisabled: false,
             })}
             {/* <div
               style={{
@@ -376,8 +376,6 @@ export const RenderComp: FC<any> = ({
     }
     default:
       return (
-       
-       
         <ScrollView
           data={[]}
            // @ts-ignore

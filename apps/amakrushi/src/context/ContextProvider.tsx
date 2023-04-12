@@ -43,7 +43,7 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
             active: false,
           },
         ],
-        text: 'इस लक्ष्य को प्राप्त करने हेतु आपकी भूमिका क्या है? (दिए गए options में से एक चयनित करें और सबमिट करें) ',
+        text: 'Examples',
       },
       position: 'left',
       botUuid: '1',

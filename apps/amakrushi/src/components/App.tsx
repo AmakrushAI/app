@@ -57,12 +57,11 @@ const App: NextPage = () => {
   //     router.push("/login");
   //   }
   //   return () => {
-
   //   }
   // }, [state])
 
   return (
-    <div style={{ height: "80vh", width: "100%" }}>
+    <div style={{ height: "81vh", width: "100%" }}>
       <ChatUiWindow />
     </div>
   );
