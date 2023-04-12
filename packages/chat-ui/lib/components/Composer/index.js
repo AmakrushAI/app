@@ -50,7 +50,8 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     toolbar = _props$toolbar === void 0 ? [] : _props$toolbar,
     onToolbarClick = props.onToolbarClick,
     rightAction = props.rightAction,
-    inputOptions = props.inputOptions;
+    inputOptions = props.inputOptions,
+    btnColor = props.btnColor;
   var _useState = (0, _react.useState)(initialText),
     _useState2 = (0, _slicedToArray2.default)(_useState, 2),
     text = _useState2[0],
@@ -143,7 +144,7 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
   }, [inputType, onInputTypeChange]);
   var handleInputFocus = (0, _react.useCallback)(function (e) {
     clearTimeout(blurTimer.current);
-    (0, _toggleClass.default)(CLASS_NAME_FOCUSING, true);
+    (0, _toggleClass.default)(CLASS_NAME_FOCUSING, false);
     focused.current = true;
     if (onFocus) {
       onFocus(e);
@@ -245,6 +246,7 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     }, inputProps, {
       disabled: disableSend
     }))), /*#__PURE__*/_react.default.createElement(_SendButton.SendButton, {
+      btnColor: btnColor,
       onClick: handleSendBtnClick,
       disabled: !text || disableSend
     })));
@@ -269,6 +271,7 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     onClick: handleAccessoryToggle,
     "aria-label": isAccessoryOpen ? '关闭工具栏' : '展开工具栏'
   }), !disableSend && (text || textOnce) && /*#__PURE__*/_react.default.createElement(_SendButton.SendButton, {
+    btnColor: btnColor,
     onClick: handleSendBtnClick,
     disabled: disableSend
   })), isAccessoryOpen && /*#__PURE__*/_react.default.createElement(_AccessoryWrap.AccessoryWrap, {

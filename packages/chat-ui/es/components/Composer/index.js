@@ -39,7 +39,8 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
     toolbar = _props$toolbar === void 0 ? [] : _props$toolbar,
     onToolbarClick = props.onToolbarClick,
     rightAction = props.rightAction,
-    inputOptions = props.inputOptions;
+    inputOptions = props.inputOptions,
+    btnColor = props.btnColor;
   var _useState = useState(initialText),
     _useState2 = _slicedToArray(_useState, 2),
     text = _useState2[0],
@@ -132,7 +133,7 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
   }, [inputType, onInputTypeChange]);
   var handleInputFocus = useCallback(function (e) {
     clearTimeout(blurTimer.current);
-    toggleClass(CLASS_NAME_FOCUSING, true);
+    toggleClass(CLASS_NAME_FOCUSING, false);
     focused.current = true;
     if (onFocus) {
       onFocus(e);
@@ -234,6 +235,7 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
     }, inputProps, {
       disabled: disableSend
     }))), /*#__PURE__*/React.createElement(SendButton, {
+      btnColor: btnColor,
       onClick: handleSendBtnClick,
       disabled: !text || disableSend
     })));
@@ -258,6 +260,7 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
     onClick: handleAccessoryToggle,
     "aria-label": isAccessoryOpen ? '关闭工具栏' : '展开工具栏'
   }), !disableSend && (text || textOnce) && /*#__PURE__*/React.createElement(SendButton, {
+    btnColor: btnColor,
     onClick: handleSendBtnClick,
     disabled: disableSend
   })), isAccessoryOpen && /*#__PURE__*/React.createElement(AccessoryWrap, {
