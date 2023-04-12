@@ -20,6 +20,8 @@
   "engines": {
     "node": ">=14.0.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "react-no-ssr": "^1.1.0"
+  },
   "packageManager": "yarn@1.22.19"
 }

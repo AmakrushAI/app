@@ -1,26 +1,56 @@
+
+import axios from "axios";
 //@ts-ignore
 import Chat from "chatui";
+import { NextComponentType, NextPage } from "next";
+import { useRouter } from "next/router";
 
 import React, {
   FC,
   ReactElement,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
-import { RenderComp } from "./Comps";
+import { useCookies } from "react-cookie";
+
 import { AppContext } from "../../../context";
 import { getMsgType } from "../../../utils/getMsgType";
+import ChatMessageItem from "../../chat-message-item";
 
-const ChatUiWindow: FC = () => {
+const ChatUiWindow: NextPage = () => {
+ 
   const context = useContext(AppContext);
+  const router=useRouter();
+
+  const [accessToken, setAccessToken] = useState("");
+  const [cookies, setCookies] = useCookies();
+
+
+  useEffect(() => {
+    if (cookies["access_token"] !== undefined) {
+      axios.get(`http://localhost:3000/api/auth?token=${cookies["access_token"]}`)
+        .then((response) => {
+          if (response.data === null) {
+            throw "Invalid Access Token";
+             router.push("/login");
+          }
+        })
+        .catch((err) => {
+          throw err;
+        });
+      setAccessToken(cookies["access_token"]);
+    } else {
+      router.push("/login");
+    }
+  }, [cookies, router]);
 
   const handleSend = useCallback(
     (type: string, val: any) => {
       if (type === "text" && val.trim()) {
         context?.sendMessage(val.trim());
-        console.log(context);
       }
     },
     [context]
@@ -46,7 +76,7 @@ const ChatUiWindow: FC = () => {
 
   console.log("debug:",{msgToRender})
   return (
-    <>
+    <div style={{ height: "80vh", width: "100%" }}>
       {/* <FullScreenLoader loading={loading} /> */}
       <Chat
         disableSend={context?.loading}
@@ -54,10 +84,9 @@ const ChatUiWindow: FC = () => {
         messages={msgToRender}
         //@ts-ignore
         renderMessageContent={(props): ReactElement => (
-          <RenderComp
+          <ChatMessageItem
             key={props}
-            msg={props}
-            chatUIMsg={msgToRender}
+            message={props}
             currentUser={context?.currentUser}
             onSend={handleSend}
           />
@@ -66,7 +95,7 @@ const ChatUiWindow: FC = () => {
         locale="en-US"
         placeholder="Ask Your Question"
       />
-    </>
+    </div>
   );
 };
 
