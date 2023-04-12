@@ -8,6 +8,7 @@ import { AppContext } from "../context";
 
 import dynamic from "next/dynamic";
 import axios from "axios";
+import { NextPage } from "next";
 
 const ChatUiWindow = dynamic(
   () => import("./PhoneView/ChatWindow/ChatUiWindow"),
@@ -15,7 +16,7 @@ const ChatUiWindow = dynamic(
     ssr: false,
   }
 );
-const App: React.FC = () => {
+const App: NextPage = () => {
   // For Authentication
   const [accessToken, setAccessToken] = useState("");
   const [socket, setSocket] = useState<Socket>();
@@ -56,7 +57,7 @@ const App: React.FC = () => {
   //     router.push("/login");
   //   }
   //   return () => {
-  //     console.log('unmounted')
+
   //   }
   // }, [state])
 

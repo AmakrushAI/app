@@ -1,0 +1,17 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalEnv": ["NEXT_APP_MAGICBELL_API_KEY","NEXT_APP_MAGICBELL_USER_EMAIL"],
+  "globalDependencies": ["**/.env.*local"],
+  "pipeline": {
+    // "build": {
+    //   "dependsOn": ["^build"],
+    //   "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+    // },
+    "lint": {
+      "outputs": []
+    },
+    "dev": {
+      "cache": false
+    }
+  }
+}

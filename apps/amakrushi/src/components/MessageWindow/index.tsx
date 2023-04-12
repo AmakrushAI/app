@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Loading } from "@nextui-org/react";
+import Image from "next/image";
 
 interface messageProps {
   text: any;
@@ -112,7 +113,7 @@ const Message: React.FC<messageProps> = ({
             )}
             {image && (
               <div style={{ whiteSpace: "pre-wrap" }}>
-                <img src={image} style={{ maxWidth: "300px" }} />
+                <Image src={image} style={{ maxWidth: "300px" }} />
               </div>
             )}
             {audio && (
@@ -193,7 +194,7 @@ const Message: React.FC<messageProps> = ({
                 )}
               {image && (
                 <div style={{ whiteSpace: "pre-wrap" }}>
-                  <img src={image} style={{ maxWidth: "300px" }} />
+                  <Image src={image} style={{ maxWidth: "300px" }} />
                 </div>
               )}
               {audio && (
