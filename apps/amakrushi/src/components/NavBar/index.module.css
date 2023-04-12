@@ -4,7 +4,7 @@
   align-items: center;
   margin: 2vw;
   background-color: var(--bg-color);
-  max-height: 75px;
+  height: 70px;
 }
 
 .navbar button {

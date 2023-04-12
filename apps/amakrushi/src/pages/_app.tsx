@@ -34,13 +34,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     return (
       <ChakraProvider>
         <ContextProvider>
-          <>
+          <div style={{height: "100vh"}}>
             <NavBar />
             <SafeHydrate>
               <Component {...pageProps} />
             </SafeHydrate>
             <Menu/>
-          </>
+          </div>
         </ContextProvider>
       </ChakraProvider>
     );

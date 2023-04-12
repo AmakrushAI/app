@@ -38,7 +38,7 @@ function NavBar() {
           id="odiya"
           style={{ borderRadius: '0px 10px 10px 0px' }}
           onClick={odiyaHandler}>
-          ODIYA
+          ଓଡ଼ିଆ
         </button>
       </div>
       <div className={`${styles.imageContainer}`}>
