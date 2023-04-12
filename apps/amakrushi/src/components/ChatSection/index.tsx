@@ -4,6 +4,7 @@ import styles from "./ChatSection.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import ChatItem from "./ChatItem";
+import { NextPage } from "next";
 
 interface chatSectionProps {
   toShowSettings: (event: React.MouseEvent) => void;
@@ -12,7 +13,7 @@ interface chatSectionProps {
   allUsers: { name: string; number: string | null, active: boolean }[]; 
 }
 
-const ChatSection: React.FC<chatSectionProps> = ({
+const ChatSection: NextPage<chatSectionProps> = ({
   toShowSettings,
   toChangeCurrentUser,
   toRemoveUser,

@@ -7,8 +7,9 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { NextPage } from 'next';
 
-const LoginPage: React.FC = () => {
+const LoginPage: NextPage = () => {
   const router = useRouter();
   const [input, setInput] = useState('');
   const [value, setValue] = React.useState('1');

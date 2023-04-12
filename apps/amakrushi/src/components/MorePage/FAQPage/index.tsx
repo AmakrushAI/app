@@ -2,16 +2,16 @@ import styles from './index.module.css';
 import React from 'react';
 import { Input, InputGroup, InputLeftElement, Select } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
+import { NextPage } from 'next';
 
-const MorePage: React.FC = () => {
+const MorePage: NextPage = () => {
   return (
     <div className={styles.main}>
       <div className={styles.title}>FAQs</div>
       <InputGroup>
         <InputLeftElement
           pointerEvents="none"
-          children={<SearchIcon color="gray.300" />}
-        />
+        ><SearchIcon color="gray.300" /> </InputLeftElement>
         <Input type="text" placeholder="Search" />
       </InputGroup>
       <div className={styles.user}>

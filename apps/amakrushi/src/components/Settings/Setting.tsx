@@ -10,7 +10,7 @@ interface settingProps {
     clickFunction: (event: React.MouseEvent) => void 
 }
 
-const setting: React.FC<settingProps> = ({icon, settingName, clickFunction}) => {
+const Setting: React.FC<settingProps> = ({icon, settingName, clickFunction}) => {
 
     const borderColor = useColorModeValue("black","white")
 
@@ -27,4 +27,4 @@ const setting: React.FC<settingProps> = ({icon, settingName, clickFunction}) => 
 }
 
 
-export default setting;
+export default Setting;

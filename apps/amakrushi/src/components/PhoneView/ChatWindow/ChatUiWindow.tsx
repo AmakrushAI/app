@@ -1,3 +1,4 @@
+//@ts-ignore
 import Chat from "chatui";
 
 import React, {
