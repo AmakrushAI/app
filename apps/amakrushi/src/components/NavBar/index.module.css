@@ -4,13 +4,16 @@
   align-items: center;
   margin: 2vw;
   background-color: var(--bg-color);
+  max-height: 75px;
 }
 
 .navbar button {
   background: var(--grey);
   width: 14vw;
   height: 7vw;
-  font-size: 3.5vw;
+  max-height: 45px;
+  max-width: 90px;
+  font-size: 0.85rem;
   font-weight: 700;
 }
 .navbar .active {

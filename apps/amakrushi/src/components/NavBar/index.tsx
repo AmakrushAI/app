@@ -24,31 +24,9 @@ function NavBar() {
     }
   }
 
-  // useEffect(() => {
-  //   var addScript = document.createElement('script');
-  //   addScript.setAttribute(
-  //     'src',
-  //     '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'
-  //   );
-  //   document.body.appendChild(addScript);
-  //   window.googleTranslateElementInit = googleTranslateElementInit;
-  // }, []);
-
-  // const googleTranslateElementInit = () => {
-  //   new window.google.translate.TranslateElement(
-  //     {
-  //       pageLanguage: 'en',
-  //       includedLanguages: 'en,or', // If you remove it, by default all google supported language will be included
-  //       layout: google.translate.TranslateElement.InlineLayout.VERTICAL,
-  //     },
-  //     'google_translate_element'
-  //   );
-  // };
-
   return (
     <div className={styles.navbar}>
       <div>
-        {/* <div id="google_translate_element"></div> */}
         <button
           id="eng"
           className={styles.active}
