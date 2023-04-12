@@ -34,7 +34,6 @@ const ChatItem: React.FC<ChatItemPropsType> = ({
         height="max-content"
         m="0.5rem"
       >
-        hellooo bdadwar
         <Flex
           fontSize="35px"
           flex="1"
