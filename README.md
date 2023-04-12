@@ -65,15 +65,8 @@ yarn run dev
 ```
 
 ## Designs
-![Launch Screen](https://user-images.githubusercontent.com/65057795/231496627-695d434a-365d-40f2-920e-d504f53c82bb.png)
-![Login Screen](https://user-images.githubusercontent.com/65057795/231496634-28384d02-5153-42d6-a5e2-3772ebf785c7.png)
-![OTP Screen](https://user-images.githubusercontent.com/65057795/231496648-67d0c052-8f70-44fa-9aa8-b92e11360a86.png)
-![Home Screen](https://user-images.githubusercontent.com/65057795/231496662-01126bbc-c259-4881-8a71-ab583c8fcdcc.png)
-![Chats](https://user-images.githubusercontent.com/65057795/231496691-891acc60-0e0b-43b8-b438-ecf9f3652c57.png)
-![Chat History](https://user-images.githubusercontent.com/65057795/231496700-38e5313b-ce38-40df-8b49-89cd9b8e64de.png)
-![Menu](https://user-images.githubusercontent.com/65057795/231496714-4d234b98-0d23-4534-b2ef-074ed717f6ba.png)
-![FAQs](https://user-images.githubusercontent.com/65057795/231496734-1628fe05-0c2e-4a8c-b77f-f3d21e21fc1e.png)
-![Feedback](https://user-images.githubusercontent.com/65057795/231496743-5c6d3a38-f20f-46ea-8ae6-a4b02eaf262a.png)
+![merge_from_ofoct](https://user-images.githubusercontent.com/65057795/231498806-b6b81917-673a-486a-9c80-88901805b4ec.jpg)
+
 
 
 ## Useful Links
