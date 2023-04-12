@@ -1,12 +1,12 @@
 .menu {
   background-color: var(--darkgrey);
-  height: 7.1vh;
+  height: 7vh;
   width: 100vw;
   display: flex;
   justify-content: space-around;
-  align-items: flex-end;
+  align-items: center;
   font-size: 3.5vh;
-  position: fixed;
+  position: absolute;
   bottom: 0;
   z-index: 1;
 }
