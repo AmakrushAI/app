@@ -1,6 +1,6 @@
-# AmaKrushAI
+# AmaKrushAI 
 
-## About AKAI :open_book:
+## About AKAI :farmer:
 
 The vision of the AI assistant is to empower farmers with the timely knowledge and insights they need to thrive in an ever-changing agricultural landscape. Providing personalised and vernacular assistance through the AI-powered assistant aims to help farmers make informed decisions, increase their crop yields, and ultimately contribute to the increase in farmer income.
 
