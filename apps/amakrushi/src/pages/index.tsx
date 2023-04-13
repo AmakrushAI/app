@@ -137,6 +137,7 @@ const Home: NextPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="white" />
         <meta name="UCI Web Channel" content="A project under C4GT" />
+        <meta name="mobile-web-app-capable" content="yes"></meta>
         <title>Ama KrushAI</title>
       </Head>
       <CookiesProvider>
