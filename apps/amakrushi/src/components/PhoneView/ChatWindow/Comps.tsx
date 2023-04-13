@@ -72,7 +72,7 @@ export const RenderComp: FC<any> = ({
             
             > <div>
             <span className="onHover">
-              "{choice.text}"
+              {choice.text}
             </span>
           </div> </ListItem>
           ))}
