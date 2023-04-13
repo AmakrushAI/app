@@ -8,11 +8,13 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { NextPage } from 'next';
+import { useCookies } from 'react-cookie';
 
 const LoginPage: NextPage = () => {
   const router = useRouter();
   const [input, setInput] = useState('');
   const [value, setValue] = React.useState('1');
+  const[cookie] = useCookies();
 
   // Setting the input value
   const handleNumber: React.ChangeEventHandler = (

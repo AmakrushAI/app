@@ -2,10 +2,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 8px;
+  margin: 6px;
   background-color: var(--bg-color);
-  min-height: fit-content;
-  max-height: 75px;
+  /* min-height: fit-content; */
+  height: 70px;
 }
 
 .navbar button {

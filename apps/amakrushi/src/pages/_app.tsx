@@ -9,7 +9,6 @@ import ContextProvider from '../context/ContextProvider';
 import { ReactChildren, useEffect, useState } from 'react';
 import 'chatui/dist/index.css';
 import LaunchPage from '../components/LaunchPage';
-import Menu from '../components/Menu';
 import router from 'next/router';
 import { useCookies } from 'react-cookie';
 function SafeHydrate({ children }: { children: ReactChildren }) {
@@ -33,8 +32,12 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     if(router.pathname === '/login' || router.pathname.startsWith('/otp')){
-      // do nothing
+      // already logged in then send to home
+      if(cookie['access_token'] !== undefined){
+        router.push('/');
+      }
     }else {
+      // not logged in then send to login page
       if(cookie['access_token'] === undefined){
         router.push('/login');
       }
@@ -53,7 +56,6 @@ function MyApp({ Component, pageProps }: AppProps) {
             <SafeHydrate>
               <Component {...pageProps} />
             </SafeHydrate>
-            <Menu/>
           </div>
         </ContextProvider>
       </ChakraProvider>

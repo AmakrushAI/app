@@ -1,69 +1,57 @@
-import { useState, useEffect, useRef, useContext } from "react";
-import { io, Socket } from "socket.io-client";
-import Notification from "./OTPpage/Notifications";
-import { useCookies, withCookies } from "react-cookie";
-import router from "next/router";
+import { useState, useEffect, useContext } from 'react';
+import { useCookies } from 'react-cookie';
+import router from 'next/router';
 
-import { AppContext } from "../context";
+import { AppContext } from '../context';
 
-import dynamic from "next/dynamic";
-import axios from "axios";
-import { NextPage } from "next";
+import dynamic from 'next/dynamic';
+import axios from 'axios';
+import { NextPage } from 'next';
+import Menu from './Menu';
+import { position } from '@chakra-ui/react';
 
 const ChatUiWindow = dynamic(
-  () => import("./PhoneView/ChatWindow/ChatUiWindow"),
+  () => import('./PhoneView/ChatWindow/ChatUiWindow'),
   {
     ssr: false,
   }
 );
 const App: NextPage = () => {
   // For Authentication
-  const [accessToken, setAccessToken] = useState("");
-  const [socket, setSocket] = useState<Socket>();
+  const [accessToken, setAccessToken] = useState('');
   // const [recieved, setrecieved] = useState(false);
   const [cookies, setCookies] = useCookies();
 
   const { currentUser, allUsers, messages, sendMessage } =
     useContext(AppContext);
 
-  const scrollToBottom: () => void = () => {
-    window.scrollTo(0, document.body.scrollHeight);
-  };
-
   useEffect(() => {
-    if (cookies["access_token"] !== undefined) {
-      axios.get(`http://localhost:3000/api/auth?token=${cookies["access_token"]}`)
+    if (cookies['access_token'] !== undefined) {
+      axios
+        .get(`http://localhost:3000/api/auth?token=${cookies['access_token']}`)
         .then((response) => {
           if (response.data === null) {
-            throw "Invalid Access Token";
+            throw 'Invalid Access Token';
             // router.push("/login");
           }
         })
         .catch((err) => {
           throw err;
         });
-      setAccessToken(cookies["access_token"]);
+      setAccessToken(cookies['access_token']);
     } else {
-      router.push("/login");
+      router.push('/login');
     }
   }, [cookies]);
 
-  // useEffect(() => {
-  //   if (router.query.state || cookies["access_token"] !== "") {
-  //     registerOnMessageCallback(onMessageReceived);
-  //     registerOnSessionCallback(onSessionCreated);
-  //     scrollToBottom();
-  //   } else {
-  //     router.push("/login");
-  //   }
-  //   return () => {
-  //   }
-  // }, [state])
-
   return (
-    <div style={{ height: `calc(${(window.innerHeight < 780) ? '81vh' : '84vh'})`, width: "100%"}}>
-      <ChatUiWindow />
-    </div>
+    <>
+      <div
+        style={{position: 'fixed', width: '100%', bottom: '7vh', top: '75px'}}>
+        <ChatUiWindow />
+      </div>
+      <Menu />
+    </>
   );
 };
 
