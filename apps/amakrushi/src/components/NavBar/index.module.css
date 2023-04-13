@@ -4,7 +4,7 @@
   align-items: center;
   margin: 8px;
   background-color: var(--bg-color);
-  height: 8vh;
+  min-height: fit-content;
   max-height: 75px;
 }
 

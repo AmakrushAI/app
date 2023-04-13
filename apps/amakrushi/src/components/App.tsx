@@ -61,7 +61,7 @@ const App: NextPage = () => {
   // }, [state])
 
   return (
-    <div style={{ height: "85vh", width: "100%"}}>
+    <div style={{ height: `calc(${(window.innerHeight < 780) ? '81vh' : '84vh'})`, width: "100%"}}>
       <ChatUiWindow />
     </div>
   );

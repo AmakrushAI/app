@@ -10,7 +10,7 @@ import {
   //@ts-ignore
 } from 'chatui';
 // import { faStar, faDownload } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { includes, map, find, filter, omit } from 'lodash';
 import moment from 'moment';
 import React, {
@@ -72,7 +72,7 @@ export const RenderComp: FC<any> = ({
             
             > <div>
             <span className="onHover">
-              {choice.text}
+              "{choice.text}"
             </span>
           </div> </ListItem>
           ))}

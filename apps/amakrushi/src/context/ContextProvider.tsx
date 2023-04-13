@@ -26,19 +26,19 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
         buttonChoices: [
           {
             key: '1',
-            text: ' What are the different types of millets grown in Odisha?',
+            text: 'What are the different types of millets grown in Odisha?',
             backmenu: false,
-            active: true,
+            active: false,
           },
           {
             key: '2',
-            text: ' Tell me something about treatment of termites in sugarcane?',
+            text: 'Tell me something about treatment of termites in sugarcane?',
             backmenu: false,
             active: false,
           },
           {
             key: '3',
-            text: ' How can farmers apply to government schemes in Odisha?',
+            text: 'How can farmers apply to government schemes in Odisha?',
             backmenu: false,
             active: false,
           },
@@ -192,6 +192,8 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       console.log('socket:', { socketSession });
       setLoading(true);
       setIsMsgReceiving(true);
+      // To disappear the example choices even if not clicked and msg sent directly
+      if(!messages[0].repliedTimestamp) setMessages([]);
       //@ts-ignore
       send(text, socketSession, null, currentUser, socket, null);
       if (isVisibile)
