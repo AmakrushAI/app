@@ -1,15 +1,8 @@
 import {
   Box,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-  Input,
   HStack,
   PinInputField,
   PinInput,
-  Button,
-  Link,
 } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
 import { NextRouter, useRouter } from 'next/router';

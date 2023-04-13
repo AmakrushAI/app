@@ -193,7 +193,9 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       setLoading(true);
       setIsMsgReceiving(true);
       // To disappear the example choices even if not clicked and msg sent directly
-      if(!messages[0].repliedTimestamp) setMessages([]);
+      if (!messages[0].repliedTimestamp) {
+        setMessages([]);
+      }
       //@ts-ignore
       send(text, socketSession, null, currentUser, socket, null);
       if (isVisibile)

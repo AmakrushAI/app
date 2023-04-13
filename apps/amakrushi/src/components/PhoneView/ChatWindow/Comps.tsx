@@ -65,7 +65,9 @@ export const RenderComp: FC<any> = ({
                 if (isDisabled) {
                   toast.error('Cannot answer again');
                 } else {
-                  context?.setMessages([]);
+                  if (!context?.messages[0]?.repliedTimestamp) {
+                    context?.setMessages([]);
+                  }
                   context?.sendMessage(choice.text);
                 }
               }}
@@ -336,9 +338,11 @@ export const RenderComp: FC<any> = ({
             style={{ width: '95px', marginRight: '4px', textAlign: 'center' }}>
             <Avatar src={botImage} size="md" />
           </div> */}
-          <Bubble type="text" style={{margin: 'auto', background: 'none', lineHeight: '2.5', padding: '0'}}>
+          <Bubble type="text" className={styles.textBubble}>
             <div style={{ display: 'flex' }}>
-            <span style={{ fontSize: '1.5rem', color: 'var(--secondarygreen)', fontWeight: 'bold', margin: 'auto'}}>{content?.data?.payload?.text}</span>
+              <span className={styles.optionsText}>
+                {content?.data?.payload?.text}
+              </span>
             </div>
             {getLists({
               choices:
@@ -378,7 +382,7 @@ export const RenderComp: FC<any> = ({
       return (
         <ScrollView
           data={[]}
-           // @ts-ignore
+          // @ts-ignore
           renderItem={(item): ReactElement => <Button label={item.text} />}
         />
       );
