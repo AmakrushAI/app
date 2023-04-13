@@ -228,7 +228,7 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
       active: !!accessoryContent,
       target: popoverTarget.current,
       onClose: handlePopoverClose
-    }, accessoryContent), !disableSend && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    }, accessoryContent), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
       className: "Composer-inputWrap"
     }, /*#__PURE__*/React.createElement(ComposerInput, _extends({
       invisible: false
@@ -250,16 +250,18 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
     "aria-label": isInputText ? '切换到语音输入' : '切换到键盘输入'
   }), /*#__PURE__*/React.createElement("div", {
     className: "Composer-inputWrap"
-  }, !disableSend && /*#__PURE__*/React.createElement(ComposerInput, _extends({
+  }, /*#__PURE__*/React.createElement(ComposerInput, _extends({
     invisible: !isInputText
-  }, inputProps)), !isInputText && /*#__PURE__*/React.createElement(Recorder, recorder)), !text && rightAction && /*#__PURE__*/React.createElement(Action, rightAction), hasToolbar && /*#__PURE__*/React.createElement(Action, {
+  }, inputProps, {
+    disabled: disableSend
+  })), !isInputText && /*#__PURE__*/React.createElement(Recorder, recorder)), !text && rightAction && /*#__PURE__*/React.createElement(Action, rightAction), hasToolbar && /*#__PURE__*/React.createElement(Action, {
     className: clsx('Composer-toggleBtn', {
       active: isAccessoryOpen
     }),
     icon: "plus-circle",
     onClick: handleAccessoryToggle,
     "aria-label": isAccessoryOpen ? '关闭工具栏' : '展开工具栏'
-  }), !disableSend && (text || textOnce) && /*#__PURE__*/React.createElement(SendButton, {
+  }), (text || textOnce) && /*#__PURE__*/React.createElement(SendButton, {
     btnColor: btnColor,
     onClick: handleSendBtnClick,
     disabled: disableSend

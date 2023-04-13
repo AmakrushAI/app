@@ -43,7 +43,7 @@ export var ComposerInput = function ComposerInput(_ref) {
     className: clsx({
       'S--invisible': invisible
     })
-  }, !disabled && /*#__PURE__*/React.createElement(Input, _extends({
+  }, /*#__PURE__*/React.createElement(Input, _extends({
     className: "Composer-input",
     rows: 1,
     autoSize: true,

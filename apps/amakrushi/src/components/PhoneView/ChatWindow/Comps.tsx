@@ -65,7 +65,7 @@ export const RenderComp: FC<any> = ({
                 if (isDisabled) {
                   toast.error('Cannot answer again');
                 } else {
-                  if (!context?.messages[0]?.repliedTimestamp) {
+                  if (context?.messages?.[0]?.exampleOptions) {
                     context?.setMessages([]);
                   }
                   context?.sendMessage(choice.text);

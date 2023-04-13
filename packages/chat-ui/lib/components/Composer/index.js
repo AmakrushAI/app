@@ -239,7 +239,7 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
       active: !!accessoryContent,
       target: popoverTarget.current,
       onClose: handlePopoverClose
-    }, accessoryContent), !disableSend && /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("div", {
+    }, accessoryContent), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("div", {
       className: "Composer-inputWrap"
     }, /*#__PURE__*/_react.default.createElement(_ComposerInput.ComposerInput, (0, _extends2.default)({
       invisible: false
@@ -261,16 +261,18 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     "aria-label": isInputText ? '切换到语音输入' : '切换到键盘输入'
   }), /*#__PURE__*/_react.default.createElement("div", {
     className: "Composer-inputWrap"
-  }, !disableSend && /*#__PURE__*/_react.default.createElement(_ComposerInput.ComposerInput, (0, _extends2.default)({
+  }, /*#__PURE__*/_react.default.createElement(_ComposerInput.ComposerInput, (0, _extends2.default)({
     invisible: !isInputText
-  }, inputProps)), !isInputText && /*#__PURE__*/_react.default.createElement(_Recorder.Recorder, recorder)), !text && rightAction && /*#__PURE__*/_react.default.createElement(_Action.Action, rightAction), hasToolbar && /*#__PURE__*/_react.default.createElement(_Action.Action, {
+  }, inputProps, {
+    disabled: disableSend
+  })), !isInputText && /*#__PURE__*/_react.default.createElement(_Recorder.Recorder, recorder)), !text && rightAction && /*#__PURE__*/_react.default.createElement(_Action.Action, rightAction), hasToolbar && /*#__PURE__*/_react.default.createElement(_Action.Action, {
     className: (0, _clsx.default)('Composer-toggleBtn', {
       active: isAccessoryOpen
     }),
     icon: "plus-circle",
     onClick: handleAccessoryToggle,
     "aria-label": isAccessoryOpen ? '关闭工具栏' : '展开工具栏'
-  }), !disableSend && (text || textOnce) && /*#__PURE__*/_react.default.createElement(_SendButton.SendButton, {
+  }), (text || textOnce) && /*#__PURE__*/_react.default.createElement(_SendButton.SendButton, {
     btnColor: btnColor,
     onClick: handleSendBtnClick,
     disabled: disableSend
