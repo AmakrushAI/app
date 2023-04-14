@@ -10,7 +10,7 @@ import {
   //@ts-ignore
 } from 'chatui';
 // import { faStar, faDownload } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { includes, map, find, filter, omit } from 'lodash';
 import moment from 'moment';
 import React, {
@@ -30,6 +30,7 @@ import { toast } from 'react-hot-toast';
 import styles from './Comps.module.css';
 import { AppContext } from '../../../context';
 import { Spinner } from '@chakra-ui/react';
+import { MdOutlineArrowRight, MdOutlineChevronRight } from 'react-icons/md';
 
 export const RenderComp: FC<any> = ({
   currentUser,
@@ -39,16 +40,16 @@ export const RenderComp: FC<any> = ({
 }) => {
   const context = useContext(AppContext);
 
-  const onLongPress = useCallback((content: any) => {}, []);
+  // const onLongPress = useCallback((content: any) => {}, []);
 
-  const handleSend = useCallback(
-    (type: string, val: any) => {
-      if (type === 'text' && val.trim()) {
-        onSend(val, null, true, currentUser);
-      }
-    },
-    [onSend, currentUser]
-  );
+  // const handleSend = useCallback(
+  //   (type: string, val: any) => {
+  //     if (type === 'text' && val.trim()) {
+  //       onSend(val, null, true, currentUser);
+  //     }
+  //   },
+  //   [onSend, currentUser]
+  // );
 
   const getLists = useCallback(
     ({ choices, isDisabled }: { choices: any; isDisabled: boolean }) => {
@@ -65,20 +66,24 @@ export const RenderComp: FC<any> = ({
                 if (isDisabled) {
                   toast.error('Cannot answer again');
                 } else {
-                  handleSend('text', choice.key);
+                  if (context?.messages?.[0]?.exampleOptions) {
+                    context?.setMessages([]);
+                  }
+                  context?.sendMessage(choice.text);
                 }
               }}
             
             > <div>
-            <span className="onHover">
-              {choice.key} {choice.text}
-            </span>
+            <div className="onHover" style={{display: 'flex', alignItems: 'center'}}>
+              <div>{choice.text}</div>
+              <div style={{fontSize: '2rem'}}><MdOutlineChevronRight/></div>
+            </div>
           </div> </ListItem>
           ))}
         </List>
       );
     },
-    [handleSend]
+    [context]
   );
 
   // const download = (url: string): void => {
@@ -331,19 +336,20 @@ export const RenderComp: FC<any> = ({
       console.log('qwe12:', { content });
       return (
         <>
-          <div
+          {/* <div
             style={{ width: '95px', marginRight: '4px', textAlign: 'center' }}>
-            {/* <Avatar src={botImage} size="md" /> */}
-          </div>
-          <Bubble type="text">
+            <Avatar src={botImage} size="md" />
+          </div> */}
+          <Bubble type="text" className={styles.textBubble}>
             <div style={{ display: 'flex' }}>
-              <span style={{ fontSize: '16px' }}>{content.text}</span>
+              <span className={styles.optionsText}>
+                {content?.data?.payload?.text}
+              </span>
             </div>
-            <div style={{ marginTop: '10px' }} />
             {getLists({
               choices:
                 content?.data?.payload?.buttonChoices ?? content?.data?.choices,
-              isDisabled: content?.data?.disabled,
+              isDisabled: false,
             })}
             {/* <div
               style={{
@@ -376,11 +382,9 @@ export const RenderComp: FC<any> = ({
     }
     default:
       return (
-       
-       
         <ScrollView
           data={[]}
-           // @ts-ignore
+          // @ts-ignore
           renderItem={(item): ReactElement => <Button label={item.text} />}
         />
       );

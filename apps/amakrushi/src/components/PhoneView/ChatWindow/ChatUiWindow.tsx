@@ -49,6 +49,8 @@ const ChatUiWindow: FC = () => {
     <>
       {/* <FullScreenLoader loading={loading} /> */}
       <Chat
+        btnColor='var(--secondarygreen)'
+        background='var(--bg-color)'
         disableSend={context?.loading}
         //@ts-ignore
         messages={msgToRender}

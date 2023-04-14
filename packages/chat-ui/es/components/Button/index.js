@@ -1,6 +1,6 @@
 import _extends from "@babel/runtime/helpers/esm/extends";
 import _objectWithoutProperties from "@babel/runtime/helpers/esm/objectWithoutProperties";
-var _excluded = ["className", "label", "color", "variant", "size", "icon", "loading", "block", "disabled", "children", "onClick"];
+var _excluded = ["className", "label", "color", "variant", "size", "icon", "loading", "block", "disabled", "btnColor", "children", "onClick"];
 import React from 'react';
 import clsx from 'clsx';
 import { Icon } from '../Icon';
@@ -17,6 +17,7 @@ export var Button = /*#__PURE__*/React.forwardRef(function (props, ref) {
     loading = props.loading,
     block = props.block,
     disabled = props.disabled,
+    btnColor = props.btnColor,
     children = props.children,
     onClick = props.onClick,
     other = _objectWithoutProperties(props, _excluded);
@@ -28,6 +29,9 @@ export var Button = /*#__PURE__*/React.forwardRef(function (props, ref) {
     }
   }
   return /*#__PURE__*/React.createElement("button", _extends({
+    style: {
+      background: btnColor ? btnColor : ''
+    },
     className: clsx('Btn', composeClass(color), composeClass(variant), composeClass(size), {
       'Btn--block': block
     }, className),

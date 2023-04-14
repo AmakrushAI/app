@@ -1,24 +1,11 @@
 import React, { useContext } from "react";
-import { Box, Flex, Button } from "@chakra-ui/react";
 import styles from "./index.module.css";
-import MessageWindow from "../../MessageWindow";
-import TextBar from "../../TextBar";
-import ColorModeSwitcher from "../../ColorModeSwitcher";
-import { useColorModeValue, IconButton } from "@chakra-ui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faShower } from "@fortawesome/free-solid-svg-icons";
 import dynamic from "next/dynamic";
 import { AppContext } from "../../../context";
 
 const ChatUiWindow = dynamic(() => import("./ChatUiWindow"), {
   ssr: false,
 });
-const FontSizeChanger = dynamic(
-  () => {
-    return import("react-font-size-changer");
-  },
-  { ssr: false }
-);
 
 interface chatWindowProps {
   currentMessageObj: {
@@ -36,24 +23,16 @@ interface chatWindowProps {
   toShowChats: (event: React.MouseEvent) => void;
 }
 
-const ChatWindow: React.FC<chatWindowProps> = ({
-
-  currentMessageObj,
-  messages,
- 
-  toSendMessage,
-  currentUser,
- 
-}) => {
-const context=useContext(AppContext);
-console.log("qwerty:",{context})
+const ChatWindow: React.FC<chatWindowProps> = () => {
+  const context = useContext(AppContext);
+  console.log("qwerty:", { context })
   return (
     <>
-      <div style={{ height: "90vh", width: "100%" }}>
+      <div className={styles.container}>
         <ChatUiWindow />
       </div>
     </>
-   
+
   );
 };
 

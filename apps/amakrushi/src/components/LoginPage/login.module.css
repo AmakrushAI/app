@@ -27,6 +27,13 @@
   color: var(--secondarygreen);
 }
 
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 35vh;
+}
+
 .submitButton {
   font-weight: 700 ;
   font-size: 14px !important;

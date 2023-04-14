@@ -38,6 +38,7 @@ export const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     multiline,
     autoSize,
     onChange,
+    disabled=false,
     ...other
   } = props;
 
@@ -128,6 +129,7 @@ export const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
       maxLength={maxLength}
       ref={inputRef}
       rows={rows}
+      disabled={disabled}
       onChange={handleChange}
       {...other}
     />

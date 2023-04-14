@@ -3,11 +3,12 @@ import { Button } from '../Button';
 import { useLocale } from '../LocaleProvider';
 
 interface SendButtonProps {
+  btnColor: string;
   disabled: boolean;
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export const SendButton = ({ disabled, onClick }: SendButtonProps) => {
+export const SendButton = ({ disabled, onClick, btnColor }: SendButtonProps) => {
   const { trans } = useLocale('Composer');
   return (
     <div className="Composer-actions">
@@ -16,6 +17,7 @@ export const SendButton = ({ disabled, onClick }: SendButtonProps) => {
         disabled={disabled}
         onMouseDown={onClick}
         color="primary"
+        btnColor={btnColor}
       >
         {trans('send')}
       </Button>
