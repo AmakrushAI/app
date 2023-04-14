@@ -77,6 +77,7 @@ const OTPpage: React.FC = () => {
     <div className={styles.main}>
       <div className={styles.title}>Ama KrushAI</div>
       <Box
+        backgroundColor= 'var(--bg-color) !important'
         width="340px"
         height="80vh"
         display="flex"
