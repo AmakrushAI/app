@@ -215,15 +215,7 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (isMsgReceiving && loading) {
-        setIsMsgReceiving(false);
-        setLoading(false);
-        onMessageReceived({
-          content: {
-            msg_type: 'text',
-            title: 'Please try again later. Servers busy.',
-          },
-          from: 'bINgANjQS1n8zaRTAANi',
-        });
+        toast.error('Please wait, servers are busier than usual.');
       }
     }, 25000);
 
