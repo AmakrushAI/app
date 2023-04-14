@@ -47,6 +47,7 @@ var Chat = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     onSend = props.onSend,
     disableSend = props.disableSend,
     btnColor = props.btnColor,
+    background = props.background,
     onImageSend = props.onImageSend,
     inputOptions = props.inputOptions,
     composerRef = props.composerRef,
@@ -86,7 +87,10 @@ var Chat = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     locales: locales
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "ChatApp",
-    ref: ref
+    ref: ref,
+    style: {
+      background: background ? background : ''
+    }
   }, renderNavbar ? renderNavbar() : navbar && /*#__PURE__*/_react.default.createElement(_Navbar.Navbar, navbar), /*#__PURE__*/_react.default.createElement(_MessageContainer.MessageContainer, {
     ref: messagesRef,
     loadMoreText: loadMoreText,
@@ -98,7 +102,10 @@ var Chat = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     onBackBottomShow: onBackBottomShow,
     onBackBottomClick: onBackBottomClick
   }), /*#__PURE__*/_react.default.createElement("div", {
-    className: "ChatFooter"
+    className: "ChatFooter",
+    style: {
+      background: background ? background : ''
+    }
   }, renderQuickReplies ? renderQuickReplies() : /*#__PURE__*/_react.default.createElement(_QuickReplies.QuickReplies, {
     items: quickReplies,
     visible: quickRepliesVisible,

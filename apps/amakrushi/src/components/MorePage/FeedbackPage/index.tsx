@@ -1,9 +1,16 @@
 import { FaStar } from 'react-icons/fa';
 import styles from './index.module.css';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Menu from '../../Menu';
+//@ts-ignore
+import { analytics } from '../../../utils/firebase';
+import { logEvent } from 'firebase/analytics';
 
 const MorePage: React.FC = () => {
+  useEffect(() => {
+    //@ts-ignore
+    logEvent(analytics, 'Feedback_page');
+  }, []);
   return (
     <>
       <div className={styles.main}>

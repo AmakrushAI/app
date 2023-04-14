@@ -1,5 +1,5 @@
 import styles from './index.module.css';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -11,6 +11,9 @@ import { useCookies } from 'react-cookie';
 import { MdArrowRight, MdOutlineQuestionMark } from 'react-icons/md';
 import { IoIosThumbsUp } from 'react-icons/io';
 import Menu from '../Menu';
+//@ts-ignore
+import { analytics } from '../../utils/firebase';
+import { logEvent } from 'firebase/analytics';
 
 const MorePage: React.FC = () => {
   const router = useRouter();
@@ -20,8 +23,15 @@ const MorePage: React.FC = () => {
     removeCookie('access_token', { path: '/' });
     localStorage.removeItem('phoneNumber');
     localStorage.removeItem('userMsgs');
+    //@ts-ignore
+    logEvent(analytics, 'Logout_pressed')
     router.push('/login');
   }
+
+  useEffect(() => {
+    //@ts-ignore
+    logEvent(analytics, 'More_page');
+  }, []);
 
   return (
     <>

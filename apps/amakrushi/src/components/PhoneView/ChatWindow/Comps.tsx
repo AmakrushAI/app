@@ -30,6 +30,7 @@ import { toast } from 'react-hot-toast';
 import styles from './Comps.module.css';
 import { AppContext } from '../../../context';
 import { Spinner } from '@chakra-ui/react';
+import { MdOutlineArrowRight, MdOutlineChevronRight } from 'react-icons/md';
 
 export const RenderComp: FC<any> = ({
   currentUser,
@@ -73,9 +74,10 @@ export const RenderComp: FC<any> = ({
               }}
             
             > <div>
-            <span className="onHover">
-              {choice.text}
-            </span>
+            <div className="onHover" style={{display: 'flex', alignItems: 'center'}}>
+              <div>{choice.text}</div>
+              <div style={{fontSize: '2rem'}}><MdOutlineChevronRight/></div>
+            </div>
           </div> </ListItem>
           ))}
         </List>

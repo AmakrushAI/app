@@ -298,7 +298,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
             data-icon={inputTypeIcon}
             icon={inputTypeIcon}
             onClick={handleInputTypeChange}
-            aria-label={isInputText ? '切换到语音输入' : '切换到键盘输入'}
+            aria-label={isInputText ? 'Switch to voice input' : 'Switch to keyboard input'}
           />
         )}
         <div className="Composer-inputWrap">
@@ -313,7 +313,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
             })}
             icon="plus-circle"
             onClick={handleAccessoryToggle}
-            aria-label={isAccessoryOpen ? '关闭工具栏' : '展开工具栏'}
+            aria-label={isAccessoryOpen ? 'Close Toolbar' : 'Expand Toolbar'}
           />
         )}
         {(text || textOnce ) && <SendButton btnColor={btnColor} onClick={handleSendBtnClick} disabled={disableSend} />}

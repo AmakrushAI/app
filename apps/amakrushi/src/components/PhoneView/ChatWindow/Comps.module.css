@@ -1,8 +1,12 @@
 .onHover {
-  font-size: 1rem !important;
   font-weight: bold;
   color: var(--secondarygreen);
   background-color: white;
+  height: fit-content !important;
+}
+
+.onHover:hover {
+  background: var(--grey);
 }
 
 .question {
@@ -13,10 +17,6 @@
 
 .p {
   font-size: 1rem;
-}
-
-.onHover:hover {
-  background: var(--grey);
 }
 
 .list {

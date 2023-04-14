@@ -1,13 +1,12 @@
-import {
-  Box,
-  HStack,
-  PinInputField,
-  PinInput,
-} from '@chakra-ui/react';
+import { Box, HStack, PinInputField, PinInput } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
 import { NextRouter, useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';
 import styles from './OTP.module.css';
+//@ts-ignore
+import { analytics } from '../../utils/firebase';
+import { logEvent } from 'firebase/analytics';
+import { setUserId } from 'firebase/analytics';
 
 const OTPpage: React.FC = () => {
   const router: NextRouter = useRouter();
@@ -16,7 +15,6 @@ const OTPpage: React.FC = () => {
   const [input3, setInput3] = useState('');
   const [input4, setInput4] = useState('');
   const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
- 
 
   const handleOTPSubmit: React.FormEventHandler = (event: React.FormEvent) => {
     event.preventDefault();
@@ -42,8 +40,10 @@ const OTPpage: React.FC = () => {
               expires,
             });
             const phoneNumber = router.query.state;
-            //@ts-ignore
+            // @ts-ignore
             localStorage.setItem('phoneNumber', phoneNumber);
+            //@ts-ignore
+            setUserId(analytics, phoneNumber);
             router.push('/');
           } else {
             alert('Incorrect OTP');
@@ -73,11 +73,17 @@ const OTPpage: React.FC = () => {
   ) => {
     setInput4(e.target.value);
   };
+
+  useEffect(() => {
+    //@ts-ignore
+    logEvent(analytics, 'OTP_page');
+  }, []);
+
   return (
     <div className={styles.main}>
       <div className={styles.title}>Ama KrushAI</div>
       <Box
-        backgroundColor= 'var(--bg-color) !important'
+        backgroundColor="var(--bg-color) !important"
         width="340px"
         height="80vh"
         display="flex"
@@ -89,10 +95,6 @@ const OTPpage: React.FC = () => {
         <Box
           padding={1}
           textAlign="center"
-          // display="flex"
-          // flexDirection="column"
-          // alignContent="center"
-          // justifyContent="center"
           color="black"
           px="1rem"
           marginTop="10vh">
@@ -104,56 +106,62 @@ const OTPpage: React.FC = () => {
           <div style={{ marginTop: '10px' }}>
             <b>+91-{router.query.state}</b>
           </div>
-          <HStack style={{ marginTop: '34px', justifyContent: 'center' }}>
-            <PinInput otp placeholder="">
-              <PinInputField
-                className={styles.pinInputField}
-                value={input1}
-                onChange={handleOTP1}
-                boxShadow="0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+          <form onSubmit={handleOTPSubmit}>
+            <HStack style={{ marginTop: '34px', justifyContent: 'center' }}>
+              <PinInput otp placeholder="">
+                <PinInputField
+                  className={styles.pinInputField}
+                  value={input1}
+                  onChange={handleOTP1}
+                  boxShadow="0 2.8px 2.2px rgba(0, 0, 0, 0.034),
                 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
                 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
                 0 100px 80px rgba(0, 0, 0, 0.12);"
-              />
-              <PinInputField
-                className={styles.pinInputField}
-                value={input2}
-                onChange={handleOTP2}
-                boxShadow="0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+                />
+                <PinInputField
+                  className={styles.pinInputField}
+                  value={input2}
+                  onChange={handleOTP2}
+                  boxShadow="0 2.8px 2.2px rgba(0, 0, 0, 0.034),
                 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
                 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
                 0 100px 80px rgba(0, 0, 0, 0.12);"
-              />
-              <PinInputField
-                className={styles.pinInputField}
-                value={input3}
-                onChange={handleOTP3}
-                boxShadow="0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+                />
+                <PinInputField
+                  className={styles.pinInputField}
+                  value={input3}
+                  onChange={handleOTP3}
+                  boxShadow="0 2.8px 2.2px rgba(0, 0, 0, 0.034),
                 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
                 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
                 0 100px 80px rgba(0, 0, 0, 0.12);"
-              />
-              <PinInputField
-                className={styles.pinInputField}
-                value={input4}
-                onChange={handleOTP4}
-                boxShadow="0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+                />
+                <PinInputField
+                  className={styles.pinInputField}
+                  value={input4}
+                  onChange={handleOTP4}
+                  boxShadow="0 2.8px 2.2px rgba(0, 0, 0, 0.034),
                 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
                 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
                 0 100px 80px rgba(0, 0, 0, 0.12);"
-              />
-            </PinInput>
-          </HStack>
-          <div style={{ display: 'flex' }}>
-            <button
-              className={styles.backButton}
-              onClick={() => router.push('/login')}>
-              Back
-            </button>
-            <button className={styles.submitButton} onClick={handleOTPSubmit}>
-              Submit
-            </button>
-          </div>
+                />
+              </PinInput>
+            </HStack>
+            <div style={{ display: 'flex' }}>
+              <button
+                type='button'
+                className={styles.backButton}
+                onClick={() => router.push('/login')}>
+                Back
+              </button>
+              <button
+                type="submit"
+                className={styles.submitButton}
+                onClick={handleOTPSubmit}>
+                Submit
+              </button>
+            </div>
+          </form>
         </Box>
         {/* <Box>
           <div className={styles.login}>

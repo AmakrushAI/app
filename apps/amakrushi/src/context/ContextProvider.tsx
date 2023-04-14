@@ -14,35 +14,14 @@ import { User } from '../types';
 import { send } from '../components/websocket';
 import moment from 'moment';
 import { socket } from '../socket';
+import { initialMsg } from '../utils/textUtility';
 
 const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [currentUser, setCurrentUser] = useState<User>();
   const [loading, setLoading] = useState(false);
   const [isMsgReceiving, setIsMsgReceiving] = useState(false);
-  const [messages, setMessages] = useState<Array<any>>([
-    {
-      payload: {
-        buttonChoices: [
-          {
-            key: '1',
-            text: 'What are the different types of millets grown in Odisha?',
-          },
-          {
-            key: '2',
-            text: 'Tell me something about treatment of termites in sugarcane?',
-          },
-          {
-            key: '3',
-            text: 'How can farmers apply to government schemes in Odisha?',
-          },
-        ],
-        text: 'Examples',
-      },
-      position: 'left',
-      exampleOptions: 'true',
-    },
-  ]);
+  const [messages, setMessages] = useState<Array<any>>([initialMsg]);
   const [socketSession, setSocketSession] = useState<any>();
   const [isConnected, setIsConnected] = useState(socket.connected);
   console.log(messages);
@@ -77,7 +56,6 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
         ...media,
       };
       setMessages((prev: any) => [...prev, newMsg]);
-      
     },
     []
   );
@@ -90,34 +68,34 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       // @ts-ignore
       const user = JSON.parse(localStorage.getItem('currentUser'));
       //  console.log("qwe12 message: ", { msg, currentUser, uu: JSON.parse(localStorage.getItem('currentUser')) });
-      if (msg.content.msg_type === 'IMAGE') {
+      if (msg.content.msg_type.toUpperCase() === 'IMAGE') {
         updateMsgState({
           user,
           msg,
           media: { imageUrl: msg?.content?.media_url },
         });
-      } else if (msg.content.msg_type === 'AUDIO') {
+      } else if (msg.content.msg_type.toUpperCase() === 'AUDIO') {
         updateMsgState({
           user,
           msg,
           media: { audioUrl: msg?.content?.media_url },
         });
-      } else if (msg.content.msg_type === 'VIDEO') {
+      } else if (msg.content.msg_type.toUpperCase() === 'VIDEO') {
         updateMsgState({
           user,
           msg,
           media: { videoUrl: msg?.content?.media_url },
         });
       } else if (
-        msg.content.msg_type === 'DOCUMENT' ||
-        msg.content.msg_type === 'FILE'
+        msg.content.msg_type.toUpperCase() === 'DOCUMENT' ||
+        msg.content.msg_type.toUpperCase() === 'FILE'
       ) {
         updateMsgState({
           user,
           msg,
           media: { fileUrl: msg?.content?.media_url },
         });
-      } else if (msg.content.msg_type === 'TEXT') {
+      } else if (msg.content.msg_type.toUpperCase() === 'TEXT') {
         updateMsgState({ user, msg, media: {} });
       }
 
@@ -226,13 +204,31 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
               payload: { text },
               time: moment().valueOf(),
               disabled: true,
-              repliedTimestamp:moment()
+              repliedTimestamp: moment(),
             },
           ]);
         }
     },
     [currentUser, messages, socketSession]
   );
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (isMsgReceiving && loading) {
+        setIsMsgReceiving(false);
+        setLoading(false);
+        onMessageReceived({
+          content: {
+            msg_type: 'text',
+            title: 'Please try again later. Servers busy.',
+          },
+          from: 'bINgANjQS1n8zaRTAANi',
+        });
+      }
+    }, 20000);
+
+    return () => clearTimeout(timer);
+  }, [isMsgReceiving, loading, onMessageReceived]);
 
   const values = useMemo(
     () => ({
@@ -245,7 +241,8 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       loading,
       setLoading,
       socketSession,
-      isMsgReceiving, setIsMsgReceiving
+      isMsgReceiving,
+      setIsMsgReceiving,
     }),
     [
       currentUser,
@@ -256,7 +253,8 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       messages,
       loading,
       setLoading,
-      isMsgReceiving, setIsMsgReceiving
+      isMsgReceiving,
+      setIsMsgReceiving,
     ]
   );
 

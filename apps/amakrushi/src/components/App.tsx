@@ -1,14 +1,14 @@
 import { useState, useEffect, useContext } from 'react';
 import { useCookies } from 'react-cookie';
 import router from 'next/router';
-
 import { AppContext } from '../context';
-
 import dynamic from 'next/dynamic';
 import axios from 'axios';
 import { NextPage } from 'next';
 import Menu from './Menu';
-import { position } from '@chakra-ui/react';
+// @ts-ignore
+import { analytics } from '../utils/firebase';
+import { logEvent } from 'firebase/analytics';
 
 const ChatUiWindow = dynamic(
   () => import('./PhoneView/ChatWindow/ChatUiWindow'),
@@ -43,6 +43,11 @@ const App: NextPage = () => {
       router.push('/login');
     }
   }, [cookies]);
+
+  useEffect(() => {
+    //@ts-ignore
+    logEvent(analytics, 'Home_page');
+  }, []);
 
   return (
     <>

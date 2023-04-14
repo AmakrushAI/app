@@ -1,11 +1,18 @@
+import { useEffect } from 'react';
 import styles from './index.module.css';
-import React from 'react';
 import { Input, InputGroup, InputLeftElement, Select } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { NextPage } from 'next';
 import Menu from '../../Menu';
+//@ts-ignore
+import { analytics } from '../../../utils/firebase';
+import { logEvent } from 'firebase/analytics';
 
 const MorePage: NextPage = () => {
+  useEffect(() => {
+    //@ts-ignore
+    logEvent(analytics, 'FAQ_page');
+  }, []);
   return (
     <>
       <div className={styles.main}>
