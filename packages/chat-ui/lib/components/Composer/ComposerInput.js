@@ -53,7 +53,7 @@ var ComposerInput = function ComposerInput(_ref) {
     className: (0, _clsx.default)({
       'S--invisible': invisible
     })
-  }, /*#__PURE__*/_react.default.createElement(_Input.Input, (0, _extends2.default)({
+  }, !disabled && /*#__PURE__*/_react.default.createElement(_Input.Input, (0, _extends2.default)({
     className: "Composer-input",
     rows: 1,
     autoSize: true,

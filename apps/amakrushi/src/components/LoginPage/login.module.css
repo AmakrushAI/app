@@ -19,8 +19,8 @@
 }
 
 .body h1 {
-  margin-top: 6vh;
-  margin-bottom: 3vh;
+  margin-top: 4vh;
+  margin-bottom: 2vh;
   font-family: 'Mulish-Bold';
   font-size: 32px;
   font-weight: 700;
@@ -31,7 +31,7 @@
   font-weight: 700 ;
   font-size: 14px !important;
   color: white ;
-  margin: 6vh auto;
+  margin: 4vh auto 2vh auto;
   display: flex;
   text-align: center;
   justify-content: center;

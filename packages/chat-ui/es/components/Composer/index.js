@@ -227,7 +227,7 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
       active: !!accessoryContent,
       target: popoverTarget.current,
       onClose: handlePopoverClose
-    }, accessoryContent), /*#__PURE__*/React.createElement("div", {
+    }, accessoryContent), !disableSend && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
       className: "Composer-inputWrap"
     }, /*#__PURE__*/React.createElement(ComposerInput, _extends({
       invisible: false
@@ -236,7 +236,7 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
     }))), /*#__PURE__*/React.createElement(SendButton, {
       onClick: handleSendBtnClick,
       disabled: !text || disableSend
-    }));
+    })));
   }
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "Composer"
@@ -248,7 +248,7 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
     "aria-label": isInputText ? '切换到语音输入' : '切换到键盘输入'
   }), /*#__PURE__*/React.createElement("div", {
     className: "Composer-inputWrap"
-  }, /*#__PURE__*/React.createElement(ComposerInput, _extends({
+  }, !disableSend && /*#__PURE__*/React.createElement(ComposerInput, _extends({
     invisible: !isInputText
   }, inputProps)), !isInputText && /*#__PURE__*/React.createElement(Recorder, recorder)), !text && rightAction && /*#__PURE__*/React.createElement(Action, rightAction), hasToolbar && /*#__PURE__*/React.createElement(Action, {
     className: clsx('Composer-toggleBtn', {
@@ -257,7 +257,7 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
     icon: "plus-circle",
     onClick: handleAccessoryToggle,
     "aria-label": isAccessoryOpen ? '关闭工具栏' : '展开工具栏'
-  }), (text || textOnce) && /*#__PURE__*/React.createElement(SendButton, {
+  }), !disableSend && (text || textOnce) && /*#__PURE__*/React.createElement(SendButton, {
     onClick: handleSendBtnClick,
     disabled: disableSend
   })), isAccessoryOpen && /*#__PURE__*/React.createElement(AccessoryWrap, {

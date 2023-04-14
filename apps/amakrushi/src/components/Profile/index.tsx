@@ -4,6 +4,7 @@ import { Box, Text, Flex, Button } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import ReactDom from "react-dom";
+import Image from "next/image";
 
 interface profileProps {
   removeProfile: () => void;
@@ -57,7 +58,7 @@ const Profile: React.FC<profileProps> = ({
                 width: "315px",
               }}
             >
-              <img
+              <Image
                 src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample87.jpg"
                 alt="coverPic"
                 style={{
@@ -75,7 +76,7 @@ const Profile: React.FC<profileProps> = ({
                   color: `${fontColor}`,
                 }}
               >
-                <img
+                <Image
                   src="/avatar.jpg"
                   alt="profilePic"
                   style={{

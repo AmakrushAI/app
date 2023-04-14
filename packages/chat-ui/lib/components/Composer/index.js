@@ -238,7 +238,7 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
       active: !!accessoryContent,
       target: popoverTarget.current,
       onClose: handlePopoverClose
-    }, accessoryContent), /*#__PURE__*/_react.default.createElement("div", {
+    }, accessoryContent), !disableSend && /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("div", {
       className: "Composer-inputWrap"
     }, /*#__PURE__*/_react.default.createElement(_ComposerInput.ComposerInput, (0, _extends2.default)({
       invisible: false
@@ -247,7 +247,7 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     }))), /*#__PURE__*/_react.default.createElement(_SendButton.SendButton, {
       onClick: handleSendBtnClick,
       disabled: !text || disableSend
-    }));
+    })));
   }
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("div", {
     className: "Composer"
@@ -259,7 +259,7 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     "aria-label": isInputText ? '切换到语音输入' : '切换到键盘输入'
   }), /*#__PURE__*/_react.default.createElement("div", {
     className: "Composer-inputWrap"
-  }, /*#__PURE__*/_react.default.createElement(_ComposerInput.ComposerInput, (0, _extends2.default)({
+  }, !disableSend && /*#__PURE__*/_react.default.createElement(_ComposerInput.ComposerInput, (0, _extends2.default)({
     invisible: !isInputText
   }, inputProps)), !isInputText && /*#__PURE__*/_react.default.createElement(_Recorder.Recorder, recorder)), !text && rightAction && /*#__PURE__*/_react.default.createElement(_Action.Action, rightAction), hasToolbar && /*#__PURE__*/_react.default.createElement(_Action.Action, {
     className: (0, _clsx.default)('Composer-toggleBtn', {
@@ -268,7 +268,7 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     icon: "plus-circle",
     onClick: handleAccessoryToggle,
     "aria-label": isAccessoryOpen ? '关闭工具栏' : '展开工具栏'
-  }), (text || textOnce) && /*#__PURE__*/_react.default.createElement(_SendButton.SendButton, {
+  }), !disableSend && (text || textOnce) && /*#__PURE__*/_react.default.createElement(_SendButton.SendButton, {
     onClick: handleSendBtnClick,
     disabled: disableSend
   })), isAccessoryOpen && /*#__PURE__*/_react.default.createElement(_AccessoryWrap.AccessoryWrap, {

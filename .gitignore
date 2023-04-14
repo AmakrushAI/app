@@ -33,5 +33,5 @@ yarn-error.log*
 .turbo
 
 # chatui
-es
-lib
+
+

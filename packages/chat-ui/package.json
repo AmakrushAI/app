@@ -29,7 +29,6 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "prepare": "husky install",
     "watch": "nodemon --watch src --ext ts,tsx,less --exec 'npm run dev'"
   },
   "dependencies": {

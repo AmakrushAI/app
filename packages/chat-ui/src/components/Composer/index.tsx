@@ -277,10 +277,12 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
             {accessoryContent}
           </Popover>
         )}
+        {!disableSend && <div>
         <div className="Composer-inputWrap">
           <ComposerInput invisible={false} {...inputProps} disabled={disableSend} />
         </div>
         <SendButton onClick={handleSendBtnClick} disabled={!text || disableSend} />
+        </div>}
       </div>
     );
   }
@@ -298,7 +300,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
           />
         )}
         <div className="Composer-inputWrap">
-          <ComposerInput invisible={!isInputText} {...inputProps} />
+      {!disableSend &&    <ComposerInput invisible={!isInputText} {...inputProps} />}
           {!isInputText && <Recorder {...recorder} />}
         </div>
         {!text && rightAction && <Action {...rightAction} />}
@@ -312,7 +314,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
             aria-label={isAccessoryOpen ? '关闭工具栏' : '展开工具栏'}
           />
         )}
-        {(text || textOnce) && <SendButton onClick={handleSendBtnClick} disabled={disableSend} />}
+        { !disableSend && (text || textOnce ) && <SendButton onClick={handleSendBtnClick} disabled={disableSend} />}
       </div>
       {isAccessoryOpen && (
         <AccessoryWrap onClickOutside={handleAccessoryBlur}>
