@@ -14,41 +14,14 @@ import { User } from '../types';
 import { send } from '../components/websocket';
 import moment from 'moment';
 import { socket } from '../socket';
+import { initialMsg } from '../utils/textUtility';
 
 const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [currentUser, setCurrentUser] = useState<User>();
   const [loading, setLoading] = useState(false);
   const [isMsgReceiving, setIsMsgReceiving] = useState(false);
-  const [messages, setMessages] = useState<Array<any>>([
-    {
-      payload: {
-        buttonChoices: [
-          {
-            key: '1',
-            text: ' What are the different types of millets grown in Odisha?',
-            backmenu: false,
-            active: true,
-          },
-          {
-            key: '2',
-            text: ' Tell me something about treatment of termites in sugarcane?',
-            backmenu: false,
-            active: false,
-          },
-          {
-            key: '3',
-            text: ' How can farmers apply to government schemes in Odisha?',
-            backmenu: false,
-            active: false,
-          },
-        ],
-        text: 'इस लक्ष्य को प्राप्त करने हेतु आपकी भूमिका क्या है? (दिए गए options में से एक चयनित करें और सबमिट करें) ',
-      },
-      position: 'left',
-      botUuid: '1',
-    },
-  ]);
+  const [messages, setMessages] = useState<Array<any>>([initialMsg]);
   const [socketSession, setSocketSession] = useState<any>();
   const [isConnected, setIsConnected] = useState(socket.connected);
   console.log(messages);
@@ -83,7 +56,6 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
         ...media,
       };
       setMessages((prev: any) => [...prev, newMsg]);
-      
     },
     []
   );
@@ -96,34 +68,34 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       // @ts-ignore
       const user = JSON.parse(localStorage.getItem('currentUser'));
       //  console.log("qwe12 message: ", { msg, currentUser, uu: JSON.parse(localStorage.getItem('currentUser')) });
-      if (msg.content.msg_type === 'IMAGE') {
+      if (msg.content.msg_type.toUpperCase() === 'IMAGE') {
         updateMsgState({
           user,
           msg,
           media: { imageUrl: msg?.content?.media_url },
         });
-      } else if (msg.content.msg_type === 'AUDIO') {
+      } else if (msg.content.msg_type.toUpperCase() === 'AUDIO') {
         updateMsgState({
           user,
           msg,
           media: { audioUrl: msg?.content?.media_url },
         });
-      } else if (msg.content.msg_type === 'VIDEO') {
+      } else if (msg.content.msg_type.toUpperCase() === 'VIDEO') {
         updateMsgState({
           user,
           msg,
           media: { videoUrl: msg?.content?.media_url },
         });
       } else if (
-        msg.content.msg_type === 'DOCUMENT' ||
-        msg.content.msg_type === 'FILE'
+        msg.content.msg_type.toUpperCase() === 'DOCUMENT' ||
+        msg.content.msg_type.toUpperCase() === 'FILE'
       ) {
         updateMsgState({
           user,
           msg,
           media: { fileUrl: msg?.content?.media_url },
         });
-      } else if (msg.content.msg_type === 'TEXT') {
+      } else if (msg.content.msg_type.toUpperCase() === 'TEXT') {
         updateMsgState({ user, msg, media: {} });
       }
 
@@ -192,6 +164,10 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       console.log('socket:', { socketSession });
       setLoading(true);
       setIsMsgReceiving(true);
+      // To disappear the example choices even if not clicked and msg sent directly
+      if (messages?.[0]?.exampleOptions) {
+        setMessages([]);
+      }
       //@ts-ignore
       send(text, socketSession, null, currentUser, socket, null);
       if (isVisibile)
@@ -228,13 +204,23 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
               payload: { text },
               time: moment().valueOf(),
               disabled: true,
-              repliedTimestamp:moment()
+              repliedTimestamp: moment(),
             },
           ]);
         }
     },
     [currentUser, messages, socketSession]
   );
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (isMsgReceiving && loading) {
+        toast.error('Please wait, servers are busier than usual.');
+      }
+    }, 25000);
+
+    return () => clearTimeout(timer);
+  }, [isMsgReceiving, loading, onMessageReceived]);
 
   const values = useMemo(
     () => ({
@@ -247,7 +233,8 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       loading,
       setLoading,
       socketSession,
-      isMsgReceiving, setIsMsgReceiving
+      isMsgReceiving,
+      setIsMsgReceiving,
     }),
     [
       currentUser,
@@ -258,7 +245,8 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       messages,
       loading,
       setLoading,
-      isMsgReceiving, setIsMsgReceiving
+      isMsgReceiving,
+      setIsMsgReceiving,
     ]
   );
 

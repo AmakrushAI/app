@@ -12,6 +12,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   icon?: string;
   loading?: boolean;
   disabled?: boolean;
+  btnColor?: string;
   children?: React.ReactNode;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
@@ -31,6 +32,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, r
     loading,
     block,
     disabled,
+    btnColor,
     children,
     onClick,
     ...other
@@ -47,6 +49,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, r
 
   return (
     <button
+      style={{background: btnColor ? btnColor : ''}}
       className={clsx(
         'Btn',
         composeClass(color),
