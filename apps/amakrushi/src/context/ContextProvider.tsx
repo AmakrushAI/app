@@ -225,7 +225,7 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
           from: 'bINgANjQS1n8zaRTAANi',
         });
       }
-    }, 20000);
+    }, 25000);
 
     return () => clearTimeout(timer);
   }, [isMsgReceiving, loading, onMessageReceived]);
