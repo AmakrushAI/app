@@ -10,11 +10,8 @@ import { ReactChildren, useEffect, useState } from 'react';
 import 'chatui/dist/index.css';
 import LaunchPage from '../components/LaunchPage';
 
-<<<<<<< HEAD
-=======
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
->>>>>>> origin/main
 function SafeHydrate({ children }: { children: ReactChildren }) {
   return (
     <div suppressHydrationWarning>
@@ -61,11 +58,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <SafeHydrate>
               <Component {...pageProps} />
             </SafeHydrate>
-<<<<<<< HEAD
-          </>
-=======
           </div>
->>>>>>> origin/main
         </ContextProvider>
       </ChakraProvider>
     );
