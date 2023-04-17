@@ -18,6 +18,7 @@ import { toast } from "react-hot-toast";
 import styles from "./index.module.css";
 
 import { Spinner } from "@chakra-ui/react";
+import { MdOutlineChevronRight } from "react-icons/md";
 import { AppContext } from "../../context";
 import { ChatMessageItemPropType } from "../../types";
 
@@ -55,12 +56,15 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 }
               }}
             >
-              {" "}
-              <div>
-                <span className="onHover">
-                  {choice.key} {choice.text}
-                </span>
-              </div>{" "}
+              <div
+                className="onHover"
+                style={{ display: "flex", alignItems: "center" }}
+              >
+                <div>{choice.text}</div>
+                <div style={{ fontSize: "2rem" }}>
+                  <MdOutlineChevronRight />
+                </div>
+              </div>
             </ListItem>
           ))}
         </List>
@@ -261,18 +265,19 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
       console.log("qwe12:", { content });
       return (
         <>
-          <div
+          {/* <div
             style={{ width: "95px", marginRight: "4px", textAlign: "center" }}
-          ></div>
-          <Bubble type="text">
+          ></div> */}
+          <Bubble type="text" className={styles.textBubble}>
             <div style={{ display: "flex" }}>
-              <span style={{ fontSize: "16px" }}>{content.text}</span>
+              <span className={styles.optionsText}>
+                {content?.data?.payload?.text}
+              </span>
             </div>
-            <div style={{ marginTop: "10px" }} />
             {getLists({
               choices:
                 content?.data?.payload?.buttonChoices ?? content?.data?.choices,
-              isDisabled: content?.data?.disabled,
+              isDisabled: false,
             })}
           </Bubble>
         </>

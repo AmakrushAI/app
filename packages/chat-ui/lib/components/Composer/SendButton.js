@@ -10,7 +10,8 @@ var _Button = require("../Button");
 var _LocaleProvider = require("../LocaleProvider");
 var SendButton = function SendButton(_ref) {
   var disabled = _ref.disabled,
-    onClick = _ref.onClick;
+    onClick = _ref.onClick,
+    btnColor = _ref.btnColor;
   var _useLocale = (0, _LocaleProvider.useLocale)('Composer'),
     trans = _useLocale.trans;
   return /*#__PURE__*/_react.default.createElement("div", {
@@ -19,7 +20,8 @@ var SendButton = function SendButton(_ref) {
     className: "Composer-sendBtn",
     disabled: disabled,
     onMouseDown: onClick,
-    color: "primary"
+    color: "primary",
+    btnColor: btnColor
   }, trans('send')));
 };
 exports.SendButton = SendButton;

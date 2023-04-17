@@ -1,19 +1,26 @@
-import { useCallback, useContext, useState } from "react";
+import { useState, useContext, useCallback } from "react";
 import styles from "./index.module.css";
 import PhoneImg from "../../assets/images/phone.png";
 import GovtOfOdisha from "../../assets/images/logo-green.png";
-import KrishiMela from "../../assets/images/KrishiMela.png";
+import KrushakOdisha from "../../assets/images/krushak_odisha.png";
 import Image from "next/image";
 import { AppContext } from "../../context";
-
+import { getInitialMsgs } from "../../utils/textUtility";
 
 function NavBar() {
- 
-  const [isEngActive, setIsEngActive] = useState(true);
+  const [isEngActive, setIsEngActive] = useState(
+    localStorage.getItem("locale")
+      ? localStorage.getItem("locale") === "en"
+      : true
+  );
   const context = useContext(AppContext);
 
   const toggleLanguage = useCallback(
     (newLanguage) => () => {
+      localStorage.setItem("locale", newLanguage);
+      if (context?.messages?.[0]?.exampleOptions) {
+        context?.setMessages([getInitialMsgs(newLanguage)]);
+      }
       context?.setLocale(newLanguage);
       setIsEngActive((prev) => (prev === true ? false : true));
     },
@@ -37,31 +44,13 @@ function NavBar() {
           style={{ borderRadius: "0px 10px 10px 0px" }}
           onClick={toggleLanguage("or")}
         >
-          ODIYA
+          ଓଡ଼ିଆ
         </button>
       </div>
       <div className={`${styles.imageContainer}`}>
-        <Image
-          className={styles.loginImage}
-          src={PhoneImg}
-          alt=""
-          width={60}
-          height={70}
-        />
-        <Image
-          className={styles.loginImage}
-          src={KrishiMela}
-          alt=""
-          width={70}
-          height={60}
-        />
-        <Image
-          className={styles.loginImage}
-          src={GovtOfOdisha}
-          alt=""
-          width={70}
-          height={70}
-        />
+        <Image src={PhoneImg} alt="" width={60} height={60} />
+        <Image src={KrushakOdisha} alt="" width={60} height={60} />
+        <Image src={GovtOfOdisha} alt="" width={70} height={70} />
       </div>
     </div>
   );

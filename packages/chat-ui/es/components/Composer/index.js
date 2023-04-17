@@ -39,7 +39,8 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
     toolbar = _props$toolbar === void 0 ? [] : _props$toolbar,
     onToolbarClick = props.onToolbarClick,
     rightAction = props.rightAction,
-    inputOptions = props.inputOptions;
+    inputOptions = props.inputOptions,
+    btnColor = props.btnColor;
   var _useState = useState(initialText),
     _useState2 = _slicedToArray(_useState, 2),
     text = _useState2[0],
@@ -132,7 +133,7 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
   }, [inputType, onInputTypeChange]);
   var handleInputFocus = useCallback(function (e) {
     clearTimeout(blurTimer.current);
-    toggleClass(CLASS_NAME_FOCUSING, true);
+    toggleClass(CLASS_NAME_FOCUSING, false);
     focused.current = true;
     if (onFocus) {
       onFocus(e);
@@ -227,13 +228,14 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
       active: !!accessoryContent,
       target: popoverTarget.current,
       onClose: handlePopoverClose
-    }, accessoryContent), !disableSend && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    }, accessoryContent), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
       className: "Composer-inputWrap"
     }, /*#__PURE__*/React.createElement(ComposerInput, _extends({
       invisible: false
     }, inputProps, {
       disabled: disableSend
     }))), /*#__PURE__*/React.createElement(SendButton, {
+      btnColor: btnColor,
       onClick: handleSendBtnClick,
       disabled: !text || disableSend
     })));
@@ -245,19 +247,22 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
     "data-icon": inputTypeIcon,
     icon: inputTypeIcon,
     onClick: handleInputTypeChange,
-    "aria-label": isInputText ? '切换到语音输入' : '切换到键盘输入'
+    "aria-label": isInputText ? 'Switch to voice input' : 'Switch to keyboard input'
   }), /*#__PURE__*/React.createElement("div", {
     className: "Composer-inputWrap"
-  }, !disableSend && /*#__PURE__*/React.createElement(ComposerInput, _extends({
+  }, /*#__PURE__*/React.createElement(ComposerInput, _extends({
     invisible: !isInputText
-  }, inputProps)), !isInputText && /*#__PURE__*/React.createElement(Recorder, recorder)), !text && rightAction && /*#__PURE__*/React.createElement(Action, rightAction), hasToolbar && /*#__PURE__*/React.createElement(Action, {
+  }, inputProps, {
+    disabled: disableSend
+  })), !isInputText && /*#__PURE__*/React.createElement(Recorder, recorder)), !text && rightAction && /*#__PURE__*/React.createElement(Action, rightAction), hasToolbar && /*#__PURE__*/React.createElement(Action, {
     className: clsx('Composer-toggleBtn', {
       active: isAccessoryOpen
     }),
     icon: "plus-circle",
     onClick: handleAccessoryToggle,
-    "aria-label": isAccessoryOpen ? '关闭工具栏' : '展开工具栏'
-  }), !disableSend && (text || textOnce) && /*#__PURE__*/React.createElement(SendButton, {
+    "aria-label": isAccessoryOpen ? 'Close Toolbar' : 'Expand Toolbar'
+  }), (text || textOnce) && /*#__PURE__*/React.createElement(SendButton, {
+    btnColor: btnColor,
     onClick: handleSendBtnClick,
     disabled: disableSend
   })), isAccessoryOpen && /*#__PURE__*/React.createElement(AccessoryWrap, {

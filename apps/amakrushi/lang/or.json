@@ -14,5 +14,8 @@
     "message.otp_verification":"OTP ଯାଞ୍ଚ |",
     "message.ask_ur_question":"ତୁମର ପ୍ରଶ୍ନ ପଚାର |",
     "message.otp_message":"ଏହା ଉପରେ ଆମେ ଆପଣଙ୍କୁ ଗୋଟିଏ ଥର ପାସୱାର୍ଡ ପଠାଇବୁ |",
-    "message.register_at_krushak":"କୃଷ୍ଣ ଓଡିଶାରେ ପଞ୍ଜିକରଣ କର |"
+    "message.register_at_krushak":"କୃଷ୍ଣ ଓଡିଶାରେ ପଞ୍ଜିକରଣ କର |",
+    "message.example_one":"ଓଡିଶାରେ ବିଭିନ୍ନ ପ୍ରକାରର ମିଲେଟ୍ କ’ଣ ବ grown ିଥାଏ ?",
+    "message.example_two":"ଆଖୁରେ ଟର୍ମାଇଟ୍ସର ଚିକିତ୍ସା ବିଷୟରେ ମୋତେ କିଛି କୁହନ୍ତୁ |",
+    "message.example_three":"କୃଷକମାନେ ଓଡିଶାରେ ସରକାରୀ ଯୋଜନାରେ କିପରି ଆବେଦନ କରିପାରିବେ ?"
 }

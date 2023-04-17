@@ -15,7 +15,8 @@ import moment from "moment";
 import { socket } from "../socket";
 import { UserType } from "../types";
 import { IntlProvider } from "react-intl";
-
+import { getInitialMsgs } from "../utils/textUtility";
+import { useLocalization } from "../hooks";
 function loadMessages(locale: string) {
   switch (locale) {
     case "en":
@@ -27,63 +28,32 @@ function loadMessages(locale: string) {
   }
 }
 
-const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
+const ContextProvider: FC<{locale:any,localeMsgs:any,setLocale:any, children: ReactElement }> = ({locale, children,localeMsgs,setLocale }) => {
+  const t=useLocalization();
   const [users, setUsers] = useState<UserType[]>([]);
-  const [locale, setLocale] = useState("en");
   const [currentUser, setCurrentUser] = useState<UserType>();
   const [loading, setLoading] = useState(false);
   const [isMsgReceiving, setIsMsgReceiving] = useState(false);
-  const [localeMsgs, setLocaleMsgs] = useState<Record<string, string> | null>(
-    null
-  );
-
-  const [messages, setMessages] = useState<Array<any>>([
-    {
-      payload: {
-        buttonChoices: [
-          {
-            key: "1",
-            text: " What are the different types of millets grown in Odisha?",
-            backmenu: false,
-            active: true,
-          },
-          {
-            key: "2",
-            text: " Tell me something about treatment of termites in sugarcane?",
-            backmenu: false,
-            active: false,
-          },
-          {
-            key: "3",
-            text: " How can farmers apply to government schemes in Odisha?",
-            backmenu: false,
-            active: false,
-          },
-        ],
-        text: "इस लक्ष्य को प्राप्त करने हेतु आपकी भूमिका क्या है? (दिए गए options में से एक चयनित करें और सबमिट करें) ",
-      },
-      position: "left",
-      botUuid: "1",
-    },
-  ]);
-
+  const [messages, setMessages] = useState<Array<any>>([getInitialMsgs(locale)]);
   const [socketSession, setSocketSession] = useState<any>();
+ 
   const [isConnected, setIsConnected] = useState(socket.connected);
   console.log(messages);
+
+  useEffect(()=>{},)
   const connect = (): void => {
     console.log("socket: socket.connect triggered");
     socket.connect();
   };
-
+console.log("mnop:",{locale})
+  
   useEffect(() => {
     if (typeof window !== "undefined" && !isConnected) connect();
   }, [isConnected]);
+  
 
-  console.log("locale:",{locale,localeMsgs})
-  useEffect(() =>{ loadMessages(locale).then(res=>{
-console.log("locale:",{res})
-    setLocaleMsgs(res)
-  })}, [locale]);
+  
+
   const updateMsgState = useCallback(
     ({
       user,
@@ -118,34 +88,34 @@ console.log("locale:",{res})
       // @ts-ignore
       const user = JSON.parse(localStorage.getItem("currentUser"));
       //  console.log("qwe12 message: ", { msg, currentUser, uu: JSON.parse(localStorage.getItem('currentUser')) });
-      if (msg.content.msg_type === "IMAGE") {
+      if (msg.content.msg_type.toUpperCase() === "IMAGE") {
         updateMsgState({
           user,
           msg,
           media: { imageUrl: msg?.content?.media_url },
         });
-      } else if (msg.content.msg_type === "AUDIO") {
+      } else if (msg.content.msg_type.toUpperCase() === "AUDIO") {
         updateMsgState({
           user,
           msg,
           media: { audioUrl: msg?.content?.media_url },
         });
-      } else if (msg.content.msg_type === "VIDEO") {
+      } else if (msg.content.msg_type.toUpperCase() === "VIDEO") {
         updateMsgState({
           user,
           msg,
           media: { videoUrl: msg?.content?.media_url },
         });
       } else if (
-        msg.content.msg_type === "DOCUMENT" ||
-        msg.content.msg_type === "FILE"
+        msg.content.msg_type.toUpperCase() === "DOCUMENT" ||
+        msg.content.msg_type.toUpperCase() === "FILE"
       ) {
         updateMsgState({
           user,
           msg,
           media: { fileUrl: msg?.content?.media_url },
         });
-      } else if (msg.content.msg_type === "TEXT") {
+      } else if (msg.content.msg_type.toUpperCase() === "TEXT") {
         updateMsgState({ user, msg, media: {} });
       }
 
@@ -214,6 +184,10 @@ console.log("locale:",{res})
       console.log("socket:", { socketSession });
       setLoading(true);
       setIsMsgReceiving(true);
+      // To disappear the example choices even if not clicked and msg sent directly
+      if (messages?.[0]?.exampleOptions) {
+        setMessages([]);
+      }
       //@ts-ignore
       send(text, socketSession, null, currentUser, socket, null);
       if (isVisibile)
@@ -258,6 +232,16 @@ console.log("locale:",{res})
     [currentUser, messages, socketSession]
   );
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (isMsgReceiving && loading) {
+        toast.error("Please wait, servers are busier than usual.");
+      }
+    }, 25000);
+
+    return () => clearTimeout(timer);
+  }, [isMsgReceiving, loading, onMessageReceived]);
+
   const values = useMemo(
     () => ({
       currentUser,
@@ -274,13 +258,12 @@ console.log("locale:",{res})
       locale,
       setLocale,
       localeMsgs,
-      
     }),
     [
       locale,
       setLocale,
       localeMsgs,
-       currentUser,
+      currentUser,
       socketSession,
       users,
       onChangeCurrentUser,
@@ -304,7 +287,18 @@ console.log("locale:",{res})
 };
 
 const SSR: FC<{ children: ReactElement }> = ({ children }) => {
+  const [locale, setLocale] = useState(localStorage.getItem('locale') || "en");
+  const [localeMsgs, setLocaleMsgs] = useState<Record<string, string> | null>(
+    null
+  );
+  useEffect(() => {
+    loadMessages(locale).then((res) => {
+      //@ts-ignore
+      setLocaleMsgs(res);
+    });
+  }, [locale]);
+
   if (typeof window === "undefined") return null;
-  return <ContextProvider>{children}</ContextProvider>;
+  return  <IntlProvider locale={locale} messages={localeMsgs}> <ContextProvider locale={locale} setLocale={setLocale} localeMsgs={localeMsgs}>{children}</ContextProvider> </IntlProvider>;
 };
 export default SSR;

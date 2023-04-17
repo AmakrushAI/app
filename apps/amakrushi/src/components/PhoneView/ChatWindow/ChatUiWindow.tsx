@@ -5,7 +5,6 @@ import Chat from "chatui";
 import { useRouter } from "next/router";
 
 import React, {
-  FC,
   ReactElement,
   useCallback,
   useContext,
@@ -16,7 +15,7 @@ import React, {
 import { useCookies } from "react-cookie";
 
 import { AppContext } from "../../../context";
-import { useLocalization } from "../../../hooks/useLocalization";
+import { useLocalization } from "../../../hooks";
 import { getMsgType } from "../../../utils/getMsgType";
 import ChatMessageItem from "../../chat-message-item";
 
@@ -81,6 +80,8 @@ const ChatUiWindow: React.FC = () => {
     <div style={{ height: "80vh", width: "100%" }}>
       {/* <FullScreenLoader loading={loading} /> */}
       <Chat
+        btnColor='var(--secondarygreen)'
+        background='var(--bg-color)'
         disableSend={context?.loading}
         //@ts-ignore
         messages={msgToRender}

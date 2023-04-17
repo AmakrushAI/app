@@ -14,5 +14,8 @@
     "message.register_at_krushak":"Register at Krushak Odisha",
     "message.otp_verification":" OTP Verification",
     "message.ask_ur_question":"Ask Your Question",
-    "message.otp_message":"We will send you a one time password on this"
+    "message.otp_message":"We will send you a one time password on this",
+    "message.example_one":"What are the different types of millets grown in Odisha?",
+    "message.example_two":"Tell me something about treatment of termites in sugarcane?",
+    "message.example_three":"How can farmers apply to government schemes in Odisha?"
 }

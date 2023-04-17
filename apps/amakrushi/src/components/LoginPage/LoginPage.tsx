@@ -5,14 +5,15 @@ import {
   Radio,
   RadioGroup,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useLocalization } from "../../hooks/useLocalization";
-
+import { logEvent } from "firebase/analytics";
+import { analytics } from "../../utils/firebase";
 const LoginPage: React.FC = () => {
   const router = useRouter();
   const [input, setInput] = useState("");
-  const [value, setValue] = React.useState("1");
+  const [value, setValue] = React.useState("2");
   const t = useLocalization();
   // Setting the input value
   const handleNumber: React.ChangeEventHandler = (
@@ -41,6 +42,11 @@ const LoginPage: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    //@ts-ignore
+    logEvent(analytics, "Login_page");
+  }, []);
+
   return (
     <div className={`${styles.main}`}>
       <div className={styles.title}>{t("title")}</div>
@@ -48,12 +54,12 @@ const LoginPage: React.FC = () => {
       <div className={styles.body}>
         <h1>{t("label.welcome")}</h1>
 
-        <RadioGroup onChange={setValue} value={value}>
+        {/* <RadioGroup onChange={setValue} value={value}>
           <Radio value="1">{t("label.farmer")}</Radio>
           <Radio value="2" style={{ marginLeft: "50px" }}>
             {t("label.extension_worker")}
           </Radio>
-        </RadioGroup>
+        </RadioGroup>  */}
 
         <NumberInput style={{ margin: "5vh auto 0px auto" }}>
           <NumberInputField
@@ -65,13 +71,13 @@ const LoginPage: React.FC = () => {
             fontWeight="400"
             fontSize="14px"
             placeholder={
-              value === "1" ? "Enter adhaar number" : "Enter phone number"
+              value === "1" ? "Enter adhaar number" : t('message.enter_mobile') 
             }
             value={input}
             onChange={handleNumber}
           />
         </NumberInput>
-        <div
+        {/* <div
           style={{
             margin: "3vh auto 0 auto",
             fontSize: "18px",
@@ -79,11 +85,11 @@ const LoginPage: React.FC = () => {
           }}
         >
           {t("message.register_message")}
-        </div>
+        </div> */}
         <button className={styles.submitButton} onClick={handleOTPPage}>
           {t("label.continue")}
         </button>
-        <div className={styles.signup}>
+        {/* <div className={styles.signup}>
           <div>{t("message.not_register_yet")}</div>
           <div
             onClick={() => router.push("/register")}
@@ -93,7 +99,7 @@ const LoginPage: React.FC = () => {
           >
             {t("message.register_at_krushak")}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
