@@ -17,10 +17,10 @@ import { toast } from 'react-hot-toast';
 
 import styles from './index.module.css';
 
-import { Spinner } from '@chakra-ui/react';
-import { AppContext } from '../../context';
-import { ChatMessageItemPropType } from '../../types';
-import { MdOutlineChevronRight } from 'react-icons/md';
+import { Spinner } from "@chakra-ui/react";
+import { MdOutlineChevronRight } from "react-icons/md";
+import { AppContext } from "../../context";
+import { ChatMessageItemPropType } from "../../types";
 
 const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   currentUser,
@@ -58,18 +58,17 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   }
                   context?.sendMessage(choice.text);
                 }
-              }}>
-              {' '}
-              <div>
-                <div
-                  className="onHover"
-                  style={{ display: 'flex', alignItems: 'center' }}>
-                  <div>{choice.text}</div>
-                  <div style={{ fontSize: '2rem' }}>
-                    <MdOutlineChevronRight />
-                  </div>
+              }}
+            >
+              <div
+                className="onHover"
+                style={{ display: "flex", alignItems: "center" }}
+              >
+                <div>{choice.text}</div>
+                <div style={{ fontSize: "2rem" }}>
+                  <MdOutlineChevronRight />
                 </div>
-              </div>{' '}
+              </div>
             </ListItem>
           ))}
         </List>

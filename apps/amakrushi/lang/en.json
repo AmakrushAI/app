@@ -1,0 +1,21 @@
+{
+    "title":"Ama KrushAI",
+    "label.welcome":"Welcome",
+    "label.chats":"Chats",
+    "label.farmer":"Farmer",
+    "label.extension_worker":"Extension Worker",
+    "label.continue":"Continue",
+    "label.back":"Back",
+    "label.submit":"Submit",
+    "label.mobile_number":"Mobile Number",
+    "message.enter_mobile":"Enter Mobile Number",
+    "message.register_message":"If you are already registered then use your mobile number to login.",
+    "message.not_register_yet":"Not registered yet ?",
+    "message.register_at_krushak":"Register at Krushak Odisha",
+    "message.otp_verification":" OTP Verification",
+    "message.ask_ur_question":"Ask Your Question",
+    "message.otp_message":"We will send you a one time password on this",
+    "message.example_one":"What are the different types of millets grown in Odisha?",
+    "message.example_two":"Tell me something about treatment of termites in sugarcane?",
+    "message.example_three":"How can farmers apply to government schemes in Odisha?"
+}

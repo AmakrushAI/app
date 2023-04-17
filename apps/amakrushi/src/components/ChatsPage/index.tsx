@@ -10,16 +10,19 @@ import { NextPage } from 'next';
 import { analytics } from '../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
 import Menu from '../menu';
+import { useLocalization } from '../../hooks';
 
 const ChatsPage: NextPage = () => {
   useEffect(() => {
     //@ts-ignore
     logEvent(analytics, 'Chat_History_page');
   }, []);
+  const t=useLocalization();
+  
   return (
     <>
       <div className={styles.main}>
-        <div className={styles.title}>Chats</div>
+      <div className={styles.title}>{t("label.chats")}</div>
         <InputGroup>
           <InputLeftElement pointerEvents="none">
             <SearchIcon color="gray.300" />{' '}

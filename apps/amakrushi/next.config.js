@@ -6,14 +6,10 @@ const nextConfig = {
 module.exports = {
   nextConfig,
   typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
-    // !! WARN !!
     ignoreBuildErrors: true,    
   },
   i18n: {
-    locales: ['or'],
-    defaultLocale: 'or',
+    locales: ['or','en'],
+    defaultLocale: 'en',
   },
 }

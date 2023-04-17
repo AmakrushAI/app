@@ -14,7 +14,7 @@ const Menu: FC = () => {
   const [cookies, setCookies] = useCookies();
   const router=useRouter();
   
-  const urlChanger = (link: string) => {
+  const urlChanger =  (link: string) => {
     if (cookies["access_token"] !== undefined) {
       router.push(link);
     }

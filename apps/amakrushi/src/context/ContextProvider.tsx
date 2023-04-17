@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import {
   FC,
   ReactElement,
@@ -6,34 +6,53 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
-import { AppContext } from '.';
-import { map } from 'lodash';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { send } from '../components/websocket';
-import moment from 'moment';
-import { socket } from '../socket';
-import { UserType } from '../types';
-import { initialMsg } from '../utils/textUtility';
+} from "react";
+import { AppContext } from ".";
+import { map } from "lodash";
+import { toast } from "react-toastify";
+import { send } from "../components/websocket";
+import moment from "moment";
+import { socket } from "../socket";
+import { UserType } from "../types";
+import { IntlProvider } from "react-intl";
+import { getInitialMsgs } from "../utils/textUtility";
+import { useLocalization } from "../hooks";
+function loadMessages(locale: string) {
+  switch (locale) {
+    case "en":
+      return import("../../lang/en.json");
+    case "or":
+      return import("../../lang/or.json");
+    default:
+      return import("../../lang/en.json");
+  }
+}
 
-const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
+const ContextProvider: FC<{locale:any,localeMsgs:any,setLocale:any, children: ReactElement }> = ({locale, children,localeMsgs,setLocale }) => {
+  const t=useLocalization();
   const [users, setUsers] = useState<UserType[]>([]);
   const [currentUser, setCurrentUser] = useState<UserType>();
   const [loading, setLoading] = useState(false);
   const [isMsgReceiving, setIsMsgReceiving] = useState(false);
-  const [messages, setMessages] = useState<Array<any>>([initialMsg]);
+  const [messages, setMessages] = useState<Array<any>>([getInitialMsgs(locale)]);
   const [socketSession, setSocketSession] = useState<any>();
+ 
   const [isConnected, setIsConnected] = useState(socket.connected);
   console.log(messages);
+
+  useEffect(()=>{},)
   const connect = (): void => {
-    console.log('socket: socket.connect triggered');
+    console.log("socket: socket.connect triggered");
     socket.connect();
   };
-
+console.log("mnop:",{locale})
+  
   useEffect(() => {
-    if (typeof window !== 'undefined' && !isConnected) connect();
+    if (typeof window !== "undefined" && !isConnected) connect();
   }, [isConnected]);
+  
+
+  
 
   const updateMsgState = useCallback(
     ({
@@ -49,7 +68,7 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
         username: user?.name,
         text: msg.content.title,
         choices: msg.content.choices,
-        position: 'left',
+        position: "left",
         id: user?.id,
         botUuid: user?.id,
         messageId: msg?.messageId,
@@ -63,52 +82,52 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
 
   const onMessageReceived = useCallback(
     (msg: any): void => {
-      console.log('socketss:', { msg });
+      console.log("socketss:", { msg });
       setLoading(false);
       setIsMsgReceiving(false);
       // @ts-ignore
-      const user = JSON.parse(localStorage.getItem('currentUser'));
+      const user = JSON.parse(localStorage.getItem("currentUser"));
       //  console.log("qwe12 message: ", { msg, currentUser, uu: JSON.parse(localStorage.getItem('currentUser')) });
-      if (msg.content.msg_type.toUpperCase() === 'IMAGE') {
+      if (msg.content.msg_type.toUpperCase() === "IMAGE") {
         updateMsgState({
           user,
           msg,
           media: { imageUrl: msg?.content?.media_url },
         });
-      } else if (msg.content.msg_type.toUpperCase() === 'AUDIO') {
+      } else if (msg.content.msg_type.toUpperCase() === "AUDIO") {
         updateMsgState({
           user,
           msg,
           media: { audioUrl: msg?.content?.media_url },
         });
-      } else if (msg.content.msg_type.toUpperCase() === 'VIDEO') {
+      } else if (msg.content.msg_type.toUpperCase() === "VIDEO") {
         updateMsgState({
           user,
           msg,
           media: { videoUrl: msg?.content?.media_url },
         });
       } else if (
-        msg.content.msg_type.toUpperCase() === 'DOCUMENT' ||
-        msg.content.msg_type.toUpperCase() === 'FILE'
+        msg.content.msg_type.toUpperCase() === "DOCUMENT" ||
+        msg.content.msg_type.toUpperCase() === "FILE"
       ) {
         updateMsgState({
           user,
           msg,
           media: { fileUrl: msg?.content?.media_url },
         });
-      } else if (msg.content.msg_type.toUpperCase() === 'TEXT') {
+      } else if (msg.content.msg_type.toUpperCase() === "TEXT") {
         updateMsgState({ user, msg, media: {} });
       }
 
       localStorage.setItem(
-        'userMsgs',
+        "userMsgs",
         JSON.stringify([
           ...messages,
           {
-            username: 'AI',
+            username: "AI",
             text: msg.content.title,
             choices: msg.content.choices,
-            position: 'left',
+            position: "left",
           },
         ])
       );
@@ -124,45 +143,45 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
     toast.error(exception?.message);
   }, []);
 
-  console.log('socket:', { socketSession });
+  console.log("socket:", { socketSession });
   useEffect(() => {
     function onConnect(): void {
-      console.log('socket:  onConnect callback');
+      console.log("socket:  onConnect callback");
       setIsConnected(true);
     }
 
     function onDisconnect(): void {
-      console.log('socket: disconnecting');
+      console.log("socket: disconnecting");
       setIsConnected(false);
     }
 
-    socket.on('connect', onConnect);
-    socket.on('disconnect', onDisconnect);
-    socket.on('botResponse', onMessageReceived);
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
+    socket.on("botResponse", onMessageReceived);
 
-    socket.on('exception', onException);
-    socket.on('session', onSessionCreated);
+    socket.on("exception", onException);
+    socket.on("session", onSessionCreated);
 
     return () => {
       socket.disconnect();
-      socket.off('connect', onConnect);
-      socket.off('disconnect', onDisconnect);
-      socket.off('botResponse', onMessageReceived);
-      socket.off('session', () => setSocketSession('hello'));
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
+      socket.off("botResponse", onMessageReceived);
+      socket.off("session", () => setSocketSession("hello"));
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onException, onSessionCreated]);
 
   const onChangeCurrentUser = useCallback((newUser: UserType) => {
     setCurrentUser({ ...newUser, active: true });
-    localStorage.removeItem('userMsgs');
+    localStorage.removeItem("userMsgs");
     setMessages([]);
   }, []);
 
   const sendMessage = useCallback(
     (text: string, media: any, isVisibile = true): void => {
       //  alert('hello')
-      console.log('socket:', { socketSession });
+      console.log("socket:", { socketSession });
       setLoading(true);
       setIsMsgReceiving(true);
       // To disappear the example choices even if not clicked and msg sent directly
@@ -173,21 +192,21 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       send(text, socketSession, null, currentUser, socket, null);
       if (isVisibile)
         if (media) {
-          if (media.mimeType.slice(0, 5) === 'image') {
-          } else if (media.mimeType.slice(0, 5) === 'audio' && isVisibile) {
-          } else if (media.mimeType.slice(0, 5) === 'video') {
-          } else if (media.mimeType.slice(0, 11) === 'application') {
+          if (media.mimeType.slice(0, 5) === "image") {
+          } else if (media.mimeType.slice(0, 5) === "audio" && isVisibile) {
+          } else if (media.mimeType.slice(0, 5) === "video") {
+          } else if (media.mimeType.slice(0, 11) === "application") {
           } else {
           }
         } else {
           localStorage.setItem(
-            'userMsgs',
+            "userMsgs",
             JSON.stringify([
               ...messages,
               {
-                username: 'User',
+                username: "User",
                 text: text,
-                position: 'right',
+                position: "right",
                 botUuid: currentUser?.id,
                 disabled: true,
               },
@@ -198,9 +217,9 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
           setMessages((prev: any) => [
             ...map(prev, (prevMsg) => ({ ...prevMsg, disabled: true })),
             {
-              username: 'state.username',
+              username: "state.username",
               text: text,
-              position: 'right',
+              position: "right",
               botUuid: currentUser?.id,
               payload: { text },
               time: moment().valueOf(),
@@ -266,8 +285,14 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       socketSession,
       isMsgReceiving,
       setIsMsgReceiving,
+      locale,
+      setLocale,
+      localeMsgs,
     }),
     [
+      locale,
+      setLocale,
+      localeMsgs,
       currentUser,
       socketSession,
       users,
@@ -283,12 +308,27 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
 
   return (
     //@ts-ignore
-    <AppContext.Provider value={values}>{children}</AppContext.Provider>
+    <AppContext.Provider value={values}>
+      <IntlProvider locale={locale} messages={localeMsgs}>
+        {children}
+      </IntlProvider>
+    </AppContext.Provider>
   );
 };
 
 const SSR: FC<{ children: ReactElement }> = ({ children }) => {
-  if (typeof window === 'undefined') return null;
-  return <ContextProvider>{children}</ContextProvider>;
+  const [locale, setLocale] = useState(localStorage.getItem('locale') || "en");
+  const [localeMsgs, setLocaleMsgs] = useState<Record<string, string> | null>(
+    null
+  );
+  useEffect(() => {
+    loadMessages(locale).then((res) => {
+      //@ts-ignore
+      setLocaleMsgs(res);
+    });
+  }, [locale]);
+
+  if (typeof window === "undefined") return null;
+  return  <IntlProvider locale={locale} messages={localeMsgs}> <ContextProvider locale={locale} setLocale={setLocale} localeMsgs={localeMsgs}>{children}</ContextProvider> </IntlProvider>;
 };
 export default SSR;
