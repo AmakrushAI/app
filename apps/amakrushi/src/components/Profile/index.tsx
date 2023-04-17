@@ -8,7 +8,7 @@ import Image from "next/image";
 
 interface profileProps {
   removeProfile: () => void;
-  toRemoveUser: (name: string) => void;
+  toRemoveUser: any;
   name: string;
   userImg: string;
   show: boolean;

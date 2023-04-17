@@ -4,6 +4,7 @@ import Profile from "../Profile";
 import { Flex, Box, useColorModeValue } from "@chakra-ui/react";
 import styles from "./index.module.css";
 import { ChatItemPropsType } from "../../types";
+import { MdOutlineDelete } from "react-icons/md";
 
 const ChatItem: React.FC<ChatItemPropsType> = ({
   image,
