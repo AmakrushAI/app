@@ -1,7 +1,7 @@
 import { FaStar } from 'react-icons/fa';
 import styles from './index.module.css';
 import React, { useEffect } from 'react';
-import Menu from '../../Menu';
+import Menu from '../../menu';
 //@ts-ignore
 import { analytics } from '../../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
