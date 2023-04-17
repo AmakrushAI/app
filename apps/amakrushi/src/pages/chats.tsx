@@ -2,16 +2,18 @@ import React from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import ChatsPage from '../components/ChatsPage';
+import { useLocalization } from '../hooks';
 
-const chats: NextPage = () => {
+const Chats: NextPage = () => {
+ const t=useLocalization();
   return (
     <React.Fragment>
       <Head>
-        <title>Ama KrushAI</title>
+      <title>{t("title")}</title>
       </Head>
       <ChatsPage />
     </React.Fragment>
   );
 };
 
-export default chats;
+export default Chats;

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import {
   FC,
   ReactElement,
@@ -6,61 +6,84 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
-import { AppContext } from '.';
-import { map } from 'lodash';
-import { toast } from 'react-toastify';
-import { send } from '../components/websocket';
-import moment from 'moment';
-import { socket } from '../socket';
-import { UserType } from '../types';
+} from "react";
+import { AppContext } from ".";
+import { map } from "lodash";
+import { toast } from "react-toastify";
+import { send } from "../components/websocket";
+import moment from "moment";
+import { socket } from "../socket";
+import { UserType } from "../types";
+import { IntlProvider } from "react-intl";
+
+function loadMessages(locale: string) {
+  switch (locale) {
+    case "en":
+      return import("../../lang/en.json");
+    case "or":
+      return import("../../lang/or.json");
+    default:
+      return import("../../lang/en.json");
+  }
+}
 
 const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
   const [users, setUsers] = useState<UserType[]>([]);
+  const [locale, setLocale] = useState("en");
   const [currentUser, setCurrentUser] = useState<UserType>();
   const [loading, setLoading] = useState(false);
   const [isMsgReceiving, setIsMsgReceiving] = useState(false);
+  const [localeMsgs, setLocaleMsgs] = useState<Record<string, string> | null>(
+    null
+  );
+
   const [messages, setMessages] = useState<Array<any>>([
     {
       payload: {
         buttonChoices: [
           {
-            key: '1',
-            text: ' What are the different types of millets grown in Odisha?',
+            key: "1",
+            text: " What are the different types of millets grown in Odisha?",
             backmenu: false,
             active: true,
           },
           {
-            key: '2',
-            text: ' Tell me something about treatment of termites in sugarcane?',
+            key: "2",
+            text: " Tell me something about treatment of termites in sugarcane?",
             backmenu: false,
             active: false,
           },
           {
-            key: '3',
-            text: ' How can farmers apply to government schemes in Odisha?',
+            key: "3",
+            text: " How can farmers apply to government schemes in Odisha?",
             backmenu: false,
             active: false,
           },
         ],
-        text: 'इस लक्ष्य को प्राप्त करने हेतु आपकी भूमिका क्या है? (दिए गए options में से एक चयनित करें और सबमिट करें) ',
+        text: "इस लक्ष्य को प्राप्त करने हेतु आपकी भूमिका क्या है? (दिए गए options में से एक चयनित करें और सबमिट करें) ",
       },
-      position: 'left',
-      botUuid: '1',
+      position: "left",
+      botUuid: "1",
     },
   ]);
+
   const [socketSession, setSocketSession] = useState<any>();
   const [isConnected, setIsConnected] = useState(socket.connected);
   console.log(messages);
   const connect = (): void => {
-    console.log('socket: socket.connect triggered');
+    console.log("socket: socket.connect triggered");
     socket.connect();
   };
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && !isConnected) connect();
+    if (typeof window !== "undefined" && !isConnected) connect();
   }, [isConnected]);
 
+  console.log("locale:",{locale,localeMsgs})
+  useEffect(() =>{ loadMessages(locale).then(res=>{
+console.log("locale:",{res})
+    setLocaleMsgs(res)
+  })}, [locale]);
   const updateMsgState = useCallback(
     ({
       user,
@@ -75,7 +98,7 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
         username: user?.name,
         text: msg.content.title,
         choices: msg.content.choices,
-        position: 'left',
+        position: "left",
         id: user?.id,
         botUuid: user?.id,
         messageId: msg?.messageId,
@@ -83,59 +106,58 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
         ...media,
       };
       setMessages((prev: any) => [...prev, newMsg]);
-      
     },
     []
   );
 
   const onMessageReceived = useCallback(
     (msg: any): void => {
-      console.log('socketss:', { msg });
+      console.log("socketss:", { msg });
       setLoading(false);
       setIsMsgReceiving(false);
       // @ts-ignore
-      const user = JSON.parse(localStorage.getItem('currentUser'));
+      const user = JSON.parse(localStorage.getItem("currentUser"));
       //  console.log("qwe12 message: ", { msg, currentUser, uu: JSON.parse(localStorage.getItem('currentUser')) });
-      if (msg.content.msg_type === 'IMAGE') {
+      if (msg.content.msg_type === "IMAGE") {
         updateMsgState({
           user,
           msg,
           media: { imageUrl: msg?.content?.media_url },
         });
-      } else if (msg.content.msg_type === 'AUDIO') {
+      } else if (msg.content.msg_type === "AUDIO") {
         updateMsgState({
           user,
           msg,
           media: { audioUrl: msg?.content?.media_url },
         });
-      } else if (msg.content.msg_type === 'VIDEO') {
+      } else if (msg.content.msg_type === "VIDEO") {
         updateMsgState({
           user,
           msg,
           media: { videoUrl: msg?.content?.media_url },
         });
       } else if (
-        msg.content.msg_type === 'DOCUMENT' ||
-        msg.content.msg_type === 'FILE'
+        msg.content.msg_type === "DOCUMENT" ||
+        msg.content.msg_type === "FILE"
       ) {
         updateMsgState({
           user,
           msg,
           media: { fileUrl: msg?.content?.media_url },
         });
-      } else if (msg.content.msg_type === 'TEXT') {
+      } else if (msg.content.msg_type === "TEXT") {
         updateMsgState({ user, msg, media: {} });
       }
 
       localStorage.setItem(
-        'userMsgs',
+        "userMsgs",
         JSON.stringify([
           ...messages,
           {
-            username: 'AI',
+            username: "AI",
             text: msg.content.title,
             choices: msg.content.choices,
-            position: 'left',
+            position: "left",
           },
         ])
       );
@@ -151,66 +173,66 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
     toast.error(exception?.message);
   }, []);
 
-  console.log('socket:', { socketSession });
+  console.log("socket:", { socketSession });
   useEffect(() => {
     function onConnect(): void {
-      console.log('socket:  onConnect callback');
+      console.log("socket:  onConnect callback");
       setIsConnected(true);
     }
 
     function onDisconnect(): void {
-      console.log('socket: disconnecting');
+      console.log("socket: disconnecting");
       setIsConnected(false);
     }
 
-    socket.on('connect', onConnect);
-    socket.on('disconnect', onDisconnect);
-    socket.on('botResponse', onMessageReceived);
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
+    socket.on("botResponse", onMessageReceived);
 
-    socket.on('exception', onException);
-    socket.on('session', onSessionCreated);
+    socket.on("exception", onException);
+    socket.on("session", onSessionCreated);
 
     return () => {
       socket.disconnect();
-      socket.off('connect', onConnect);
-      socket.off('disconnect', onDisconnect);
-      socket.off('botResponse', onMessageReceived);
-      socket.off('session', () => setSocketSession('hello'));
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
+      socket.off("botResponse", onMessageReceived);
+      socket.off("session", () => setSocketSession("hello"));
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onException, onSessionCreated]);
 
   const onChangeCurrentUser = useCallback((newUser: UserType) => {
     setCurrentUser({ ...newUser, active: true });
-    localStorage.removeItem('userMsgs');
+    localStorage.removeItem("userMsgs");
     setMessages([]);
   }, []);
 
   const sendMessage = useCallback(
     (text: string, media: any, isVisibile = true): void => {
       //  alert('hello')
-      console.log('socket:', { socketSession });
+      console.log("socket:", { socketSession });
       setLoading(true);
       setIsMsgReceiving(true);
       //@ts-ignore
       send(text, socketSession, null, currentUser, socket, null);
       if (isVisibile)
         if (media) {
-          if (media.mimeType.slice(0, 5) === 'image') {
-          } else if (media.mimeType.slice(0, 5) === 'audio' && isVisibile) {
-          } else if (media.mimeType.slice(0, 5) === 'video') {
-          } else if (media.mimeType.slice(0, 11) === 'application') {
+          if (media.mimeType.slice(0, 5) === "image") {
+          } else if (media.mimeType.slice(0, 5) === "audio" && isVisibile) {
+          } else if (media.mimeType.slice(0, 5) === "video") {
+          } else if (media.mimeType.slice(0, 11) === "application") {
           } else {
           }
         } else {
           localStorage.setItem(
-            'userMsgs',
+            "userMsgs",
             JSON.stringify([
               ...messages,
               {
-                username: 'User',
+                username: "User",
                 text: text,
-                position: 'right',
+                position: "right",
                 botUuid: currentUser?.id,
                 disabled: true,
               },
@@ -221,14 +243,14 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
           setMessages((prev: any) => [
             ...map(prev, (prevMsg) => ({ ...prevMsg, disabled: true })),
             {
-              username: 'state.username',
+              username: "state.username",
               text: text,
-              position: 'right',
+              position: "right",
               botUuid: currentUser?.id,
               payload: { text },
               time: moment().valueOf(),
               disabled: true,
-              repliedTimestamp:moment()
+              repliedTimestamp: moment(),
             },
           ]);
         }
@@ -247,10 +269,18 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       loading,
       setLoading,
       socketSession,
-      isMsgReceiving, setIsMsgReceiving
+      isMsgReceiving,
+      setIsMsgReceiving,
+      locale,
+      setLocale,
+      localeMsgs,
+      
     }),
     [
-      currentUser,
+      locale,
+      setLocale,
+      localeMsgs,
+       currentUser,
       socketSession,
       users,
       onChangeCurrentUser,
@@ -258,18 +288,23 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       messages,
       loading,
       setLoading,
-      isMsgReceiving, setIsMsgReceiving
+      isMsgReceiving,
+      setIsMsgReceiving,
     ]
   );
 
   return (
     //@ts-ignore
-    <AppContext.Provider value={values}>{children}</AppContext.Provider>
+    <AppContext.Provider value={values}>
+      <IntlProvider locale={locale} messages={localeMsgs}>
+        {children}
+      </IntlProvider>
+    </AppContext.Provider>
   );
 };
 
 const SSR: FC<{ children: ReactElement }> = ({ children }) => {
-  if (typeof window === 'undefined') return null;
+  if (typeof window === "undefined") return null;
   return <ContextProvider>{children}</ContextProvider>;
 };
 export default SSR;

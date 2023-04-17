@@ -1,22 +1,20 @@
 import {
   Box,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-  Input,
+ 
   HStack,
   PinInputField,
   PinInput,
-  Button,
-  Link,
+ 
 } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
 import { NextRouter, useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';
 import styles from './OTP.module.css';
+import { useLocalization } from '../../hooks';
+
 
 const OTPpage: React.FC = () => {
+  const t=useLocalization();
   const router: NextRouter = useRouter();
   const [input1, setInput1] = useState('');
   const [input2, setInput2] = useState('');
@@ -82,7 +80,7 @@ const OTPpage: React.FC = () => {
   };
   return (
     <div className={styles.main}>
-      <div className={styles.title}>Ama KrushAI</div>
+      <div className={styles.title}>{t("title")}</div>
       <Box
         width="340px"
         height="80vh"
@@ -102,10 +100,13 @@ const OTPpage: React.FC = () => {
           color="black"
           px="1rem"
           marginTop="10vh">
-          <div className={styles.otpVerify}>OTP Verification</div>
+          <div className={styles.otpVerify}>
+           
+            {t("message.otp_verification")}
+            </div>
 
           <div className={styles.otpSent}>
-            We will send you a one time password on this <b>Mobile Number</b>
+          {t("message.otp_message")}   <b> {t("label.mobile_number")}</b>
           </div>
           <div style={{ marginTop: '10px' }}>
             <b>+91-{router.query.state}</b>
@@ -154,10 +155,10 @@ const OTPpage: React.FC = () => {
             <button
               className={styles.backButton}
               onClick={() => router.push('/login')}>
-              Back
+              {t('label.back')}
             </button>
             <button className={styles.submitButton} onClick={handleOTPSubmit}>
-              Submit
+              {t(('label.submit'))}
             </button>
           </div>
         </Box>

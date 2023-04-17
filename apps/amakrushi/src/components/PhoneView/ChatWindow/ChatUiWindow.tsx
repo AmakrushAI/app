@@ -2,7 +2,6 @@
 import axios from "axios";
 //@ts-ignore
 import Chat from "chatui";
-import { NextComponentType, NextPage } from "next";
 import { useRouter } from "next/router";
 
 import React, {
@@ -17,11 +16,12 @@ import React, {
 import { useCookies } from "react-cookie";
 
 import { AppContext } from "../../../context";
+import { useLocalization } from "../../../hooks/useLocalization";
 import { getMsgType } from "../../../utils/getMsgType";
 import ChatMessageItem from "../../chat-message-item";
 
-const ChatUiWindow: NextPage = () => {
- 
+const ChatUiWindow: React.FC = () => {
+ const t=useLocalization();
   const context = useContext(AppContext);
   const router=useRouter();
 
@@ -75,6 +75,8 @@ const ChatUiWindow: NextPage = () => {
   },[context?.isMsgReceiving,normalizeMsgs]);
 
   console.log("debug:",{msgToRender})
+
+  const placeholder=useMemo(()=>t('message.ask_ur_question'),[t])
   return (
     <div style={{ height: "80vh", width: "100%" }}>
       {/* <FullScreenLoader loading={loading} /> */}
@@ -93,7 +95,7 @@ const ChatUiWindow: NextPage = () => {
         )}
         onSend={handleSend}
         locale="en-US"
-        placeholder="Ask Your Question"
+        placeholder={placeholder}
       />
     </div>
   );

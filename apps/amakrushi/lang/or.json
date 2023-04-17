@@ -1,0 +1,18 @@
+{
+    "title":"ଆମା କ୍ରୁଶ୍",
+    "label.welcome":"ସ୍ୱାଗତ",
+    "label.chats":"",
+    "label.farmer":"କୃଷକ",
+    "label.extension_worker":"ସମ୍ପ୍ରସାରଣ କର୍ମୀ |",
+    "label.continue":"ଜାରି ରଖ |",
+    "label.back":"ପଛକୁ",
+    "label.submit":"ଦାଖଲ କର |",
+    "label.mobile_number":"ମୋବାଇଲ୍ ନମ୍ବର",
+    "message.enter_mobile":"ମୋବାଇଲ୍ ନମ୍ବର ପ୍ରବେଶ କରନ୍ତୁ |",
+    "message.register_message":"ଯଦି ଆପଣ ପୂର୍ବରୁ ପଞ୍ଜୀକୃତ ହୋଇଛନ୍ତି ତେବେ ଲଗଇନ୍ କରିବାକୁ ଆପଣଙ୍କର ମୋବାଇଲ୍ ନମ୍ବର ବ୍ୟବହାର କରନ୍ତୁ |",
+    "message.not_register_yet":"ଏପର୍ଯ୍ୟନ୍ତ ପଞ୍ଜୀକୃତ ହୋଇନାହିଁ | ?",
+    "message.otp_verification":"OTP ଯାଞ୍ଚ |",
+    "message.ask_ur_question":"ତୁମର ପ୍ରଶ୍ନ ପଚାର |",
+    "message.otp_message":"ଏହା ଉପରେ ଆମେ ଆପଣଙ୍କୁ ଗୋଟିଏ ଥର ପାସୱାର୍ଡ ପଠାଇବୁ |",
+    "message.register_at_krushak":"କୃଷ୍ଣ ଓଡିଶାରେ ପଞ୍ଜିକରଣ କର |"
+}

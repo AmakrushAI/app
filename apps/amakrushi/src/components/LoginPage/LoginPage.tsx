@@ -1,19 +1,19 @@
-import styles from './login.module.css';
+import styles from "./login.module.css";
 import {
   NumberInput,
   NumberInputField,
   Radio,
   RadioGroup,
-} from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { NextPage } from 'next';
+} from "@chakra-ui/react";
+import React, { useState } from "react";
+import { useRouter } from "next/router";
+import { useLocalization } from "../../hooks/useLocalization";
 
-const LoginPage: NextPage = () => {
+const LoginPage: React.FC = () => {
   const router = useRouter();
-  const [input, setInput] = useState('');
-  const [value, setValue] = React.useState('1');
-
+  const [input, setInput] = useState("");
+  const [value, setValue] = React.useState("1");
+  const t = useLocalization();
   // Setting the input value
   const handleNumber: React.ChangeEventHandler = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -25,17 +25,17 @@ const LoginPage: NextPage = () => {
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
     if (input.length !== 10) {
-      alert('Enter a 10 digit number!');
+      alert("Enter a 10 digit number!");
     } else {
       fetch(
         // `${process.env.NEXT_PUBLIC_OTP_BASE_URL}uci/sendOTP?phone=${input}`,
         `https://user-service.chakshu-rd.samagra.io/uci/sendOTP?phone=${input}`,
-        { method: 'GET' }
+        { method: "GET" }
       ).then((response) => {
         if (response.status === 200) {
-          router.push({ pathname: '/otp', query: { state: input } });
+          router.push({ pathname: "/otp", query: { state: input } });
         } else {
-          alert('OTP not sent');
+          alert("OTP not sent");
         }
       });
     }
@@ -43,19 +43,19 @@ const LoginPage: NextPage = () => {
 
   return (
     <div className={`${styles.main}`}>
-      <div className={styles.title}>Ama KrushAI</div>
+      <div className={styles.title}>{t("title")}</div>
 
       <div className={styles.body}>
-        <h1>Welcome</h1>
+        <h1>{t("label.welcome")}</h1>
 
         <RadioGroup onChange={setValue} value={value}>
-          <Radio value="1">Farmer</Radio>
-          <Radio value="2" style={{ marginLeft: '50px' }}>
-            Extension Worker
+          <Radio value="1">{t("label.farmer")}</Radio>
+          <Radio value="2" style={{ marginLeft: "50px" }}>
+            {t("label.extension_worker")}
           </Radio>
         </RadioGroup>
 
-        <NumberInput style={{ margin: '5vh auto 0px auto' }}>
+        <NumberInput style={{ margin: "5vh auto 0px auto" }}>
           <NumberInputField
             height="45px"
             padding="18px 16px"
@@ -65,7 +65,7 @@ const LoginPage: NextPage = () => {
             fontWeight="400"
             fontSize="14px"
             placeholder={
-              value === '1' ? 'Enter adhaar number' : 'Enter phone number'
+              value === "1" ? "Enter adhaar number" : "Enter phone number"
             }
             value={input}
             onChange={handleNumber}
@@ -73,23 +73,25 @@ const LoginPage: NextPage = () => {
         </NumberInput>
         <div
           style={{
-            margin: '3vh auto 0 auto',
-            fontSize: '18px',
-            color: 'var(--font)',
-          }}>
-          If you are already registered then use your adhaar number to login.
+            margin: "3vh auto 0 auto",
+            fontSize: "18px",
+            color: "var(--font)",
+          }}
+        >
+          {t("message.register_message")}
         </div>
         <button className={styles.submitButton} onClick={handleOTPPage}>
-          Continue
+          {t("label.continue")}
         </button>
         <div className={styles.signup}>
-          <div>Not registered yet ?</div>
+          <div>{t("message.not_register_yet")}</div>
           <div
-            onClick={() => router.push('/register')}
+            onClick={() => router.push("/register")}
             style={{
-              color: 'var(--secondarygreen)',
-            }}>
-            Register at Krushak Odisha
+              color: "var(--secondarygreen)",
+            }}
+          >
+            {t("message.register_at_krushak")}
           </div>
         </div>
       </div>

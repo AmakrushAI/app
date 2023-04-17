@@ -4,7 +4,7 @@ import { Input, InputGroup, InputLeftElement, Select } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { NextPage } from 'next';
 
-const MorePage: NextPage = () => {
+const MorePage: React.FC = () => {
   return (
     <div className={styles.main}>
       <div className={styles.title}>FAQs</div>

@@ -1,65 +1,42 @@
-import { useEffect, useState } from 'react';
-import styles from './index.module.css';
-import PhoneImg from '../../assets/images/phone.png';
-import GovtOfOdisha from '../../assets/images/logo-green.png';
-import KrishiMela from '../../assets/images/KrishiMela.png';
-import Image from 'next/image';
+import { useCallback, useContext, useState } from "react";
+import styles from "./index.module.css";
+import PhoneImg from "../../assets/images/phone.png";
+import GovtOfOdisha from "../../assets/images/logo-green.png";
+import KrishiMela from "../../assets/images/KrishiMela.png";
+import Image from "next/image";
+import { AppContext } from "../../context";
+
 
 function NavBar() {
-  const [lang, setLang] = useState('eng');
+ 
+  const [isEngActive, setIsEngActive] = useState(true);
+  const context = useContext(AppContext);
 
-  function engHandler() {
-    if (lang === 'odiya') {
-      setLang('eng');
-      document.getElementById('eng')?.classList.add('NavBar_active__Qd_zQ');
-      document.getElementById('odiya')?.classList.remove('NavBar_active__Qd_zQ');
-    }
-  }
-
-  function odiyaHandler() {
-    if (lang === 'eng') {
-      setLang('odiya');
-      document.getElementById('eng')?.classList.remove('NavBar_active__Qd_zQ');
-      document.getElementById('odiya')?.classList.add('NavBar_active__Qd_zQ');
-    }
-  }
-
-  // useEffect(() => {
-  //   var addScript = document.createElement('script');
-  //   addScript.setAttribute(
-  //     'src',
-  //     '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'
-  //   );
-  //   document.body.appendChild(addScript);
-  //   window.googleTranslateElementInit = googleTranslateElementInit;
-  // }, []);
-
-  // const googleTranslateElementInit = () => {
-  //   new window.google.translate.TranslateElement(
-  //     {
-  //       pageLanguage: 'en',
-  //       includedLanguages: 'en,or', // If you remove it, by default all google supported language will be included
-  //       layout: google.translate.TranslateElement.InlineLayout.VERTICAL,
-  //     },
-  //     'google_translate_element'
-  //   );
-  // };
+  const toggleLanguage = useCallback(
+    (newLanguage) => () => {
+      context?.setLocale(newLanguage);
+      setIsEngActive((prev) => (prev === true ? false : true));
+    },
+    [context]
+  );
 
   return (
     <div className={styles.navbar}>
       <div>
-        {/* <div id="google_translate_element"></div> */}
         <button
           id="eng"
-          className={styles.active}
-          style={{ borderRadius: '10px 0px 0px 10px' }}
-          onClick={engHandler}>
+          className={`${isEngActive ? styles.active : ""}`}
+          style={{ borderRadius: "10px 0px 0px 10px" }}
+          onClick={toggleLanguage("en")}
+        >
           ENG
         </button>
         <button
           id="odiya"
-          style={{ borderRadius: '0px 10px 10px 0px' }}
-          onClick={odiyaHandler}>
+          className={`${!isEngActive ? styles.active : ""}`}
+          style={{ borderRadius: "0px 10px 10px 0px" }}
+          onClick={toggleLanguage("or")}
+        >
           ODIYA
         </button>
       </div>
