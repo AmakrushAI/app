@@ -9,43 +9,41 @@ import ContextProvider from '../context/ContextProvider';
 import { ReactChildren, useEffect, useState } from 'react';
 import 'chatui/dist/index.css';
 import LaunchPage from '../components/LaunchPage';
+import { ToastContainer } from 'react-toastify';
 
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
 function SafeHydrate({ children }: { children: ReactChildren }) {
   return (
     <div suppressHydrationWarning>
-       { 
-       typeof window === 'undefined' ? null : children
-       }
+      {typeof window === 'undefined' ? null : children}
     </div>
   );
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const router=useRouter();
+  const router = useRouter();
   const [launch, setLaunch] = useState(true);
   const [cookie] = useCookies();
   useEffect(() => {
-      setTimeout(() => {
-        setLaunch(false);
-      }, 2500);
+    setTimeout(() => {
+      setLaunch(false);
+    }, 2500);
   }, []);
 
   useEffect(() => {
-    if(router.pathname === '/login' || router.pathname.startsWith('/otp')){
+    if (router.pathname === '/login' || router.pathname.startsWith('/otp')) {
       // already logged in then send to home
-      if(cookie['access_token'] !== undefined){
+      if (cookie['access_token'] !== undefined) {
         router.push('/');
       }
-    }else {
+    } else {
       // not logged in then send to login page
-      if(cookie['access_token'] === undefined){
+      if (cookie['access_token'] === undefined) {
         router.push('/login');
       }
     }
-  }, [cookie, router])
-  
+  }, [cookie, router]);
 
   if (launch) {
     return <LaunchPage />;
@@ -53,7 +51,19 @@ function MyApp({ Component, pageProps }: AppProps) {
     return (
       <ChakraProvider>
         <ContextProvider>
-          <div style={{height: '100%'}}>
+          <div style={{ height: '100%' }}>
+            <ToastContainer
+              position="top-center"
+              autoClose={2000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+            />
             <NavBar />
             <SafeHydrate>
               <Component {...pageProps} />

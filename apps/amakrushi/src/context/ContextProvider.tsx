@@ -10,6 +10,7 @@ import {
 import { AppContext } from '.';
 import { map } from 'lodash';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { send } from '../components/websocket';
 import moment from 'moment';
 import { socket } from '../socket';
@@ -213,13 +214,43 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
   );
 
   useEffect(() => {
+    let secondTimer: any;
     const timer = setTimeout(() => {
       if (isMsgReceiving && loading) {
-        toast.error('Please wait, servers are busier than usual.');
-      }
-    }, 25000);
+        toast.warn('Please wait, servers are taking longer than usual.', {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
 
-    return () => clearTimeout(timer);
+        secondTimer = setTimeout(() => {
+          if (isMsgReceiving && loading) {
+            toast.error('Please retry.', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+            setIsMsgReceiving(false);
+            setLoading(false);
+          }
+        }, 25000);
+      }
+    }, 5000);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(secondTimer);
+    };
   }, [isMsgReceiving, loading, onMessageReceived]);
 
   const values = useMemo(
