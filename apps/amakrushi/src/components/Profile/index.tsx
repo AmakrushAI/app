@@ -7,7 +7,7 @@ import ReactDom from "react-dom";
 import Image from "next/image";
 
 interface profileProps {
-  removeProfile: () => void;
+  removeProfile:any;
   toRemoveUser: any;
   name: string;
   userImg: string;
