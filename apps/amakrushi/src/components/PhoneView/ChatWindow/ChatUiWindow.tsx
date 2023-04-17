@@ -79,6 +79,8 @@ const ChatUiWindow: NextPage = () => {
     <div style={{ height: "80vh", width: "100%" }}>
       {/* <FullScreenLoader loading={loading} /> */}
       <Chat
+        btnColor='var(--secondarygreen)'
+        background='var(--bg-color)'
         disableSend={context?.loading}
         //@ts-ignore
         messages={msgToRender}

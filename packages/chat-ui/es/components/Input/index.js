@@ -1,7 +1,7 @@
 import _extends from "@babel/runtime/helpers/esm/extends";
 import _slicedToArray from "@babel/runtime/helpers/esm/slicedToArray";
 import _objectWithoutProperties from "@babel/runtime/helpers/esm/objectWithoutProperties";
-var _excluded = ["className", "type", "variant", "value", "placeholder", "rows", "minRows", "maxRows", "maxLength", "showCount", "multiline", "autoSize", "onChange"];
+var _excluded = ["className", "type", "variant", "value", "placeholder", "rows", "minRows", "maxRows", "maxLength", "showCount", "multiline", "autoSize", "onChange", "disabled"];
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import clsx from 'clsx';
 import { ThemeContext } from '../Form';
@@ -28,6 +28,8 @@ export var Input = /*#__PURE__*/React.forwardRef(function (props, ref) {
     multiline = props.multiline,
     autoSize = props.autoSize,
     onChange = props.onChange,
+    _props$disabled = props.disabled,
+    disabled = _props$disabled === void 0 ? false : _props$disabled,
     other = _objectWithoutProperties(props, _excluded);
   var initialRows = oRows;
   if (initialRows < minRows) {
@@ -103,6 +105,7 @@ export var Input = /*#__PURE__*/React.forwardRef(function (props, ref) {
     maxLength: maxLength,
     ref: inputRef,
     rows: rows,
+    disabled: disabled,
     onChange: handleChange
   }, other));
   if (showCount) {

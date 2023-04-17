@@ -41,18 +41,15 @@ const ChatItem: React.FC<ChatItemPropsType> = ({
           justifyContent="center"
         >
           <Box
-            cursor="pointer"
-            onClick={() => {
-              setShowProfile(true);
-            }}
             borderRadius="50%"
-            bgImage={image}
-            height="60px"
-            width="60px"
+            display= 'flex'
+            alignItems="center"
+            height="7vh"
+            width="7vh"
             bgPosition="center"
             bgRepeat="no-repeat"
             bgSize="cover"
-          />
+          >{image}</Box>
         </Flex>
         <Flex
           onClick={() => {
@@ -64,6 +61,7 @@ const ChatItem: React.FC<ChatItemPropsType> = ({
         >
           <p>{name}</p>
         </Flex>
+        <div style={{fontSize: '2rem', display: 'flex', alignItems: 'center'}}><MdOutlineDelete/></div>
       </Flex>
       <Profile
         show={showProfile}

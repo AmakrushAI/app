@@ -35,6 +35,7 @@ export type ComposerProps = {
   onAccessoryToggle?: (isAccessoryOpen: boolean) => void;
   rightAction?: IconButtonProps;
   disableSend:boolean;
+  btnColor:string;
 };
 
 export interface ComposerHandle {
@@ -61,6 +62,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
     onToolbarClick,
     rightAction,
     inputOptions,
+    btnColor,
   } = props;
 
   const [text, setText] = useState(initialText);
@@ -148,7 +150,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
   const handleInputFocus = useCallback(
     (e: React.FocusEvent<HTMLTextAreaElement>) => {
       clearTimeout(blurTimer.current);
-      toggleClass(CLASS_NAME_FOCUSING, true);
+      toggleClass(CLASS_NAME_FOCUSING, false);
       focused.current = true;
 
       if (onFocus) {
@@ -277,12 +279,12 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
             {accessoryContent}
           </Popover>
         )}
-        {!disableSend && <div>
+        <div>
         <div className="Composer-inputWrap">
           <ComposerInput invisible={false} {...inputProps} disabled={disableSend} />
         </div>
-        <SendButton onClick={handleSendBtnClick} disabled={!text || disableSend} />
-        </div>}
+        <SendButton btnColor={btnColor} onClick={handleSendBtnClick} disabled={!text || disableSend} />
+        </div>
       </div>
     );
   }
@@ -296,11 +298,11 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
             data-icon={inputTypeIcon}
             icon={inputTypeIcon}
             onClick={handleInputTypeChange}
-            aria-label={isInputText ? '切换到语音输入' : '切换到键盘输入'}
+            aria-label={isInputText ? 'Switch to voice input' : 'Switch to keyboard input'}
           />
         )}
         <div className="Composer-inputWrap">
-      {!disableSend &&    <ComposerInput invisible={!isInputText} {...inputProps} />}
+      <ComposerInput invisible={!isInputText} {...inputProps} disabled={disableSend} />
           {!isInputText && <Recorder {...recorder} />}
         </div>
         {!text && rightAction && <Action {...rightAction} />}
@@ -311,10 +313,10 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
             })}
             icon="plus-circle"
             onClick={handleAccessoryToggle}
-            aria-label={isAccessoryOpen ? '关闭工具栏' : '展开工具栏'}
+            aria-label={isAccessoryOpen ? 'Close Toolbar' : 'Expand Toolbar'}
           />
         )}
-        { !disableSend && (text || textOnce ) && <SendButton onClick={handleSendBtnClick} disabled={disableSend} />}
+        {(text || textOnce ) && <SendButton btnColor={btnColor} onClick={handleSendBtnClick} disabled={disableSend} />}
       </div>
       {isAccessoryOpen && (
         <AccessoryWrap onClickOutside={handleAccessoryBlur}>
