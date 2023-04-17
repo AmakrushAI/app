@@ -9,7 +9,6 @@ import {
 } from "react";
 import { AppContext } from ".";
 import { map } from "lodash";
-import { toast } from "react-toastify";
 import { send } from "../components/websocket";
 import moment from "moment";
 import { socket } from "../socket";
@@ -17,6 +16,7 @@ import { UserType } from "../types";
 import { IntlProvider } from "react-intl";
 import { getInitialMsgs } from "../utils/textUtility";
 import { useLocalization } from "../hooks";
+import toast from "react-hot-toast";
 function loadMessages(locale: string) {
   switch (locale) {
     case "en":
@@ -236,29 +236,10 @@ console.log("mnop:",{locale})
     let secondTimer: any;
     const timer = setTimeout(() => {
       if (isMsgReceiving && loading) {
-        toast.warn('Please wait, servers are taking longer than usual.', {
-          position: "top-center",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-
+        toast.error('Please wait, servers are taking longer than usual.');
         secondTimer = setTimeout(() => {
           if (isMsgReceiving && loading) {
-            toast.error('Please retry.', {
-              position: "top-center",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
+            toast.error('Please retry.');
             setIsMsgReceiving(false);
             setLoading(false);
           }
