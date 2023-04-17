@@ -89,7 +89,7 @@ If you want to go the usual route and run the project locally, though:
 Then in your terminal:
 * `cd path/to/your/clone`
 * `npm install`
-* `npm test`
+* `npm run dev`
 
 And you should be ready to go!
 
@@ -250,6 +250,3 @@ Issue Tracker | Granted to contributors who express a strong interest in spendin
 Committer | Granted to contributors who want to handle the actual pull request merges, tagging new versions, etc. Committers should have a good level of familiarity with the codebase, and enough context to understand the implications of various changes, as well as a good sense of the will and expectations of the project team.
 Admin/Owner | Granted to people ultimately responsible for the project, its community, etc.
 
-## Attribution
-
-This guide was generated using the WeAllJS `CONTRIBUTING.md` generator. [Make your own](https://npm.im/weallcontribute)!
