@@ -2,13 +2,14 @@ import styles from './index.module.css';
 import React, { useEffect } from 'react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
-import ChatItem from '../ChatSection/ChatItem';
+import ChatItem from '../chat-item';
 import { MdMessage } from 'react-icons/md';
 import { NextPage } from 'next';
-import Menu from '../Menu';
+
 //@ts-ignore
 import { analytics } from '../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
+import Menu from '../menu';
 
 const ChatsPage: NextPage = () => {
   useEffect(() => {

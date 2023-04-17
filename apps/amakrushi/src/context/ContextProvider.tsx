@@ -10,15 +10,15 @@ import {
 import { AppContext } from '.';
 import { map } from 'lodash';
 import { toast } from 'react-toastify';
-import { User } from '../types';
 import { send } from '../components/websocket';
 import moment from 'moment';
 import { socket } from '../socket';
+import { UserType } from '../types';
 import { initialMsg } from '../utils/textUtility';
 
 const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [currentUser, setCurrentUser] = useState<User>();
+  const [users, setUsers] = useState<UserType[]>([]);
+  const [currentUser, setCurrentUser] = useState<UserType>();
   const [loading, setLoading] = useState(false);
   const [isMsgReceiving, setIsMsgReceiving] = useState(false);
   const [messages, setMessages] = useState<Array<any>>([initialMsg]);
@@ -152,7 +152,7 @@ const ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onException, onSessionCreated]);
 
-  const onChangeCurrentUser = useCallback((newUser: User) => {
+  const onChangeCurrentUser = useCallback((newUser: UserType) => {
     setCurrentUser({ ...newUser, active: true });
     localStorage.removeItem('userMsgs');
     setMessages([]);

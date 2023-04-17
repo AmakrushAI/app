@@ -1,10 +1,4 @@
-export type User = {
-	name: string;
-	number: string;
-	active: boolean;
-	id?: string;
-	botUuid?: string;
-	startingMessage?: string;
-};
 
-export type toChangeCurrentUser = (arg: User) => void;
+export * from './chat-item';
+export * from './context';
+export * from './chat-message-item';
