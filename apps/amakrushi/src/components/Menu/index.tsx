@@ -7,8 +7,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import router from 'next/router';
 import { useCookies } from 'react-cookie';
+import { FC } from 'react';
 
-function Menu() {
+const Menu:FC =()=> {
   const [cookies, setCookies] = useCookies();
   
   const urlChanger = (link: string) => {

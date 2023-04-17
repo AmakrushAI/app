@@ -9,8 +9,9 @@ import ContextProvider from '../context/ContextProvider';
 import { ReactChildren, useEffect, useState } from 'react';
 import 'chatui/dist/index.css';
 import LaunchPage from '../components/LaunchPage';
-import router from 'next/router';
+
 import { useCookies } from 'react-cookie';
+import { useRouter } from 'next/router';
 function SafeHydrate({ children }: { children: ReactChildren }) {
   return (
     <div suppressHydrationWarning>
@@ -22,6 +23,7 @@ function SafeHydrate({ children }: { children: ReactChildren }) {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const router=useRouter();
   const [launch, setLaunch] = useState(true);
   const [cookie] = useCookies();
   useEffect(() => {
@@ -42,7 +44,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         router.push('/login');
       }
     }
-  }, [cookie])
+  }, [cookie, router])
   
 
   if (launch) {

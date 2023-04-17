@@ -261,18 +261,19 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
       console.log("qwe12:", { content });
       return (
         <>
-          <div
+          {/* <div
             style={{ width: "95px", marginRight: "4px", textAlign: "center" }}
-          ></div>
-          <Bubble type="text">
+          ></div> */}
+          <Bubble type="text" className={styles.textBubble}>
             <div style={{ display: "flex" }}>
-              <span style={{ fontSize: "16px" }}>{content.text}</span>
+              <span className={styles.optionsText}>
+                {content?.data?.payload?.text}
+              </span>
             </div>
-            <div style={{ marginTop: "10px" }} />
             {getLists({
               choices:
                 content?.data?.payload?.buttonChoices ?? content?.data?.choices,
-              isDisabled: content?.data?.disabled,
+              isDisabled: false,
             })}
           </Bubble>
         </>

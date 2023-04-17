@@ -3,7 +3,7 @@ import Head from "next/head";
 import { CookiesProvider } from "react-cookie";
 import { ColorModeScript } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
-
+import Menu from "../components/menu";
 const ChatUiWindow = dynamic(
   () => import("../components/PhoneView/ChatWindow/ChatUiWindow"),
   { ssr: false }
@@ -21,7 +21,10 @@ const Home: NextPage  = () => {
         <title>Ama KrushAI</title>
       </Head>
       <CookiesProvider>
+        <div style={{position: 'fixed', width: '100%', bottom: '7vh', top: '75px'}}>
         <ChatUiWindow />
+        </div>
+        <Menu />
       <ColorModeScript />
       </CookiesProvider>
     </>

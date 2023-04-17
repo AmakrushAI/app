@@ -53,7 +53,7 @@ const ChatItem: React.FC<ChatItemPropsType> = ({
         </Flex>
         <Flex
           onClick={() => {
-            toChangeUser(name);
+            toChangeUser &&   toChangeUser(name);
           }}
           ml="0.5rem"
           flex="4"
