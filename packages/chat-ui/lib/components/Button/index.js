@@ -10,7 +10,7 @@ var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/h
 var _react = _interopRequireDefault(require("react"));
 var _clsx = _interopRequireDefault(require("clsx"));
 var _Icon = require("../Icon");
-var _excluded = ["className", "label", "color", "variant", "size", "icon", "loading", "block", "disabled", "children", "onClick"];
+var _excluded = ["className", "label", "color", "variant", "size", "icon", "loading", "block", "disabled", "btnColor", "children", "onClick"];
 function composeClass(type) {
   return type && "Btn--".concat(type);
 }
@@ -24,6 +24,7 @@ var Button = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     loading = props.loading,
     block = props.block,
     disabled = props.disabled,
+    btnColor = props.btnColor,
     children = props.children,
     onClick = props.onClick,
     other = (0, _objectWithoutProperties2.default)(props, _excluded);
@@ -35,6 +36,9 @@ var Button = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     }
   }
   return /*#__PURE__*/_react.default.createElement("button", (0, _extends2.default)({
+    style: {
+      background: btnColor ? btnColor : ''
+    },
     className: (0, _clsx.default)('Btn', composeClass(color), composeClass(variant), composeClass(size), {
       'Btn--block': block
     }, className),

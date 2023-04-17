@@ -25,3 +25,5 @@ swIDAQAB
 
 echo "<---------------------Running the Servers--------------------->"
 npm run dev
+
+echo "<-----Visit http://localhost:3000 to see the running app------>"

@@ -1,9 +1,9 @@
 import React from "react";
-import { Flex, Box, Text, useColorModeValue, Button } from "@chakra-ui/react";
+import { Flex, Box, Button } from "@chakra-ui/react";
 import styles from "./ChatSection.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
-import ChatItem from "./ChatItem";
+import ChatItem from "../chat-item";
 import { NextPage } from "next";
 
 interface chatSectionProps {
