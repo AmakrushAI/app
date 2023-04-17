@@ -10,7 +10,7 @@ import { FaUserAlt } from 'react-icons/fa';
 import { useCookies } from 'react-cookie';
 import { MdArrowRight, MdOutlineQuestionMark } from 'react-icons/md';
 import { IoIosThumbsUp } from 'react-icons/io';
-import Menu from '../Menu';
+import Menu from '../menu';
 //@ts-ignore
 import { analytics } from '../../utils/firebase';
 import { logEvent } from 'firebase/analytics';

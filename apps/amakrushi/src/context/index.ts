@@ -1,12 +1,13 @@
 
 import { createContext } from 'react';
-import { toChangeCurrentUser, User } from '../types/index';
+import { ToChangeCurrentUserType, UserType } from '../types';
+
 
 type AppContextType =
 	| {
-			toChangeCurrentUser: toChangeCurrentUser;
-			currentUser: User;
-			allUsers: Array<User>;
+			toChangeCurrentUser: ToChangeCurrentUserType;
+			currentUser: UserType;
+			allUsers: Array<UserType>;
 	  }
 	| any;
 

@@ -3,7 +3,7 @@ import styles from './index.module.css';
 import { Input, InputGroup, InputLeftElement, Select } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { NextPage } from 'next';
-import Menu from '../../Menu';
+import Menu from '../../menu';
 //@ts-ignore
 import { analytics } from '../../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
