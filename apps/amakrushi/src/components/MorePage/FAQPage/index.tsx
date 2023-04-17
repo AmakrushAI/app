@@ -4,11 +4,12 @@ import { Input, InputGroup, InputLeftElement, Select } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { NextPage } from 'next';
 import Menu from '../../menu';
-//@ts-ignore
+
 import { analytics } from '../../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
 
-const MorePage: NextPage = () => {
+const MorePage: React.FC = () => {
+
   useEffect(() => {
     //@ts-ignore
     logEvent(analytics, 'FAQ_page');
