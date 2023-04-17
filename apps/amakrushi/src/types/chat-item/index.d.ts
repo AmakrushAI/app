@@ -1,11 +1,12 @@
 
 
 
+
 export type ChatItemPropsType = {
-    image: string;
+    image: string | Element | any;
     name: string;
-    toChangeUser: (name: string) => void;
-    toRemoveUser: (name: string) => void;
-    active: boolean;
+    toChangeUser?: (name: string) => void;
+    toRemoveUser?: (name: string) => void;
+    active?: boolean;
   }
   

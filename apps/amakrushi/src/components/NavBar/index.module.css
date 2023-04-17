@@ -2,15 +2,19 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 2vw;
+  margin: 6px;
   background-color: var(--bg-color);
+  /* min-height: fit-content; */
+  height: 70px;
 }
 
 .navbar button {
   background: var(--grey);
   width: 14vw;
   height: 7vw;
-  font-size: 3.5vw;
+  max-height: 45px;
+  max-width: 90px;
+  font-size: 0.85rem;
   font-weight: 700;
 }
 .navbar .active {
@@ -21,4 +25,5 @@
 .imageContainer {
   display: flex;
   flex-direction: row-reverse;
+  align-items: center;
 }
