@@ -1,10 +1,32 @@
-# Turborepo starter
+# AmaKrushAI 
 
-This is an official Yarn v1 starter turborepo.
+## About AKAI :farmer:
+
+The vision of the AI assistant is to empower farmers with the timely knowledge and insights they need to thrive in an ever-changing agricultural landscape. Providing personalised and vernacular assistance through the AI-powered assistant aims to help farmers make informed decisions, increase their crop yields, and ultimately contribute to the increase in farmer income.
+
+
+## Features :dart:
+
+- **Ama Krushi** (advisory dep of Odisha) maintains a vetted advisory database on key agriculture and allied sector activities relevant to Odisha 
+- Information in the curated Database is encoded using BERT to compute the similarity of information  to any query
+- Each query passes through an algorithm that scans the DB for relevant information using the similarity score
+- A threshold for the similarity score is defined which determines if the DB has information relevant to the prompt
+- If the similarity index <  threshold, then GPT3 directly responds to the  query (based on its global learning)
+- If the similarity index >  threshold, then GPT3 fine-tunes its response based on the information learnt from the DB
+- **Bhashini** is being used to translate queries and responses from Odia to English and vice versa
+- Farmers can ask questions in multiple Indian languages (Odia, Hindi, Punjabi, English) 
+- Bhashini will detect the language and will provide the response in the input language used 
+- The user interface will allow users to toggle between the most commonly used languages (English & Odia) 
+
+
+## Requirements :scroll:
+
+[NodeJS](https://nodejs.org/en/download/) and NPM or [yarn](https://yarnpkg.com/getting-started/install)
+
 
 ## What's inside?
 
-This turborepo uses [Yarn](https://classic.yarnpkg.com/) as a package manager. It includes the following packages/apps:
+This repo uses [Yarn](https://classic.yarnpkg.com/) as a package manager. It includes the following packages/apps:
 
 ### Apps and Packages
 
@@ -18,7 +40,7 @@ Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
 ### Utilities
 
-This turborepo has some additional tools already setup for you:
+This repo has some additional tools already setup for you:
 
 - [TypeScript](https://www.typescriptlang.org/) for static type checking
 - [ESLint](https://eslint.org/) for code linting
@@ -42,24 +64,10 @@ cd my-turborepo
 yarn run dev
 ```
 
-### Remote Caching
+## Designs
+![merge_from_ofoct](https://user-images.githubusercontent.com/65057795/231498806-b6b81917-673a-486a-9c80-88901805b4ec.jpg)
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your turborepo:
-
-```
-npx turbo link
-```
 
 ## Useful Links
 
