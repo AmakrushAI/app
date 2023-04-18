@@ -5,7 +5,6 @@ import { ChakraProvider } from '@chakra-ui/react';
 import ContextProvider from '../context/ContextProvider';
 import {  ReactElement, useEffect, useState } from 'react';
 import 'chatui/dist/index.css';
-import LaunchPage from '../components/LaunchPage';
 import { Toaster } from 'react-hot-toast';
 
 import { useCookies } from 'react-cookie';
