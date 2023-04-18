@@ -15,6 +15,7 @@ import {
   IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import toast from "react-hot-toast";
 
 
 interface FormElements extends HTMLFormControlsCollection {
@@ -121,7 +122,7 @@ const onChangeCurrentButton = (icon: IconDefinition) => {
         onAddingNewUser(newName, "");
         return
       } else {
-        alert("Wrong Number of digits");
+        toast.error("Wrong Number of digits");
         return;
       }
     }
