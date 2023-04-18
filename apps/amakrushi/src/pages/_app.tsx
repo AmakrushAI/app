@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 
 import ContextProvider from '../context/ContextProvider';
-import { ReactChildren, ReactElement, useEffect, useState } from 'react';
+import {  ReactElement, useEffect, useState } from 'react';
 import 'chatui/dist/index.css';
 import LaunchPage from '../components/LaunchPage';
 import { Toaster } from 'react-hot-toast';
