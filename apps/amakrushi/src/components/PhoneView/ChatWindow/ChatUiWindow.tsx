@@ -30,11 +30,11 @@ const ChatUiWindow: React.FC = () => {
 
   useEffect(() => {
     if (cookies["access_token"] !== undefined) {
-      axios.get(`http://localhost:3000/api/auth?token=${cookies["access_token"]}`)
+      axios.get(`${window.location.origin}/api/auth?token=${cookies["access_token"]}`)
         .then((response) => {
           if (response.data === null) {
             throw "Invalid Access Token";
-             router.push("/login");
+            // router.push("/login");
           }
         })
         .catch((err) => {
