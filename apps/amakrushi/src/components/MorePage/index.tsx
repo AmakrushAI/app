@@ -48,7 +48,7 @@ const MorePage: React.FC = () => {
             </p>
           </div>
         </div>
-        <div className={styles.user}>
+        <div className={styles.user} onClick={() => router.push('/profile')}>
           <div className={styles.icon2}>
             <Image src={userAltIcon} alt="" width={50} height={50} />
           </div>

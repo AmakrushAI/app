@@ -1,6 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalEnv": ["NEXT_PUBLIC_MAGICBELL_API_KEY","NEXT_PUBLIC_MAGICBELL_USER_EMAIL","ANALYZE"],
+  "globalEnv": ["NEXT_PUBLIC_MAGICBELL_API_KEY","NEXT_PUBLIC_MAGICBELL_USER_EMAIL","ANALYZE", "NEXT_PUBLIC_ENVIRONMENT_ID"],
   "globalDependencies": ["**/.env.*local"],
   "pipeline": {
     "build": {

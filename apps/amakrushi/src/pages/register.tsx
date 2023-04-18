@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import RegisterPage from '../components/RegisterPage';
 
-const login: NextPage = () => {
+const Register: NextPage = () => {
   return (
     <React.Fragment>
       <Head>
@@ -14,4 +14,4 @@ const login: NextPage = () => {
   );
 };
 
-export default login;
+export default Register;

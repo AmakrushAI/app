@@ -1189,7 +1189,7 @@
     "core-js-pure" "^3.25.1"
     "regenerator-runtime" "^0.13.11"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.3", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.13", "@babel/runtime@^7.12.5", "@babel/runtime@^7.16.3", "@babel/runtime@^7.17.2", "@babel/runtime@^7.17.8", "@babel/runtime@^7.18.3", "@babel/runtime@^7.20.1", "@babel/runtime@^7.20.7", "@babel/runtime@^7.21.0", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.3", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.13", "@babel/runtime@^7.12.5", "@babel/runtime@^7.16.3", "@babel/runtime@^7.17.2", "@babel/runtime@^7.17.8", "@babel/runtime@^7.18.3", "@babel/runtime@^7.20.7", "@babel/runtime@^7.21.0", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
   "integrity" "sha512-xwII0//EObnq89Ji5AKYQaRYiW/nZ3llSv29d49IuxPhKbtJoLP+9QUUZ4nVragQVtaVGeZrpB+ZtG/Pdy/POw=="
   "resolved" "https://registry.npmjs.org/@babel/runtime/-/runtime-7.21.0.tgz"
   "version" "7.21.0"
@@ -2718,9 +2718,6 @@
     "intl-messageformat" "10.3.3"
     "tslib" "^2.4.0"
 
-"@fortawesome/fontawesome-common-types@6.4.0":
-  "version" "6.4.0"
-
 "@gar/promisify@^1.0.1", "@gar/promisify@^1.1.3":
   "version" "1.1.3"
 
@@ -2769,27 +2766,6 @@
   "integrity" "sha512-H9XAx3hc0BQHY6l+IFSWHDySypcXsvsuLhgYLUGywmJ5pswRVQJUHpOsobnLYp2ZUaUlKiKDrgWWhosOwAEM8Q=="
   "resolved" "https://registry.npmjs.org/@hutson/parse-repository-url/-/parse-repository-url-3.0.2.tgz"
   "version" "3.0.2"
-
-"@internationalized/date@^3.0.1", "@internationalized/date@^3.2.0":
-  "version" "3.2.0"
-  dependencies:
-    "@swc/helpers" "^0.4.14"
-
-"@internationalized/message@^3.0.9", "@internationalized/message@^3.1.0":
-  "version" "3.1.0"
-  dependencies:
-    "@swc/helpers" "^0.4.14"
-    "intl-messageformat" "^10.1.0"
-
-"@internationalized/number@^3.1.1", "@internationalized/number@^3.2.0":
-  "version" "3.2.0"
-  dependencies:
-    "@swc/helpers" "^0.4.14"
-
-"@internationalized/string@^3.0.0", "@internationalized/string@^3.1.0":
-  "version" "3.1.0"
-  dependencies:
-    "@swc/helpers" "^0.4.14"
 
 "@isaacs/string-locale-compare@^1.1.0":
   "integrity" "sha512-SQ7Kzhh9+D+ZW9MA0zkYv3VXhIDNx+LzM6EJ+/65I3QY+enU6Itte7E5XX7EWrqLW2FN4n06GWzBnPoC3th2aQ=="
@@ -3465,10 +3441,9 @@
   dependencies:
     "glob" "7.1.7"
 
-"@next/swc-darwin-arm64@12.1.6":
-  "version" "12.1.6"
-
-"@next/swc-darwin-arm64@13.2.4":
+"@next/swc-win32-x64-msvc@12.1.6", "@next/swc-win32-x64-msvc@13.2.4":
+  "integrity" "sha512-0MffFmyv7tBLlji01qc0IaPP/LVExzvj7/R5x1Jph1bTAIj4Vu81yFQWHHQAP6r4ff9Ukj1mBK6MDNVXm7Tcvw=="
+  "resolved" "https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-13.2.4.tgz"
   "version" "13.2.4"
 
 "@nicolo-ribaudo/chokidar-2@2.1.8-no-fsevents.3":
@@ -3719,9 +3694,9 @@
     "tmp" "~0.2.1"
     "tslib" "^2.3.0"
 
-"@nrwl/nx-darwin-arm64@15.9.2":
-  "integrity" "sha512-Yv+OVsQt3C/hmWOC+YhJZQlsyph5w1BHfbp4jyCvV1ZXBbb8NdvwxgDHPWXxKPTc1EXuB7aEX3qzxM3/OWEUJg=="
-  "resolved" "https://registry.npmjs.org/@nrwl/nx-darwin-arm64/-/nx-darwin-arm64-15.9.2.tgz"
+"@nrwl/nx-win32-x64-msvc@15.9.2":
+  "integrity" "sha512-Q8onNzhuAZ0l9DNkm8D4Z1AEIzJr8JiT4L2fVBLYrV/R75C2HS3q7lzvfo6oqMY6mXge1cFPcrTtg3YXBQaSWA=="
+  "resolved" "https://registry.npmjs.org/@nrwl/nx-win32-x64-msvc/-/nx-win32-x64-msvc-15.9.2.tgz"
   "version" "15.9.2"
 
 "@nrwl/tao@15.9.2":
@@ -3944,475 +3919,10 @@
     "prop-types" "^15.7.2"
     "tslib" "^2.1.0"
 
-"@react-aria/button@3.6.2":
-  "version" "3.6.2"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-aria/focus" "^3.9.0"
-    "@react-aria/interactions" "^3.12.0"
-    "@react-aria/utils" "^3.14.0"
-    "@react-stately/toggle" "^3.4.2"
-    "@react-types/button" "^3.6.2"
-    "@react-types/shared" "^3.15.0"
-
-"@react-aria/checkbox@3.6.0":
-  "version" "3.6.0"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-aria/label" "^3.4.2"
-    "@react-aria/toggle" "^3.4.0"
-    "@react-aria/utils" "^3.14.0"
-    "@react-stately/checkbox" "^3.3.0"
-    "@react-stately/toggle" "^3.4.2"
-    "@react-types/checkbox" "^3.4.0"
-    "@react-types/shared" "^3.15.0"
-
-"@react-aria/dialog@3.4.0":
-  "version" "3.4.0"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-aria/focus" "^3.9.0"
-    "@react-aria/overlays" "^3.11.0"
-    "@react-aria/utils" "^3.14.0"
-    "@react-stately/overlays" "^3.4.2"
-    "@react-types/dialog" "^3.4.4"
-    "@react-types/shared" "^3.15.0"
-
-"@react-aria/focus@^3.12.0":
-  "integrity" "sha512-nY6/2lpXzLep6dzQEESoowiSqNcy7DFWuRD/qHj9uKcQwWpYH/rqBrHVS/RNvL6Cz/fBA7L/4AzByJ6pTBtoeA=="
-  "resolved" "https://registry.npmjs.org/@react-aria/focus/-/focus-3.12.0.tgz"
-  "version" "3.12.0"
-  dependencies:
-    "@react-aria/interactions" "^3.15.0"
-    "@react-aria/utils" "^3.16.0"
-    "@react-types/shared" "^3.18.0"
-    "@swc/helpers" "^0.4.14"
-    "clsx" "^1.1.1"
-
-"@react-aria/focus@^3.9.0":
-  "integrity" "sha512-nY6/2lpXzLep6dzQEESoowiSqNcy7DFWuRD/qHj9uKcQwWpYH/rqBrHVS/RNvL6Cz/fBA7L/4AzByJ6pTBtoeA=="
-  "resolved" "https://registry.npmjs.org/@react-aria/focus/-/focus-3.12.0.tgz"
-  "version" "3.12.0"
-  dependencies:
-    "@react-aria/interactions" "^3.15.0"
-    "@react-aria/utils" "^3.16.0"
-    "@react-types/shared" "^3.18.0"
-    "@swc/helpers" "^0.4.14"
-    "clsx" "^1.1.1"
-
-"@react-aria/focus@3.7.0":
-  "version" "3.7.0"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-aria/interactions" "^3.10.0"
-    "@react-aria/utils" "^3.13.2"
-    "@react-types/shared" "^3.14.0"
-    "clsx" "^1.1.1"
-
-"@react-aria/grid@^3.5.0":
-  "version" "3.7.0"
-  dependencies:
-    "@react-aria/focus" "^3.12.0"
-    "@react-aria/i18n" "^3.7.1"
-    "@react-aria/interactions" "^3.15.0"
-    "@react-aria/live-announcer" "^3.3.0"
-    "@react-aria/selection" "^3.14.0"
-    "@react-aria/utils" "^3.16.0"
-    "@react-stately/collections" "^3.7.0"
-    "@react-stately/grid" "^3.6.0"
-    "@react-stately/selection" "^3.13.0"
-    "@react-stately/virtualizer" "^3.5.1"
-    "@react-types/checkbox" "^3.4.3"
-    "@react-types/grid" "^3.1.7"
-    "@react-types/shared" "^3.18.0"
-    "@swc/helpers" "^0.4.14"
-
-"@react-aria/i18n@^3.6.1", "@react-aria/i18n@3.6.1":
-  "version" "3.6.1"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@internationalized/date" "^3.0.1"
-    "@internationalized/message" "^3.0.9"
-    "@internationalized/number" "^3.1.1"
-    "@internationalized/string" "^3.0.0"
-    "@react-aria/ssr" "^3.3.0"
-    "@react-aria/utils" "^3.14.0"
-    "@react-types/shared" "^3.15.0"
-
-"@react-aria/i18n@^3.7.1":
-  "version" "3.7.1"
-  dependencies:
-    "@internationalized/date" "^3.2.0"
-    "@internationalized/message" "^3.1.0"
-    "@internationalized/number" "^3.2.0"
-    "@internationalized/string" "^3.1.0"
-    "@react-aria/ssr" "^3.6.0"
-    "@react-aria/utils" "^3.16.0"
-    "@react-types/shared" "^3.18.0"
-    "@swc/helpers" "^0.4.14"
-
-"@react-aria/interactions@^3.10.0", "@react-aria/interactions@^3.12.0", "@react-aria/interactions@3.12.0":
-  "version" "3.12.0"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-aria/utils" "^3.14.0"
-    "@react-types/shared" "^3.15.0"
-
-"@react-aria/interactions@^3.15.0":
-  "version" "3.15.0"
-  dependencies:
-    "@react-aria/ssr" "^3.6.0"
-    "@react-aria/utils" "^3.16.0"
-    "@react-types/shared" "^3.18.0"
-    "@swc/helpers" "^0.4.14"
-
-"@react-aria/label@^3.4.2", "@react-aria/label@3.4.2":
-  "version" "3.4.2"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-aria/utils" "^3.14.0"
-    "@react-types/label" "^3.7.0"
-    "@react-types/shared" "^3.15.0"
-
-"@react-aria/link@3.3.4":
-  "version" "3.3.4"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-aria/focus" "^3.9.0"
-    "@react-aria/interactions" "^3.12.0"
-    "@react-aria/utils" "^3.14.0"
-    "@react-types/link" "^3.3.4"
-    "@react-types/shared" "^3.15.0"
-
-"@react-aria/live-announcer@^3.1.1", "@react-aria/live-announcer@^3.3.0":
-  "version" "3.3.0"
-  dependencies:
-    "@swc/helpers" "^0.4.14"
-
-"@react-aria/menu@3.6.2":
-  "version" "3.6.2"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-aria/i18n" "^3.6.1"
-    "@react-aria/interactions" "^3.12.0"
-    "@react-aria/overlays" "^3.11.0"
-    "@react-aria/selection" "^3.11.0"
-    "@react-aria/utils" "^3.14.0"
-    "@react-stately/collections" "^3.4.4"
-    "@react-stately/menu" "^3.4.2"
-    "@react-stately/tree" "^3.3.4"
-    "@react-types/button" "^3.6.2"
-    "@react-types/menu" "^3.7.2"
-    "@react-types/shared" "^3.15.0"
-
-"@react-aria/overlays@^3.11.0", "@react-aria/overlays@3.11.0":
-  "version" "3.11.0"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-aria/focus" "^3.9.0"
-    "@react-aria/i18n" "^3.6.1"
-    "@react-aria/interactions" "^3.12.0"
-    "@react-aria/ssr" "^3.3.0"
-    "@react-aria/utils" "^3.14.0"
-    "@react-aria/visually-hidden" "^3.5.0"
-    "@react-stately/overlays" "^3.4.2"
-    "@react-types/button" "^3.6.2"
-    "@react-types/overlays" "^3.6.4"
-    "@react-types/shared" "^3.15.0"
-
-"@react-aria/radio@3.4.0":
-  "version" "3.4.0"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-aria/focus" "^3.9.0"
-    "@react-aria/i18n" "^3.6.1"
-    "@react-aria/interactions" "^3.12.0"
-    "@react-aria/label" "^3.4.2"
-    "@react-aria/utils" "^3.14.0"
-    "@react-stately/radio" "^3.6.0"
-    "@react-types/radio" "^3.3.0"
-    "@react-types/shared" "^3.15.0"
-
-"@react-aria/selection@^3.11.0", "@react-aria/selection@^3.14.0":
-  "version" "3.14.0"
-  dependencies:
-    "@react-aria/focus" "^3.12.0"
-    "@react-aria/i18n" "^3.7.1"
-    "@react-aria/interactions" "^3.15.0"
-    "@react-aria/utils" "^3.16.0"
-    "@react-stately/collections" "^3.7.0"
-    "@react-stately/selection" "^3.13.0"
-    "@react-types/shared" "^3.18.0"
-    "@swc/helpers" "^0.4.14"
-
-"@react-aria/ssr@^3.3.0", "@react-aria/ssr@3.3.0":
-  "version" "3.3.0"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-
 "@react-aria/ssr@^3.5.0":
   "version" "3.6.0"
   dependencies:
     "@swc/helpers" "^0.4.14"
-
-"@react-aria/ssr@^3.6.0":
-  "version" "3.6.0"
-  dependencies:
-    "@swc/helpers" "^0.4.14"
-
-"@react-aria/table@3.5.0":
-  "version" "3.5.0"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-aria/focus" "^3.9.0"
-    "@react-aria/grid" "^3.5.0"
-    "@react-aria/i18n" "^3.6.1"
-    "@react-aria/interactions" "^3.12.0"
-    "@react-aria/live-announcer" "^3.1.1"
-    "@react-aria/selection" "^3.11.0"
-    "@react-aria/utils" "^3.14.0"
-    "@react-stately/table" "^3.5.0"
-    "@react-stately/virtualizer" "^3.3.1"
-    "@react-types/checkbox" "^3.4.0"
-    "@react-types/grid" "^3.1.4"
-    "@react-types/shared" "^3.15.0"
-    "@react-types/table" "^3.3.2"
-
-"@react-aria/toggle@^3.4.0":
-  "version" "3.6.0"
-  dependencies:
-    "@react-aria/focus" "^3.12.0"
-    "@react-aria/interactions" "^3.15.0"
-    "@react-aria/utils" "^3.16.0"
-    "@react-stately/toggle" "^3.5.1"
-    "@react-types/checkbox" "^3.4.3"
-    "@react-types/shared" "^3.18.0"
-    "@react-types/switch" "^3.3.1"
-    "@swc/helpers" "^0.4.14"
-
-"@react-aria/utils@^3.13.2", "@react-aria/utils@^3.14.0", "@react-aria/utils@3.14.0":
-  "version" "3.14.0"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-aria/ssr" "^3.3.0"
-    "@react-stately/utils" "^3.5.1"
-    "@react-types/shared" "^3.15.0"
-    "clsx" "^1.1.1"
-
-"@react-aria/utils@^3.16.0":
-  "version" "3.16.0"
-  dependencies:
-    "@react-aria/ssr" "^3.6.0"
-    "@react-stately/utils" "^3.6.0"
-    "@react-types/shared" "^3.18.0"
-    "@swc/helpers" "^0.4.14"
-    "clsx" "^1.1.1"
-
-"@react-aria/visually-hidden@^3.5.0", "@react-aria/visually-hidden@3.5.0":
-  "version" "3.5.0"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-aria/interactions" "^3.12.0"
-    "@react-aria/utils" "^3.14.0"
-    "@react-types/shared" "^3.15.0"
-    "clsx" "^1.1.1"
-
-"@react-stately/checkbox@^3.3.0", "@react-stately/checkbox@3.3.0":
-  "version" "3.3.0"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-stately/toggle" "^3.4.2"
-    "@react-stately/utils" "^3.5.1"
-    "@react-types/checkbox" "^3.4.0"
-    "@react-types/shared" "^3.15.0"
-
-"@react-stately/collections@^3.4.4", "@react-stately/collections@3.4.4":
-  "version" "3.4.4"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-types/shared" "^3.15.0"
-
-"@react-stately/collections@^3.7.0":
-  "version" "3.7.0"
-  dependencies:
-    "@react-types/shared" "^3.18.0"
-    "@swc/helpers" "^0.4.14"
-
-"@react-stately/data@3.7.0":
-  "version" "3.7.0"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-types/shared" "^3.15.0"
-
-"@react-stately/grid@^3.4.0", "@react-stately/grid@^3.6.0":
-  "version" "3.6.0"
-  dependencies:
-    "@react-stately/collections" "^3.7.0"
-    "@react-stately/selection" "^3.13.0"
-    "@react-types/grid" "^3.1.7"
-    "@react-types/shared" "^3.18.0"
-    "@swc/helpers" "^0.4.14"
-
-"@react-stately/menu@^3.4.2", "@react-stately/menu@3.4.2":
-  "version" "3.4.2"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-stately/overlays" "^3.4.2"
-    "@react-stately/utils" "^3.5.1"
-    "@react-types/menu" "^3.7.2"
-    "@react-types/shared" "^3.15.0"
-
-"@react-stately/overlays@^3.4.2", "@react-stately/overlays@3.4.2":
-  "version" "3.4.2"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-stately/utils" "^3.5.1"
-    "@react-types/overlays" "^3.6.4"
-
-"@react-stately/radio@^3.6.0", "@react-stately/radio@3.6.0":
-  "version" "3.6.0"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-stately/utils" "^3.5.1"
-    "@react-types/radio" "^3.3.0"
-    "@react-types/shared" "^3.15.0"
-
-"@react-stately/selection@^3.11.0", "@react-stately/selection@^3.13.0":
-  "version" "3.13.0"
-  dependencies:
-    "@react-stately/collections" "^3.7.0"
-    "@react-stately/utils" "^3.6.0"
-    "@react-types/shared" "^3.18.0"
-    "@swc/helpers" "^0.4.14"
-
-"@react-stately/table@^3.5.0", "@react-stately/table@3.5.0":
-  "version" "3.5.0"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-stately/collections" "^3.4.4"
-    "@react-stately/grid" "^3.4.0"
-    "@react-stately/selection" "^3.11.0"
-    "@react-types/grid" "^3.1.4"
-    "@react-types/shared" "^3.15.0"
-    "@react-types/table" "^3.3.2"
-
-"@react-stately/toggle@^3.4.2", "@react-stately/toggle@3.4.2":
-  "version" "3.4.2"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-stately/utils" "^3.5.1"
-    "@react-types/checkbox" "^3.4.0"
-    "@react-types/shared" "^3.15.0"
-
-"@react-stately/toggle@^3.5.1":
-  "version" "3.5.1"
-  dependencies:
-    "@react-stately/utils" "^3.6.0"
-    "@react-types/checkbox" "^3.4.3"
-    "@react-types/shared" "^3.18.0"
-    "@swc/helpers" "^0.4.14"
-
-"@react-stately/tree@^3.3.4", "@react-stately/tree@3.3.4":
-  "version" "3.3.4"
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-stately/collections" "^3.4.4"
-    "@react-stately/selection" "^3.11.0"
-    "@react-stately/utils" "^3.5.1"
-    "@react-types/shared" "^3.15.0"
-
-"@react-stately/utils@^3.5.1", "@react-stately/utils@^3.6.0":
-  "version" "3.6.0"
-  dependencies:
-    "@swc/helpers" "^0.4.14"
-
-"@react-stately/virtualizer@^3.3.1", "@react-stately/virtualizer@^3.5.1":
-  "version" "3.5.1"
-  dependencies:
-    "@react-aria/utils" "^3.16.0"
-    "@react-types/shared" "^3.18.0"
-    "@swc/helpers" "^0.4.14"
-
-"@react-types/button@^3.6.2":
-  "version" "3.7.2"
-  dependencies:
-    "@react-types/shared" "^3.18.0"
-
-"@react-types/checkbox@^3.4.0", "@react-types/checkbox@3.4.0":
-  "version" "3.4.0"
-  dependencies:
-    "@react-types/shared" "^3.15.0"
-
-"@react-types/checkbox@^3.4.3":
-  "version" "3.4.3"
-  dependencies:
-    "@react-types/shared" "^3.18.0"
-
-"@react-types/dialog@^3.4.4":
-  "version" "3.5.1"
-  dependencies:
-    "@react-types/overlays" "^3.7.1"
-    "@react-types/shared" "^3.18.0"
-
-"@react-types/grid@^3.1.4", "@react-types/grid@3.1.4":
-  "version" "3.1.4"
-  dependencies:
-    "@react-types/shared" "^3.15.0"
-
-"@react-types/grid@^3.1.7":
-  "version" "3.1.7"
-  dependencies:
-    "@react-types/shared" "^3.18.0"
-
-"@react-types/label@^3.7.0":
-  "version" "3.7.3"
-  dependencies:
-    "@react-types/shared" "^3.18.0"
-
-"@react-types/link@^3.3.4":
-  "version" "3.4.1"
-  dependencies:
-    "@react-aria/interactions" "^3.15.0"
-    "@react-types/shared" "^3.18.0"
-
-"@react-types/menu@^3.7.2", "@react-types/menu@3.7.2":
-  "version" "3.7.2"
-  dependencies:
-    "@react-types/overlays" "^3.6.4"
-    "@react-types/shared" "^3.15.0"
-
-"@react-types/overlays@^3.6.4", "@react-types/overlays@3.6.4":
-  "version" "3.6.4"
-  dependencies:
-    "@react-types/shared" "^3.15.0"
-
-"@react-types/overlays@^3.7.1":
-  "version" "3.7.1"
-  dependencies:
-    "@react-types/shared" "^3.18.0"
-
-"@react-types/radio@^3.3.0":
-  "version" "3.4.1"
-  dependencies:
-    "@react-types/shared" "^3.18.0"
-
-"@react-types/shared@^3.14.0", "@react-types/shared@^3.15.0", "@react-types/shared@3.15.0":
-  "version" "3.15.0"
-
-"@react-types/shared@^3.18.0":
-  "version" "3.18.0"
-
-"@react-types/switch@^3.3.1":
-  "version" "3.3.1"
-  dependencies:
-    "@react-types/checkbox" "^3.4.3"
-    "@react-types/shared" "^3.18.0"
-
-"@react-types/table@^3.3.2":
-  "version" "3.6.0"
-  dependencies:
-    "@react-types/grid" "^3.1.7"
-    "@react-types/shared" "^3.18.0"
 
 "@remix-run/router@1.5.0":
   "version" "1.5.0"
@@ -4521,9 +4031,6 @@
 
 "@socket.io/component-emitter@~3.1.0":
   "version" "3.1.0"
-
-"@stitches/react@1.2.8":
-  "version" "1.2.8"
 
 "@storybook/addon-actions@^6.4.19", "@storybook/addon-actions@6.5.16":
   "version" "6.5.16"
@@ -5828,6 +5335,10 @@
 
 "@types/node@^17.0.12":
   "version" "17.0.45"
+  dependencies:
+    "@types/prop-types" "*"
+    "@types/scheduler" "*"
+    "csstype" "^3.0.2"
 
 "@types/normalize-package-data@^2.4.0":
   "version" "2.4.1"
@@ -5890,13 +5401,6 @@
   "integrity" "sha512-dIugadZuIPrRzvIEevIu7A1smqOAjkSMv8qOfwPt9Ve6i6JT/FQcCHyk2qIAxwsQNKZt5/oGR0T4z9h2dXRAkg=="
   "resolved" "https://registry.npmjs.org/@types/react/-/react-18.0.10.tgz"
   "version" "18.0.10"
-  dependencies:
-    "@types/prop-types" "*"
-    "@types/scheduler" "*"
-    "csstype" "^3.0.2"
-
-"@types/react@^17.0.15":
-  "version" "17.0.56"
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -6553,7 +6057,7 @@
     "require-from-string" "^2.0.2"
     "uri-js" "^4.2.2"
 
-"amakrushi-uci@file:/Users/abhishekkumar/GitHub_Repos/Samagra/app/apps/amakrushi":
+"amakrushi-uci@file:C:\\Users\\prtkj\\Desktop\\app\\apps\\amakrushi":
   "resolved" "file:apps/amakrushi"
   "version" "0.1.0"
   dependencies:
@@ -6562,15 +6066,12 @@
     "@emotion/styled" "^11.6.0"
     "@magicbell/magicbell-react" "^8.5.3"
     "@next/bundle-analyzer" "^13.3.0"
-    "@nextui-org/react" "^1.0.0-beta.12"
     "@storybook/react" "^6.5.9"
     "@testing-library/jest-dom" "^5.16.2"
     "@testing-library/react" "^10.4.9"
     "@testing-library/user-event" "^12.8.3"
     "@types/jest" "^25.2.3"
     "@types/node" "^12.20.46"
-    "@types/react" "^18.0.28"
-    "@types/react-dom" "^16.9.14"
     "axios" "^1.3.5"
     "bootstrap" "^5.1.3"
     "chatui" "*"
@@ -7183,11 +6684,6 @@
 "binary-extensions@^2.0.0":
   "version" "2.2.0"
 
-"bindings@^1.5.0":
-  "version" "1.5.0"
-  dependencies:
-    "file-uri-to-path" "1.0.0"
-
 "bl@^4.0.3", "bl@^4.1.0":
   "integrity" "sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w=="
   "resolved" "https://registry.npmjs.org/bl/-/bl-4.1.0.tgz"
@@ -7724,7 +7220,7 @@
   "resolved" "https://registry.npmjs.org/chardet/-/chardet-0.7.0.tgz"
   "version" "0.7.0"
 
-"chatui@*", "chatui@file:/Users/abhishekkumar/GitHub_Repos/Samagra/app/packages/chat-ui":
+"chatui@*", "chatui@file:C:\\Users\\prtkj\\Desktop\\app\\packages\\chat-ui":
   "resolved" "file:packages/chat-ui"
   "version" "0.0.0"
   dependencies:
@@ -8949,7 +8445,7 @@
   dependencies:
     "@leichtgewicht/ip-codec" "^2.0.1"
 
-"docs@file:/Users/abhishekkumar/GitHub_Repos/Samagra/app/apps/docs":
+"docs@file:C:\\Users\\prtkj\\Desktop\\app\\apps\\docs":
   "resolved" "file:apps/docs"
   "version" "0.0.0"
   dependencies:
@@ -9350,7 +8846,7 @@
     "object.assign" "^4.1.2"
     "object.entries" "^1.1.5"
 
-"eslint-config-custom@*", "eslint-config-custom@file:/Users/abhishekkumar/GitHub_Repos/Samagra/app/packages/eslint-config-custom":
+"eslint-config-custom@*", "eslint-config-custom@file:C:\\Users\\prtkj\\Desktop\\app\\packages\\eslint-config-custom":
   "resolved" "file:packages/eslint-config-custom"
   "version" "0.0.0"
   dependencies:
@@ -10087,9 +9583,6 @@
     "fs-extra" "^10.1.0"
     "ramda" "^0.28.0"
 
-"file-uri-to-path@1.0.0":
-  "version" "1.0.0"
-
 "file-url@3.0.0":
   "integrity" "sha512-g872QGsHexznxkIAdK8UiZRe7SkE6kvylShU4Nsj8NvfvZag7S0QuQ4IgvPDkk75HxgjIVDwycFTDAgIiO4nDA=="
   "resolved" "https://registry.npmjs.org/file-url/-/file-url-3.0.0.tgz"
@@ -10471,15 +9964,6 @@
 
 "fs.realpath@^1.0.0":
   "version" "1.0.0"
-
-"fsevents@^1.2.7":
-  "version" "1.2.13"
-  dependencies:
-    "bindings" "^1.5.0"
-    "nan" "^2.12.1"
-
-"fsevents@^2.1.2", "fsevents@^2.3.2", "fsevents@~2.3.2":
-  "version" "2.3.2"
 
 "function-bind@^1.1.1":
   "version" "1.1.1"
@@ -11491,7 +10975,7 @@
 "intersection-observer@^0.12.2":
   "version" "0.12.2"
 
-"intl-messageformat@^10.1.0", "intl-messageformat@10.3.3":
+"intl-messageformat@10.3.3":
   "version" "10.3.3"
   dependencies:
     "@formatjs/ecma402-abstract" "1.14.3"
@@ -13971,9 +13455,6 @@
     "any-promise" "^1.0.0"
     "object-assign" "^4.0.1"
     "thenify-all" "^1.0.0"
-
-"nan@^2.12.1":
-  "version" "2.17.0"
 
 "nano-css@^5.3.1":
   "version" "5.3.5"
@@ -18452,7 +17933,7 @@
     "minimist" "^1.2.6"
     "strip-bom" "^3.0.0"
 
-"tsconfig@*", "tsconfig@file:/Users/abhishekkumar/GitHub_Repos/Samagra/app/packages/tsconfig":
+"tsconfig@*", "tsconfig@file:C:\\Users\\prtkj\\Desktop\\app\\packages\\tsconfig":
   "resolved" "file:packages/tsconfig"
   "version" "0.0.0"
 
@@ -18489,7 +17970,9 @@
   dependencies:
     "safe-buffer" "^5.0.1"
 
-"turbo-darwin-arm64@1.9.1":
+"turbo-windows-64@1.9.1":
+  "integrity" "sha512-x7lWAspe4/v3XQ0gaFRWDX/X9uyWdhwFBPEfb8BA0YKtnsrPOHkV0mRHCRrXzvzjA7pcDCl2agGzb7o863O+Jg=="
+  "resolved" "https://registry.npmjs.org/turbo-windows-64/-/turbo-windows-64-1.9.1.tgz"
   "version" "1.9.1"
 
 "turbo@latest":
