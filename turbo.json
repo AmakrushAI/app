@@ -5,7 +5,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["ANALYZE"],
+      "env": ["ANALYZE","NEXT_PUBLIC_ENVIRONMENT_ID"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "lint": {
