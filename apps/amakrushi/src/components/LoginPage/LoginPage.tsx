@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { useLocalization } from '../../hooks/useLocalization';
 import { logEvent } from 'firebase/analytics';
 import { analytics } from '../../utils/firebase';
+import toast from 'react-hot-toast';
 const LoginPage: React.FC = () => {
   const router = useRouter();
   const [input, setInput] = useState('');
@@ -26,7 +27,7 @@ const LoginPage: React.FC = () => {
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
     if (input.length !== 10) {
-      alert('Enter a 10 digit number!');
+      toast.error('Enter a 10 digit number!');
     } else {
       fetch(
         // `${process.env.NEXT_PUBLIC_OTP_BASE_URL}uci/sendOTP?phone=${input}`,
@@ -36,7 +37,7 @@ const LoginPage: React.FC = () => {
         if (response.status === 200) {
           router.push({ pathname: '/otp', query: { state: input } });
         } else {
-          alert('OTP not sent');
+          toast.error('OTP not sent');
         }
       });
     }

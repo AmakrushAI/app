@@ -11,6 +11,7 @@ import styles from './OTP.module.css';
 import { useLocalization } from '../../hooks';
 import { logEvent } from 'firebase/analytics'
 import { analytics } from '../../utils/firebase';
+import toast from 'react-hot-toast';
 
 const OTPpage: React.FC = () => {
   const t=useLocalization();
@@ -51,7 +52,7 @@ const OTPpage: React.FC = () => {
             setUserId(analytics, phoneNumber);
             router.push('/');
           } else {
-            alert('Incorrect OTP');
+            toast.error('Incorrect OTP');
           }
         })
         .catch((err) => console.log(err));
