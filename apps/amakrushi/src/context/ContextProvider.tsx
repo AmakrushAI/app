@@ -9,7 +9,6 @@ import {
 } from "react";
 import { AppContext } from ".";
 import { map } from "lodash";
-import { toast } from "react-toastify";
 import { send } from "../components/websocket";
 import moment from "moment";
 import { socket } from "../socket";
@@ -17,6 +16,7 @@ import { UserType } from "../types";
 import { IntlProvider } from "react-intl";
 import { getInitialMsgs } from "../utils/textUtility";
 import { useLocalization } from "../hooks";
+import toast from "react-hot-toast";
 function loadMessages(locale: string) {
   switch (locale) {
     case "en":
@@ -233,13 +233,24 @@ console.log("mnop:",{locale})
   );
 
   useEffect(() => {
+    let secondTimer: any;
     const timer = setTimeout(() => {
       if (isMsgReceiving && loading) {
-        toast.error("Please wait, servers are busier than usual.");
+        toast.error('Please wait, servers are taking longer than usual.');
+        secondTimer = setTimeout(() => {
+          if (isMsgReceiving && loading) {
+            toast.error('Please retry.');
+            setIsMsgReceiving(false);
+            setLoading(false);
+          }
+        }, 25000);
       }
-    }, 25000);
+    }, 5000);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(secondTimer);
+    };
   }, [isMsgReceiving, loading, onMessageReceived]);
 
   const values = useMemo(

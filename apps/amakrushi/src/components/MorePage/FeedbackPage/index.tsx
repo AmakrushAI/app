@@ -1,12 +1,14 @@
 import { FaStar } from 'react-icons/fa';
 import styles from './index.module.css';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Menu from '../../menu';
 //@ts-ignore
 import { analytics } from '../../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
+import { MdOutlineStarBorder } from 'react-icons/md';
 
 const MorePage: React.FC = () => {
+  const [rating, setRating] = useState(1);
   useEffect(() => {
     //@ts-ignore
     logEvent(analytics, 'Feedback_page');
@@ -18,11 +20,20 @@ const MorePage: React.FC = () => {
         <div className={styles.rating}>
           <h1>Did you find this useful?</h1>
           <div className={styles.stars}>
-            <FaStar />
-            <FaStar />
-            <FaStar />
-            <FaStar />
-            <FaStar />
+          {Array.from({ length: 5 }, (_, index) => {
+              if (index + 1 <= rating) {
+                return (
+                  <FaStar onClick={() => setRating(index + 1)} key={index} />
+                );
+              } else {
+                return (
+                  <MdOutlineStarBorder
+                    onClick={() => setRating(index + 1)}
+                    key={index}
+                  />
+                );
+              }
+            })}
           </div>
           <p>Tap a star to rate</p>
           <button>Submit Review</button>
