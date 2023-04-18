@@ -9,7 +9,7 @@ import {
   //@ts-ignore
 } from "chatui";
 
-import { map } from "lodash";
+import _ from "underscore";
 import moment from "moment";
 import React, { FC, ReactElement, useCallback, useContext } from "react";
 import { Button } from "react-bootstrap";
@@ -42,7 +42,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     ({ choices, isDisabled }: { choices: any; isDisabled: boolean }) => {
       return (
         <List className={`${styles.list}`}>
-          {map(choices ?? [], (choice, index) => (
+          {  choices?.map((choice:any, index:string)  => (
+          // {_.map(choices ?? [], (choice, index) => (
             <ListItem
               key={`${index}_${choice?.key}`}
               className={`${styles.onHover} ${styles.listItem}`}

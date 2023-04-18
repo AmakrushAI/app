@@ -4,7 +4,6 @@ import { CookiesProvider } from "react-cookie";
 import { ColorModeScript } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useLocalization } from "../hooks/useLocalization";
-
 import Menu from "../components/menu";
 const ChatUiWindow = dynamic(
   () => import("../components/PhoneView/ChatWindow/ChatUiWindow"),

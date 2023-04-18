@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 import { AppContext } from ".";
-import { map } from "lodash";
+
 import { toast } from "react-toastify";
 import { send } from "../components/websocket";
 import moment from "moment";
@@ -82,7 +82,7 @@ console.log("mnop:",{locale})
 
   const onMessageReceived = useCallback(
     (msg: any): void => {
-      console.log("socketss:", { msg });
+      console.log("socket ss:", { msg });
       setLoading(false);
       setIsMsgReceiving(false);
       // @ts-ignore
@@ -215,7 +215,9 @@ console.log("mnop:",{locale})
 
           //@ts-ignore
           setMessages((prev: any) => [
-            ...map(prev, (prevMsg) => ({ ...prevMsg, disabled: true })),
+            ...prev.map((prevMsg:any) => ({ ...prevMsg, disabled: true })),
+          
+           // ..._.map(prev, (prevMsg) => ({ ...prevMsg, disabled: true })),
             {
               username: "state.username",
               text: text,
