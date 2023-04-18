@@ -9,18 +9,19 @@ import {
   //@ts-ignore
 } from 'chatui';
 
-import { map } from 'lodash';
-import moment from 'moment';
-import React, { FC, ReactElement, useCallback, useContext } from 'react';
-import { Button } from 'react-bootstrap';
-import { toast } from 'react-hot-toast';
+import React, { FC, ReactElement, useCallback, useContext } from "react";
+import { Button } from "react-bootstrap";
+import { toast } from "react-hot-toast";
 
 import styles from './index.module.css';
 
 import { Spinner } from "@chakra-ui/react";
-import { MdOutlineChevronRight } from "react-icons/md";
+import rightIcon from '../../assets/icons/right.svg'
 import { AppContext } from "../../context";
 import { ChatMessageItemPropType } from "../../types";
+import { getUtcTimeformated } from "../../utils/getUtcTime";
+
+
 
 const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   currentUser,
@@ -43,7 +44,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
       console.log('qwer12:', { choices, isDisabled });
       return (
         <List className={`${styles.list}`}>
-          {map(choices ?? [], (choice, index) => (
+          {  choices?.map((choice:any, index:string)  => (
+          // {_.map(choices ?? [], (choice, index) => (
             <ListItem
               key={`${index}_${choice?.key}`}
               className={`${styles.onHover} ${styles.listItem}`}
@@ -65,9 +67,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 style={{ display: "flex", alignItems: "center" }}
               >
                 <div>{choice.text}</div>
-                <div style={{ fontSize: "2rem" }}>
-                  <MdOutlineChevronRight />
-                </div>
+                {/* <div style={{ fontSize: "2rem", backgroundImage: `url(${rightIcon})` }}>
+                </div> */}
               </div>
             </ListItem>
           ))}
@@ -105,18 +106,23 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
               <span
                 style={{
                   color:
-                    content?.data?.position === 'right'
-                      ? 'white'
-                      : 'var(--grey)',
-                  fontSize: '10px',
-                }}>
-                {moment
-                  .utc(
-                    content?.data?.sentTimestamp ||
-                      content?.data?.repliedTimestamp
-                  )
-                  .local()
-                  .format('DD/MM/YYYY : hh:mm')}
+                    content?.data?.position === "right"
+                      ? "white"
+                      : "var(--grey)",
+                  fontSize: "10px",
+                }}
+              >
+                {
+                // moment
+                //   .utc(
+                //     content?.data?.sentTimestamp ||
+                //       content?.data?.repliedTimestamp
+                //   )
+                //   .local()
+                //   .format("DD/MM/YYYY : hh:mm")
+                getUtcTimeformated(content?.data?.sentTimestamp ||
+                    content?.data?.repliedTimestamp)
+                  }
               </span>
             </div>
           </Bubble>
@@ -158,18 +164,18 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
 
               <div
                 style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'self-end',
-                }}>
-                <span style={{ color: 'var(--grey)', fontSize: '10px' }}>
-                  {moment
-                    .utc(
-                      content?.data?.sentTimestamp ||
-                        content?.data?.repliedTimestamp
-                    )
-                    .local()
-                    .format('DD/MM/YYYY : hh:mm')}
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "self-end",
+                }}
+              >
+                <span style={{ color: "var(--grey)", fontSize: "10px" }}>
+                  {
+                  
+                  getUtcTimeformated(content?.data?.sentTimestamp ||
+                    content?.data?.repliedTimestamp)
+                  
+                    }
                 </span>
               </div>
             </div>
@@ -195,18 +201,14 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
               <FileCard file={url} extension="pdf" />
               <div
                 style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'self-end',
-                }}>
-                <span style={{ color: 'var(--grey)', fontSize: '10px' }}>
-                  {moment
-                    .utc(
-                      content?.data?.sentTimestamp ||
-                        content?.data?.repliedTimestamp
-                    )
-                    .local()
-                    .format('DD/MM/YYYY : hh:mm')}
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "self-end",
+                }}
+              >
+                <span style={{ color: "var(--grey)", fontSize: "10px" }}>
+                  { getUtcTimeformated(content?.data?.sentTimestamp ||
+                    content?.data?.repliedTimestamp)}
                 </span>
               </div>
             </div>
@@ -236,18 +238,14 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
 
               <div
                 style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'self-end',
-                }}>
-                <span style={{ color: 'var(--grey)', fontSize: '10px' }}>
-                  {moment
-                    .utc(
-                      content?.data?.sentTimestamp ||
-                        content?.data?.repliedTimestamp
-                    )
-                    .local()
-                    .format('DD/MM/YYYY : hh:mm')}
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "self-end",
+                }}
+              >
+                <span style={{ color: "var(--grey)", fontSize: "10px" }}>
+                  { getUtcTimeformated(content?.data?.sentTimestamp ||
+                    content?.data?.repliedTimestamp)}
                 </span>
               </div>
             </div>

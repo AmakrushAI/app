@@ -1,8 +1,6 @@
 import React from "react";
 import { Flex, Box, Button } from "@chakra-ui/react";
 import styles from "./ChatSection.module.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import ChatItem from "../chat-item";
 import { NextPage } from "next";
 
@@ -46,7 +44,7 @@ const ChatSection: NextPage<chatSectionProps> = ({
           />
         </Flex>
 
-        <Box
+        {/* <Box
           fontSize="30px"
           flex="3"
           display="flex"
@@ -57,7 +55,7 @@ const ChatSection: NextPage<chatSectionProps> = ({
           <Button variant="ghost" onClick={toShowSettings}>
             <FontAwesomeIcon icon={faEllipsisVertical} />
           </Button>
-        </Box>
+        </Box> */}
       </Box>
 
       {/* Profile Section */}

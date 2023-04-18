@@ -2,7 +2,7 @@
   "name": "demo",
   "version": "0.1.0",
   "scripts": {
-    "dev": "vite --host",
+    "devs": "vite --host",
     "build": "tsc && vite build",
     "serve": "vite preview"
   },

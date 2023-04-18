@@ -1,20 +1,20 @@
+import ProfilePage from '../components/MorePage/ProfilePage';
 import React from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import LoginPage from '../components/LoginPage/LoginPage';
 import { useLocalization } from '../hooks';
 
-const Login: NextPage = () => {
-  const t=useLocalization();
 
+const Profile: NextPage = () => {
+  const t=useLocalization();
   return (
     <React.Fragment>
       <Head>
       <title>{t("title")}</title>
       </Head>
-      <LoginPage />
+      <ProfilePage />
     </React.Fragment>
   );
 };
 
-export default Login;
+export default Profile;

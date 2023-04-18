@@ -1,23 +1,25 @@
-import { useState, useContext, useCallback } from "react";
-import styles from "./index.module.css";
-import PhoneImg from "../../assets/images/phone.png";
-import GovtOfOdisha from "../../assets/images/logo-green.png";
-import KrushakOdisha from "../../assets/images/krushak_odisha.png";
-import Image from "next/image";
-import { AppContext } from "../../context";
-import { getInitialMsgs } from "../../utils/textUtility";
+import { useState, useContext, useCallback } from 'react';
+import styles from './index.module.css';
+import PhoneImg from '../../assets/images/phone.png';
+import GovtOfOdisha from '../../assets/images/logo-green.png';
+import KrushakOdisha from '../../assets/images/krushak_odisha.png';
+import Image from 'next/image';
+import { AppContext } from '../../context';
+import { getInitialMsgs } from '../../utils/textUtility';
+import flagsmith from 'flagsmith/isomorphic';
 
 function NavBar() {
+  const defaultLang = flagsmith.getValue('default_lang', { fallback: 'en' });
   const [isEngActive, setIsEngActive] = useState(
-    localStorage.getItem("locale")
-      ? localStorage.getItem("locale") === "en"
-      : true
+    localStorage.getItem('locale')
+      ? localStorage.getItem('locale') === 'en'
+      : defaultLang === 'en'
   );
   const context = useContext(AppContext);
 
   const toggleLanguage = useCallback(
     (newLanguage) => () => {
-      localStorage.setItem("locale", newLanguage);
+      localStorage.setItem('locale', newLanguage);
       if (context?.messages?.[0]?.exampleOptions) {
         context?.setMessages([getInitialMsgs(newLanguage)]);
       }
@@ -32,18 +34,16 @@ function NavBar() {
       <div>
         <button
           id="eng"
-          className={`${isEngActive ? styles.active : ""}`}
-          style={{ borderRadius: "10px 0px 0px 10px" }}
-          onClick={toggleLanguage("en")}
-        >
+          className={`${isEngActive ? styles.active : ''}`}
+          style={{ borderRadius: '10px 0px 0px 10px' }}
+          onClick={toggleLanguage('en')}>
           ENG
         </button>
         <button
           id="odiya"
-          className={`${!isEngActive ? styles.active : ""}`}
-          style={{ borderRadius: "0px 10px 10px 0px" }}
-          onClick={toggleLanguage("or")}
-        >
+          className={`${!isEngActive ? styles.active : ''}`}
+          style={{ borderRadius: '0px 10px 10px 0px' }}
+          onClick={toggleLanguage('or')}>
           ଓଡ଼ିଆ
         </button>
       </div>

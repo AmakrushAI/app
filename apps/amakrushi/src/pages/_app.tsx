@@ -1,19 +1,26 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
-import '@fortawesome/fontawesome-svg-core/styles.css'; // import Font Awesome CSS
-import { config } from '@fortawesome/fontawesome-svg-core';
-config.autoAddCss = false; // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
-import NavBar from '../components/NavBar';
+
 import ContextProvider from '../context/ContextProvider';
-import { ReactChildren, useEffect, useState } from 'react';
+import {  ReactElement, useEffect, useState } from 'react';
 import 'chatui/dist/index.css';
-import LaunchPage from '../components/LaunchPage';
 import { Toaster } from 'react-hot-toast';
 
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
-function SafeHydrate({ children }: { children: ReactChildren }) {
+import dynamic from 'next/dynamic';
+
+import flagsmith from 'flagsmith/isomorphic';
+import { FlagsmithProvider } from 'flagsmith/react';
+
+const LaunchPage = dynamic(() => import('../components/LaunchPage'), {
+  ssr: false,
+});
+const NavBar = dynamic(() => import('../components/NavBar'), {
+  ssr: false,
+});
+function SafeHydrate({ children }: { children: ReactElement }) {
   return (
     <div suppressHydrationWarning>
       {typeof window === 'undefined' ? null : children}
@@ -21,7 +28,11 @@ function SafeHydrate({ children }: { children: ReactChildren }) {
   );
 }
 
-function MyApp({ Component, pageProps }: AppProps) {
+const App = ({
+  Component,
+  pageProps,
+  flagsmithState,
+}: AppProps & { flagsmithState: any }) => {
   const router = useRouter();
   const [launch, setLaunch] = useState(true);
   const [cookie] = useCookies();
@@ -50,18 +61,26 @@ function MyApp({ Component, pageProps }: AppProps) {
   } else {
     return (
       <ChakraProvider>
-        <ContextProvider>
-          <div style={{ height: '100%' }}>
-            <Toaster position="top-center" reverseOrder={false} />
+        <FlagsmithProvider flagsmith={flagsmith} serverState={flagsmithState}>
+          <ContextProvider>
+            <div style={{  height: '100%'  }}>
+              <Toaster position="top-center" reverseOrder={false} />
             <NavBar />
-            <SafeHydrate>
-              <Component {...pageProps} />
-            </SafeHydrate>
-          </div>
-        </ContextProvider>
+              <SafeHydrate>
+                <Component {...pageProps} />
+              </SafeHydrate>
+            </div>
+          </ContextProvider>
+        </FlagsmithProvider>
       </ChakraProvider>
     );
   }
-}
+};
 
-export default MyApp;
+App.getInitialProps = async () => {
+  await flagsmith.init({
+    environmentID: process.env.NEXT_PUBLIC_ENVIRONMENT_ID,
+  });
+  return { flagsmithState: flagsmith.getState() };
+};
+export default App;

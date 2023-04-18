@@ -8,15 +8,18 @@ import {
   useState,
 } from "react";
 import { AppContext } from ".";
-import { map } from "lodash";
+
 import { send } from "../components/websocket";
-import moment from "moment";
+
 import { socket } from "../socket";
 import { UserType } from "../types";
 import { IntlProvider } from "react-intl";
 import { getInitialMsgs } from "../utils/textUtility";
 import { useLocalization } from "../hooks";
 import toast from "react-hot-toast";
+import { useFlags } from "flagsmith/react";
+import flagsmith from "flagsmith/isomorphic";
+
 function loadMessages(locale: string) {
   switch (locale) {
     case "en":
@@ -28,31 +31,33 @@ function loadMessages(locale: string) {
   }
 }
 
-const ContextProvider: FC<{locale:any,localeMsgs:any,setLocale:any, children: ReactElement }> = ({locale, children,localeMsgs,setLocale }) => {
-  const t=useLocalization();
+const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, children: ReactElement }> = ({ locale, children, localeMsgs, setLocale }) => {
+  const t = useLocalization();
   const [users, setUsers] = useState<UserType[]>([]);
   const [currentUser, setCurrentUser] = useState<UserType>();
   const [loading, setLoading] = useState(false);
   const [isMsgReceiving, setIsMsgReceiving] = useState(false);
   const [messages, setMessages] = useState<Array<any>>([getInitialMsgs(locale)]);
   const [socketSession, setSocketSession] = useState<any>();
- 
+  const timer1 = flagsmith.getValue('timer1', {fallback: 5000});
+  const timer2 = flagsmith.getValue('timer1', {fallback: 25000});
+
   const [isConnected, setIsConnected] = useState(socket.connected);
   console.log(messages);
 
-  useEffect(()=>{},)
+  useEffect(() => { },)
   const connect = (): void => {
     console.log("socket: socket.connect triggered");
     socket.connect();
   };
-console.log("mnop:",{locale})
-  
+  console.log("mnop:", { locale })
+
   useEffect(() => {
     if (typeof window !== "undefined" && !isConnected) connect();
   }, [isConnected]);
-  
 
-  
+
+
 
   const updateMsgState = useCallback(
     ({
@@ -64,6 +69,7 @@ console.log("mnop:",{locale})
       msg: { content: { title: string; choices: any }; messageId: string };
       media: any;
     }) => {
+
       const newMsg = {
         username: user?.name,
         text: msg.content.title,
@@ -72,7 +78,7 @@ console.log("mnop:",{locale})
         id: user?.id,
         botUuid: user?.id,
         messageId: msg?.messageId,
-        sentTimestamp: moment(),
+        sentTimestamp: Date.now(),
         ...media,
       };
       setMessages((prev: any) => [...prev, newMsg]);
@@ -82,7 +88,7 @@ console.log("mnop:",{locale})
 
   const onMessageReceived = useCallback(
     (msg: any): void => {
-      console.log("socketss:", { msg });
+      console.log("socket ss:", { msg });
       setLoading(false);
       setIsMsgReceiving(false);
       // @ts-ignore
@@ -182,6 +188,7 @@ console.log("mnop:",{locale})
     (text: string, media: any, isVisibile = true): void => {
       //  alert('hello')
       console.log("socket:", { socketSession });
+
       setLoading(true);
       setIsMsgReceiving(true);
       // To disappear the example choices even if not clicked and msg sent directly
@@ -215,16 +222,18 @@ console.log("mnop:",{locale})
 
           //@ts-ignore
           setMessages((prev: any) => [
-            ...map(prev, (prevMsg) => ({ ...prevMsg, disabled: true })),
+            ...prev.map((prevMsg: any) => ({ ...prevMsg, disabled: true })),
+
+            // ..._.map(prev, (prevMsg) => ({ ...prevMsg, disabled: true })),
             {
               username: "state.username",
               text: text,
               position: "right",
               botUuid: currentUser?.id,
               payload: { text },
-              time: moment().valueOf(),
+              time: Date.now(),
               disabled: true,
-              repliedTimestamp: moment(),
+              repliedTimestamp: Date.now(),
             },
           ]);
         }
@@ -243,15 +252,15 @@ console.log("mnop:",{locale})
             setIsMsgReceiving(false);
             setLoading(false);
           }
-        }, 25000);
+        }, timer2);
       }
-    }, 5000);
+    }, timer1);
 
     return () => {
       clearTimeout(timer);
       clearTimeout(secondTimer);
     };
-  }, [isMsgReceiving, loading, onMessageReceived]);
+  }, [isMsgReceiving, loading, timer1, timer2]);
 
   const values = useMemo(
     () => ({
@@ -298,7 +307,8 @@ console.log("mnop:",{locale})
 };
 
 const SSR: FC<{ children: ReactElement }> = ({ children }) => {
-  const [locale, setLocale] = useState(localStorage.getItem('locale') || "en");
+  const defaultLang = flagsmith.getValue('default_lang', {fallback: 'en'});
+  const [locale, setLocale] = useState(localStorage.getItem('locale') || defaultLang);
   const [localeMsgs, setLocaleMsgs] = useState<Record<string, string> | null>(
     null
   );
@@ -310,6 +320,6 @@ const SSR: FC<{ children: ReactElement }> = ({ children }) => {
   }, [locale]);
 
   if (typeof window === "undefined") return null;
-  return  <IntlProvider locale={locale} messages={localeMsgs}> <ContextProvider locale={locale} setLocale={setLocale} localeMsgs={localeMsgs}>{children}</ContextProvider> </IntlProvider>;
+  return <IntlProvider locale={locale} messages={localeMsgs}> <ContextProvider locale={locale} setLocale={setLocale} localeMsgs={localeMsgs}>{children}</ContextProvider> </IntlProvider>;
 };
 export default SSR;
