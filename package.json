@@ -8,17 +8,24 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev",
+    "dev": "concurrently \"yarn run watch\" \"turbo run dev\"",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "watch": "lerna run watch --parallel"
   },
   "devDependencies": {
     "eslint-config-custom": "*",
+    "lerna": "^6.6.1",
+    "concurrently": "^8.0.1",
     "prettier": "latest",
     "turbo": "latest"
   },
   "engines": {
     "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AmakrushAI/app"
   },
   "packageManager": "yarn@1.22.19"
 }
