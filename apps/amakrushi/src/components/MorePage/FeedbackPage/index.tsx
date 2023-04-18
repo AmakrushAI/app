@@ -1,57 +1,71 @@
-import { FaStar } from 'react-icons/fa';
+import starIcon from '../../../assets/icons/star.svg';
+import starOutlineIcon from '../../../assets/icons/star-outline.svg';
+import Image from 'next/image';
 import styles from './index.module.css';
 import React, { useEffect, useState } from 'react';
 import Menu from '../../menu';
 //@ts-ignore
 import { analytics } from '../../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
-import { MdOutlineStarBorder } from 'react-icons/md';
+import ComingSoonPage from '../../coming-soon-page';
+import { useFlags } from 'flagsmith/react';
 
 const MorePage: React.FC = () => {
   const [rating, setRating] = useState(1);
+  const flags = useFlags(['show_feedback_page']);
   useEffect(() => {
     //@ts-ignore
     logEvent(analytics, 'Feedback_page');
   }, []);
-  return (
-    <>
-      <div className={styles.main}>
-        <div className={styles.title}>Feedback</div>
-        <div className={styles.rating}>
-          <h1>Did you find this useful?</h1>
-          <div className={styles.stars}>
-          {Array.from({ length: 5 }, (_, index) => {
-              if (index + 1 <= rating) {
-                return (
-                  <FaStar onClick={() => setRating(index + 1)} key={index} />
-                );
-              } else {
-                return (
-                  <MdOutlineStarBorder
-                    onClick={() => setRating(index + 1)}
-                    key={index}
-                  />
-                );
-              }
-            })}
+
+  if (!flags?.show_feedback_page?.enabled) {
+    return <ComingSoonPage />;
+  } else
+    return (
+      <>
+        <div className={styles.main}>
+          <div className={styles.title}>Feedback</div>
+          <div className={styles.rating}>
+            <h1>Did you find this useful?</h1>
+            <div className={styles.stars}>
+              {Array.from({ length: 5 }, (_, index) => {
+                if (index + 1 <= rating) {
+                  return (
+                    <div onClick={() => setRating(index + 1)} key={index}>
+                      <Image src={starIcon} alt="" width={50} height={50} />
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div onClick={() => setRating(index + 1)} key={index}>
+                      <Image
+                        src={starOutlineIcon}
+                        alt=""
+                        width={50}
+                        height={50}
+                      />
+                    </div>
+                  );
+                }
+              })}
+            </div>
+            <p>Tap a star to rate</p>
+            <button>Submit Review</button>
           </div>
-          <p>Tap a star to rate</p>
-          <button>Submit Review</button>
+          <div className={styles.review}>
+            <h1>Write your review (optional)</h1>
+            <textarea
+              name=""
+              id=""
+              cols={35}
+              rows={5}
+              placeholder="Please write your experience's feedback."></textarea>
+            <button>Submit Review</button>
+          </div>
         </div>
-        <div className={styles.review}>
-          <h1>Write your review (optional)</h1>
-          <textarea
-            name=""
-            id=""
-            cols={35}
-            rows={5}
-            placeholder="Please write your experience's feedback."></textarea>
-          <button>Submit Review</button>
-        </div>
-      </div>
-      <Menu />
-    </>
-  );
+        <Menu />
+      </>
+    );
 };
 
 export default MorePage;
