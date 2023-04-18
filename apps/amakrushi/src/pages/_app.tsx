@@ -5,6 +5,8 @@ import { ChakraProvider } from '@chakra-ui/react';
 import ContextProvider from '../context/ContextProvider';
 import { ReactChildren, ReactElement, useEffect, useState } from 'react';
 import 'chatui/dist/index.css';
+import LaunchPage from '../components/LaunchPage';
+import { Toaster } from 'react-hot-toast';
 
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
@@ -62,8 +64,9 @@ const App = ({
       <ChakraProvider>
         <FlagsmithProvider flagsmith={flagsmith} serverState={flagsmithState}>
           <ContextProvider>
-            <div style={{ height: '100%' }}>
-              <NavBar />
+            <div style={{  height: '100%'  }}>
+              <Toaster position="top-center" reverseOrder={false} />
+            <NavBar />
               <SafeHydrate>
                 <Component {...pageProps} />
               </SafeHydrate>

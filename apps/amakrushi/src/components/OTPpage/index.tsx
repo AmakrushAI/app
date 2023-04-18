@@ -1,19 +1,15 @@
-import {
-  Box,
-  HStack,
-  PinInputField,
-  PinInput
-} from '@chakra-ui/react';
-import React, { useState, useEffect} from 'react';
+import { Box, HStack, PinInputField, PinInput } from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
 import { NextRouter, useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';
 import styles from './OTP.module.css';
 import { useLocalization } from '../../hooks';
-import { logEvent } from 'firebase/analytics'
+import { logEvent, setUserId } from 'firebase/analytics';
 import { analytics } from '../../utils/firebase';
+import toast from 'react-hot-toast';
 
 const OTPpage: React.FC = () => {
-  const t=useLocalization();
+  const t = useLocalization();
   const router: NextRouter = useRouter();
   const [input1, setInput1] = useState('');
   const [input2, setInput2] = useState('');
@@ -26,7 +22,7 @@ const OTPpage: React.FC = () => {
     const inputOTP: string = input1 + input2 + input3 + input4;
     if (inputOTP.length === 4) {
       fetch(
-        `https://user-service.chakshu-rd.samagra.io/uci/loginOrRegister?phone=${router.query.state}&otp=${inputOTP}`,
+        `${process.env.NEXT_PUBLIC_OTP_BASE_URL}uci/loginOrRegister?phone=${router.query.state}&otp=${inputOTP}`,
         {
           method: 'get',
         }
@@ -47,11 +43,11 @@ const OTPpage: React.FC = () => {
             const phoneNumber = router.query.state;
             // @ts-ignore
             localStorage.setItem('phoneNumber', phoneNumber);
-            //@ts-ignore
+            // @ts-ignore
             setUserId(analytics, phoneNumber);
             router.push('/');
           } else {
-            alert('Incorrect OTP');
+            toast.error('Incorrect OTP');
           }
         })
         .catch((err) => console.log(err));
@@ -86,7 +82,7 @@ const OTPpage: React.FC = () => {
 
   return (
     <div className={styles.main}>
-      <div className={styles.title}>{t("title")}</div>
+      <div className={styles.title}>{t('title')}</div>
       <Box
         backgroundColor="var(--bg-color) !important"
         width="340px"
@@ -104,18 +100,16 @@ const OTPpage: React.FC = () => {
           px="1rem"
           marginTop="10vh">
           <div className={styles.otpVerify}>
-           
-            {t("message.otp_verification")}
-            </div>
+            {t('message.otp_verification')}
+          </div>
 
           <div className={styles.otpSent}>
-          {t("message.otp_message")}   <b> {t("label.mobile_number")}</b>
+            {t('message.otp_message')} <b> {t('label.mobile_number')}</b>
           </div>
           <div style={{ marginTop: '10px' }}>
             <b>+91-{router.query.state}</b>
           </div>
           <form onSubmit={handleOTPSubmit}>
-            <>
             <HStack style={{ marginTop: '34px', justifyContent: 'center' }}>
               <PinInput otp placeholder="">
                 <PinInputField
@@ -123,50 +117,53 @@ const OTPpage: React.FC = () => {
                   value={input1}
                   onChange={handleOTP1}
                   boxShadow="0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-                0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
-                0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-                0 100px 80px rgba(0, 0, 0, 0.12);"
+                  0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+                  0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+                  0 100px 80px rgba(0, 0, 0, 0.12);"
                 />
                 <PinInputField
                   className={styles.pinInputField}
                   value={input2}
                   onChange={handleOTP2}
                   boxShadow="0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-                0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
-                0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-                0 100px 80px rgba(0, 0, 0, 0.12);"
+                  0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+                  0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+                  0 100px 80px rgba(0, 0, 0, 0.12);"
                 />
                 <PinInputField
                   className={styles.pinInputField}
                   value={input3}
                   onChange={handleOTP3}
                   boxShadow="0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-                0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
-                0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-                0 100px 80px rgba(0, 0, 0, 0.12);"
+                  0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+                  0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+                  0 100px 80px rgba(0, 0, 0, 0.12);"
                 />
                 <PinInputField
                   className={styles.pinInputField}
                   value={input4}
                   onChange={handleOTP4}
                   boxShadow="0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-                0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
-                0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-                0 100px 80px rgba(0, 0, 0, 0.12);"
-              />
-            </PinInput>
-          </HStack>
-          <div style={{ display: 'flex' }}>
-            <button
-              className={styles.backButton}
-              onClick={() => router.push('/login')}>
-              {t('label.back')}
-            </button>
-            <button className={styles.submitButton} onClick={handleOTPSubmit}>
-              {t(('label.submit'))}
-            </button>
-          </div>
-          </>
+                  0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+                  0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+                  0 100px 80px rgba(0, 0, 0, 0.12);"
+                />
+              </PinInput>
+            </HStack>
+            <div style={{ display: 'flex' }}>
+              <button
+                type="button"
+                className={styles.backButton}
+                onClick={() => router.push('/login')}>
+                {t('label.back')}
+              </button>
+              <button
+                type="submit"
+                className={styles.submitButton}
+                onClick={handleOTPSubmit}>
+                {t('label.submit')}
+              </button>
+            </div>
           </form>
         </Box>
         {/* <Box>
