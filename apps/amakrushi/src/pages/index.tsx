@@ -16,8 +16,7 @@ const ChatUiWindow = dynamic(
 
 const Home: NextPage  = () => {
   const t=useLocalization();
-
-  const flags = useFlags(['show_app_loader']); // only causes re-render if specified flag values / traits change
+   const flags = useFlags(['show_app_loader']); // only causes re-render if specified flag values / traits change
   
   console.log({flags})
   if(flags?.show_app_loader?.enabled)

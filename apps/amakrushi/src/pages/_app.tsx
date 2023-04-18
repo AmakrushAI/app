@@ -6,7 +6,7 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false; // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
 
 import ContextProvider from "../context/ContextProvider";
-import { ReactChildren, useEffect, useState } from "react";
+import { ReactChildren, ReactElement, useEffect, useState } from "react";
 import "chatui/dist/index.css";
 
 import { useCookies } from "react-cookie";
@@ -22,7 +22,7 @@ const LaunchPage = dynamic(() => import("../components/LaunchPage"), {
 const NavBar = dynamic(() => import("../components/NavBar"), {
   ssr: false,
 });
-function SafeHydrate({ children }: { children: ReactChildren }) {
+function SafeHydrate({ children }: { children: ReactElement }) {
   return (
     <div suppressHydrationWarning>
       {typeof window === "undefined" ? null : children}
@@ -30,7 +30,11 @@ function SafeHydrate({ children }: { children: ReactChildren }) {
   );
 }
 
-const App=({ Component, pageProps ,flagsmithState}: AppProps & {flagsmithState:any}) =>{
+const App = ({
+  Component,
+  pageProps,
+  flagsmithState,
+}: AppProps & { flagsmithState: any }) => {
   const router = useRouter();
   const [launch, setLaunch] = useState(true);
   const [cookie] = useCookies();
@@ -64,7 +68,8 @@ const App=({ Component, pageProps ,flagsmithState}: AppProps & {flagsmithState:a
             <NavBar />
             <SafeHydrate>
               <FlagsmithProvider
-              FlagsmithProvider flagsmith={flagsmith} serverState={flagsmithState}
+                flagsmith={flagsmith}
+                serverState={flagsmithState}
               >
                 <Component {...pageProps} />
               </FlagsmithProvider>
@@ -74,13 +79,12 @@ const App=({ Component, pageProps ,flagsmithState}: AppProps & {flagsmithState:a
       </ChakraProvider>
     );
   }
-}
-
+};
 
 App.getInitialProps = async () => {
-  await flagsmith.init({ // fetches flags on the server and passes them to the App 
-      environmentID:"cEipWkGBoFT8xFwGHxteh5",
+  await flagsmith.init({
+    environmentID: "cEipWkGBoFT8xFwGHxteh5",
   });
-  return { flagsmithState: flagsmith.getState() }
-}
+  return { flagsmithState: flagsmith.getState() };
+};
 export default App;
