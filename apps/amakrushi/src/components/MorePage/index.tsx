@@ -1,15 +1,14 @@
 import styles from './index.module.css';
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faRightFromBracket,
-  faUserCircle,
-} from '@fortawesome/free-solid-svg-icons';
-import { FaUserAlt } from 'react-icons/fa';
+import logoutIcon from '../../assets/icons/logout.svg';
+import userCircleIcon from '../../assets/icons/user-circle.svg';
+import userAltIcon from '../../assets/icons/user-alt.svg';
+import rightIcon from '../../assets/icons/right.svg';
+import questionMarkIcon from '../../assets/icons/question-mark.svg';
+import thumbsUpIcon from '../../assets/icons/thumbs-up.svg';
+import Image from 'next/image';
 import { useCookies } from 'react-cookie';
-import { MdArrowRight, MdOutlineQuestionMark } from 'react-icons/md';
-import { IoIosThumbsUp } from 'react-icons/io';
 import Menu from '../menu';
 //@ts-ignore
 import { analytics } from '../../utils/firebase';
@@ -24,7 +23,7 @@ const MorePage: React.FC = () => {
     localStorage.removeItem('phoneNumber');
     localStorage.removeItem('userMsgs');
     //@ts-ignore
-    logEvent(analytics, 'Logout_pressed')
+    logEvent(analytics, 'Logout_pressed');
     router.push('/login');
   }
 
@@ -40,7 +39,7 @@ const MorePage: React.FC = () => {
 
         <div className={styles.user}>
           <div className={styles.icon1}>
-            <FontAwesomeIcon icon={faUserCircle} />
+            <Image src={userCircleIcon} alt="" width={50} height={50} />
           </div>
           <div className={styles.userInfo}>
             <p style={{ fontWeight: 'bold' }}>Welcome</p>
@@ -51,46 +50,46 @@ const MorePage: React.FC = () => {
         </div>
         <div className={styles.user}>
           <div className={styles.icon2}>
-            <FaUserAlt />
+            <Image src={userAltIcon} alt="" width={50} height={50} />
           </div>
           <div className={styles.userInfo2}>
             <p style={{ fontWeight: 'bold' }}>Profile</p>
           </div>
           <div className={styles.icon3}>
-            <MdArrowRight />
+            <Image src={rightIcon} alt="" width={50} height={50} />
           </div>
         </div>
         <div className={styles.user} onClick={() => router.push('/faq')}>
           <div className={styles.icon2}>
-            <MdOutlineQuestionMark />
+            <Image src={questionMarkIcon} alt="" width={50} height={50} />
           </div>
           <div className={styles.userInfo2}>
             <p style={{ fontWeight: 'bold' }}>FAQs</p>
           </div>
           <div className={styles.icon3}>
-            <MdArrowRight />
+            <Image src={rightIcon} alt="" width={50} height={50} />
           </div>
         </div>
         <div className={styles.user} onClick={() => router.push('/feedback')}>
           <div className={styles.icon2}>
-            <IoIosThumbsUp />
+            <Image src={thumbsUpIcon} alt="" width={40} height={40} />
           </div>
           <div className={styles.userInfo2}>
             <p style={{ fontWeight: 'bold' }}>Feedback</p>
           </div>
           <div className={styles.icon3}>
-            <MdArrowRight />
+            <Image src={rightIcon} alt="" width={50} height={50} />
           </div>
         </div>
         <div className={styles.user} onClick={() => logout()}>
           <div className={styles.icon2}>
-            <FontAwesomeIcon icon={faRightFromBracket} />
+            <Image src={logoutIcon} alt="" width={40} height={40} />
           </div>
           <div className={styles.userInfo2}>
             <p style={{ fontWeight: 'bold' }}>Logout</p>
           </div>
           <div className={styles.icon3}>
-            <MdArrowRight />
+            <Image src={rightIcon} alt="" width={50} height={50} />
           </div>
         </div>
       </div>

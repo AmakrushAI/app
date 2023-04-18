@@ -1,9 +1,9 @@
 import styles from './index.module.css';
 import React, { useEffect } from 'react';
-import { SearchIcon } from '@chakra-ui/icons';
+import  searchIcon  from '../../assets/icons/search.svg';
+import  messageIcon  from '../../assets/icons/message.svg';
 import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import ChatItem from '../chat-item';
-import { MdMessage } from 'react-icons/md';
 import { NextPage } from 'next';
 
 //@ts-ignore
@@ -25,13 +25,13 @@ const ChatsPage: NextPage = () => {
       <div className={styles.title}>{t("label.chats")}</div>
         <InputGroup>
           <InputLeftElement pointerEvents="none">
-            <SearchIcon color="gray.300" />{' '}
+            {/* <div style={{backgroundImage: `url(${searchIcon})`}}></div> */}
           </InputLeftElement>
           <Input type="text" placeholder="Search" />
         </InputGroup>
-        <ChatItem image={<MdMessage />} name={'Session 1'} />
-        <ChatItem image={<MdMessage />} name={'Session 2'} />
-        <ChatItem image={<MdMessage />} name={'Session 3'} />
+        <ChatItem image={messageIcon} name={'Session 1'} />
+        <ChatItem image={messageIcon} name={'Session 2'} />
+        <ChatItem image={messageIcon} name={'Session 3'} />
       </div>
       <Menu />
     </>

@@ -1,12 +1,15 @@
-import { FaStar } from 'react-icons/fa';
+import starIcon from '../../../assets/icons/star.svg';
+import starOutlineIcon from '../../../assets/icons/star-outline.svg';
+import Image from 'next/image';
 import styles from './index.module.css';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Menu from '../../menu';
 //@ts-ignore
 import { analytics } from '../../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
 
 const MorePage: React.FC = () => {
+  const [rating, setRating] = useState(1);
   useEffect(() => {
     //@ts-ignore
     logEvent(analytics, 'Feedback_page');
@@ -18,11 +21,26 @@ const MorePage: React.FC = () => {
         <div className={styles.rating}>
           <h1>Did you find this useful?</h1>
           <div className={styles.stars}>
-            <FaStar />
-            <FaStar />
-            <FaStar />
-            <FaStar />
-            <FaStar />
+            {Array.from({ length: 5 }, (_, index) => {
+              if (index + 1 <= rating) {
+                return (
+                  <div onClick={() => setRating(index + 1)} key={index}>
+                    <Image src={starIcon} alt="" width={50} height={50} />
+                  </div>
+                );
+              } else {
+                return (
+                  <div onClick={() => setRating(index + 1)} key={index}>
+                    <Image
+                      src={starOutlineIcon}
+                      alt=""
+                      width={50}
+                      height={50}
+                    />
+                  </div>
+                );
+              }
+            })}
           </div>
           <p>Tap a star to rate</p>
           <button>Submit Review</button>

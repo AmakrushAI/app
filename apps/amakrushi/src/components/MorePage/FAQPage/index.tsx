@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import styles from './index.module.css';
 import { Input, InputGroup, InputLeftElement, Select } from '@chakra-ui/react';
-import { SearchIcon } from '@chakra-ui/icons';
+import searchIcon from '../../../assets/icons/search.svg'
+import Image from 'next/image';
 import { NextPage } from 'next';
 import Menu from '../../menu';
 
@@ -20,7 +21,7 @@ const MorePage: React.FC = () => {
         <div className={styles.title}>FAQs</div>
         <InputGroup>
           <InputLeftElement pointerEvents="none">
-            <SearchIcon color="gray.300" />{' '}
+            <Image src={searchIcon} alt="" width={30} height={30}/>
           </InputLeftElement>
           <Input type="text" placeholder="Search" />
         </InputGroup>

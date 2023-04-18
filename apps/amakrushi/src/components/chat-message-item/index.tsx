@@ -18,7 +18,7 @@ import { toast } from "react-hot-toast";
 import styles from "./index.module.css";
 
 import { Spinner } from "@chakra-ui/react";
-import { MdOutlineChevronRight } from "react-icons/md";
+import rightIcon from '../../assets/icons/right.svg'
 import { AppContext } from "../../context";
 import { ChatMessageItemPropType } from "../../types";
 
@@ -62,9 +62,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 style={{ display: "flex", alignItems: "center" }}
               >
                 <div>{choice.text}</div>
-                <div style={{ fontSize: "2rem" }}>
-                  <MdOutlineChevronRight />
-                </div>
+                {/* <div style={{ fontSize: "2rem", backgroundImage: `url(${rightIcon})` }}>
+                </div> */}
               </div>
             </ListItem>
           ))}
