@@ -30,8 +30,7 @@ const LoginPage: React.FC = () => {
       toast.error('Enter a 10 digit number!');
     } else {
       fetch(
-        // `${process.env.NEXT_PUBLIC_OTP_BASE_URL}uci/sendOTP?phone=${input}`,
-        `https://user-service.chakshu-rd.samagra.io/uci/sendOTP?phone=${input}`,
+        `${process.env.NEXT_PUBLIC_OTP_BASE_URL}uci/sendOTP?phone=${input}`,
         { method: 'GET' }
       ).then((response) => {
         if (response.status === 200) {
