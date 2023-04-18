@@ -11,12 +11,15 @@ import { AppContext } from ".";
 
 import { toast } from "react-toastify";
 import { send } from "../components/websocket";
-import moment from "moment";
+
 import { socket } from "../socket";
 import { UserType } from "../types";
 import { IntlProvider } from "react-intl";
 import { getInitialMsgs } from "../utils/textUtility";
 import { useLocalization } from "../hooks";
+
+
+
 function loadMessages(locale: string) {
   switch (locale) {
     case "en":
@@ -64,6 +67,7 @@ console.log("mnop:",{locale})
       msg: { content: { title: string; choices: any }; messageId: string };
       media: any;
     }) => {
+      
       const newMsg = {
         username: user?.name,
         text: msg.content.title,
@@ -72,7 +76,7 @@ console.log("mnop:",{locale})
         id: user?.id,
         botUuid: user?.id,
         messageId: msg?.messageId,
-        sentTimestamp: moment(),
+        sentTimestamp: Date.now(),
         ...media,
       };
       setMessages((prev: any) => [...prev, newMsg]);
@@ -182,6 +186,7 @@ console.log("mnop:",{locale})
     (text: string, media: any, isVisibile = true): void => {
       //  alert('hello')
       console.log("socket:", { socketSession });
+     
       setLoading(true);
       setIsMsgReceiving(true);
       // To disappear the example choices even if not clicked and msg sent directly
@@ -224,9 +229,9 @@ console.log("mnop:",{locale})
               position: "right",
               botUuid: currentUser?.id,
               payload: { text },
-              time: moment().valueOf(),
+              time: Date.now(),
               disabled: true,
-              repliedTimestamp: moment(),
+              repliedTimestamp: Date.now(),
             },
           ]);
         }

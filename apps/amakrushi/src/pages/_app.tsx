@@ -5,15 +5,16 @@ import "@fortawesome/fontawesome-svg-core/styles.css"; // import Font Awesome CS
 import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false; // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
 
-import ContextProvider from '../context/ContextProvider';
-import { ReactChildren, useEffect, useState } from 'react';
-import 'chatui/dist/index.css';
+import ContextProvider from "../context/ContextProvider";
+import { ReactChildren, useEffect, useState } from "react";
+import "chatui/dist/index.css";
 
-
-
-import { useCookies } from 'react-cookie';
-import { useRouter } from 'next/router';
+import { useCookies } from "react-cookie";
+import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
+
+import flagsmith from "flagsmith/isomorphic";
+import { FlagsmithProvider } from "flagsmith/react";
 
 const LaunchPage = dynamic(() => import("../components/LaunchPage"), {
   ssr: false,
@@ -29,8 +30,8 @@ function SafeHydrate({ children }: { children: ReactChildren }) {
   );
 }
 
-function MyApp({ Component, pageProps }: AppProps) {
-   const router=useRouter();
+const App=({ Component, pageProps ,flagsmithState}: AppProps & {flagsmithState:any}) =>{
+  const router = useRouter();
   const [launch, setLaunch] = useState(true);
   const [cookie] = useCookies();
   useEffect(() => {
@@ -40,19 +41,18 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   useEffect(() => {
-    if(router.pathname === '/login' || router.pathname.startsWith('/otp')){
+    if (router.pathname === "/login" || router.pathname.startsWith("/otp")) {
       // already logged in then send to home
-      if(cookie['access_token'] !== undefined){
-        router.push('/');
+      if (cookie["access_token"] !== undefined) {
+        router.push("/");
       }
-    }else {
+    } else {
       // not logged in then send to login page
-      if(cookie['access_token'] === undefined){
-        router.push('/login');
+      if (cookie["access_token"] === undefined) {
+        router.push("/login");
       }
     }
-  }, [cookie, router])
-  
+  }, [cookie, router]);
 
   if (launch) {
     return <LaunchPage />;
@@ -60,10 +60,14 @@ function MyApp({ Component, pageProps }: AppProps) {
     return (
       <ChakraProvider>
         <ContextProvider>
-          <div style={{height: '100%'}}>
+          <div style={{ height: "100%" }}>
             <NavBar />
             <SafeHydrate>
-              <Component {...pageProps} />
+              <FlagsmithProvider
+              FlagsmithProvider flagsmith={flagsmith} serverState={flagsmithState}
+              >
+                <Component {...pageProps} />
+              </FlagsmithProvider>
             </SafeHydrate>
           </div>
         </ContextProvider>
@@ -72,4 +76,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   }
 }
 
-export default MyApp;
+
+App.getInitialProps = async () => {
+  await flagsmith.init({ // fetches flags on the server and passes them to the App 
+      environmentID:"cEipWkGBoFT8xFwGHxteh5",
+  });
+  return { flagsmithState: flagsmith.getState() }
+}
+export default App;

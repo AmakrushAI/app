@@ -9,8 +9,6 @@ import {
   //@ts-ignore
 } from "chatui";
 
-import _ from "underscore";
-import moment from "moment";
 import React, { FC, ReactElement, useCallback, useContext } from "react";
 import { Button } from "react-bootstrap";
 import { toast } from "react-hot-toast";
@@ -21,6 +19,9 @@ import { Spinner } from "@chakra-ui/react";
 import { MdOutlineChevronRight } from "react-icons/md";
 import { AppContext } from "../../context";
 import { ChatMessageItemPropType } from "../../types";
+import { getUtcTimeformated } from "../../utils/getUtcTime";
+
+
 
 const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   currentUser,
@@ -110,13 +111,17 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   fontSize: "10px",
                 }}
               >
-                {moment
-                  .utc(
-                    content?.data?.sentTimestamp ||
-                      content?.data?.repliedTimestamp
-                  )
-                  .local()
-                  .format("DD/MM/YYYY : hh:mm")}
+                {
+                // moment
+                //   .utc(
+                //     content?.data?.sentTimestamp ||
+                //       content?.data?.repliedTimestamp
+                //   )
+                //   .local()
+                //   .format("DD/MM/YYYY : hh:mm")
+                getUtcTimeformated(content?.data?.sentTimestamp ||
+                    content?.data?.repliedTimestamp)
+                  }
               </span>
             </div>
           </Bubble>
@@ -166,13 +171,12 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 }}
               >
                 <span style={{ color: "var(--grey)", fontSize: "10px" }}>
-                  {moment
-                    .utc(
-                      content?.data?.sentTimestamp ||
-                        content?.data?.repliedTimestamp
-                    )
-                    .local()
-                    .format("DD/MM/YYYY : hh:mm")}
+                  {
+                  
+                  getUtcTimeformated(content?.data?.sentTimestamp ||
+                    content?.data?.repliedTimestamp)
+                  
+                    }
                 </span>
               </div>
             </div>
@@ -205,13 +209,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 }}
               >
                 <span style={{ color: "var(--grey)", fontSize: "10px" }}>
-                  {moment
-                    .utc(
-                      content?.data?.sentTimestamp ||
-                        content?.data?.repliedTimestamp
-                    )
-                    .local()
-                    .format("DD/MM/YYYY : hh:mm")}
+                  { getUtcTimeformated(content?.data?.sentTimestamp ||
+                    content?.data?.repliedTimestamp)}
                 </span>
               </div>
             </div>
@@ -248,13 +247,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 }}
               >
                 <span style={{ color: "var(--grey)", fontSize: "10px" }}>
-                  {moment
-                    .utc(
-                      content?.data?.sentTimestamp ||
-                        content?.data?.repliedTimestamp
-                    )
-                    .local()
-                    .format("DD/MM/YYYY : hh:mm")}
+                  { getUtcTimeformated(content?.data?.sentTimestamp ||
+                    content?.data?.repliedTimestamp)}
                 </span>
               </div>
             </div>

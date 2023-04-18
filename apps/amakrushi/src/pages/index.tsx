@@ -5,13 +5,23 @@ import { ColorModeScript } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useLocalization } from "../hooks/useLocalization";
 import Menu from "../components/menu";
+
+import { useFlags } from 'flagsmith/react';
 const ChatUiWindow = dynamic(
   () => import("../components/PhoneView/ChatWindow/ChatUiWindow"),
   { ssr: false }
 );
 
+
+
 const Home: NextPage  = () => {
   const t=useLocalization();
+
+  const flags = useFlags(['show_app_loader']); // only causes re-render if specified flag values / traits change
+  
+  console.log({flags})
+  if(flags?.show_app_loader?.enabled)
+  return <>Enabled</>
   return (
     <>
       <Head>
@@ -24,7 +34,8 @@ const Home: NextPage  = () => {
     
       <CookiesProvider>
         <div style={{position: 'fixed', width: '100%', bottom: '7vh', top: '75px'}}>
-        <ChatUiWindow />
+         <ChatUiWindow /> 
+      
         </div>
         <Menu />
       <ColorModeScript />

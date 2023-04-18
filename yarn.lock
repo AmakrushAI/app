@@ -6048,11 +6048,6 @@
   dependencies:
     "source-map" "^0.6.1"
 
-"@types/underscore@^1.11.4":
-  "integrity" "sha512-uO4CD2ELOjw8tasUrAhvnn2W4A0ZECOvMjCivJr4gA9pGgjv+qxKWY9GLTMVEK8ej85BxQOocUyE7hImmSQYcg=="
-  "resolved" "https://registry.npmjs.org/@types/underscore/-/underscore-1.11.4.tgz"
-  "version" "1.11.4"
-
 "@types/unist@*", "@types/unist@^2.0.0", "@types/unist@^2.0.2", "@types/unist@^2.0.3":
   "version" "2.0.6"
 
@@ -6647,7 +6642,6 @@
     "framer-motion" "^6.3.15"
     "js-packages" "*"
     "jsonwebtoken" "^8.5.1"
-    "moment" "^2.29.4"
     "next" "12.1.6"
     "react" "17.0.2"
     "react-alert" "^7.0.3"
@@ -6664,7 +6658,6 @@
     "react-toastify" "^9.0.5"
     "socket.io-client" "^4.5.1"
     "typescript" "^4.9.3"
-    "underscore" "^1.13.6"
     "web-vitals" "^2.1.4"
 
 "ansi-align@^3.0.0":
@@ -10297,6 +10290,11 @@
     "@firebase/storage" "0.11.2"
     "@firebase/storage-compat" "0.3.2"
     "@firebase/util" "1.9.3"
+
+"flagsmith@^3.18.3":
+  "integrity" "sha512-ja+Gd0nSSBSsUSvLG4/91tYI8bm1NZSDY0YkyVREl1E6L4p/bYNk1AYuuPTu4kr4cg9VjbggWIYw3Zq5dWFABA=="
+  "resolved" "https://registry.npmjs.org/flagsmith/-/flagsmith-3.18.3.tgz"
+  "version" "3.18.3"
 
 "flat-cache@^3.0.4":
   "version" "3.0.4"
@@ -13980,9 +13978,6 @@
   "integrity" "sha512-xV2bxeN6F7oYjZWTe/YPAy6MN2M+sL4u/Rlm2AHCIVGfo2p1yGmBHQ6vHehl4bRTZBdHu3TSkWdYgkwpYzAGSw=="
   "resolved" "https://registry.npmjs.org/modify-values/-/modify-values-1.0.1.tgz"
   "version" "1.0.1"
-
-"moment@^2.29.4":
-  "version" "2.29.4"
 
 "move-concurrently@^1.0.1":
   "version" "1.0.1"
