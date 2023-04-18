@@ -1,36 +1,33 @@
-import styles from "./index.module.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faHome,
-  faListDots,
-  faMessage,
-} from "@fortawesome/free-solid-svg-icons";
-
-import { useCookies } from "react-cookie";
-import { FC } from "react";
-import { useRouter } from "next/router";
+import styles from './index.module.css';
+import homeIcon from '../../assets/icons/home.svg';
+import messageIcon from '../../assets/icons/message-menu.svg';
+import menuIcon from '../../assets/icons/menu.svg';
+import Image from 'next/image';
+import { useCookies } from 'react-cookie';
+import { FC } from 'react';
+import { useRouter } from 'next/router';
 
 const Menu: FC = () => {
   const [cookies, setCookies] = useCookies();
-  const router=useRouter();
-  
-  const urlChanger =  (link: string) => {
-    if (cookies["access_token"] !== undefined) {
+  const router = useRouter();
+
+  const urlChanger = (link: string) => {
+    if (cookies['access_token'] !== undefined) {
       router.push(link);
     }
   };
 
   return (
     <div className={styles.menu}>
-      <button onClick={() => urlChanger("/")}>
-        <FontAwesomeIcon icon={faHome} color="white" />
-      </button>
-      <button onClick={() => urlChanger("/chats")}>
-        <FontAwesomeIcon icon={faMessage} color="white" />
-      </button>
-      <button onClick={() => urlChanger("/more")}>
-        <FontAwesomeIcon icon={faListDots} color="white" />
-      </button>
+      <div onClick={() => urlChanger('/')}>
+        <Image alt="" src={homeIcon} width={50} height={50} />
+      </div>
+      <div onClick={() => urlChanger('/chats')}>
+        <Image alt="" src={messageIcon} width={45} height={45} />
+      </div>
+      <div onClick={() => urlChanger('/more')}>
+        <Image alt="" src={menuIcon} width={50} height={50} />
+      </div>
     </div>
   );
 };

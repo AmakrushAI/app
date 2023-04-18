@@ -6,7 +6,6 @@ export default function Document() {
     <Html>
       <Head />
       <body>
-        {/* <ColorModeScript initialColorMode={theme.config.initialColorMode} /> */}
         <div id="modal_portal" />
         <Main />
         <NextScript />

@@ -34,7 +34,7 @@ const ChatUiWindow: React.FC = () => {
         .then((response) => {
           if (response.data === null) {
             throw "Invalid Access Token";
-             router.push("/login");
+            //  router.push("/login");
           }
         })
         .catch((err) => {
