@@ -32,11 +32,12 @@ const MorePage: React.FC = () => {
         userId: context?.socketSession?.userID
       })
         .then(response => {
+          console.log(response)
           toast.success("Rating submitted!")
         })
         .catch(error => {
           toast.error("Failed to submit rating.")
-          console.error(error);
+          console.log(error);
         });
     } else if (typeof r === "string") {
       axios.post('/api/proxy/feedback', {
@@ -52,9 +53,6 @@ const MorePage: React.FC = () => {
       });
     }
   }, []);
-  
-  
-
 
   if (!flags?.show_feedback_page?.enabled) {
     return <ComingSoonPage />;
