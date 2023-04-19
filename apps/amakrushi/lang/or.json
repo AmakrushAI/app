@@ -9,13 +9,13 @@
     "label.submit":"ଦାଖଲ କର |",
     "label.mobile_number":"ମୋବାଇଲ୍ ନମ୍ବର",
     "message.enter_mobile":"ମୋବାଇଲ୍ ନମ୍ବର ପ୍ରବେଶ କରନ୍ତୁ |",
-    "message.register_message":"ଯଦି ଆପଣ ପୂର୍ବରୁ ପଞ୍ଜୀକୃତ ହୋଇଛନ୍ତି ତେବେ ଲଗଇନ୍ କରିବାକୁ ଆପଣଙ୍କର ମୋବାଇଲ୍ ନମ୍ବର ବ୍ୟବହାର କରନ୍ତୁ |",
+    "message.register_message":"ଯୋଡି ଆପଣ ପୂର୍ବରୁ ପଞ୍ଜୀକୃତ ହୋଇଛନ୍ତି ତେବେ ଲଗଇନ୍ କରିବା ପାଇଁ ଆପଣଙ୍କର ମୋବାଇଲ ନମ୍ବର ବ୍ୟବହାର କରନ୍ତୁ |",
     "message.not_register_yet":"ଏପର୍ଯ୍ୟନ୍ତ ପଞ୍ଜୀକୃତ ହୋଇନାହିଁ | ?",
     "message.otp_verification":"OTP ଯାଞ୍ଚ |",
     "message.ask_ur_question":"ତୁମର ପ୍ରଶ୍ନ ପଚାର |",
     "message.otp_message":"ଏହା ଉପରେ ଆମେ ଆପଣଙ୍କୁ ଗୋଟିଏ ଥର ପାସୱାର୍ଡ ପଠାଇବୁ |",
-    "message.register_at_krushak":"କୃଷ୍ଣ ଓଡିଶାରେ ପଞ୍ଜିକରଣ କର |",
-    "message.example_one":"ଓଡିଶାରେ ବିଭିନ୍ନ ପ୍ରକାରର ମିଲେଟ୍ କ’ଣ ବ grown ିଥାଏ ?",
+    "message.register_at_krushak":"କୃଷକ ଓଡିଶାରେ ପଞ୍ଜୀକରଣ କରନ୍ତୁ |",
+    "message.example_one":"ଓଡ଼ିଶାରେ ଉତ୍ପାଦନ ହେଉଥିବା ବିଭିନ୍ନ ପ୍ରକାର ମିଲେଟ୍ ଗୁଡିକ କ'ଣ ?",
     "message.example_two":"ଆଖୁରେ ଟର୍ମାଇଟ୍ସର ଚିକିତ୍ସା ବିଷୟରେ ମୋତେ କିଛି କୁହନ୍ତୁ |",
     "message.example_three":"କୃଷକମାନେ ଓଡିଶାରେ ସରକାରୀ ଯୋଜନାରେ କିପରି ଆବେଦନ କରିପାରିବେ ?"
 }
