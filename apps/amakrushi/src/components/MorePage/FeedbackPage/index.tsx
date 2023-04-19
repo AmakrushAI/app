@@ -26,22 +26,23 @@ const MorePage: React.FC = () => {
   const submitReview = useCallback((r: number | string) => {
     console.log('submitReview running:', r)
     if (typeof r === "number") {
-      axios.post(`/api/proxy/feedback`, {
+      axios.post('/api/proxy/feedback', {
         rating: r,
         phoneNumber: localStorage.getItem('phoneNumber'),
-        userId: context?.socketSession?.userId
+        userId: context?.socketSession?.userID
       })
         .then(response => {
           toast.success("Rating submitted!")
         })
         .catch(error => {
           toast.error("Failed to submit rating.")
+          console.error(error);
         });
     } else if (typeof r === "string") {
-      axios.post(`/api/proxy/feedback`, {
+      axios.post('/api/proxy/feedback', {
         review: r,
         phoneNumber: localStorage.getItem('phoneNumber'),
-        userId: context?.socketSession?.userId
+        userId: context?.socketSession?.userID
       })
       .then(response => {
         toast.success("Review submitted!")

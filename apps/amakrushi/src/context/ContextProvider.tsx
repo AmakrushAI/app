@@ -39,7 +39,7 @@ const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, childr
   const [messages, setMessages] = useState<Array<any>>([getInitialMsgs(locale)]);
   const [socketSession, setSocketSession] = useState<any>();
   const timer1 = flagsmith.getValue('timer1', {fallback: 5000});
-  const timer2 = flagsmith.getValue('timer1', {fallback: 25000});
+  const timer2 = flagsmith.getValue('timer2', {fallback: 25000});
 
   const [isConnected, setIsConnected] = useState(socket.connected);
   console.log(messages);
