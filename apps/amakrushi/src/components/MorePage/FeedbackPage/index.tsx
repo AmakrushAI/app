@@ -26,7 +26,7 @@ const MorePage: React.FC = () => {
   const submitReview = useCallback((r: number | string) => {
     console.log('submitReview running:', r)
     if (typeof r === "number") {
-      axios.post(`${process.env.NEXT_PUBLC_FEEDBACK_URL}/feedback`, {
+      axios.post(`${process.env.NEXT_PUBLIC_FEEDBACK_URL}/feedback`, {
         rating: r,
         phoneNumber: localStorage.getItem('phoneNumber'),
         userId: context?.socketSession?.userId
@@ -38,7 +38,7 @@ const MorePage: React.FC = () => {
           toast.error("Failed to submit rating.")
         });
     } else if (typeof r === "string") {
-      axios.post(`${process.env.NEXT_PUBLC_FEEDBACK_URL}/feedback`, {
+      axios.post(`${process.env.NEXT_PUBLIC_FEEDBACK_URL}/feedback`, {
         review: r,
         phoneNumber: localStorage.getItem('phoneNumber'),
         userId: context?.socketSession?.userId
