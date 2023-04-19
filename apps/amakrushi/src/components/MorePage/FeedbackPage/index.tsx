@@ -2,7 +2,7 @@ import starIcon from '../../../assets/icons/star.svg';
 import starOutlineIcon from '../../../assets/icons/star-outline.svg';
 import Image from 'next/image';
 import styles from './index.module.css';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import Menu from '../../menu';
 //@ts-ignore
 import { analytics } from '../../../utils/firebase';
@@ -11,8 +11,10 @@ import ComingSoonPage from '../../coming-soon-page';
 import { useFlags } from 'flagsmith/react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { AppContext } from '../../../context';
 
 const MorePage: React.FC = () => {
+  const context = useContext(AppContext);
   const [rating, setRating] = useState(1);
   const [review, setReview] = useState('');
   const flags = useFlags(['show_feedback_page']);
@@ -26,7 +28,8 @@ const MorePage: React.FC = () => {
     if (typeof r === "number") {
       axios.post(`${process.env.NEXT_PUBLC_FEEDBACK_URL}/feedback`, {
         rating: r,
-        phoneNumber: localStorage.getItem('phone')
+        phoneNumber: localStorage.getItem('phoneNumber'),
+        userId: context?.socketSession?.userId
       })
         .then(response => {
           toast.success("Rating submitted!")
@@ -37,7 +40,8 @@ const MorePage: React.FC = () => {
     } else if (typeof r === "string") {
       axios.post(`${process.env.NEXT_PUBLC_FEEDBACK_URL}/feedback`, {
         review: r,
-        phoneNumber: localStorage.getItem('phone')
+        phoneNumber: localStorage.getItem('phoneNumber'),
+        userId: context?.socketSession?.userId
       })
       .then(response => {
         toast.success("Review submitted!")

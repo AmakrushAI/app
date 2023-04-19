@@ -17,7 +17,6 @@ import { IntlProvider } from "react-intl";
 import { getInitialMsgs } from "../utils/textUtility";
 import { useLocalization } from "../hooks";
 import toast from "react-hot-toast";
-import { useFlags } from "flagsmith/react";
 import flagsmith from "flagsmith/isomorphic";
 
 function loadMessages(locale: string) {
