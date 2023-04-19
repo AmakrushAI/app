@@ -13,7 +13,8 @@
     "NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID",
     "NEXT_PUBLIC_JWT_CERT",
     "ANALYZE",
-    "NEXT_PUBLIC_ENVIRONMENT_ID"
+    "NEXT_PUBLIC_ENVIRONMENT_ID",
+    "NEXT_PUBLC_FEEDBACK_URL"
   ],
 
   "globalDependencies": ["**/.env.*local"],
