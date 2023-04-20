@@ -21,7 +21,7 @@ const Home: NextPage  = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="white" />
         <meta name="UCI Web Channel" content="A project under C4GT" />
-        <title> {t("title")}</title>
+        <title> {t("label.title")}</title>
       </Head>
     
       <CookiesProvider>
