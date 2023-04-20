@@ -11,7 +11,6 @@ import { AppContext } from ".";
 
 import { send } from "../components/websocket";
 
-
 import { UserType } from "../types";
 import { IntlProvider } from "react-intl";
 import { getInitialMsgs } from "../utils/textUtility";

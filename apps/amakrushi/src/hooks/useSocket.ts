@@ -1,11 +1,13 @@
 "use client";
 import { useMemo } from "react";
 import { io } from "socket.io-client";
+import { useLocalStorage } from "./useLocalStorage";
 
 const URL = "wss://ts.gpt3.samagra.io";
 
 export const useSocket = () => {
-  const mobile = localStorage.getItem("mobile");
+
+  const [mobile] = useLocalStorage('mobile',null,false);
 
   return useMemo(
     () =>
