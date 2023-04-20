@@ -1,26 +1,69 @@
 .main {
   margin: 8px;
   min-height: 74vh;
+  overflow-x: hidden;
+  overflow-y: auto !important;
 }
 
 .title {
   margin-top: 4vh;
   margin-left: 2vh;
   font-family: 'Mulish-Bold';
-  font-size: 2.25rem;
+  font-size: 4.2vh;
   font-weight: 700;
   color: var(--secondarygreen);
 }
 
-.user{
+.listItem{
   display: flex;
   background-color: white;
-  padding: 10px;
-  margin: 10px 2px;
+  padding: 1vh;
+  margin: 1vh 0;
   align-items: center;
+}
+
+.bottomSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.manualButtons {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.submitButton {
+  font-size: 1.65vh !important;
+  color: white;
+  margin: 4vh auto 0 auto;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Mulish-regular';
+  width: fit-content;
+  padding: 1vh;
+  border: none ;
+  background-color: var(--secondarygreen) !important;
+}
+
+.langName {
+  color: var(--primaryblue);
+}
+
+.footerTitle {
+  margin-top: 2vh;
+  margin-left: 2vh;
+  font-family: 'Mulish-Bold';
+  font-size: 4.2vh;
+  font-weight: 700;
+  color: var(--secondarygreen);
 }
 
 .footer {
   font-weight: bold;
   margin-left: 2vh;
+  margin-top: 2vh;
+  font-size: 1.89vh;
 }

@@ -67,13 +67,13 @@ const MorePage: React.FC = () => {
               {Array.from({ length: 5 }, (_, index) => {
                 if (index + 1 <= rating) {
                   return (
-                    <div onClick={() => setRating(index + 1)} key={index}>
+                    <div onClick={() => setRating(index + 1)} key={index} className={styles.star}>
                       <Image src={starIcon} alt="" width={50} height={50} />
                     </div>
                   );
                 } else {
                   return (
-                    <div onClick={() => setRating(index + 1)} key={index}>
+                    <div onClick={() => setRating(index + 1)} key={index} className={styles.star}>
                       <Image
                         src={starOutlineIcon}
                         alt=""

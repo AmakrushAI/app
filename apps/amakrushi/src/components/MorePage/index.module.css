@@ -7,7 +7,7 @@
   margin-left: 2vh;
   margin-top: 4vh;
   font-family: 'Mulish-Bold';
-  font-size: 2.25rem;
+  font-size: 4.5vh;
   font-weight: 700;
   color: var(--secondarygreen);
 }
@@ -15,15 +15,15 @@
 .user{
   display: flex;
   background-color: white;
-  padding: 10px;
-  margin: 10px 2px;
+  padding: 1vh;
+  margin: 1vh 0;
   align-items: center;
 }
 
 .userInfo {
-  padding: 5px;
-  margin-left: 5%;
-  font-size: 1rem;
+  padding: 0.5vh;
+  margin-left: 2vh;
+  font-size: 2vh;
   height: 10vh;
   display: flex;
   flex-direction: column;
@@ -35,19 +35,22 @@
   flex-direction: column;
   justify-content: center;
   height: 8vh;
-  margin-left: 5%;
-  font-size: 1rem;
+  margin-left: 2vh;
+  font-size: 2vh;
 }
 
-.icon1 Image{
-  font-size: 3rem;
+.icon1 {
+  height: 5vh;
+  width: 5vh;
 }
 
-.icon2 Image {
-  font-size: 2rem;
+.icon2 {
+  height: 5vh;
+  width: 5vh;
 }
 
 .icon3{
-  font-size: 2rem;
+  height: 5vh;
+  width: 5vh;;
   margin-left: auto;
 }

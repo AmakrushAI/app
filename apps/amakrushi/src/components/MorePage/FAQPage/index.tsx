@@ -13,7 +13,7 @@ import ComingSoonPage from '../../coming-soon-page';
 
 const MorePage: React.FC = () => {
   const flags = useFlags(['show_faq_page']);
-  console.log(flags)
+  console.log(flags);
 
   useEffect(() => {
     //@ts-ignore
@@ -29,40 +29,52 @@ const MorePage: React.FC = () => {
           <div className={styles.title}>FAQs</div>
           <InputGroup>
             <InputLeftElement pointerEvents="none">
-              <Image src={searchIcon} alt="" width={30} height={30} />
+              <Image src={searchIcon} alt="" width={20} height={20} />
             </InputLeftElement>
             <Input type="text" placeholder="Search" />
           </InputGroup>
-          <div className={styles.user}>
+          <div className={styles.listItem}>
             <Select placeholder="List item">
               <option value="option1">Option 1</option>
               <option value="option2">Option 2</option>
               <option value="option3">Option 3</option>
             </Select>
           </div>
-          <div className={styles.user}>
+          <div className={styles.listItem}>
             <Select placeholder="List item">
               <option value="option1">Option 1</option>
               <option value="option2">Option 2</option>
               <option value="option3">Option 3</option>
             </Select>
           </div>
-          <div className={styles.user}>
+          <div className={styles.listItem}>
             <Select placeholder="List item">
               <option value="option1">Option 1</option>
               <option value="option2">Option 2</option>
               <option value="option3">Option 3</option>
             </Select>
           </div>
-          <div className={styles.user}>
+          <div className={styles.listItem}>
             <Select placeholder="List item">
               <option value="option1">Option 1</option>
               <option value="option2">Option 2</option>
               <option value="option3">Option 3</option>
             </Select>
           </div>
-          <div className={styles.title}>Dial 155333</div>
-          <div className={styles.footer}>To connect with call centre</div>
+          <section className={styles.bottomSection}>
+            <div className={styles.manualButtons}>
+              <button className={styles.submitButton}>
+                User Manual - &nbsp;{' '}
+                <span className={styles.langName}>English</span>
+              </button>
+              <button className={styles.submitButton}>
+                User Manual - &nbsp;{' '}
+                <span className={styles.langName}>Odia</span>
+              </button>
+            </div>
+            <div className={styles.footerTitle}>Dial 155333</div>
+            <div className={styles.footer}>To connect with call centre</div>
+          </section>
         </div>
         <Menu />
       </>

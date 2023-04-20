@@ -39,7 +39,7 @@ const MorePage: React.FC = () => {
 
         <div className={styles.user}>
           <div className={styles.icon1}>
-            <Image src={userCircleIcon} alt="" width={50} height={50} />
+            <Image src={userCircleIcon} alt="" layout='responsive' />
           </div>
           <div className={styles.userInfo}>
             <p style={{ fontWeight: 'bold' }}>Welcome</p>
@@ -50,46 +50,46 @@ const MorePage: React.FC = () => {
         </div>
         <div className={styles.user} onClick={() => router.push('/profile')}>
           <div className={styles.icon2}>
-            <Image src={userAltIcon} alt="" width={50} height={50} />
+            <Image src={userAltIcon} alt="" layout='responsive'/>
           </div>
           <div className={styles.userInfo2}>
             <p style={{ fontWeight: 'bold' }}>Profile</p>
           </div>
           <div className={styles.icon3}>
-            <Image src={rightIcon} alt="" width={50} height={50} />
+            <Image src={rightIcon} alt="" layout='responsive'/>
           </div>
         </div>
         <div className={styles.user} onClick={() => router.push('/faq')}>
           <div className={styles.icon2}>
-            <Image src={questionMarkIcon} alt="" width={50} height={50} />
+            <Image src={questionMarkIcon} alt="" layout='responsive' />
           </div>
           <div className={styles.userInfo2}>
             <p style={{ fontWeight: 'bold' }}>FAQs</p>
           </div>
           <div className={styles.icon3}>
-            <Image src={rightIcon} alt="" width={50} height={50} />
+            <Image src={rightIcon} alt="" layout='responsive' />
           </div>
         </div>
         <div className={styles.user} onClick={() => router.push('/feedback')}>
           <div className={styles.icon2}>
-            <Image src={thumbsUpIcon} alt="" width={40} height={40} />
+            <Image src={thumbsUpIcon} alt="" layout='responsive' />
           </div>
           <div className={styles.userInfo2}>
             <p style={{ fontWeight: 'bold' }}>Feedback</p>
           </div>
           <div className={styles.icon3}>
-            <Image src={rightIcon} alt="" width={50} height={50} />
+            <Image src={rightIcon} alt="" layout='responsive' />
           </div>
         </div>
         <div className={styles.user} onClick={() => logout()}>
           <div className={styles.icon2}>
-            <Image src={logoutIcon} alt="" width={40} height={40} />
+            <Image src={logoutIcon} alt="" layout='responsive' />
           </div>
           <div className={styles.userInfo2}>
             <p style={{ fontWeight: 'bold' }}>Logout</p>
           </div>
           <div className={styles.icon3}>
-            <Image src={rightIcon} alt="" width={50} height={50} />
+            <Image src={rightIcon} alt="" layout='responsive' />
           </div>
         </div>
       </div>

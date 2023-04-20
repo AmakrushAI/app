@@ -20,13 +20,13 @@ const Menu: FC = () => {
   return (
     <div className={styles.menu}>
       <div onClick={() => urlChanger('/')}>
-        <Image alt="" src={homeIcon} width={50} height={50} />
+        <Image alt="" src={homeIcon} layout='responsive' />
       </div>
       <div onClick={() => urlChanger('/chats')}>
-        <Image alt="" src={messageIcon} width={45} height={45} />
+        <Image alt="" src={messageIcon} layout='responsive' />
       </div>
       <div onClick={() => urlChanger('/more')}>
-        <Image alt="" src={menuIcon} width={50} height={50} />
+        <Image alt="" src={menuIcon} layout='responsive' />
       </div>
     </div>
   );
