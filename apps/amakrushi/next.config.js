@@ -3,8 +3,7 @@
 const nextConfig = {
   reactStrictMode: false,
   compiler: {
-    // eslint-disable-next-line turbo/no-undeclared-env-vars
-    removeConsole:  process.env.NODE_ENV === "production" || process.env.NEXT_PUBLIC_ENV === "PRODUCTION"
+    removeConsole:  true
   },
 }
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
