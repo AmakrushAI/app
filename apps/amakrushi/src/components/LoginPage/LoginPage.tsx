@@ -34,6 +34,7 @@ const LoginPage: React.FC = () => {
         { method: 'GET' }
       ).then((response) => {
         if (response.status === 200) {
+          localStorage.setItem('mobile',input)
           router.push({ pathname: '/otp', query: { state: input } });
         } else {
           toast.error('OTP not sent');

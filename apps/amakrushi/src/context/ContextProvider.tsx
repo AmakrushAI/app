@@ -88,7 +88,7 @@ const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, childr
 
   const onMessageReceived = useCallback(
     (msg: any): void => {
-      console.log("socket ss:", { msg });
+     
       setLoading(false);
       setIsMsgReceiving(false);
       // @ts-ignore
