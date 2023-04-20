@@ -82,7 +82,7 @@ const OTPpage: React.FC = () => {
 
   return (
     <div className={styles.main}>
-      <div className={styles.title}>{t('title')}</div>
+      <div className={styles.title}>{t('label.title')}</div>
       <Box
         backgroundColor="var(--bg-color) !important"
         width="340px"

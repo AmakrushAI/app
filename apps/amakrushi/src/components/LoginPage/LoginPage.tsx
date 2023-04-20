@@ -50,7 +50,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className={`${styles.main}`}>
-      <div className={styles.title}>{t('title')}</div>
+      <div className={styles.title}>{t('label.title')}</div>
 
       <div className={styles.body}>
         <h1>{t('label.welcome')}</h1>

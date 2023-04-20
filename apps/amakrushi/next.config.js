@@ -26,4 +26,5 @@ module.exports = withBundleAnalyzer({
     locales: ['or','en'],
     defaultLocale: 'en',
   },
+  removeConsole: process.env.NODE_ENV === "production" || process.env.NEXT_PUBLIC_ENV === "PRODUCTION"
 })

@@ -11,11 +11,11 @@ import { AppContext } from ".";
 
 import { send } from "../components/websocket";
 
-import { socket } from "../socket";
+
 import { UserType } from "../types";
 import { IntlProvider } from "react-intl";
 import { getInitialMsgs } from "../utils/textUtility";
-import { useLocalization } from "../hooks";
+import { useLocalization, useSocket } from "../hooks";
 import toast from "react-hot-toast";
 import { useFlags } from "flagsmith/react";
 import flagsmith from "flagsmith/isomorphic";
@@ -33,6 +33,8 @@ function loadMessages(locale: string) {
 
 const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, children: ReactElement }> = ({ locale, children, localeMsgs, setLocale }) => {
   const t = useLocalization();
+  const socket=useSocket();
+ 
   const [users, setUsers] = useState<UserType[]>([]);
   const [currentUser, setCurrentUser] = useState<UserType>();
   const [loading, setLoading] = useState(false);
@@ -46,15 +48,15 @@ const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, childr
   console.log(messages);
 
   useEffect(() => { },)
-  const connect = (): void => {
+  const connect = useCallback((): void => {
     console.log("socket: socket.connect triggered");
     socket.connect();
-  };
-  console.log("mnop:", { locale })
+  },[socket]);
+  
 
   useEffect(() => {
     if (typeof window !== "undefined" && !isConnected) connect();
-  }, [isConnected]);
+  }, [connect, isConnected]);
 
 
 
@@ -149,7 +151,7 @@ const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, childr
     toast.error(exception?.message);
   }, []);
 
-  console.log("socket:", { socketSession });
+  
   useEffect(() => {
     function onConnect(): void {
       console.log("socket:  onConnect callback");
@@ -186,8 +188,7 @@ const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, childr
 
   const sendMessage = useCallback(
     (text: string, media: any, isVisibile = true): void => {
-      //  alert('hello')
-      console.log("socket:", { socketSession });
+     
 
       setLoading(true);
       setIsMsgReceiving(true);
@@ -195,8 +196,8 @@ const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, childr
       if (messages?.[0]?.exampleOptions) {
         setMessages([]);
       }
-      //@ts-ignore
-      send(text, socketSession, null, currentUser, socket, null);
+     
+      send({text, socketSession,  socket});
       if (isVisibile)
         if (media) {
           if (media.mimeType.slice(0, 5) === "image") {
@@ -223,8 +224,6 @@ const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, childr
           //@ts-ignore
           setMessages((prev: any) => [
             ...prev.map((prevMsg: any) => ({ ...prevMsg, disabled: true })),
-
-            // ..._.map(prev, (prevMsg) => ({ ...prevMsg, disabled: true })),
             {
               username: "state.username",
               text: text,
@@ -238,7 +237,7 @@ const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, childr
           ]);
         }
     },
-    [currentUser, messages, socketSession]
+    [currentUser, messages, socket, socketSession]
   );
 
   useEffect(() => {
