@@ -10,7 +10,7 @@ const Login: NextPage = () => {
   return (
     <React.Fragment>
       <Head>
-      <title>{t("title")}</title>
+      <title>{t("label.title")}</title>
       </Head>
       <LoginPage />
     </React.Fragment>

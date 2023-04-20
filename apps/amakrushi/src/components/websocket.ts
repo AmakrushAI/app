@@ -1,19 +1,24 @@
-import { socket } from '../socket';
+import { Socket } from 'socket.io-client';
 
-export const send = (msg: any, session: any, accessToken: any,toUser: {name: string, number: string | null},sockets:any,media:any) => {
-console.log("abcd:",{msg,session,socket})
-  
+
+type SendType={
+  text:string;
+  socketSession:{userID:string;socketID:string},
+  socket:Socket
+}
+
+export const send = ({text, socketSession:session,  socket}:SendType) => {
     socket.emit("botRequest", {
       content: {
-        text: msg,
+        text,
         userId: session.userID,
         appId: "AKAI_App_Id",
         channel: "AKAI",
         from: session.socketID,
         context: null,
-        accessToken: accessToken,
+        accessToken: null,
       },
-      to: `akai:7398050181`, 
+      to: `akai:${localStorage.getItem('mobile')}`, 
     });
   
 }

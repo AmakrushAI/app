@@ -7,21 +7,19 @@ import {
   FileCard,
   Video,
   //@ts-ignore
-} from 'chatui';
+} from "chatui";
 
 import React, { FC, ReactElement, useCallback, useContext } from "react";
 import { Button } from "react-bootstrap";
 import { toast } from "react-hot-toast";
 
-import styles from './index.module.css';
+import styles from "./index.module.css";
 
 import { Spinner } from "@chakra-ui/react";
-import rightIcon from '../../assets/icons/right.svg'
+import rightIcon from "../../assets/icons/right.svg";
 import { AppContext } from "../../context";
 import { ChatMessageItemPropType } from "../../types";
-import { getUtcTimeformated } from "../../utils/getUtcTime";
-
-
+import { getFormatedTime } from "../../utils/getUtcTime";
 
 const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   currentUser,
@@ -30,30 +28,21 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
 }) => {
   const context = useContext(AppContext);
 
-  const handleSend = useCallback(
-    (type: string, val: any) => {
-      if (type === 'text' && val.trim()) {
-        onSend(val, null, true, currentUser);
-      }
-    },
-    [onSend, currentUser]
-  );
-
   const getLists = useCallback(
     ({ choices, isDisabled }: { choices: any; isDisabled: boolean }) => {
-      console.log('qwer12:', { choices, isDisabled });
+      console.log("qwer12:", { choices, isDisabled });
       return (
         <List className={`${styles.list}`}>
-          {  choices?.map((choice:any, index:string)  => (
-          // {_.map(choices ?? [], (choice, index) => (
+          {choices?.map((choice: any, index: string) => (
+            // {_.map(choices ?? [], (choice, index) => (
             <ListItem
               key={`${index}_${choice?.key}`}
               className={`${styles.onHover} ${styles.listItem}`}
               onClick={(e: any): void => {
                 e.preventDefault();
-                console.log('qwer12 trig', { key: choice.key, isDisabled });
+                console.log("qwer12 trig", { key: choice.key, isDisabled });
                 if (isDisabled) {
-                  toast.error('Cannot answer again');
+                  toast.error("Cannot answer again");
                 } else {
                   if (context?.messages?.[0]?.exampleOptions) {
                     context?.setMessages([]);
@@ -81,9 +70,9 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   const { content, type } = message;
 
   switch (type) {
-    case 'loader':
+    case "loader":
       return <Spinner />;
-    case 'text':
+    case "text":
       return (
         <>
           <Bubble type="text">
@@ -91,18 +80,20 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
               className="onHover"
               style={{
                 fontWeight: 600,
-                fontSize: '1rem',
+                fontSize: "1rem",
                 color:
-                  content?.data?.position === 'right' ? 'white' : 'var(--font)',
-              }}>
+                  content?.data?.position === "right" ? "white" : "var(--font)",
+              }}
+            >
               {content.text}
             </span>
             <div
               style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'self-end',
-              }}>
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "self-end",
+              }}
+            >
               <span
                 style={{
                   color:
@@ -112,47 +103,42 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   fontSize: "10px",
                 }}
               >
-                {
-                // moment
-                //   .utc(
-                //     content?.data?.sentTimestamp ||
-                //       content?.data?.repliedTimestamp
-                //   )
-                //   .local()
-                //   .format("DD/MM/YYYY : hh:mm")
-                getUtcTimeformated(content?.data?.sentTimestamp ||
-                    content?.data?.repliedTimestamp)
-                  }
+                {getFormatedTime(
+                  content?.data?.sentTimestamp ||
+                    content?.data?.repliedTimestamp
+                )}
               </span>
             </div>
           </Bubble>
-          {content?.data?.position === 'right' && context?.loading && (
+          {content?.data?.position === "right" && context?.loading && (
             <div
               style={{
-                marginRight: 'auto',
-                display: 'flex',
-                position: 'absolute',
+                marginRight: "auto",
+                display: "flex",
+                position: "absolute",
                 bottom: 0,
                 left: 0,
-              }}></div>
+              }}
+            ></div>
           )}
         </>
       );
 
-    case 'image': {
+    case "image": {
       const url = content?.data?.payload?.media?.url || content?.data?.imageUrl;
       return (
         <>
-          {content?.data?.position === 'left' && (
+          {content?.data?.position === "left" && (
             <div
               style={{
-                width: '40px',
-                marginRight: '4px',
-                textAlign: 'center',
-              }}></div>
+                width: "40px",
+                marginRight: "4px",
+                textAlign: "center",
+              }}
+            ></div>
           )}
           <Bubble type="image">
-            <div style={{ padding: '7px' }}>
+            <div style={{ padding: "7px" }}>
               <Image
                 src={url}
                 width="299"
@@ -170,12 +156,10 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 }}
               >
                 <span style={{ color: "var(--grey)", fontSize: "10px" }}>
-                  {
-                  
-                  getUtcTimeformated(content?.data?.sentTimestamp ||
-                    content?.data?.repliedTimestamp)
-                  
-                    }
+                  {getFormatedTime(
+                    content?.data?.sentTimestamp ||
+                      content?.data?.repliedTimestamp
+                  )}
                 </span>
               </div>
             </div>
@@ -184,20 +168,21 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
       );
     }
 
-    case 'file': {
+    case "file": {
       const url = content?.data?.payload?.media?.url || content?.data?.fileUrl;
       return (
         <>
-          {content?.data?.position === 'left' && (
+          {content?.data?.position === "left" && (
             <div
               style={{
-                width: '40px',
-                marginRight: '4px',
-                textAlign: 'center',
-              }}></div>
+                width: "40px",
+                marginRight: "4px",
+                textAlign: "center",
+              }}
+            ></div>
           )}
           <Bubble type="image">
-            <div style={{ padding: '7px' }}>
+            <div style={{ padding: "7px" }}>
               <FileCard file={url} extension="pdf" />
               <div
                 style={{
@@ -207,8 +192,10 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 }}
               >
                 <span style={{ color: "var(--grey)", fontSize: "10px" }}>
-                  { getUtcTimeformated(content?.data?.sentTimestamp ||
-                    content?.data?.repliedTimestamp)}
+                  {getFormatedTime(
+                    content?.data?.sentTimestamp ||
+                      content?.data?.repliedTimestamp
+                  )}
                 </span>
               </div>
             </div>
@@ -217,20 +204,21 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
       );
     }
 
-    case 'video': {
+    case "video": {
       const url = content?.data?.payload?.media?.url || content?.data?.videoUrl;
       return (
         <>
-          {content?.data?.position === 'left' && (
+          {content?.data?.position === "left" && (
             <div
               style={{
-                width: '40px',
-                marginRight: '4px',
-                textAlign: 'center',
-              }}></div>
+                width: "40px",
+                marginRight: "4px",
+                textAlign: "center",
+              }}
+            ></div>
           )}
           <Bubble type="image">
-            <div style={{ padding: '7px' }}>
+            <div style={{ padding: "7px" }}>
               <Video
                 cover="https://uxwing.com/wp-content/themes/uxwing/download/video-photography-multimedia/video-icon.png"
                 src={url}
@@ -244,8 +232,10 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 }}
               >
                 <span style={{ color: "var(--grey)", fontSize: "10px" }}>
-                  { getUtcTimeformated(content?.data?.sentTimestamp ||
-                    content?.data?.repliedTimestamp)}
+                  {getFormatedTime(
+                    content?.data?.sentTimestamp ||
+                      content?.data?.repliedTimestamp
+                  )}
                 </span>
               </div>
             </div>
@@ -253,15 +243,15 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
         </>
       );
     }
-    case 'options': {
-      console.log('qwe12:', { content });
+    case "options": {
+      console.log("qwe12:", { content });
       return (
         <>
           {/* <div
             style={{ width: "95px", marginRight: "4px", textAlign: "center" }}
           ></div> */}
           <Bubble type="text" className={styles.textBubble}>
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: "flex" }}>
               <span className={styles.optionsText}>
                 {content?.data?.payload?.text}
               </span>
