@@ -4,7 +4,7 @@ const nextConfig = {
   reactStrictMode: false,
   compiler: {
     // eslint-disable-next-line turbo/no-undeclared-env-vars
-    removeConsole: process.env.NODE_ENV === "production"
+    removeConsole:  process.env.NODE_ENV === "production" || process.env.NEXT_PUBLIC_ENV === "PRODUCTION"
   },
 }
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
@@ -25,6 +25,5 @@ module.exports = withBundleAnalyzer({
   i18n: {
     locales: ['or','en'],
     defaultLocale: 'en',
-  },
-  removeConsole: process.env.NODE_ENV === "production" || process.env.NEXT_PUBLIC_ENV === "PRODUCTION"
+  }
 })
