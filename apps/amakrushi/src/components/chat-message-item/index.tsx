@@ -9,14 +9,16 @@ import {
   //@ts-ignore
 } from "chatui";
 
-import React, { FC, ReactElement, useCallback, useContext } from "react";
+import React, { FC, ReactElement, useCallback, useContext, useState } from "react";
 import { Button } from "react-bootstrap";
 import { toast } from "react-hot-toast";
+
 import styles from "./index.module.css";
+
 import { Spinner } from "@chakra-ui/react";
+import RightIcon from '../../assets/icons/right.jsx';
 import MsgThumbsUp from '../../assets/icons/msg-thumbs-up.jsx';
 import MsgThumbsDown from '../../assets/icons/msg-thumbs-down.jsx';
-import RightIcon from '../../assets/icons/right.jsx';
 import { AppContext } from "../../context";
 import { ChatMessageItemPropType } from "../../types";
 import { getFormatedTime } from "../../utils/getUtcTime";
@@ -113,14 +115,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   fontSize: '10px',
                 }}>
                 {
-                  // moment
-                  //   .utc(
-                  //     content?.data?.sentTimestamp ||
-                  //       content?.data?.repliedTimestamp
-                  //   )
-                  //   .local()
-                  //   .format("DD/MM/YYYY : hh:mm")
-                  getUtcTimeformated(
+                  getFormatedTime(
                     content?.data?.sentTimestamp ||
                       content?.data?.repliedTimestamp
                   )
