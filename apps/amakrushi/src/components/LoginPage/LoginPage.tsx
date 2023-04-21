@@ -34,6 +34,7 @@ const LoginPage: React.FC = () => {
         { method: 'GET' }
       ).then((response) => {
         if (response.status === 200) {
+          localStorage.setItem('mobile',input)
           router.push({ pathname: '/otp', query: { state: input } });
         } else {
           toast.error('OTP not sent');
@@ -49,7 +50,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className={`${styles.main}`}>
-      <div className={styles.title}>{t('title')}</div>
+      <div className={styles.title}>{t('label.title')}</div>
 
       <div className={styles.body}>
         <h1>{t('label.welcome')}</h1>
