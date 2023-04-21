@@ -1,6 +1,4 @@
-import pathFile from "path";
 const jwt = require("jsonwebtoken");
-const fs = require("fs");
 
 export default function handler(req, res) {
   switch (req.method) {

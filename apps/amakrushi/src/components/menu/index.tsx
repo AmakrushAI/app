@@ -22,7 +22,7 @@ const Menu: FC = () => {
       <div onClick={() => urlChanger('/')}>
         <Image alt="" src={homeIcon} layout='responsive' />
       </div>
-      <div onClick={() => urlChanger('/chats')}>
+      <div onClick={() => urlChanger('/history')}>
         <Image alt="" src={messageIcon} layout='responsive' />
       </div>
       <div onClick={() => urlChanger('/more')}>

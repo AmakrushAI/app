@@ -54,7 +54,6 @@ const ChatUiWindow: React.FC = () => {
     },
     [context]
   );
-
   const normalizeMsgs = useMemo(
     () =>
       context?.messages?.map((msg: any) => ({

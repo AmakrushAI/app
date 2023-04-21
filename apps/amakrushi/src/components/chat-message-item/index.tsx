@@ -143,7 +143,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 </div>
               </div>
               &nbsp;
-              <p>was this helpful?</p>
+              <p>Was this helpful?</p>
             </div>
           )}
         </div>

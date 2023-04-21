@@ -1,12 +1,19 @@
 .chatContainer {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   cursor: pointer;
   margin: 1vh;
   height: max-content;
   background-color: var(--bg-color);
   border-bottom: 1px solid var(--font);
   padding: 1.5vh;
+}
+
+.sessionContainer{
+  display: flex;
+  align-items: center;
+  flex: 6;
 }
 
 .messageIconContainer {
@@ -21,6 +28,7 @@
 }
 
 .deleteIconContainer {
+  flex: 1;
   height: 5vh;
   width: 5vh;
 }
