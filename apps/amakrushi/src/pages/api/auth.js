@@ -1,4 +1,6 @@
+import pathFile from "path";
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
 
 export default function handler(req, res) {
   switch (req.method) {
@@ -10,7 +12,7 @@ export default function handler(req, res) {
   }
   
   function authenticate() {
-    const cert = process.env.NEXT_PUBLIC_JWT_CERT;
+    const cert = fs.readFileSync(pathFile.resolve("", "./jwt.pem"));
     try {
       const decoded = jwt.verify(req.query.token, cert, {
         algorithms: ["RS256"],

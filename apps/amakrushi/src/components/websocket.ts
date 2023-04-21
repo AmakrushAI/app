@@ -6,8 +6,8 @@ type SendType={
   socket:Socket
 }
 
-export const send = ({text, socketSession:session, socket}:SendType) => {
-    socket?.emit("botRequest", {
+export const send = ({text, socketSession:session,  socket}:SendType) => {
+    socket.emit("botRequest", {
       content: {
         text,
         userId: session.userID,

@@ -15,7 +15,9 @@
     "ANALYZE",
     "NEXT_PUBLIC_ENVIRONMENT_ID",
     "NEXT_PUBLIC_FEEDBACK_URL",
-    "NEXT_PUBLIC_SOCKET_URL"
+    "NEXT_PUBLIC_SOCKET_URL",
+    "NODE_ENV",
+    "NEXT_PUBLIC_ENV"
   ],
 
   "globalDependencies": ["**/.env.*local"],
