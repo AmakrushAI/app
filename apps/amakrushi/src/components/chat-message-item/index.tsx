@@ -84,7 +84,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
               }}>
               <div className="onHover" style={{ display: 'flex' }}>
                 <div>{choice.text}</div>
-                <RightIcon width="5.5vh" color="var(--secondarygreen)" />
+                <div style={{marginLeft: 'auto'}}><RightIcon width="5.5vh" color="var(--secondarygreen)" /></div>
               </div>
             </ListItem>
           ))}
