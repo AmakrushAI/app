@@ -22,7 +22,7 @@ const Chat: NextPage = () => {
           position: 'fixed',
           width: '100%',
           bottom: '7vh',
-          top: '75px',
+          top: '70px',
         }}>
         <ChatUiWindow />
       </div>

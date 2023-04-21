@@ -34,6 +34,7 @@ const ChatItem: React.FC<ChatItemPropsType> = ({ name, messages }) => {
 
       // Update localStorage with the deleted session
       localStorage.setItem('history', JSON.stringify(newHistory));
+      router.push('/history');
     }
   }, []);
 
