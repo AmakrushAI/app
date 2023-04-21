@@ -1,8 +1,26 @@
 .main {
-  margin: 8px;
-  min-height: 74vh;
+  margin: 8px 1px 8px 8px;
   overflow-x: hidden;
-  overflow-y: auto !important;
+  overflow-y: scroll !important;
+  height: 80vh;
+}
+.main::-webkit-scrollbar {
+  width: 4px;
+  height: 6px;
+}
+.main::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background: rgba(0,0,0,0.1);
+}
+.main::-webkit-scrollbar-thumb{
+  border-radius: 10px;
+  background: rgba(0,0,0,0.2);
+}
+.main::-webkit-scrollbar-thumb:hover{
+  background: rgba(0,0,0,0.4);
+}
+.main::-webkit-scrollbar-thumb:active{
+  background: rgba(0,0,0,.9);
 }
 
 .title {
@@ -14,12 +32,8 @@
   color: var(--secondarygreen);
 }
 
-.listItem{
-  display: flex;
-  background-color: white;
-  padding: 1vh;
-  margin: 1vh 0;
-  align-items: center;
+.accordionItem{
+  margin-top: 1vh;
 }
 
 .bottomSection {

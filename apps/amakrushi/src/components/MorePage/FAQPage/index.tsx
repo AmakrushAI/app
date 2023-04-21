@@ -1,6 +1,19 @@
 import { useEffect, useState } from 'react';
 import styles from './index.module.css';
-import { Input, InputGroup, InputLeftElement, Select } from '@chakra-ui/react';
+import {
+  Box,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Select,
+} from '@chakra-ui/react';
+import {
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+} from '@chakra-ui/react';
 import searchIcon from '../../../assets/icons/search.svg';
 import Image from 'next/image';
 import Menu from '../../menu';
@@ -21,6 +34,7 @@ const MorePage: React.FC = () => {
     axios
       .get(`${process.env.NEXT_PUBLIC_BASE_URL}/faq`)
       .then((response) => {
+        console.log('here', response.data);
         setFaqData(response.data);
       })
       .catch((error) => {
@@ -41,13 +55,23 @@ const MorePage: React.FC = () => {
             </InputLeftElement>
             <Input type="text" placeholder="Search" />
           </InputGroup>
-          {faqData.map((item, idx) => (
-            <div key={idx} className={styles.listItem}>
-              <Select placeholder="List item">
-                <option>{item}</option>
-              </Select>
-            </div>
-          ))}
+          <Accordion defaultIndex={[0]} allowMultiple>
+            {faqData.map((faq, idx) => (
+              <AccordionItem key={idx} className={styles.accordionItem}>
+                <h2>
+                  <AccordionButton>
+                    <Box as="span" flex="1" textAlign="left">
+                      {faq.question}
+                    </Box>
+                    <AccordionIcon />
+                  </AccordionButton>
+                </h2>
+                <AccordionPanel pb={4}>
+                  {faq.answer}
+                </AccordionPanel>
+              </AccordionItem>
+            ))}
+          </Accordion>
           <section className={styles.bottomSection}>
             <div className={styles.manualButtons}>
               <button className={styles.submitButton}>
