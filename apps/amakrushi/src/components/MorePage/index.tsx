@@ -4,9 +4,9 @@ import { useRouter } from 'next/router';
 import logoutIcon from '../../assets/icons/logout.svg';
 import userCircleIcon from '../../assets/icons/user-circle.svg';
 import userAltIcon from '../../assets/icons/user-alt.svg';
-import rightIcon from '../../assets/icons/right.svg';
 import questionMarkIcon from '../../assets/icons/question-mark.svg';
 import thumbsUpIcon from '../../assets/icons/thumbs-up.svg';
+import RightIcon from '../../assets/icons/right.jsx';
 import Image from 'next/image';
 import { useCookies } from 'react-cookie';
 import Menu from '../menu';
@@ -56,7 +56,7 @@ const MorePage: React.FC = () => {
             <p style={{ fontWeight: 'bold' }}>Profile</p>
           </div>
           <div className={styles.icon3}>
-            <Image src={rightIcon} alt="" layout='responsive'/>
+          <RightIcon width="5.5vh" color="black" />
           </div>
         </div>
         <div className={styles.user} onClick={() => router.push('/faq')}>
@@ -67,7 +67,7 @@ const MorePage: React.FC = () => {
             <p style={{ fontWeight: 'bold' }}>FAQs</p>
           </div>
           <div className={styles.icon3}>
-            <Image src={rightIcon} alt="" layout='responsive' />
+          <RightIcon width="5.5vh" color="black" />
           </div>
         </div>
         <div className={styles.user} onClick={() => router.push('/feedback')}>
@@ -78,7 +78,7 @@ const MorePage: React.FC = () => {
             <p style={{ fontWeight: 'bold' }}>Feedback</p>
           </div>
           <div className={styles.icon3}>
-            <Image src={rightIcon} alt="" layout='responsive' />
+          <RightIcon width="5.5vh" color="black" />
           </div>
         </div>
         <div className={styles.user} onClick={() => logout()}>
@@ -89,7 +89,7 @@ const MorePage: React.FC = () => {
             <p style={{ fontWeight: 'bold' }}>Logout</p>
           </div>
           <div className={styles.icon3}>
-            <Image src={rightIcon} alt="" layout='responsive' />
+            <RightIcon width="5.5vh" color="black" />
           </div>
         </div>
       </div>

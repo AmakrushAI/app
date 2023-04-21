@@ -9,10 +9,28 @@
   background: var(--grey);
 }
 
-.question {
-  border: 2px solid var(--lightgrey) !important;
-  border-radius: 5px;
-  padding: 2px;
+.msgFeedback {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+}
+
+.msgFeedbackIcons {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: white;
+  height: 26px;
+  width: 60px;
+  border: 1px solid var(--secondarygreen);
+  border-radius: 30px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.msgFeedback p {
+  font-family: Mulish-bold;
+  color: var(--font);
+  font-size: 11px;
 }
 
 .p {

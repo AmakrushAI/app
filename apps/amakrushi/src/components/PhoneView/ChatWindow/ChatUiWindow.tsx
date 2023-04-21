@@ -77,7 +77,7 @@ const ChatUiWindow: React.FC = () => {
 
   const placeholder=useMemo(()=>t('message.ask_ur_question'),[t])
   return (
-    <div style={{ height: "80vh", width: "100%" }}>
+    <div style={{ height: "100%", width: "100%" }}>
       {/* <FullScreenLoader loading={loading} /> */}
       <Chat
         btnColor='var(--secondarygreen)'

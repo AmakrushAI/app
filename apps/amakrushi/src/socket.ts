@@ -1,7 +1,6 @@
 import { io } from 'socket.io-client';
 
-
-const URL =  "wss://ts.gpt3.samagra.io" ;
+const URL =  process.env.NEXT_PUBLIC_SOCKET_URL ;
 
 export const socket = io(URL, {
 	// transportOptions: {

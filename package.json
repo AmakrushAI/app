@@ -14,9 +14,9 @@
     "watch": "lerna run watch --parallel"
   },
   "devDependencies": {
+    "concurrently": "^8.0.1",
     "eslint-config-custom": "*",
     "lerna": "^6.6.1",
-    "concurrently": "^8.0.1",
     "prettier": "latest",
     "turbo": "latest"
   },
