@@ -29,7 +29,7 @@ const MorePage: React.FC = () => {
       axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/feedback`, {
         rating: r,
         phoneNumber: localStorage.getItem('phoneNumber'),
-        userId: `akaipwa:${localStorage.getItem('phoneNumber')}`
+        userId: context?.socketSession?.userID,
       })
         .then(response => {
           toast.success("Rating submitted!");
@@ -41,7 +41,7 @@ const MorePage: React.FC = () => {
       axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/feedback`, {
         review: r,
         phoneNumber: localStorage.getItem('phoneNumber'),
-        userId: `akaipwa:${localStorage.getItem('phoneNumber')}`
+        userId: context?.socketSession?.userID,
       })
       .then(response => {
         toast.success("Review submitted!")

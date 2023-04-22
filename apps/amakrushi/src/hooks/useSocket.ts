@@ -12,16 +12,16 @@ export const useSocket = () => {
   return useMemo(
     () =>
       io(URL, {
-        // transportOptions: {
-        // 	polling: {
-        // 		extraHeaders: {
-        // 			Authorization: `` ,
-        // 			channel: 'akai'
-        // 		}
-        // 	}
-        // },
+        transportOptions: {
+        	polling: {
+        		extraHeaders: {
+        			Authorization: `Bearer ${localStorage.getItem('auth')}`,
+        			channel: 'akai'
+        		}
+        	}
+        },
         query: {
-          deviceId: `phone:${mobile}`,
+          deviceId: `akai:${mobile}`,
         },
         autoConnect: false,
       }),

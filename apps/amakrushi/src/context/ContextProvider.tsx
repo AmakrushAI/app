@@ -44,7 +44,6 @@ const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, childr
   const timer2 = flagsmith.getValue('timer2', {fallback: 25000});
 
   const [isConnected, setIsConnected] = useState(socket?.connected || false);
-  console.log(messages);
 
   useEffect(() => {});
   const connect = useCallback((): void => {
@@ -189,7 +188,7 @@ const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, childr
 
       setLoading(true);
       setIsMsgReceiving(true);
-     
+      console.log('Socket session', socketSession);
       send({text, socketSession, socket});
       if (isVisibile)
         if (media) {

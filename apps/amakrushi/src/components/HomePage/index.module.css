@@ -4,8 +4,15 @@
   color: var(--secondarygreen);
 }
 
+.sunIconContainer{
+  height: 12vh;
+  width: 12vh;
+  margin: auto;
+  margin-top: 5vh;
+}
+
 .title {
-  margin-top: 4vh;
+  margin-top: 2vh;
   text-align: center;
   font-family: 'Mulish-Bold';
   font-size: 4.265vh;
@@ -42,8 +49,9 @@
 
 .inputBox input {
   width: 100%;
-  padding: 5px;
+  padding-left: 10px;
   margin-right: 5px;
+  border-radius: 40px;
 }
 
 .inputBox input:focus {

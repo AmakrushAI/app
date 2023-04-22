@@ -15,8 +15,10 @@ import Menu from '../menu';
 import { getInitialMsgs } from '../../utils/textUtility';
 import { AppContext } from '../../context';
 import RightIcon from '../../assets/icons/right';
+import sunIcon from '../../assets/icons/sun.svg'
 import { useLocalization } from '../../hooks';
 import router from 'next/router';
+import Image from 'next/image'
 
 const HomePage: NextPage = () => {
   const context = useContext(AppContext);
@@ -44,6 +46,9 @@ const HomePage: NextPage = () => {
   return (
     <>
       <div className={styles.main}>
+        <div className={styles.sunIconContainer}>
+          <Image src={sunIcon} alt="sunIcon" layout='responsive'/>
+        </div>
         <div className={styles.title}>{messages?.[0]?.payload?.text}</div>
         {messages?.[0]?.payload?.buttonChoices?.map((choice: any) => {
           return (

@@ -22,6 +22,7 @@ const MorePage: React.FC = () => {
     removeCookie('access_token', { path: '/' });
     localStorage.removeItem('phoneNumber');
     localStorage.removeItem('userMsgs');
+    localStorage.removeItem('auth');
     //@ts-ignore
     logEvent(analytics, 'Logout_pressed');
     router.push('/login');
