@@ -1,32 +1,33 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { io, Socket } from "socket.io-client";
+import { AppContext } from "../context/index";
 import { useLocalStorage } from "./useLocalStorage";
 
 const URL = process.env.NEXT_PUBLIC_SOCKET_URL || "";
 
 
-export const useSocket = ():[Socket| undefined,boolean] => {
-
-  const [mobile] = useLocalStorage('mobile',null,false);
-  const [auth] = useLocalStorage('auth',null,false);
+export const useSocket = (update:boolean):[Socket| undefined,boolean] => {
+const context=useContext(AppContext);
+console.log("debug dd :",{context})
   const [socket,setSocket]=useState<Socket>();
   const [isSocketReady,setIsSocketReady]=useState(false);
 
   useEffect(()=>{
-    if(mobile && !isSocketReady){
-  
+   // console.log("debug dd :",{phn:localStorage.getItem('phoneNumber'),isSocketReady,avail:context?.isMobileAvailable})
+    if(localStorage.getItem('phoneNumber') && !isSocketReady && update ){
+     console.log("debug dd hello")
      setSocket(io(URL, {
       transportOptions: {
         polling: {
           extraHeaders: {
-            Authorization: `Bearer ${auth}`,
+            Authorization: `Bearer ${localStorage.getItem('auth')}`,
             channel: 'akai'
           }
         }
       },
       query: {
-        deviceId: `akai:${mobile}`,
+        deviceId: `akai:${localStorage.getItem('phoneNumber')}`,
       },
       autoConnect: false,
       transports: ['polling', 'websocket'],
@@ -43,7 +44,7 @@ export const useSocket = ():[Socket| undefined,boolean] => {
     //   setSocket(null);
     // }
     
-  },[auth, isSocketReady, mobile])
+  },[  isSocketReady,update])
   
   return useMemo(()=>[socket,isSocketReady],[socket,isSocketReady])
 };

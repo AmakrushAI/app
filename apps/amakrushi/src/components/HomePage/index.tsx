@@ -31,7 +31,10 @@ const HomePage: NextPage = () => {
 
   useEffect(() => {
     setMessages([getInitialMsgs(context?.locale)]);
-  }, [context?.locale]);
+    if(localStorage.getItem('phoneNumber')){
+      context?.setIsMobileAvailable(true);
+    }
+  }, [context, context?.locale]);
 
   useEffect(() => {
     //@ts-ignore

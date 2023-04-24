@@ -17,7 +17,7 @@ export const send = ({text, socketSession:session,  socket}:SendType) => {
         context: null,
         accessToken: null,
       },
-      to: `akai:${localStorage.getItem('mobile')}`, 
+      to: `akai:${localStorage.getItem('phoneNumber')}`, 
     });
   
 }

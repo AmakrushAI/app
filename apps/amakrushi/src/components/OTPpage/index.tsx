@@ -1,5 +1,5 @@
 import { Box, HStack, PinInputField, PinInput } from "@chakra-ui/react";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { NextRouter, useRouter } from "next/router";
 import { useCookies } from "react-cookie";
 import styles from "./OTP.module.css";
@@ -9,9 +9,11 @@ import { analytics } from "../../utils/firebase";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { FormattedMessage } from "react-intl";
+import { AppContext } from "../../context";
 
 const OTPpage: React.FC = () => {
   const t = useLocalization();
+  const context=useContext(AppContext)
   const router: NextRouter = useRouter();
   const [input1, setInput1] = useState("");
   const [input2, setInput2] = useState("");
@@ -51,6 +53,7 @@ const OTPpage: React.FC = () => {
             setUserId(analytics, phoneNumber);
             router.push("/");
             localStorage.setItem("auth", data.resp.result.data.user.token);
+            context?.setIsMobileAvailabe(true)
           } else {
             toast.error("Incorrect OTP");
           }
