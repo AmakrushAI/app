@@ -22,6 +22,8 @@ const OTPpage: React.FC = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["access_token"]);
   const [isResendingOTP, setIsResendingOTP] = useState(false);
   const [countdown, setCountdown] = useState(0);
+  const [countdownIntervalId, setCountdownIntervalId] = useState<any>(null);
+  
 
   const handleOTPSubmit: React.FormEventHandler = (event: React.FormEvent) => {
     event.preventDefault();
@@ -83,39 +85,45 @@ const OTPpage: React.FC = () => {
     setInput4(e.target.value);
   };
 
-  const resendOTP = useCallback(() => {
+  const resendOTP = useCallback(async () => {
     if (isResendingOTP) {
       toast.error("Please wait before resending OTP");
       return;
     }
 
     setIsResendingOTP(true);
-
-    axios
-      .get(
+    try {
+      const response = await axios.get(
         `${process.env.NEXT_PUBLIC_OTP_BASE_URL}uci/sendOTP?phone=${router.query.state}`
-      )
-      .then((response) => {
-        if (response.status === 200) {
-          toast.success("OTP sent again");
+      );
+      if (response.status === 200) {
+        toast.success('OTP sent again');
 
           setCountdown(30);
 
-          const countdownInterval = setInterval(() => {
-            setCountdown((prevCountdown) => prevCountdown - 1);
-          }, 1000);
+        const countdownIntervalId = setInterval(() => {
+          setCountdown((prevCountdown) => prevCountdown - 1);
+        }, 1000);
+        setCountdownIntervalId(countdownIntervalId);
 
-          setTimeout(() => {
-            setIsResendingOTP(false);
-          }, 30000);
-        } else {
-          toast.error("OTP not sent");
-        }
-      })
-      .catch((error) => {
-        toast.error("Error sending OTP");
-      });
-  }, [isResendingOTP, router.query.state]);
+        setTimeout(() => {
+          setIsResendingOTP(false);
+          clearInterval(countdownIntervalId);
+          setCountdownIntervalId(null);
+        }, 30000);
+      } else {
+        toast.error('OTP not sent');
+      }
+    } catch (error) {
+      toast.error('Error sending OTP');
+    }
+
+    return () => {
+      if (countdownIntervalId !== null) {
+        clearInterval(countdownIntervalId);
+      }
+    };
+  }, [isResendingOTP, router.query.state, countdownIntervalId]);
 
   useEffect(() => {
     //@ts-ignore
