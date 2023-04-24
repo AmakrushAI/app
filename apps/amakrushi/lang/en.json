@@ -17,5 +17,17 @@
     "message.otp_message":"We will send you a one time password on this",
     "message.example_one":"What are the different types of millets grown in Odisha?",
     "message.example_two":"Tell me something about treatment of termites in sugarcane?",
-    "message.example_three":"How can farmers apply to government schemes in Odisha?"
+    "message.example_three":"How can farmers apply to government schemes in Odisha?",
+    "message.invalid_mobile":"Enter a 10 digit number!",
+    "message.invalid_otp":"Invalid Otp",
+    "message.otp_not_sent":"Otp not sent",
+    "message.retry":"Please retry.",
+    "message.taking_longer":"Please wait, servers are taking longer than usual.",
+    "error.fail_to_submit":"Failed to submit rating.",
+    "message.rating_submitted": "Rating Submitted!",
+    "message.review_submitted": "Review Submitted!",
+    "error.fail_to_submit_review": "Failed to submit review.",
+    "message.didnt_receive": "Didn't receive the OTP?",
+    "message.resend_again": "Resend again"
+
 }
