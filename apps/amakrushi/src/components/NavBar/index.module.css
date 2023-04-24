@@ -8,6 +8,39 @@
   height: 70px;
 }
 
+.navbar2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--darkgrey);
+  /* min-height: fit-content; */
+  height: 70px;
+}
+
+.newChatContainer {
+  margin: 1vh;
+  display: flex;
+  flex-direction: column;
+  color: #D0D0D0;
+  align-items: center;
+  font-size: 12px;
+}
+
+.iconContainer {
+  height: 3.5vh;
+  width: 3.5vh;
+}
+
+.rightSideIcons {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.rightSideIcons div {
+  margin: 1.5vh;
+}
+
 .navbar button {
   background: var(--grey);
   width: 14vw;

@@ -11,7 +11,7 @@ const Feedback: NextPage = () => {
   return (
     <React.Fragment>
       <Head>
-      <title>{t("title")}</title>
+      <title>{t("label.title")}</title>
       </Head>
       <FeedbackPage />
     </React.Fragment>

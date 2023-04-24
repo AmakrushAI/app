@@ -38,20 +38,18 @@ const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, childr
   const [currentUser, setCurrentUser] = useState<UserType>();
   const [loading, setLoading] = useState(false);
   const [isMsgReceiving, setIsMsgReceiving] = useState(false);
-  const [messages, setMessages] = useState<Array<any>>([getInitialMsgs(locale)]);
+  const [messages, setMessages] = useState<Array<any>>([]);
   const [socketSession, setSocketSession] = useState<any>();
   const timer1 = flagsmith.getValue('timer1', {fallback: 5000});
-  const timer2 = flagsmith.getValue('timer1', {fallback: 25000});
+  const timer2 = flagsmith.getValue('timer2', {fallback: 25000});
 
-  const [isConnected, setIsConnected] = useState(socket.connected);
-  console.log(messages);
+  const [isConnected, setIsConnected] = useState(socket?.connected || false);
 
-  useEffect(() => { },)
+  useEffect(() => {});
   const connect = useCallback((): void => {
-    console.log("socket: socket.connect triggered");
-    socket.connect();
-  },[socket]);
-  
+    console.log("socket: socket?.connect triggered");
+    socket?.connect();
+  }, [socket]);
 
   useEffect(() => {
     if (typeof window !== "undefined" && !isConnected) connect();
@@ -186,17 +184,12 @@ const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, childr
   }, []);
 
   const sendMessage = useCallback(
-    (text: string, media: any, isVisibile = true): void => {
-     
+    (text: string, media: any, isVisibile = true): void => {     
 
       setLoading(true);
       setIsMsgReceiving(true);
-      // To disappear the example choices even if not clicked and msg sent directly
-      if (messages?.[0]?.exampleOptions) {
-        setMessages([]);
-      }
-     
-      send({text, socketSession,  socket});
+      console.log('Socket session', socketSession);
+      send({text, socketSession, socket});
       if (isVisibile)
         if (media) {
           if (media.mimeType.slice(0, 5) === "image") {

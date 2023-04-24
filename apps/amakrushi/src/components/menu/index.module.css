@@ -10,3 +10,8 @@
   position: fixed;
   bottom: 0;
 }
+
+.menu div{
+  height: 5vh;
+  width: 5vh;
+}

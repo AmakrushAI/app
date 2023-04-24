@@ -1,5 +1,5 @@
 .main {
-  margin: 8px;
+  margin: 1vh;
   min-height: 74vh;
 }
 
@@ -7,7 +7,7 @@
   margin-top: 4vh;
   margin-left: 2vh;
   font-family: 'Mulish-Bold';
-  font-size: 2.25rem;
+  font-size: 4.265vh;
   font-weight: 700;
   color: var(--secondarygreen);
 }

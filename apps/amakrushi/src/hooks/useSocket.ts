@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { io } from "socket.io-client";
 import { useLocalStorage } from "./useLocalStorage";
 
-const URL = "wss://ts.gpt3.samagra.io";
+const URL = process.env.NEXT_PUBLIC_SOCKET_URL || "";
 
 export const useSocket = () => {
 
@@ -12,16 +12,16 @@ export const useSocket = () => {
   return useMemo(
     () =>
       io(URL, {
-        // transportOptions: {
-        // 	polling: {
-        // 		extraHeaders: {
-        // 			Authorization: `` ,
-        // 			channel: 'akai'
-        // 		}
-        // 	}
-        // },
+        transportOptions: {
+        	polling: {
+        		extraHeaders: {
+        			Authorization: `Bearer ${localStorage.getItem('auth')}`,
+        			channel: 'akai'
+        		}
+        	}
+        },
         query: {
-          deviceId: `phone:${mobile}`,
+          deviceId: `akai:${mobile}`,
         },
         autoConnect: false,
       }),

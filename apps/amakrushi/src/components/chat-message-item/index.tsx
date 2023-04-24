@@ -1,6 +1,6 @@
 import {
   Bubble,
-  Image,
+  Image as Img,
   ScrollView,
   List,
   ListItem,
@@ -9,14 +9,16 @@ import {
   //@ts-ignore
 } from "chatui";
 
-import React, { FC, ReactElement, useCallback, useContext } from "react";
+import React, { FC, ReactElement, useCallback, useContext, useState } from "react";
 import { Button } from "react-bootstrap";
 import { toast } from "react-hot-toast";
 
 import styles from "./index.module.css";
 
 import { Spinner } from "@chakra-ui/react";
-import rightIcon from "../../assets/icons/right.svg";
+import RightIcon from '../../assets/icons/right.jsx';
+import MsgThumbsUp from '../../assets/icons/msg-thumbs-up.jsx';
+import MsgThumbsDown from '../../assets/icons/msg-thumbs-down.jsx';
 import { AppContext } from "../../context";
 import { ChatMessageItemPropType } from "../../types";
 import { getFormatedTime } from "../../utils/getUtcTime";
@@ -27,6 +29,22 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   onSend,
 }) => {
   const context = useContext(AppContext);
+  const [thumbsUp, setThumbsUp] = useState(false);
+  const [thumbsDown, setThumbsDown] = useState(false);
+
+  const feedbackHandler = useCallback(
+    (name: string) => {
+      console.log(thumbsUp);
+      if (name === 'up') {
+        setThumbsUp(!thumbsUp);
+        if (thumbsDown) setThumbsDown(false);
+      } else {
+        setThumbsDown(!thumbsDown);
+        if (thumbsUp) setThumbsUp(false);
+      }
+    },
+    [thumbsDown, thumbsUp]
+  );
 
   const getLists = useCallback(
     ({ choices, isDisabled }: { choices: any; isDisabled: boolean }) => {
@@ -49,15 +67,10 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   }
                   context?.sendMessage(choice.text);
                 }
-              }}
-            >
-              <div
-                className="onHover"
-                style={{ display: "flex", alignItems: "center" }}
-              >
+              }}>
+              <div className="onHover" style={{ display: 'flex' }}>
                 <div>{choice.text}</div>
-                {/* <div style={{ fontSize: "2rem", backgroundImage: `url(${rightIcon})` }}>
-                </div> */}
+                <div style={{marginLeft: 'auto'}}><RightIcon width="5.5vh" color="var(--secondarygreen)" /></div>
               </div>
             </ListItem>
           ))}
@@ -74,7 +87,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
       return <Spinner />;
     case "text":
       return (
-        <>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <Bubble type="text">
             <span
               className="onHover"
@@ -89,39 +102,51 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
             </span>
             <div
               style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "self-end",
-              }}
-            >
+                display: 'flex',
+                justifyContent:
+                  content?.data?.position === 'left' ? 'flex-end' : '',
+              }}>
               <span
                 style={{
                   color:
-                    content?.data?.position === "right"
-                      ? "white"
-                      : "var(--grey)",
-                  fontSize: "10px",
-                }}
-              >
-                {getFormatedTime(
-                  content?.data?.sentTimestamp ||
-                    content?.data?.repliedTimestamp
-                )}
+                    content?.data?.position === 'right'
+                      ? 'white'
+                      : 'var(--font)',
+                  fontSize: '10px',
+                }}>
+                {
+                  getFormatedTime(
+                    content?.data?.sentTimestamp ||
+                      content?.data?.repliedTimestamp
+                  )
+                }
               </span>
             </div>
           </Bubble>
-          {content?.data?.position === "right" && context?.loading && (
-            <div
-              style={{
-                marginRight: "auto",
-                display: "flex",
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-              }}
-            ></div>
+          {content?.data?.position === 'left' && (
+            <div className={styles.msgFeedback}>
+              <div className={styles.msgFeedbackIcons}>
+                <div onClick={() => feedbackHandler('up')}>
+                  <MsgThumbsUp
+                    fill={thumbsUp}
+                    width="20px"
+                    color="var(--secondarygreen)"
+                  />
+                </div>
+                <div onClick={() => feedbackHandler('down')}>
+                  <MsgThumbsDown
+                    onClick={() => feedbackHandler('down')}
+                    fill={thumbsDown}
+                    width="20px"
+                    color="var(--secondarygreen)"
+                  />
+                </div>
+              </div>
+              &nbsp;
+              <p>Was this helpful?</p>
+            </div>
           )}
-        </>
+        </div>
       );
 
     case "image": {
@@ -138,16 +163,9 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
             ></div>
           )}
           <Bubble type="image">
-            <div style={{ padding: "7px" }}>
-              <Image
-                src={url}
-                width="299"
-                height="200"
-                alt="image"
-                lazy
-                fluid
-              />
 
+            <div style={{ padding: '7px' }}>
+              <Img src={url} width="299" height="200" alt="image" lazy fluid />
               <div
                 style={{
                   display: "flex",
@@ -155,7 +173,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   alignItems: "self-end",
                 }}
               >
-                <span style={{ color: "var(--grey)", fontSize: "10px" }}>
+                <span style={{ color: "var(--font)", fontSize: "10px" }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
                       content?.data?.repliedTimestamp
@@ -186,12 +204,11 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
               <FileCard file={url} extension="pdf" />
               <div
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "self-end",
-                }}
-              >
-                <span style={{ color: "var(--grey)", fontSize: "10px" }}>
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'self-end',
+                }}>
+                <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
                       content?.data?.repliedTimestamp
@@ -226,12 +243,11 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
 
               <div
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "self-end",
-                }}
-              >
-                <span style={{ color: "var(--grey)", fontSize: "10px" }}>
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'self-end',
+                }}>
+                <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
                       content?.data?.repliedTimestamp

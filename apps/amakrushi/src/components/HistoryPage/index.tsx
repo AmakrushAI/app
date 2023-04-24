@@ -1,10 +1,10 @@
 import styles from './index.module.css';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import searchIcon from '../../assets/icons/search.svg';
-import messageIcon from '../../assets/icons/message.svg';
 import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import ChatItem from '../chat-item';
 import { NextPage } from 'next';
+import Image from 'next/image';
 
 //@ts-ignore
 import { analytics } from '../../utils/firebase';
@@ -14,8 +14,10 @@ import { useLocalization } from '../../hooks';
 import ComingSoonPage from '../coming-soon-page';
 import { useFlags } from 'flagsmith/react';
 
-const ChatsPage: NextPage = () => {
+const HistoryPage: NextPage = () => {
   const flags = useFlags(['show_chat_history_page']);
+  const historyString = localStorage.getItem('history');
+  const historyObj = JSON.parse(historyString ?? '{}');  
 
   useEffect(() => {
     //@ts-ignore
@@ -32,17 +34,19 @@ const ChatsPage: NextPage = () => {
           <div className={styles.title}>{t('label.chats')}</div>
           <InputGroup>
             <InputLeftElement pointerEvents="none">
-              {/* <div style={{backgroundImage: `url(${searchIcon})`}}></div> */}
+              <Image src={searchIcon} alt="" width={20} height={20} />
             </InputLeftElement>
             <Input type="text" placeholder="Search" />
           </InputGroup>
-          <ChatItem image={messageIcon} name={'Session 1'} />
-          <ChatItem image={messageIcon} name={'Session 2'} />
-          <ChatItem image={messageIcon} name={'Session 3'} />
+          <div>
+              {Object.entries(historyObj).map(([sessionName, messages]) => (
+                <ChatItem key={sessionName} name={sessionName} messages={messages} />
+              ))}
+            </div>        
         </div>
         <Menu />
       </>
     );
 };
 
-export default ChatsPage;
+export default HistoryPage;
