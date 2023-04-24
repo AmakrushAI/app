@@ -37,7 +37,8 @@ const ContextProvider: FC<{
   children: ReactElement;
 }> = ({ locale, children, localeMsgs, setLocale }) => {
   const t = useLocalization();
-  const [socket, isSocketReady] = useSocket();
+  const [isMobileAvailable, setIsMobileAvailable] = useState<boolean>(false);
+  const [socket, isSocketReady] = useSocket(isMobileAvailable);
 
   const [users, setUsers] = useState<UserType[]>([]);
   const [currentUser, setCurrentUser] = useState<UserType>();
@@ -45,13 +46,12 @@ const ContextProvider: FC<{
   const [isMsgReceiving, setIsMsgReceiving] = useState(false);
   const [messages, setMessages] = useState<Array<any>>([]);
   const [socketSession, setSocketSession] = useState<any>();
+ 
   const timer1 = flagsmith.getValue("timer1", { fallback: 5000 });
   const timer2 = flagsmith.getValue("timer2", { fallback: 25000 });
 
   const [isConnected, setIsConnected] = useState(socket?.connected || false);
   console.log(messages);
-
- 
 
   const connect = useCallback((): void => {
     console.log("socket debug: socket?.connect triggered");
@@ -88,10 +88,10 @@ const ContextProvider: FC<{
     },
     []
   );
-
+console.log("debug dd:",{isMobileAvailable})
   const onMessageReceived = useCallback(
     (msg: any): void => {
-      console.log("debug:",{msg})
+      console.log("debug:", { msg });
       setLoading(false);
       setIsMsgReceiving(false);
       // @ts-ignore
@@ -163,7 +163,7 @@ const ContextProvider: FC<{
       setIsConnected(false);
     }
     if (isSocketReady && !isConnected) {
-      console.log("debug dd: if socket ready")
+      console.log("debug dd: if socket ready");
       socket?.on("connect", onConnect);
       socket?.on("disconnect", onDisconnect);
       socket?.on("botResponse", onMessageReceived);
@@ -176,15 +176,21 @@ const ContextProvider: FC<{
       // if (isSocketReady && isConnected) {
       //   console.log("debug: return")
       //  socket?.disconnect();
-        //socket?.off("connect", );
-       // socket?.off("disconnect", onDisconnect);
-       // socket?.off("botResponse", onMessageReceived);
-        //socket?.off("session", () => setSocketSession(null));
-     // }
+      //socket?.off("connect", );
+      // socket?.off("disconnect", onDisconnect);
+      // socket?.off("botResponse", onMessageReceived);
+      //socket?.off("session", () => setSocketSession(null));
+      // }
     };
-   
-  }, [isConnected, isSocketReady, onException, onMessageReceived, onSessionCreated, socket]);
-console.log('debug dd:',{isConnected, isSocketReady,socket})
+  }, [
+    isConnected,
+    isSocketReady,
+    onException,
+    onMessageReceived,
+    onSessionCreated,
+    socket,
+  ]);
+  console.log("debug dd:", { isConnected, isSocketReady, socket });
   const onChangeCurrentUser = useCallback((newUser: UserType) => {
     setCurrentUser({ ...newUser, active: true });
     localStorage.removeItem("userMsgs");
@@ -242,15 +248,15 @@ console.log('debug dd:',{isConnected, isSocketReady,socket})
     },
     [currentUser, messages, socket, socketSession]
   );
- 
+
   useEffect(() => {
     let secondTimer: any;
     const timer = setTimeout(() => {
       if (isMsgReceiving && loading) {
-        toast.error(t('message.taking_longer'));
+        toast.error(t("message.taking_longer"));
         secondTimer = setTimeout(() => {
           if (isMsgReceiving && loading) {
-            toast.error(t('message.retry'));
+            toast.error(t("message.retry"));
             setIsMsgReceiving(false);
             setLoading(false);
           }
@@ -280,6 +286,8 @@ console.log('debug dd:',{isConnected, isSocketReady,socket})
       locale,
       setLocale,
       localeMsgs,
+      isMobileAvailable,
+      setIsMobileAvailable,
     }),
     [
       locale,
@@ -295,6 +303,8 @@ console.log('debug dd:',{isConnected, isSocketReady,socket})
       setLoading,
       isMsgReceiving,
       setIsMsgReceiving,
+      isMobileAvailable,
+      setIsMobileAvailable,
     ]
   );
 
@@ -326,14 +336,13 @@ const SSR: FC<{ children: ReactElement }> = ({ children }) => {
   if (typeof window === "undefined") return null;
   return (
     <IntlProvider locale={locale} messages={localeMsgs}>
-      {" "}
-      <ContextProvider
+       <ContextProvider
         locale={locale}
         setLocale={setLocale}
         localeMsgs={localeMsgs}
       >
         {children}
-      </ContextProvider>{" "}
+      </ContextProvider>
     </IntlProvider>
   );
 };
