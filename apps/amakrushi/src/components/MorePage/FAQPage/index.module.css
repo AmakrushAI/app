@@ -1,26 +1,87 @@
+
 .main {
-  margin: 8px;
-  min-height: 74vh;
+  margin: 8px 1px 8px 8px;
+  overflow-x: hidden;
+  overflow-y: scroll !important;
+  height: 80vh;
+}
+.main button {
+  box-shadow: none !important;
+}
+.main::-webkit-scrollbar {
+  width: 4px;
+  height: 6px;
+}
+.main::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.1);
+}
+.main::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.2);
+}
+.main::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+.main::-webkit-scrollbar-thumb:active {
+  background: rgba(0, 0, 0, 0.9);
 }
 
 .title {
   margin-top: 4vh;
   margin-left: 2vh;
   font-family: 'Mulish-Bold';
-  font-size: 2.25rem;
+  font-size: 4.2vh;
   font-weight: 700;
   color: var(--secondarygreen);
 }
 
-.user{
+.accordionItem {
+  margin-top: 1vh;
+}
+
+.bottomSection {
   display: flex;
-  background-color: white;
-  padding: 10px;
-  margin: 10px 2px;
+  flex-direction: column;
+}
+
+.manualButtons {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.submitButton {
+  font-size: 1.65vh !important;
+  color: white;
+  margin: 4vh auto 0 auto;
+  display: flex;
+  text-align: center;
+  justify-content: center;
   align-items: center;
+  font-family: 'Mulish-regular';
+  width: fit-content;
+  padding: 1vh;
+  border: none;
+  background-color: var(--secondarygreen) !important;
+}
+
+.langName {
+  color: var(--primaryblue);
+}
+
+.footerTitle {
+  margin-top: 2vh;
+  margin-left: 2vh;
+  font-family: 'Mulish-Bold';
+  font-size: 4.2vh;
+  font-weight: 700;
+  color: var(--secondarygreen);
 }
 
 .footer {
   font-weight: bold;
   margin-left: 2vh;
+  margin-top: 2vh;
+  font-size: 1.89vh;
 }

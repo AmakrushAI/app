@@ -2,20 +2,54 @@ import starIcon from '../../../assets/icons/star.svg';
 import starOutlineIcon from '../../../assets/icons/star-outline.svg';
 import Image from 'next/image';
 import styles from './index.module.css';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import Menu from '../../menu';
 //@ts-ignore
 import { analytics } from '../../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
 import ComingSoonPage from '../../coming-soon-page';
 import { useFlags } from 'flagsmith/react';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import { AppContext } from '../../../context';
 
 const MorePage: React.FC = () => {
+  const context = useContext(AppContext);
   const [rating, setRating] = useState(1);
+  const [review, setReview] = useState('');
   const flags = useFlags(['show_feedback_page']);
   useEffect(() => {
     //@ts-ignore
     logEvent(analytics, 'Feedback_page');
+  }, []);
+
+  const submitReview = useCallback((r: number | string) => {
+    console.log('submitReview running:', r)
+    if (typeof r === "number") {
+      axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/feedback`, {
+        rating: r,
+        phoneNumber: localStorage.getItem('phoneNumber'),
+        userId: context?.socketSession?.userID,
+      })
+        .then(response => {
+          toast.success("Rating submitted!");
+        })
+        .catch(error => {
+          toast.error("Failed to submit rating.");
+        });
+    } else if (typeof r === "string") {
+      axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/feedback`, {
+        review: r,
+        phoneNumber: localStorage.getItem('phoneNumber'),
+        userId: context?.socketSession?.userID,
+      })
+      .then(response => {
+        toast.success("Review submitted!")
+      })
+      .catch(error => {
+        toast.error("Failed to submit review.")
+      });
+    }
   }, []);
 
   if (!flags?.show_feedback_page?.enabled) {
@@ -31,13 +65,13 @@ const MorePage: React.FC = () => {
               {Array.from({ length: 5 }, (_, index) => {
                 if (index + 1 <= rating) {
                   return (
-                    <div onClick={() => setRating(index + 1)} key={index}>
+                    <div onClick={() => setRating(index + 1)} key={index} className={styles.star}>
                       <Image src={starIcon} alt="" width={50} height={50} />
                     </div>
                   );
                 } else {
                   return (
-                    <div onClick={() => setRating(index + 1)} key={index}>
+                    <div onClick={() => setRating(index + 1)} key={index} className={styles.star}>
                       <Image
                         src={starOutlineIcon}
                         alt=""
@@ -50,17 +84,20 @@ const MorePage: React.FC = () => {
               })}
             </div>
             <p>Tap a star to rate</p>
-            <button>Submit Review</button>
+            <button onClick={() => submitReview(rating)}>Submit Review</button>
           </div>
           <div className={styles.review}>
             <h1>Write your review (optional)</h1>
             <textarea
-              name=""
-              id=""
+              value={review}
+              onChange={(e) => setReview(e.target.value)}
+              name="experience-feedback"
+              id="experience-feedback"
               cols={35}
               rows={5}
               placeholder="Please write your experience's feedback."></textarea>
-            <button>Submit Review</button>
+            
+            <button onClick={() => submitReview(review)}>Submit Review</button>
           </div>
         </div>
         <Menu />

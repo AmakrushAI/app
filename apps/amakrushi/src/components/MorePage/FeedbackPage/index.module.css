@@ -1,13 +1,12 @@
 .main {
-  margin: 8px;
-  min-height: 74vh;
+  margin: 1vh;
 }
 
 .title {
   margin-top: 4vh;
   margin-left: 2vh;
   font-family: 'Mulish-Bold';
-  font-size: 2.25rem;
+  font-size: 4.5vh;
   font-weight: 700;
   color: var(--secondarygreen);
 }
@@ -22,18 +21,19 @@
 .rating h1{
   font-family: Mulish-bold;
   font-weight: bolder;
-  font-size: 1.5rem;
+  font-size: 3vh;
   margin-bottom: 1vh;
 }
 
 .rating p{
   margin-top: 1vh;
-  font-family: Mulish-normal;
+  font-family: 'Mulish-normal';
+  font-size: 2vh;
 }
 
 .rating button {
   font-weight: 700 ;
-  font-size: 0.875rem !important;
+  font-size: 1.65vh !important;
   color: white ;
   margin: 2vh auto 0 auto;
   font-family: 'Mulish-regular';
@@ -47,8 +47,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
-  color: var(--secondarygreen);
+}
+
+.star {
+  width: 6vh;
+  height: 6vh;
 }
 
 .review {
@@ -62,7 +65,7 @@
 .review h1{
   font-family: Mulish-bold;
   font-weight: bolder;
-  font-size: 1.25rem;
+  font-size: 3vh;
   margin-bottom: 2vh;
 }
 
@@ -73,7 +76,7 @@
 
 .review button {
   font-weight: 700 ;
-  font-size: 0.875rem !important;
+  font-size: 1.65vh !important;
   color: white ;
   margin: 1vh auto 0 auto;
   font-family: 'Mulish-regular';

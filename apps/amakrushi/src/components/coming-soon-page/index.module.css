@@ -1,17 +1,47 @@
 .container{
-  background-color: var(--primarygreen);
+  background-color: var(--bg-color);
   min-height: 100vh;
   min-width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
 .container span {
+  margin-top: 15vh;
   font-family: Mulish-bold;
-  font-size: 36px;
+  font-size: 4.5vh;
   font-weight: 700; 
-  color: var(--tertiarygreen);
+  color: var(--secondarygreen);
+}
+
+.imageContainer {
+  height: 24vh;
+  width: 24vh;
+}
+
+.miniText {
+  text-align: center;
+  width: 60%;
+  color: var(--font);
+  font-weight: 600;
+  font-size: 2vh;
+}
+
+.backButton {
+  font-weight: 700 ;
+  font-size: 2vh !important;
+  color: white ;
+  margin: 6vh auto;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Mulish-regular';
+  width: 12vh !important;
+  padding: 1vh ;
+  border: none ;
+  border-radius: 40px !important;
+  background-color: var(--secondarygreen) !important;
 }
 

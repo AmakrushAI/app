@@ -46,6 +46,7 @@ const OTPpage: React.FC = () => {
             // @ts-ignore
             setUserId(analytics, phoneNumber);
             router.push('/');
+            localStorage.setItem('auth', data.resp.result.data.user.token);
           } else {
             toast.error('Incorrect OTP');
           }

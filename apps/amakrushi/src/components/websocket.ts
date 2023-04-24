@@ -1,6 +1,5 @@
 import { Socket } from 'socket.io-client';
 
-
 type SendType={
   text:string;
   socketSession:{userID:string;socketID:string},

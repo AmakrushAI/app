@@ -30,7 +30,7 @@ const ChatUiWindow: React.FC = () => {
 
   useEffect(() => {
     if (cookies["access_token"] !== undefined) {
-      axios.get(`${window.location.origin}/api/auth?token=${cookies["access_token"]}`)
+      axios.get(`/api/auth?token=${cookies["access_token"]}`)
         .then((response) => {
           if (response.data === null) {
             throw "Invalid Access Token";
@@ -54,7 +54,6 @@ const ChatUiWindow: React.FC = () => {
     },
     [context]
   );
-
   const normalizeMsgs = useMemo(
     () =>
       context?.messages?.map((msg: any) => ({
@@ -77,7 +76,7 @@ const ChatUiWindow: React.FC = () => {
 
   const placeholder=useMemo(()=>t('message.ask_ur_question'),[t])
   return (
-    <div style={{ height: "80vh", width: "100%" }}>
+    <div style={{ height: "100%", width: "100%" }}>
       {/* <FullScreenLoader loading={loading} /> */}
       <Chat
         btnColor='var(--secondarygreen)'

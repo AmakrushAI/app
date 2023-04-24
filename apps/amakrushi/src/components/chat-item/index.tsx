@@ -1,73 +1,58 @@
-import React from 'react';
-import { useState } from 'react';
-import Profile from '../Profile';
-import { Flex, Box, useColorModeValue } from '@chakra-ui/react';
+import React, { useCallback, useContext } from 'react';
 import styles from './index.module.css';
 import { ChatItemPropsType } from '../../types';
+import messageIcon from '../../assets/icons/message.svg';
 import deleteIcon from '../../assets/icons/delete.svg';
 import Image from 'next/image';
+import router from 'next/router';
+import { AppContext } from '../../context';
 
-const ChatItem: React.FC<ChatItemPropsType> = ({
-  image,
-  name,
-  toChangeUser,
-  toRemoveUser,
-  active,
-}) => {
-  const [showProfile, setShowProfile] = useState(false);
+const ChatItem: React.FC<ChatItemPropsType> = ({ name, messages }) => {
+  const context = useContext(AppContext);
 
-  const backgroundColor = useColorModeValue(
-    'rgba(84,167,191,0.25)',
-    'rgba(56, 37, 37, 0.25)'
+  const handleChatPage = useCallback(
+    (messages: any) => {
+      context?.setMessages(messages);
+      router.push('/chat');
+    },
+    [context]
   );
 
-  const closingProfile = () => {
-    setShowProfile(false);
-  };
+  const deleteSession = useCallback((name: string) => {
+    console.log('here', name)
+    // Get the history object from localStorage
+    const storageHistory = JSON.parse(localStorage.getItem('history') || "{}");
+
+    // Create a copy of the history object
+    const newHistory = { ...storageHistory };
+
+    // Check if the session exists in the history
+    if (newHistory.hasOwnProperty(name)) {
+      // Delete the session property
+      delete newHistory[name];
+      console.log('here', newHistory)
+
+      // Update localStorage with the deleted session
+      localStorage.setItem('history', JSON.stringify(newHistory));
+      router.push('/history');
+    }
+  }, []);
 
   return (
     <>
-      <Flex
-        bgColor={backgroundColor}
-        className={`${styles.chatContainer}`}
-        cursor="pointer"
-        height="max-content"
-        m="0.5rem">
-        <Flex
-          fontSize="35px"
-          flex="1"
-          alignItems="center"
-          justifyContent="center">
-          <Box
-            borderRadius="50%"
-            display="flex"
-            alignItems="center"
-            height="7vh"
-            width="7vh"
-            bgPosition="center"
-            bgRepeat="no-repeat"
-            bgSize="cover">
-            <Image src={image} alt="" width={50} height={50} />
-          </Box>
-        </Flex>
-        <Flex
-          // onClick={() => {
-          //   toChangeUser && toChangeUser(name);
-          // }}
-          ml="0.5rem"
-          flex="4"
-          alignItems="center">
-          <p>{name}</p>
-        </Flex>
-        <Image src={deleteIcon} alt="" width={50} height={50} />
-      </Flex>
-      <Profile
-        show={showProfile}
-        name={name}
-        userImg={image}
-        removeProfile={closingProfile}
-        toRemoveUser={toRemoveUser}
-      />
+      <div className={styles.chatContainer}>
+        <div className={styles.sessionContainer} onClick={() => handleChatPage(messages)}>
+          <div className={styles.messageIconContainer}>
+            <Image src={messageIcon} alt="messageIcon" />
+          </div>
+          <div className={styles.name}>{name}</div>
+        </div>
+        <div
+          onClick={() => deleteSession(name)}
+          className={styles.deleteIconContainer}>
+          <Image src={deleteIcon} alt="deleteIcon" />
+        </div>
+      </div>
     </>
   );
 };
