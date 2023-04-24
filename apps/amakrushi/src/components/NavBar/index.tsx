@@ -22,7 +22,7 @@ function NavBar() {
   const context = useContext(AppContext);
 
   const toggleLanguage = useCallback(
-    (newLanguage) => () => {
+    (newLanguage:string) => () => {
       localStorage.setItem('locale', newLanguage);
       if (context?.messages?.[0]?.exampleOptions) {
         context?.setMessages([getInitialMsgs(newLanguage)]);
@@ -97,7 +97,7 @@ function NavBar() {
       localStorage.setItem('history', JSON.stringify(newHistory));
       context?.setMessages([]);
     }
-  }, [context]);
+  }, [context, deepEqual]);
   
   
   

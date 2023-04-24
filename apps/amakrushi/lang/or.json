@@ -17,5 +17,17 @@
     "message.register_at_krushak":"କୃଷକ ଓଡିଶାରେ ପଞ୍ଜୀକରଣ କରନ୍ତୁ |",
     "message.example_one":"ଓଡ଼ିଶାରେ ଉତ୍ପାଦନ ହେଉଥିବା ବିଭିନ୍ନ ପ୍ରକାର ମିଲେଟ୍ ଗୁଡିକ କ'ଣ ?",
     "message.example_two":"ଆଖୁରେ ଟର୍ମାଇଟ୍ସର ଚିକିତ୍ସା ବିଷୟରେ ମୋତେ କିଛି କୁହନ୍ତୁ |",
-    "message.example_three":"କୃଷକମାନେ ଓଡିଶାରେ ସରକାରୀ ଯୋଜନାରେ କିପରି ଆବେଦନ କରିପାରିବେ ?"
+    "message.example_three":"କୃଷକମାନେ ଓଡିଶାରେ ସରକାରୀ ଯୋଜନାରେ କିପରି ଆବେଦନ କରିପାରିବେ ?",
+    "message.invalid_mobile":"ଏକ 10 ଅଙ୍କ ସଂଖ୍ୟା ପରବଶ କରନତ!",
+    "message.invalid_otp":"ଅମାନ୍ୟ ୱାନ୍ ଟାଇମ଼ ପାସୱାର୍ଡ",
+    "message.otp_not_sent":"ୱାନ୍ ଟାଇମ଼ ପାସୱାର୍ଡ ପଠାଯାଇ ନାହିଁ",
+    "message.retry":"ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ",
+    "message.taking_longer":"ଦୟାକରି ଅପେକ୍ଷା କରନ୍ତୁ, ସର୍ଭର୍ ସାଧାରଣ ସମୟ ରୁ ଅଧିକ ସମୟ ନେଉଛି",
+    "error.fail_to_submit":"ମୂଲ୍ୟାୟନ ଦାଖଲ କରିବାରେ ବିଫଳ |",
+    "message.rating_submitted": "ମୂଲ୍ୟାୟନ ଦାଖଲ!",
+    "message.review_submitted": "ସମୀକ୍ଷା ଦାଖଲ!",
+    "error.fail_to_submit_review": "ସମୀକ୍ଷା ଦାଖଲ କରିବାରେ ବିଫଳ |",
+    "message.wait_minutes": "ଗୋଟିଏ ଥର ପାସୱାର୍ଡ ପଠାଇବା ପୂର୍ବରୁ ଦୟାକରି {countdown} ସେକେଣ୍ଡ ଅପେକ୍ଷା କରନ୍ତୁ |",
+    "message.didnt_receive": "ଗୋଟିଏ ଥର ପାସୱାର୍ଡ ଗ୍ରହଣ କରିନାହାଁନ୍ତି କି?",
+    "message.resend_again": "ପୁନର୍ବାର ପଠାନ୍ତୁ |"
 }

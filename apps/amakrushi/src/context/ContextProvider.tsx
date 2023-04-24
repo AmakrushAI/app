@@ -30,33 +30,38 @@ function loadMessages(locale: string) {
   }
 }
 
-const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, children: ReactElement }> = ({ locale, children, localeMsgs, setLocale }) => {
+const ContextProvider: FC<{
+  locale: any;
+  localeMsgs: any;
+  setLocale: any;
+  children: ReactElement;
+}> = ({ locale, children, localeMsgs, setLocale }) => {
   const t = useLocalization();
-  const socket=useSocket();
- 
+  const [socket, isSocketReady] = useSocket();
+
   const [users, setUsers] = useState<UserType[]>([]);
   const [currentUser, setCurrentUser] = useState<UserType>();
   const [loading, setLoading] = useState(false);
   const [isMsgReceiving, setIsMsgReceiving] = useState(false);
   const [messages, setMessages] = useState<Array<any>>([]);
   const [socketSession, setSocketSession] = useState<any>();
-  const timer1 = flagsmith.getValue('timer1', {fallback: 5000});
-  const timer2 = flagsmith.getValue('timer2', {fallback: 25000});
+  const timer1 = flagsmith.getValue("timer1", { fallback: 5000 });
+  const timer2 = flagsmith.getValue("timer2", { fallback: 25000 });
 
   const [isConnected, setIsConnected] = useState(socket?.connected || false);
+  console.log(messages);
 
-  useEffect(() => {});
+ 
+
   const connect = useCallback((): void => {
-    console.log("socket: socket?.connect triggered");
+    console.log("socket debug: socket?.connect triggered");
     socket?.connect();
   }, [socket]);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && !isConnected) connect();
-  }, [connect, isConnected]);
-
-
-
+    if (typeof window !== "undefined" && !isConnected && isSocketReady)
+      connect();
+  }, [connect, isConnected, isSocketReady]);
 
   const updateMsgState = useCallback(
     ({
@@ -68,7 +73,6 @@ const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, childr
       msg: { content: { title: string; choices: any }; messageId: string };
       media: any;
     }) => {
-
       const newMsg = {
         username: user?.name,
         text: msg.content.title,
@@ -87,7 +91,7 @@ const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, childr
 
   const onMessageReceived = useCallback(
     (msg: any): void => {
-     
+      console.log("debug:",{msg})
       setLoading(false);
       setIsMsgReceiving(false);
       // @ts-ignore
@@ -148,7 +152,6 @@ const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, childr
     toast.error(exception?.message);
   }, []);
 
-  
   useEffect(() => {
     function onConnect(): void {
       console.log("socket:  onConnect callback");
@@ -159,24 +162,29 @@ const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, childr
       console.log("socket: disconnecting");
       setIsConnected(false);
     }
+    if (isSocketReady && !isConnected) {
+      console.log("debug dd: if socket ready")
+      socket?.on("connect", onConnect);
+      socket?.on("disconnect", onDisconnect);
+      socket?.on("botResponse", onMessageReceived);
 
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
-    socket.on("botResponse", onMessageReceived);
-
-    socket.on("exception", onException);
-    socket.on("session", onSessionCreated);
+      socket?.on("exception", onException);
+      socket?.on("session", onSessionCreated);
+    }
 
     return () => {
-      socket.disconnect();
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-      socket.off("botResponse", onMessageReceived);
-      socket.off("session", () => setSocketSession("hello"));
+      // if (isSocketReady && isConnected) {
+      //   console.log("debug: return")
+      //  socket?.disconnect();
+        //socket?.off("connect", );
+       // socket?.off("disconnect", onDisconnect);
+       // socket?.off("botResponse", onMessageReceived);
+        //socket?.off("session", () => setSocketSession(null));
+     // }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onException, onSessionCreated]);
-
+   
+  }, [isConnected, isSocketReady, onException, onMessageReceived, onSessionCreated, socket]);
+console.log('debug dd:',{isConnected, isSocketReady,socket})
   const onChangeCurrentUser = useCallback((newUser: UserType) => {
     setCurrentUser({ ...newUser, active: true });
     localStorage.removeItem("userMsgs");
@@ -184,12 +192,15 @@ const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, childr
   }, []);
 
   const sendMessage = useCallback(
-    (text: string, media: any, isVisibile = true): void => {     
-
+    (text: string, media: any, isVisibile = true): void => {
       setLoading(true);
       setIsMsgReceiving(true);
-      console.log('Socket session', socketSession);
-      send({text, socketSession, socket});
+      // To disappear the example choices even if not clicked and msg sent directly
+      // if (messages?.[0]?.exampleOptions) {
+      //   setMessages([]);
+      // }
+
+      send({ text, socketSession, socket });
       if (isVisibile)
         if (media) {
           if (media.mimeType.slice(0, 5) === "image") {
@@ -231,15 +242,15 @@ const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, childr
     },
     [currentUser, messages, socket, socketSession]
   );
-
+ 
   useEffect(() => {
     let secondTimer: any;
     const timer = setTimeout(() => {
       if (isMsgReceiving && loading) {
-        toast.error('Please wait, servers are taking longer than usual.');
+        toast.error(t('message.taking_longer'));
         secondTimer = setTimeout(() => {
           if (isMsgReceiving && loading) {
-            toast.error('Please retry.');
+            toast.error(t('message.retry'));
             setIsMsgReceiving(false);
             setLoading(false);
           }
@@ -251,7 +262,7 @@ const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, childr
       clearTimeout(timer);
       clearTimeout(secondTimer);
     };
-  }, [isMsgReceiving, loading, timer1, timer2]);
+  }, [isMsgReceiving, loading, t, timer1, timer2]);
 
   const values = useMemo(
     () => ({
@@ -298,8 +309,10 @@ const ContextProvider: FC<{ locale: any, localeMsgs: any, setLocale: any, childr
 };
 
 const SSR: FC<{ children: ReactElement }> = ({ children }) => {
-  const defaultLang = flagsmith.getValue('default_lang', {fallback: 'en'});
-  const [locale, setLocale] = useState(localStorage.getItem('locale') || defaultLang);
+  const defaultLang = flagsmith.getValue("default_lang", { fallback: "en" });
+  const [locale, setLocale] = useState(
+    localStorage.getItem("locale") || defaultLang
+  );
   const [localeMsgs, setLocaleMsgs] = useState<Record<string, string> | null>(
     null
   );
@@ -311,6 +324,17 @@ const SSR: FC<{ children: ReactElement }> = ({ children }) => {
   }, [locale]);
 
   if (typeof window === "undefined") return null;
-  return <IntlProvider locale={locale} messages={localeMsgs}> <ContextProvider locale={locale} setLocale={setLocale} localeMsgs={localeMsgs}>{children}</ContextProvider> </IntlProvider>;
+  return (
+    <IntlProvider locale={locale} messages={localeMsgs}>
+      {" "}
+      <ContextProvider
+        locale={locale}
+        setLocale={setLocale}
+        localeMsgs={localeMsgs}
+      >
+        {children}
+      </ContextProvider>{" "}
+    </IntlProvider>
+  );
 };
 export default SSR;
