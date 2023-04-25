@@ -47,6 +47,7 @@ const ContextProvider: FC<{
   const [messages, setMessages] = useState<Array<any>>([]);
   const [socketSession, setSocketSession] = useState<any>();
   const [newSocket, setNewSocket] = useState<any>();
+  const [conversationId,setConversationId]=useState(localStorage.getItem('conversationId') ? localStorage.getItem('conversationId'):_.uniqueId())
   const [isMobileAvailable, setIsMobileAvailable] = useState(
     localStorage.getItem("phoneNumber") ? true : false || false
   );
@@ -247,7 +248,7 @@ const ContextProvider: FC<{
         );
         return;
       }
-      send({ text, socketSession, socket: newSocket });
+      send({ text, socketSession, socket: newSocket,conversationId });
       if (isVisibile)
         if (media) {
           if (media.mimeType.slice(0, 5) === "image") {
@@ -288,7 +289,7 @@ const ContextProvider: FC<{
           ]);
         }
     },
-    [currentUser?.id, messages, newSocket, socketSession]
+    [currentUser?.id, messages, newSocket, socketSession,conversationId]
   );
 
   useEffect(() => {
@@ -342,6 +343,7 @@ const ContextProvider: FC<{
       localeMsgs,
       isMobileAvailable,
       setIsMobileAvailable,
+      setConversationId
     }),
     [
       locale,
@@ -359,6 +361,7 @@ const ContextProvider: FC<{
       setLoading,
       isMsgReceiving,
       setIsMsgReceiving,
+      setConversationId
     ]
   );
 
