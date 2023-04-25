@@ -59,7 +59,7 @@ const OTPpage: React.FC = () => {
               router.push("/");
             }, 10);
           } else {
-            toast.error("Incorrect OTP");
+            toast.error(`${t("message.invalid_otp")}`);
           }
         })
         .catch((err) => console.log(err));
@@ -89,7 +89,7 @@ const OTPpage: React.FC = () => {
 
   const resendOTP = useCallback(async () => {
     if (isResendingOTP) {
-      toast.error("Please wait before resending OTP");
+      toast.error(`${t("message.wait_resending_otp")}`);
       return;
     }
 
@@ -99,7 +99,7 @@ const OTPpage: React.FC = () => {
         `${process.env.NEXT_PUBLIC_OTP_BASE_URL}uci/sendOTP?phone=${router.query.state}`
       );
       if (response.status === 200) {
-        toast.success("OTP sent again");
+        toast.success(`${t("message.otp_sent_again")}`);
 
         setCountdown(30);
 
@@ -114,10 +114,10 @@ const OTPpage: React.FC = () => {
           setCountdownIntervalId(null);
         }, 30000);
       } else {
-        toast.error("OTP not sent");
+        toast.error(`${t('error.otp_not_sent')}`);
       }
     } catch (error) {
-      toast.error("Error sending OTP");
+      toast.error(`${t('error.error.sending_otp')}`);
     }
 
     return () => {
@@ -125,7 +125,7 @@ const OTPpage: React.FC = () => {
         clearInterval(countdownIntervalId);
       }
     };
-  }, [isResendingOTP, router.query.state, countdownIntervalId]);
+  }, [isResendingOTP, router.query.state, countdownIntervalId,t]);
 
   useEffect(() => {
     //@ts-ignore

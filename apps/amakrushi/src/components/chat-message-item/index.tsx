@@ -22,12 +22,14 @@ import MsgThumbsDown from '../../assets/icons/msg-thumbs-down.jsx';
 import { AppContext } from "../../context";
 import { ChatMessageItemPropType } from "../../types";
 import { getFormatedTime } from "../../utils/getUtcTime";
+import { useLocalization } from "../../hooks/useLocalization";
 
 const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   currentUser,
   message,
   onSend,
 }) => {
+  const t = useLocalization();
   const context = useContext(AppContext);
   const [thumbsUp, setThumbsUp] = useState(false);
   const [thumbsDown, setThumbsDown] = useState(false);
@@ -60,7 +62,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 e.preventDefault();
                 console.log("qwer12 trig", { key: choice.key, isDisabled });
                 if (isDisabled) {
-                  toast.error("Cannot answer again");
+                  toast.error(`${t("message.cannot_answer_again")}`);
                 } else {
                   if (context?.messages?.[0]?.exampleOptions) {
                     context?.setMessages([]);
@@ -77,7 +79,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
         </List>
       );
     },
-    [context]
+    [context, t]
   );
 
   const { content, type } = message;
@@ -143,7 +145,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 </div>
               </div>
               &nbsp;
-              <p>Was this helpful?</p>
+              <p>{t("message.helpful")}</p>
             </div>
           )}
         </div>
