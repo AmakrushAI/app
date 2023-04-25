@@ -1,29 +1,29 @@
-import '../styles/globals.css';
-import type { AppProps } from 'next/app';
-import { ChakraProvider } from '@chakra-ui/react';
+import "../styles/globals.css";
+import type { AppProps } from "next/app";
+import { ChakraProvider } from "@chakra-ui/react";
 
-import ContextProvider from '../context/ContextProvider';
-import {  ReactElement, useEffect, useState } from 'react';
-import 'chatui/dist/index.css';
-import { Toaster } from 'react-hot-toast';
+import ContextProvider from "../context/ContextProvider";
+import { ReactElement, useEffect, useState } from "react";
+import "chatui/dist/index.css";
+import { Toaster } from "react-hot-toast";
 
-import { useCookies } from 'react-cookie';
-import { useRouter } from 'next/router';
-import dynamic from 'next/dynamic';
+import { useCookies } from "react-cookie";
+import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
 
-import flagsmith from 'flagsmith/isomorphic';
-import { FlagsmithProvider } from 'flagsmith/react';
+import flagsmith from "flagsmith/isomorphic";
+import { FlagsmithProvider } from "flagsmith/react";
 
-const LaunchPage = dynamic(() => import('../components/LaunchPage'), {
+const LaunchPage = dynamic(() => import("../components/LaunchPage"), {
   ssr: false,
 });
-const NavBar = dynamic(() => import('../components/NavBar'), {
+const NavBar = dynamic(() => import("../components/NavBar"), {
   ssr: false,
 });
 function SafeHydrate({ children }: { children: ReactElement }) {
   return (
     <div suppressHydrationWarning>
-      {typeof window === 'undefined' ? null : children}
+      {typeof window === "undefined" ? null : children}
     </div>
   );
 }
@@ -43,18 +43,22 @@ const App = ({
   }, []);
 
   useEffect(() => {
-    if (router.pathname === '/login' || router.pathname.startsWith('/otp')) {
+    if (router.pathname === "/login" || router.pathname.startsWith("/otp")) {
       // already logged in then send to home
-      if (cookie['access_token'] !== undefined) {
-        router.push('/');
+      if (cookie["access_token"] !== undefined) {
+        router.push("/");
       }
     } else {
       // not logged in then send to login page
-      if (cookie['access_token'] === undefined) {
-        router.push('/login');
+      if (cookie["access_token"] === undefined) {
+        router.push("/login");
       }
     }
   }, [cookie, router]);
+
+  if (process.env.NODE_ENV === "production") {
+    globalThis.console.log = () => {};
+  }
 
   if (launch) {
     return <LaunchPage />;
@@ -63,9 +67,9 @@ const App = ({
       <ChakraProvider>
         <FlagsmithProvider flagsmith={flagsmith} serverState={flagsmithState}>
           <ContextProvider>
-            <div style={{  height: '100%'  }}>
+            <div style={{ height: "100%" }}>
               <Toaster position="top-center" reverseOrder={false} />
-            <NavBar />
+              <NavBar />
               <SafeHydrate>
                 <Component {...pageProps} />
               </SafeHydrate>
