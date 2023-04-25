@@ -33,45 +33,47 @@ function NavBar() {
     [context]
   );
 
-  function deepEqual(obj1: any, obj2: any): boolean {
-    // Get object keys
-    const keys1 = Object.keys(obj1);
-    const keys2 = Object.keys(obj2);
-  
-    // If number of keys don't match, objects aren't equal
-    if (keys1.length !== keys2.length) {
-      return false;
-    }
-  
-    // Check each key recursively
-    for (let i = 0; i < keys1.length; i++) {
-      const key = keys1[i];
-      const val1 = obj1[key];
-      const val2 = obj2[key];
-  
-      if (
-        typeof val1 === 'object' &&
-        val1 != null &&
-        typeof val2 === 'object' &&
-        val2 != null
-      ) {
-        // Recurse into nested objects
-        if (!deepEqual(val1, val2)) {
-          return false;
-        }
-      } else if (val1 !== val2) {
-        // Compare non-object values
-        return false;
+  const deepEqual = useCallback((obj1: any, obj2: any): boolean => {
+      // Check if both variables are equal
+      if (obj1 === obj2) {
+          return true;
       }
-    }
   
-    // Objects must be equal
-    return true;
-  }
+      // Check if both variables are not null and are of type "object"
+      if (
+        typeof obj1 === 'object' &&
+        obj1 != null &&
+        typeof obj2 === 'object' &&
+        obj2 != null
+      ) {
+          // Get object keys
+          const keys1 = Object.keys(obj1);
+          const keys2 = Object.keys(obj2);
+  
+          // If number of keys don't match, objects aren't equal
+          if (keys1.length !== keys2.length) {
+              return false;
+          }
+  
+          // Check each key recursively
+          for (const key in obj1) {
+              if (!deepEqual(obj1[key], obj2[key])) {
+                  return false;
+              }
+          }
+  
+          // Objects must be equal
+          return true;
+      }
+  
+      // Compare non-object values
+      return obj1 === obj2;
+  }, []);
+  
 
   const newChatHandler = useCallback(() => {
     const oldHistoryString = localStorage.getItem('history');
-    const oldHistory = oldHistoryString ? JSON.parse(oldHistoryString) : { session1: [] };
+    const oldHistory = oldHistoryString ? JSON.parse(oldHistoryString) : {};
     
     const sessionNames = Object.keys(oldHistory);
     let foundMatchingSession = false;
@@ -97,6 +99,7 @@ function NavBar() {
       localStorage.setItem('history', JSON.stringify(newHistory));
       context?.setMessages([]);
     }
+    router.push('/');
   }, [context, deepEqual]);
   
   
