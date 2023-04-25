@@ -3,10 +3,12 @@ import { Socket } from 'socket.io-client';
 type SendType={
   text:string;
   socketSession:{userID:string;socketID:string},
-  socket: any
+  socket: any;
+  conversationId:string
 }
 
-export const send = ({text, socketSession:session,  socket}:SendType) => {
+export const send = ({text, socketSession:session,  socket,conversationId}:SendType) => {
+  localStorage.setItem('conversationId',conversationId)
   console.log("debug:",{text});
     socket.emit("botRequest", {
       content: {
@@ -19,6 +21,7 @@ export const send = ({text, socketSession:session,  socket}:SendType) => {
         accessToken: null,
       },
       to: `akai:${localStorage.getItem('phoneNumber')}`, 
+      conversationId
     });
   
 }
