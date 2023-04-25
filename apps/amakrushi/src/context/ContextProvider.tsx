@@ -53,11 +53,6 @@ const ContextProvider: FC<{
   const [isConnected, setIsConnected] = useState(newSocket?.connected || false);
   console.log(messages);
 
-  // const connect = useCallback((): void => {
-  //   console.log("socket debug: socket?.connect triggered");
-  //   socket?.connect();
-  // }, [socket]);
-
   useEffect(() => {
     if (localStorage.getItem("phoneNumber") && localStorage.getItem("auth")) {
       setNewSocket(
@@ -91,6 +86,8 @@ const ContextProvider: FC<{
       msg: { content: { title: string; choices: any }; messageId: string };
       media: any;
     }) => {
+      if(msg.content.title !=='')
+     { 
       const newMsg = {
         username: user?.name,
         text: msg.content.title,
@@ -102,8 +99,7 @@ const ContextProvider: FC<{
         sentTimestamp: Date.now(),
         ...media,
       };
-      // setMessages((prev: any) => [...prev, newMsg]);
-      setMessages((prev: any) => _.uniq([...prev, newMsg], ["messageId"]));
+      setMessages((prev: any) => _.uniq([...prev, newMsg], ["messageId"]));}
     },
     []
   );
@@ -113,9 +109,11 @@ const ContextProvider: FC<{
       console.log("#-debug:", { msg });
       setLoading(false);
       setIsMsgReceiving(false);
-      // @ts-ignore
+
+
+      //@ts-ignore
       const user = JSON.parse(localStorage.getItem("currentUser"));
-      //  console.log("qwe12 message: ", { msg, currentUser, uu: JSON.parse(localStorage.getItem('currentUser')) });
+
       if (msg.content.msg_type.toUpperCase() === "IMAGE") {
         updateMsgState({
           user,
@@ -152,7 +150,7 @@ const ContextProvider: FC<{
         JSON.stringify([
           ...messages,
           {
-            username: "AI",
+            username: "akai",
             text: msg.content.title,
             choices: msg.content.choices,
             position: "left",
@@ -165,7 +163,6 @@ const ContextProvider: FC<{
 
   useEffect(() => {
     if (!isConnected && newSocket && !newSocket.connected) {
-      console.log("#--- socket connect called");
       newSocket.connect();
       setIsConnected(true);
     }
@@ -173,17 +170,14 @@ const ContextProvider: FC<{
 
   useEffect(() => {
     function onConnect(): void {
-      console.log("socket:  onConnect callback");
       setIsConnected(true);
     }
 
     function onDisconnect(): void {
-      console.log("socket: disconnecting");
       setIsConnected(false);
     }
 
     function onSessionCreated(sessionArg: { session: any }) {
-      console.log("#-debug dd:", { sessionArg });
       setSocketSession(sessionArg);
     }
 
@@ -191,11 +185,7 @@ const ContextProvider: FC<{
       toast.error(exception?.message);
     }
 
-    console.log("#-debug :assigning");
-    console.log("debug ddd: if socket ready");
-    console.log("#--- new soccket assign before", { newSocket });
     if (newSocket) {
-      console.log("#--- new soccket assign");
       newSocket.on("connect", onConnect);
       newSocket.on("disconnect", onDisconnect);
       newSocket.on("botResponse", onMessageReceived);
@@ -206,7 +196,6 @@ const ContextProvider: FC<{
 
     return () => {
       if (newSocket) {
-        console.log("#-debug : returning everything");
         // if (isSocketReady && isConnected) {
         //   console.log("debug: return")
         // newSocket.disconnect();
@@ -229,11 +218,11 @@ const ContextProvider: FC<{
     (text: string, media: any, isVisibile = true): void => {
       setLoading(true);
       setIsMsgReceiving(true);
-      console.log("#-debug ddd:", { socketSession });
+
       if (newSocket && !socketSession) {
         toast(
           (t) => (
-            <div>
+            <span>
               You are Disconnected,plz
               <Button
                 onClick={() => {
@@ -241,9 +230,10 @@ const ContextProvider: FC<{
                   newSocket.connect();
                 }}
               >
-                click to connect again
+                click
               </Button>
-            </div>
+              to connect again
+            </span>
           ),
           {
             icon: "",
