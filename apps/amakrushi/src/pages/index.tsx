@@ -4,9 +4,17 @@ import { CookiesProvider } from "react-cookie";
 import { ColorModeScript } from "@chakra-ui/react";
 import { useLocalization } from "../hooks/useLocalization";
 import HomePage from "../components/HomePage";
+import { useContext, useEffect } from "react";
+import { AppContext } from "../context";
 
-const Home: NextPage  = () => {
-  const t=useLocalization();
+const Home: NextPage = () => {
+  const t = useLocalization();
+  const context = useContext(AppContext);
+  useEffect(() => {
+    if (localStorage.getItem("phoneNumber")) {
+      context?.setIsMobileAvailable(true);
+    }
+  }, [context?.setIsMobileAvailable]);
 
   return (
     <>
@@ -17,11 +25,18 @@ const Home: NextPage  = () => {
         <meta name="UCI Web Channel" content="A project under C4GT" />
         <title> {t("label.title")}</title>
       </Head>
-    
+
       <CookiesProvider>
-        <div style={{position: 'fixed', width: '100%', bottom: '7vh', top: '75px'}}>
-         <HomePage />       
-        </div>        
+        <div
+          style={{
+            position: "fixed",
+            width: "100%",
+            bottom: "7vh",
+            top: "75px",
+          }}
+        >
+          <HomePage />
+        </div>
         <ColorModeScript />
       </CookiesProvider>
     </>

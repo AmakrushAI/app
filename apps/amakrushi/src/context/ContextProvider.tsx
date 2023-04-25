@@ -47,6 +47,9 @@ const ContextProvider: FC<{
   const [messages, setMessages] = useState<Array<any>>([]);
   const [socketSession, setSocketSession] = useState<any>();
   const [newSocket, setNewSocket] = useState<any>();
+  const [isMobileAvailable, setIsMobileAvailable] = useState(
+    localStorage.getItem("phoneNumber") ? true : false || false
+  );
   const timer1 = flagsmith.getValue("timer1", { fallback: 5000 });
   const timer2 = flagsmith.getValue("timer2", { fallback: 25000 });
 
@@ -54,7 +57,10 @@ const ContextProvider: FC<{
   console.log(messages);
 
   useEffect(() => {
-    if (localStorage.getItem("phoneNumber") && localStorage.getItem("auth")) {
+    if (
+      (localStorage.getItem("phoneNumber") && localStorage.getItem("auth")) ||
+      isMobileAvailable
+    ) {
       setNewSocket(
         io(URL, {
           transportOptions: {
@@ -74,7 +80,7 @@ const ContextProvider: FC<{
         })
       );
     }
-  }, []);
+  }, [isMobileAvailable]);
 
   const updateMsgState = useCallback(
     ({
@@ -86,20 +92,20 @@ const ContextProvider: FC<{
       msg: { content: { title: string; choices: any }; messageId: string };
       media: any;
     }) => {
-      if(msg.content.title !=='')
-     { 
-      const newMsg = {
-        username: user?.name,
-        text: msg.content.title,
-        choices: msg.content.choices,
-        position: "left",
-        id: user?.id,
-        botUuid: user?.id,
-        messageId: msg?.messageId,
-        sentTimestamp: Date.now(),
-        ...media,
-      };
-      setMessages((prev: any) => _.uniq([...prev, newMsg], ["messageId"]));}
+      if (msg.content.title !== "") {
+        const newMsg = {
+          username: user?.name,
+          text: msg.content.title,
+          choices: msg.content.choices,
+          position: "left",
+          id: user?.id,
+          botUuid: user?.id,
+          messageId: msg?.messageId,
+          sentTimestamp: Date.now(),
+          ...media,
+        };
+        setMessages((prev: any) => _.uniq([...prev, newMsg], ["messageId"]));
+      }
     },
     []
   );
@@ -109,7 +115,6 @@ const ContextProvider: FC<{
       console.log("#-debug:", { msg });
       setLoading(false);
       setIsMsgReceiving(false);
-
 
       //@ts-ignore
       const user = JSON.parse(localStorage.getItem("currentUser"));
@@ -200,7 +205,7 @@ const ContextProvider: FC<{
         //   console.log("debug: return")
         // newSocket.disconnect();
         //socket?.off("connect", );
-        // socket?.off("disconnect", onDisconnect);
+        newSocket.off("disconnect", onDisconnect);
         // socket?.off("botResponse", onMessageReceived);
         // socket?.off("session", () => setSocketSession(null));
         // }
@@ -287,6 +292,18 @@ const ContextProvider: FC<{
   );
 
   useEffect(() => {
+    if (!socketSession && newSocket) {
+      console.log("vbn:", { socketSession, newSocket });
+    }
+  }, [newSocket, socketSession]);
+  console.log("vbn: aa", {
+    socketSession,
+    newSocket,
+    isConnected,
+    isMobileAvailable,
+  });
+
+  useEffect(() => {
     let secondTimer: any;
     const timer = setTimeout(() => {
       if (isMsgReceiving && loading) {
@@ -323,9 +340,13 @@ const ContextProvider: FC<{
       locale,
       setLocale,
       localeMsgs,
+      isMobileAvailable,
+      setIsMobileAvailable,
     }),
     [
       locale,
+      isMobileAvailable,
+      setIsMobileAvailable,
       setLocale,
       localeMsgs,
       currentUser,

@@ -13,7 +13,7 @@ import { AppContext } from "../../context";
 
 const OTPpage: React.FC = () => {
   const t = useLocalization();
-  const context=useContext(AppContext)
+  const context = useContext(AppContext);
   const router: NextRouter = useRouter();
   const [input1, setInput1] = useState("");
   const [input2, setInput2] = useState("");
@@ -23,7 +23,7 @@ const OTPpage: React.FC = () => {
   const [isResendingOTP, setIsResendingOTP] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [countdownIntervalId, setCountdownIntervalId] = useState<any>(null);
-  
+  console.log("vbn:", { context });
 
   const handleOTPSubmit: React.FormEventHandler = (event: React.FormEvent) => {
     event.preventDefault();
@@ -53,9 +53,11 @@ const OTPpage: React.FC = () => {
             localStorage.setItem("phoneNumber", phoneNumber);
             // @ts-ignore
             setUserId(analytics, phoneNumber);
-            router.push("/");
             localStorage.setItem("auth", data.resp.result.data.user.token);
-            context?.setIsMobileAvailabe(true)
+            context?.setIsMobileAvailabe(true);
+            setTimeout(() => {
+              router.push("/");
+            }, 10);
           } else {
             toast.error("Incorrect OTP");
           }
@@ -97,9 +99,9 @@ const OTPpage: React.FC = () => {
         `${process.env.NEXT_PUBLIC_OTP_BASE_URL}uci/sendOTP?phone=${router.query.state}`
       );
       if (response.status === 200) {
-        toast.success('OTP sent again');
+        toast.success("OTP sent again");
 
-          setCountdown(30);
+        setCountdown(30);
 
         const countdownIntervalId = setInterval(() => {
           setCountdown((prevCountdown) => prevCountdown - 1);
@@ -112,10 +114,10 @@ const OTPpage: React.FC = () => {
           setCountdownIntervalId(null);
         }, 30000);
       } else {
-        toast.error('OTP not sent');
+        toast.error("OTP not sent");
       }
     } catch (error) {
-      toast.error('Error sending OTP');
+      toast.error("Error sending OTP");
     }
 
     return () => {
@@ -191,10 +193,10 @@ const OTPpage: React.FC = () => {
               {countdown > 0 ? (
                 <span>
                   <FormattedMessage
-                  id="message.wait_minutes"
-                  defaultMessage="Please wait {countdown} seconds before resending OTP"
-                  values={{countdown}}
-                />
+                    id="message.wait_minutes"
+                    defaultMessage="Please wait {countdown} seconds before resending OTP"
+                    values={{ countdown }}
+                  />
                 </span>
               ) : (
                 <>
