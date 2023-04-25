@@ -4,11 +4,13 @@ import messageIcon from '../../assets/icons/message-menu.svg';
 import menuIcon from '../../assets/icons/menu.svg';
 import Image from 'next/image';
 import { useCookies } from 'react-cookie';
-import { FC } from 'react';
+import { FC, useCallback, useContext } from 'react';
 import { useRouter } from 'next/router';
+import { AppContext } from '../../context';
 
 const Menu: FC = () => {
   const [cookies, setCookies] = useCookies();
+  const context = useContext(AppContext);
   const router = useRouter();
 
   const urlChanger = (link: string) => {
@@ -17,16 +19,24 @@ const Menu: FC = () => {
     }
   };
 
+  const homeUrlChanger = useCallback(() => {
+    if (cookies['access_token'] !== undefined) {
+      if(context?.messages.length !== 0){
+        router.push('/chat');
+      }else router.push('/');
+    }
+  }, [context?.messages, cookies, router]);
+
   return (
     <div className={styles.menu}>
-      <div onClick={() => urlChanger('/')}>
-        <Image alt="" src={homeIcon} layout='responsive' />
+      <div onClick={homeUrlChanger}>
+        <Image alt="homeIcon" src={homeIcon} layout='responsive' />
       </div>
       <div onClick={() => urlChanger('/history')}>
-        <Image alt="" src={messageIcon} layout='responsive' />
+        <Image alt="messageIcon" src={messageIcon} layout='responsive' />
       </div>
       <div onClick={() => urlChanger('/more')}>
-        <Image alt="" src={menuIcon} layout='responsive' />
+        <Image alt="menuIcon" src={menuIcon} layout='responsive' />
       </div>
     </div>
   );
