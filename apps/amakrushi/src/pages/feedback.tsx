@@ -8,6 +8,7 @@ import { useLocalization } from '../hooks';
 
 const Feedback: NextPage = () => {
   const t=useLocalization();
+  console.log("vbn aa dd")
   return (
     <React.Fragment>
       <Head>

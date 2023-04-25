@@ -307,10 +307,10 @@ const ContextProvider: FC<{
     let secondTimer: any;
     const timer = setTimeout(() => {
       if (isMsgReceiving && loading) {
-        toast.error(t("message.taking_longer"));
+        toast.error(`${t("message.taking_longer")}`);
         secondTimer = setTimeout(() => {
           if (isMsgReceiving && loading) {
-            toast.error(t("message.retry"));
+            toast.error(`${t("message.retry")}`);
             setIsMsgReceiving(false);
             setLoading(false);
           }

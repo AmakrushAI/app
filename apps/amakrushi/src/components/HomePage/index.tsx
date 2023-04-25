@@ -73,7 +73,7 @@ const HomePage: NextPage = () => {
           <button
             onClick={() => sendMessage(inputMsg)}
             className={styles.sendButton}>
-            Send
+            {t('label.send')}
           </button>
         </div>
       </div>
