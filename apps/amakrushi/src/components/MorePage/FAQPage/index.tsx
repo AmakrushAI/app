@@ -9,6 +9,7 @@ import {
   AccordionIcon,
 } from '@chakra-ui/react';
 import searchIcon from '../../../assets/icons/search.svg';
+import callIcon from '../../../assets/icons/call-icon.svg';
 import Image from 'next/image';
 import Menu from '../../menu';
 import { analytics } from '../../../utils/firebase';
@@ -122,14 +123,17 @@ const FAQPage: React.FC = () => {
               </div>
             )}
             {flags?.show_dialer?.enabled && (
-              <>
-                <a href="tel:155333" className={styles.footerTitle}>
-                  {t('label.dial')} {flags.dialer_number.value}
-                </a>
+              <div className={styles.dialerBox}>
                 <div className={styles.footer}>
                   {t('message.dial_description')}
                 </div>
-              </>
+                <a href="tel:155333" className={styles.footerTitle}>
+                <div className={styles.callIconBox}>
+                  <Image src={callIcon} alt="callIcon" layout='responsive' />
+                </div>
+                  {t('label.dial')} {flags.dialer_number.value}
+                </a>
+              </div>
             )}
           </section>
         </div>

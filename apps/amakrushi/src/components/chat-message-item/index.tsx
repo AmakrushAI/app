@@ -105,8 +105,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
             <div
               style={{
                 display: 'flex',
-                justifyContent:
-                  content?.data?.position === 'left' ? 'flex-end' : '',
+                justifyContent:'flex-end',
               }}>
               <span
                 style={{
