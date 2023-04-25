@@ -9,6 +9,7 @@ import {
 } from "react";
 import { AppContext } from ".";
 import _ from "underscore";
+import { v4 as uuidv4 } from 'uuid';
 import { send } from "../components/websocket";
 
 import { UserType } from "../types";
@@ -47,7 +48,7 @@ const ContextProvider: FC<{
   const [messages, setMessages] = useState<Array<any>>([]);
   const [socketSession, setSocketSession] = useState<any>();
   const [newSocket, setNewSocket] = useState<any>();
-  const [conversationId,setConversationId]=useState(localStorage.getItem('conversationId') ? localStorage.getItem('conversationId'):_.uniqueId())
+  const [conversationId,setConversationId]=useState(localStorage.getItem('conversationId') ? localStorage.getItem('conversationId') : uuidv4())
   const [isMobileAvailable, setIsMobileAvailable] = useState(
     localStorage.getItem("phoneNumber") ? true : false || false
   );
@@ -283,7 +284,7 @@ const ContextProvider: FC<{
               payload: { text },
               time: Date.now(),
               disabled: true,
-              messageId: `${Date.now()}`,
+              messageId: uuidv4(),
               repliedTimestamp: Date.now(),
             },
           ]);

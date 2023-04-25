@@ -11,7 +11,8 @@ import { AppContext } from '../../context';
 import { getInitialMsgs } from '../../utils/textUtility';
 import flagsmith from 'flagsmith/isomorphic';
 import router from 'next/router';
-import _ from 'underscore';
+import { v4 as uuidv4 } from 'uuid';
+
 function NavBar() {
   const defaultLang = flagsmith.getValue('default_lang', { fallback: 'en' });
   const [isEngActive, setIsEngActive] = useState(
@@ -35,9 +36,10 @@ function NavBar() {
  
 
   const newChatHandler = useCallback(() => {
-    const newConversationId=_.uniqueId();
-    localStorage.setItem('conversationId',newConversationId);
+    const newConversationId = uuidv4();
+    localStorage.setItem('conversationId', newConversationId);
     context?.setConversationId(newConversationId);
+    context?.setMessages([]);
     router.push('/');
   }, [context]);  
   
