@@ -3,10 +3,11 @@ import { Socket } from 'socket.io-client';
 type SendType={
   text:string;
   socketSession:{userID:string;socketID:string},
-  socket:Socket
+  socket: any
 }
 
 export const send = ({text, socketSession:session,  socket}:SendType) => {
+  console.log("debug:",{text});
     socket.emit("botRequest", {
       content: {
         text,
