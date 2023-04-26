@@ -1,8 +1,8 @@
+'use client';
 import Menu from '../menu';
 import styles from './index.module.css';
 import Image from 'next/image';
 import hourGlassIcon from '../../assets/icons/hourglass.svg';
-import router from 'next/router';
 import { useLocalization } from '../../hooks';
 
 function ComingSoonPage() {
@@ -19,7 +19,7 @@ function ComingSoonPage() {
       <button
         type="button"
         className={styles.backButton}
-        onClick={() => window.history.back()}>
+        onClick={() => window?.history?.back()}>
         {t("label.back")}
       </button>
       <Menu />

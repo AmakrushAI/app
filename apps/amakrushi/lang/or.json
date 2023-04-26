@@ -18,6 +18,8 @@
     "label.submit_review":"ସମୀକ୍ଷା ଦାଖଲ କରନ୍ତୁ",
     "label.mobile_number":"ମୋବାଇଲ୍ ନମ୍ବର",
     "label.examples":"ଉଦାହରଣଗୁଡିକ",
+    "label.click":"କ୍ଲିକ୍ କରନ୍ତୁ",
+    "message.socket_disconnect_msg": "ପୁନର୍ବାର ସଂଯୋଗ କରିବାକୁ |",
     "message.enter_mobile":"ମୋବାଇଲ୍ ନମ୍ବର ପ୍ରବେଶ କରନ୍ତୁ |",
     "message.register_message":"ଯୋଡି ଆପଣ ପୂର୍ବରୁ ପଞ୍ଜୀକୃତ ହୋଇଛନ୍ତି ତେବେ ଲଗଇନ୍ କରିବା ପାଇଁ ଆପଣଙ୍କର ମୋବାଇଲ ନମ୍ବର ବ୍ୟବହାର କରନ୍ତୁ |",
     "message.not_register_yet":"ଏପର୍ଯ୍ୟନ୍ତ ପଞ୍ଜୀକୃତ ହୋଇନାହିଁ | ?",
@@ -52,5 +54,6 @@
     "error.fail_to_submit":"ମୂଲ୍ୟାୟନ ଦାଖଲ କରିବାରେ ବିଫଳ |",
     "error.fail_to_submit_review": "ସମୀକ୍ଷା ଦାଖଲ କରିବାରେ ବିଫଳ |",
     "error.sending_otp":"ଗୋଟିଏ ଥର ପାସୱାର୍ଡ ପଠାଇବାରେ ତ୍ରୁଟି |",
-    "error.otp_not_sent":"ଗୋଟିଏ ଥର ପାସୱାର୍ଡ ପଠାଯାଇ ନାହିଁ |"
+    "error.otp_not_sent":"ଗୋଟିଏ ଥର ପାସୱାର୍ଡ ପଠାଯାଇ ନାହିଁ |",
+    "error.empty_msg": "ପଠାଇବାକୁ ଦୟାକରି ଏକ ବାର୍ତ୍ତା ଟାଇପ୍ କରନ୍ତୁ କିମ୍ବା ଚୟନ କରନ୍ତୁ |"
 }

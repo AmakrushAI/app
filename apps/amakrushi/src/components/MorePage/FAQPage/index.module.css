@@ -66,10 +66,6 @@
   background-color: var(--secondarygreen) !important;
 }
 
-.langName {
-  color: var(--primaryblue);
-}
-
 .dialerBox {
   background-color: white;
   margin: 2vh;

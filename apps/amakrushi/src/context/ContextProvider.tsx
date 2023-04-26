@@ -10,11 +10,11 @@ import {
 import { AppContext } from ".";
 import _ from "underscore";
 import { v4 as uuidv4 } from 'uuid';
-import { send } from "../components/websocket";
+import { send } from "../socket";
 
 import { UserType } from "../types";
 import { IntlProvider } from "react-intl";
-import { useLocalization, useSocket } from "../hooks";
+import { useLocalization } from "../hooks";
 import toast from "react-hot-toast";
 import flagsmith from "flagsmith/isomorphic";
 import { io } from "socket.io-client";
@@ -48,7 +48,7 @@ const ContextProvider: FC<{
   const [messages, setMessages] = useState<Array<any>>([]);
   const [socketSession, setSocketSession] = useState<any>();
   const [newSocket, setNewSocket] = useState<any>();
-  const [conversationId,setConversationId]=useState(localStorage.getItem('conversationId') ? localStorage.getItem('conversationId') : uuidv4())
+  const [conversationId,setConversationId]=useState<string|null>(localStorage.getItem('conversationId') ? localStorage.getItem('conversationId') : uuidv4())
   const [isMobileAvailable, setIsMobileAvailable] = useState(
     localStorage.getItem("phoneNumber") ? true : false || false
   );
@@ -112,6 +112,8 @@ const ContextProvider: FC<{
     []
   );
 
+ 
+
   const onMessageReceived = useCallback(
     (msg: any): void => {
       console.log("#-debug:", { msg });
@@ -168,6 +170,22 @@ const ContextProvider: FC<{
     [messages, updateMsgState]
   );
 
+   //@ts-ignore
+  const onSocketConnect=useCallback(({text}:{text:string}):void=>{
+    setIsConnected(false);
+    setTimeout(() => {
+      newSocket?.connect();
+      setIsConnected(true);
+    }, 30);
+    
+    setTimeout(()=>{
+      if(newSocket?.connected)
+      sendMessage(text,null);
+    },40)
+    //@ts-ignore
+  },[newSocket, sendMessage]);
+
+  
   useEffect(() => {
     if (!isConnected && newSocket && !newSocket.connected) {
       newSocket.connect();
@@ -221,6 +239,7 @@ const ContextProvider: FC<{
     setMessages([]);
   }, []);
 
+  //@ts-ignore
   const sendMessage = useCallback(
     (text: string, media: any, isVisibile = true): void => {
       setLoading(true);
@@ -228,18 +247,17 @@ const ContextProvider: FC<{
 
       if (newSocket && !socketSession) {
         toast(
-          (t) => (
+          (to) => (
             <span>
-              You are Disconnected,plz
               <Button
                 onClick={() => {
-                  toast.dismiss(t.id);
-                  newSocket.connect();
+                  onSocketConnect({text});
+                  toast.dismiss(to.id);
                 }}
               >
-                click
+                {t("label.click")}
               </Button>
-              to connect again
+              {t("message.socket_disconnect_msg")}
             </span>
           ),
           {
@@ -290,14 +308,16 @@ const ContextProvider: FC<{
           ]);
         }
     },
-    [currentUser?.id, messages, newSocket, socketSession,conversationId]
-  );
+    [t, newSocket, socketSession, conversationId, onSocketConnect, messages, currentUser?.id]
+  );  
 
   useEffect(() => {
     if (!socketSession && newSocket) {
       console.log("vbn:", { socketSession, newSocket });
     }
   }, [newSocket, socketSession]);
+ 
+ 
   console.log("vbn: aa", {
     socketSession,
     newSocket,
@@ -344,7 +364,7 @@ const ContextProvider: FC<{
       localeMsgs,
       isMobileAvailable,
       setIsMobileAvailable,
-      setConversationId
+      setConversationId,onSocketConnect
     }),
     [
       locale,
@@ -362,7 +382,7 @@ const ContextProvider: FC<{
       setLoading,
       isMsgReceiving,
       setIsMsgReceiving,
-      setConversationId
+      setConversationId,onSocketConnect
     ]
   );
 
@@ -393,6 +413,7 @@ const SSR: FC<{ children: ReactElement }> = ({ children }) => {
 
   if (typeof window === "undefined") return null;
   return (
+    //@ts-ignore
     <IntlProvider locale={locale} messages={localeMsgs}>
       <ContextProvider
         locale={locale}

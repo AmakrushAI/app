@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { FormattedMessage } from "react-intl";
 import { AppContext } from "../../context";
+import jwt_decode from "jwt-decode";
 
 const OTPpage: React.FC = () => {
   const t = useLocalization();
@@ -53,7 +54,10 @@ const OTPpage: React.FC = () => {
             localStorage.setItem("phoneNumber", phoneNumber);
             // @ts-ignore
             setUserId(analytics, phoneNumber);
+            const decodedToken=jwt_decode(data.resp.result.data.user.token);
+            console.log('vbn:',{decodedToken})
             localStorage.setItem("auth", data.resp.result.data.user.token);
+            
             context?.setIsMobileAvailabe(true);
             setTimeout(() => {
               router.push("/");
