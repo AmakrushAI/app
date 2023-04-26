@@ -18,6 +18,8 @@
     "label.submit_review":"Submit Review",
     "label.mobile_number":"Mobile Number",
     "label.examples":"Examples",
+    "label.click":"Click",
+    "message.socket_disconnect_msg": "to connect again.",
     "message.enter_mobile":"Enter Mobile Number",
     "message.register_message":"If you are already registered then use your mobile number to login.",
     "message.not_register_yet":"Not registered yet ?",
@@ -51,5 +53,6 @@
     "error.fail_to_submit":"Failed to submit rating.",
     "error.fail_to_submit_review": "Failed to submit review.",
     "error.sending_otp":"Error sending OTP",
-    "error.otp_not_sent":"OTP not sent"
+    "error.otp_not_sent":"OTP not sent",
+    "error.empty_msg": "Please type or select a message to send."
 }

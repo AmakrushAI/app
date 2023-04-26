@@ -33,13 +33,14 @@ const LoginPage: React.FC = () => {
         `${process.env.NEXT_PUBLIC_OTP_BASE_URL}uci/sendOTP?phone=${input}`,
         { method: 'GET' }
       ).then((response) => {
+        
         if (response.status === 200) {
          // localStorage.setItem('phoneNumber',input)
           router.push({ pathname: '/otp', query: { state: input } });
         } else {
           toast.error(`${t("message.otp_not_sent")}`);
         }
-      });
+      })
     }
   };
 
