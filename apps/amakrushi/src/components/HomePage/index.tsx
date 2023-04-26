@@ -25,13 +25,13 @@ const HomePage: NextPage = () => {
   const t = useLocalization();
   const placeholder = useMemo(() => t('message.ask_ur_question'), [t]);
   const [messages, setMessages] = useState<Array<any>>([
-    getInitialMsgs(context?.locale),
+    getInitialMsgs(t),
   ]);
   const [inputMsg, setInputMsg] = useState('');
 
   useEffect(() => {
-    setMessages([getInitialMsgs(context?.locale)]);
-  }, [context?.locale]);
+    setMessages([getInitialMsgs(t)]);
+  }, [context.locale, t]);
 
   useEffect(() => {
     //@ts-ignore

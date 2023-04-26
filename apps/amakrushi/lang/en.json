@@ -17,6 +17,7 @@
     "label.submit":"Submit",
     "label.submit_review":"Submit Review",
     "label.mobile_number":"Mobile Number",
+    "label.examples":"Examples",
     "message.enter_mobile":"Enter Mobile Number",
     "message.register_message":"If you are already registered then use your mobile number to login.",
     "message.not_register_yet":"Not registered yet ?",
