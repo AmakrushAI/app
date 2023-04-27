@@ -14,7 +14,8 @@ type SendType={
 	  socket.emit("botRequest", {
 		content: {
 		  text,
-		  userId: session.userID,
+		//   userId: session.userID,
+		  userId: localStorage.getItem('userID'),
 		  appId: "AKAI_App_Id",
 		  channel: "AKAI",
 		  from: session.socketID,

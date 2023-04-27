@@ -68,7 +68,8 @@ const ContextProvider: FC<{
           transportOptions: {
             polling: {
               extraHeaders: {
-                Authorization: `Bearer ${localStorage.getItem("auth")}`,
+                 Authorization: `Bearer ${localStorage.getItem("auth")}`,
+                //Authorization: `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im9yQ1h5ZUFkaVIxSm9KaFlhUUJlTkpISHd6RSJ9.eyJhdWQiOiI3YTZjODJlOS1kNTM5LTRkZTktOGY1OC0zZGRlNjc4OTRkZGUiLCJleHAiOjE2ODI1MjExODksImlhdCI6MTY4MjUxNzU4OSwiaXNzIjoiYWNtZS5jb20iLCJzdWIiOiI4MGFkNGRjOC0zNzdkLTQyNGQtYjYyNS1hMGIyZDgyNjZkM2UiLCJqdGkiOiI4YWNiNjE4ZC0xNzZjLTQ5ZGUtODZhZC02NGFlYWEzMGFiOGQiLCJhdXRoZW50aWNhdGlvblR5cGUiOiJQQVNTV09SRCIsInByZWZlcnJlZF91c2VybmFtZSI6Ijk2NDA4NjMyMDYiLCJhcHBsaWNhdGlvbklkIjoiN2E2YzgyZTktZDUzOS00ZGU5LThmNTgtM2RkZTY3ODk0ZGRlIiwicm9sZXMiOlsiRmFybWVyIl0sImF1dGhfdGltZSI6MTY4MjUxNzU4OSwidGlkIjoiMjA1MTIxMmEtMTgxYS0wYTliLTM4YmItZTlkNGE0MzUxMTIyIn0.DXz-ArTh0HX7OW9dg78V7VPRieRVLXuAs7t7pKlrWFJp_W6vTn54atvntJZGD2w0toVTTJeCLXp553PXqhWoigZgwiQdFbaGs6Cy_fr6bOsZF3Qo27b9qrXRQ-9d6i02QfLD6Dc5QTuOGKjrdSLNzpTzK8FNGDn4crRAh2O4HwojPatCmiHJJ19uhdupBSfs1So9HnWYjDPheoV_ZU2EjrQJjvLg0SIqehMkMQIfLpQv4vqpZgCa6t5NIiZkzbJk63xMVEFN4VXWcd-hC1Vtvnl7ly7cfh_m1xPFm5Fiid3PbzMlupmAndutfrhWUyC4dnSIO1l-LALcv7XR5SvNUg`,
                 channel: "akai",
               },
             },
