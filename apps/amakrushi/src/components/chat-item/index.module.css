@@ -28,7 +28,7 @@
 }
 
 .deleteIconContainer {
-  flex: 1;
+  /* flex: 1; */
   height: 5vh;
   width: 5vh;
 }

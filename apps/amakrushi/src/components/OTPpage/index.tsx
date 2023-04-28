@@ -51,7 +51,7 @@ const OTPpage: React.FC = () => {
       )
         .then((response) => response.json())
         .then((data) => {
-          console.log("vbn:", { data });
+          console.log("token:", { data });
           if (data.params.status === "Success") {
             let expires = new Date();
             expires.setTime(
@@ -66,12 +66,12 @@ const OTPpage: React.FC = () => {
             const phoneNumber = router.query.state;
             // @ts-ignore
             localStorage.setItem("phoneNumber", phoneNumber);
-            // @ts-ignore
-            setUserId(analytics, phoneNumber);
             const decodedToken=jwt_decode(data.result.data.user.token);
             //@ts-ignore
             localStorage.setItem("userID", decodedToken?.sub);
             localStorage.setItem("auth", data.result.data.user.token);
+            // @ts-ignore
+            setUserId(analytics, localStorage.getItem("userID"));
 
             context?.setIsMobileAvailable(true);
             setTimeout(() => {
@@ -82,7 +82,14 @@ const OTPpage: React.FC = () => {
             toast.error(`${t("message.invalid_otp")}`);
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err)
+          //@ts-ignore
+          logEvent(analytics, 'console_error', {
+            error_message: err.message,
+          });
+        }
+        );
     }
   };
 
@@ -138,6 +145,10 @@ const OTPpage: React.FC = () => {
       }
     } catch (error) {
       toast.error(`${t("error.error.sending_otp")}`);
+      //@ts-ignore
+      logEvent(analytics, 'console_error', {
+        error_message: error.message,
+      });
     }
 
     return () => {
@@ -266,286 +277,3 @@ const OTPpage: React.FC = () => {
 };
 
 export default OTPpage;
-
-
-
-// import { Box, HStack, PinInputField, PinInput } from "@chakra-ui/react";
-// import React, { useState, useEffect, useCallback, useContext } from "react";
-// import { NextRouter, useRouter } from "next/router";
-// import { useCookies } from "react-cookie";
-// import styles from "./OTP.module.css";
-// import { useLocalization } from "../../hooks";
-// import { logEvent, setUserId } from "firebase/analytics";
-// import { analytics } from "../../utils/firebase";
-// import toast from "react-hot-toast";
-// import axios from "axios";
-// import { FormattedMessage } from "react-intl";
-// import { AppContext } from "../../context";
-// import jwt_decode from "jwt-decode";
-
-// const OTPpage: React.FC = () => {
-//   const t = useLocalization();
-//   const context = useContext(AppContext);
-//   const router: NextRouter = useRouter();
-//   const [input1, setInput1] = useState("");
-//   const [input2, setInput2] = useState("");
-//   const [input3, setInput3] = useState("");
-//   const [input4, setInput4] = useState("");
-//   const [cookies, setCookie, removeCookie] = useCookies(["access_token"]);
-//   const [isResendingOTP, setIsResendingOTP] = useState(false);
-//   const [countdown, setCountdown] = useState(0);
-//   const [countdownIntervalId, setCountdownIntervalId] = useState<any>(null);
-//   console.log("vbn:", { context });
-
-//   const handleOTPSubmit: React.FormEventHandler =async (event: React.FormEvent) => {
-//     event.preventDefault();
-
-//           if(true)
-//      { const token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImUxNmZiN2Q0NSJ9.eyJhdWQiOiI0YWQyZmRjZC1jOTRiLTQwMmUtYjJkYy0zZGQyOTE2NDA5YWMiLCJleHAiOjE2ODI1MjAwNTcsImlhdCI6MTY4MjUxNjQ1NywiaXNzIjoiYWNtZS5jb20iLCJzdWIiOiJjYjQ5OTJkOC03NDE4LTQ1MjUtOWY0Zi1lZTA1YmY0ZmEzODEiLCJqdGkiOiJjYzEwZGU0Yy1lNTU5LTQyOWUtYTM5Yi1kZjA3MDcxNTQ4NzMiLCJhdXRoZW50aWNhdGlvblR5cGUiOiJQQVNTV09SRCIsImVtYWlsIjoiYW1ha3J1c2hpYWlAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImFwcGxpY2F0aW9uSWQiOiI0YWQyZmRjZC1jOTRiLTQwMmUtYjJkYy0zZGQyOTE2NDA5YWMiLCJyb2xlcyI6WyJBZG1pbiJdLCJzaWQiOiJiMmM0Y2ZkYi0yMTYzLTQxNmItODI0MS00ZWU2OTZkMDk5MmQiLCJhdXRoX3RpbWUiOjE2ODI1MTY0NTcsInRpZCI6IjIwNTEyMTJhLTE4MWEtMGE5Yi0zOGJiLWU5ZDRhNDM1MTEyMiJ9.eoXFlCdECppZpGvicZ5bo7-7rYFTrLvkVKGI8HgSeEo'
-//       const decodedToken=await jwt_decode(token);
-//              console.log("vbn:",{decodedToken});
-//              localStorage.setItem('userID',decodedToken?.sub);
-//              const phoneNumber = router.query.state;
-//               // @ts-ignore
-//               localStorage.setItem("phoneNumber", phoneNumber);
-//               context?.setIsMobileAvailable(true);
-//               setTimeout(() => {
-//                 router.push("/");
-//               }, 10);
-
-//               let expires = new Date();
-//               expires.setTime(
-//                 expires.getTime() +
-//                 1682500567530 * 1000
-//               );
-//               removeCookie("access_token");
-//               setCookie("access_token", token, {
-//                 path: "/",
-//                 expires,
-//               });
-//               localStorage.setItem("auth", token);
-//             }
-
-    
-//     const inputOTP: string = input1 + input2 + input3 + input4;
-//     // if (inputOTP.length === 4) {
-//     //   fetch(
-//     //     `${process.env.NEXT_PUBLIC_OTP_BASE_URL}uci/loginOrRegister?phone=${router.query.state}&otp=${inputOTP}`,
-//     //     {
-//     //       method: "get",
-//     //     }
-//     //   )
-//     //     .then((response) => response.json())
-//     //     .then((data) => {
-//     //       if (data.resp.params.status === "Success") {
-//     //         let expires = new Date();
-//     //         expires.setTime(
-//     //           expires.getTime() +
-//     //             data.resp.result.data.user.tokenExpirationInstant * 1000
-//     //         );
-//     //         removeCookie("access_token");
-//     //         setCookie("access_token", data.resp.result.data.user.token, {
-//     //           path: "/",
-//     //           expires,
-//     //         });
-//     //         const phoneNumber = router.query.state;
-//     //         // @ts-ignore
-//     //         localStorage.setItem("phoneNumber", phoneNumber);
-//     //         // @ts-ignore
-//     //         setUserId(analytics, phoneNumber);
-//     //         const decodedToken=jwt_decode(data.resp.result.data.user.token);
-//     //         console.log('vbn:',{decodedToken})
-//     //         localStorage.setItem("auth", data.resp.result.data.user.token);
-            
-//     //         context?.setIsMobileAvailabe(true);
-//     //         setTimeout(() => {
-//     //           router.push("/");
-//     //         }, 10);
-//     //       } else {
-//     //         toast.error(`${t("message.invalid_otp")}`);
-//     //       }
-//     //     })
-//     //     .catch((err) => console.log(err));
-//     // }
-//   };
-
-//   const handleOTP1: React.ChangeEventHandler = (
-//     e: React.ChangeEvent<HTMLInputElement>
-//   ) => {
-//     setInput1(e.target.value);
-//   };
-//   const handleOTP2: React.ChangeEventHandler = (
-//     e: React.ChangeEvent<HTMLInputElement>
-//   ) => {
-//     setInput2(e.target.value);
-//   };
-//   const handleOTP3: React.ChangeEventHandler = (
-//     e: React.ChangeEvent<HTMLInputElement>
-//   ) => {
-//     setInput3(e.target.value);
-//   };
-//   const handleOTP4: React.ChangeEventHandler = (
-//     e: React.ChangeEvent<HTMLInputElement>
-//   ) => {
-//     setInput4(e.target.value);
-//   };
-
-//   const resendOTP = useCallback(async () => {
-//     if (isResendingOTP) {
-//       toast.error(`${t("message.wait_resending_otp")}`);
-//       return;
-//     }
-
-//     setIsResendingOTP(true);
-//     try {
-//       const response = await axios.get(
-//         `${process.env.NEXT_PUBLIC_OTP_BASE_URL}uci/sendOTP?phone=${router.query.state}`
-//       );
-//       if (response.status === 200) {
-//         toast.success(`${t("message.otp_sent_again")}`);
-
-//         setCountdown(30);
-
-//         const countdownIntervalId = setInterval(() => {
-//           setCountdown((prevCountdown) => prevCountdown - 1);
-//         }, 1000);
-//         setCountdownIntervalId(countdownIntervalId);
-
-//         setTimeout(() => {
-//           setIsResendingOTP(false);
-//           clearInterval(countdownIntervalId);
-//           setCountdownIntervalId(null);
-//         }, 30000);
-//       } else {
-//         toast.error(`${t('error.otp_not_sent')}`);
-//       }
-//     } catch (error) {
-//       toast.error(`${t('error.error.sending_otp')}`);
-//     }
-
-//     return () => {
-//       if (countdownIntervalId !== null) {
-//         clearInterval(countdownIntervalId);
-//       }
-//     };
-//   }, [isResendingOTP, router.query.state, countdownIntervalId,t]);
-
-//   useEffect(() => {
-//     //@ts-ignore
-//     logEvent(analytics, "OTP_page");
-//   }, []);
-
-//   return (
-//     <div className={styles.main}>
-//       <div className={styles.title}>{t("label.title")}</div>
-//       <Box
-//         backgroundColor="var(--bg-color) !important"
-//         width="340px"
-//         height="80vh"
-//         display="flex"
-//         background={"white"}
-//         flexDirection="column"
-//         justifyContent="space-between"
-//         borderRadius={"5"}
-//         margin={"auto"}
-//       >
-//         <Box
-//           padding={1}
-//           textAlign="center"
-//           color="black"
-//           px="1rem"
-//           marginTop="10vh"
-//         >
-//           <div className={styles.otpVerify}>
-//             {t("message.otp_verification")}
-//           </div>
-
-//           <div className={styles.otpSent}>
-//             {t("message.otp_message")} <b> {t("label.mobile_number")}</b>
-//           </div>
-//           <div style={{ marginTop: "10px" }}>
-//             <b>+91-{router.query.state}</b>
-//           </div>
-//           <form onSubmit={handleOTPSubmit}>
-//             <HStack style={{ marginTop: "34px", justifyContent: "center" }}>
-//               <PinInput otp placeholder="">
-//                 <PinInputField
-//                   className={styles.pinInputField}
-//                   value={input1}
-//                   onChange={handleOTP1}
-//                 />
-//                 <PinInputField
-//                   className={styles.pinInputField}
-//                   value={input2}
-//                   onChange={handleOTP2}
-//                 />
-//                 <PinInputField
-//                   className={styles.pinInputField}
-//                   value={input3}
-//                   onChange={handleOTP3}
-//                 />
-//                 <PinInputField
-//                   className={styles.pinInputField}
-//                   value={input4}
-//                   onChange={handleOTP4}
-//                 />
-//               </PinInput>
-//             </HStack>
-
-//             <div className={styles.resendOTP}>
-//               {countdown > 0 ? (
-//                 <span>
-//                   <FormattedMessage
-//                     id="message.wait_minutes"
-//                     defaultMessage="Please wait {countdown} seconds before resending OTP"
-//                     values={{ countdown }}
-//                   />
-//                 </span>
-//               ) : (
-//                 <>
-//                   <span>{t("message.didnt_receive")} &nbsp;</span>
-//                   <p onClick={resendOTP}>{t("message.resend_again")}</p>
-//                 </>
-//               )}
-//             </div>
-
-//             <div style={{ display: "flex" }}>
-//               <button
-//                 type="button"
-//                 className={styles.backButton}
-//                 onClick={() => router.push("/login")}
-//               >
-//                 {t("label.back")}
-//               </button>
-//               <button
-//                 type="submit"
-//                 className={styles.submitButton}
-//                 onClick={handleOTPSubmit}
-//               >
-//                 {t("label.submit")}
-//               </button>
-//             </div>
-//           </form>
-//         </Box>
-//         {/* <Box>
-//           <div className={styles.login}>
-//             You have an account?{' '}
-//             <b>
-//               <Link
-//                 href="/login"
-//                 style={{
-//                   color: 'white',
-//                   textDecoration: 'none',
-//                   cursor: 'pointer',
-//                 }}>
-//                 Login
-//               </Link>
-//             </b>
-//           </div>
-//         </Box> */}
-//       </Box>
-//     </div>
-//   );
-// };
-
-// export default OTPpage;

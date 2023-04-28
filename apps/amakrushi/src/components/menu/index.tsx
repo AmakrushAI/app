@@ -21,7 +21,7 @@ const Menu: FC = () => {
 
   const homeUrlChanger = useCallback(() => {
     if (cookies['access_token'] !== undefined) {
-      if(context?.messages.length !== 0){
+      if(context?.messages?.length !== 0){
         router.push('/chat');
       }else router.push('/');
     }

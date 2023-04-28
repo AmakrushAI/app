@@ -35,28 +35,36 @@ const FeedbackPage: React.FC = () => {
       axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/feedback`, {
         rating: r,
         phoneNumber: localStorage.getItem('phoneNumber'),
-        userId: context?.socketSession?.userID,
+        userId: localStorage.getItem('userID'),
       })
         .then(response => {
           toast.success(ratingSubmitted);
         })
         .catch(error => {
           toast.error(submitError);
+          //@ts-ignore
+          logEvent(analytics, 'console_error', {
+            error_message: error.message,
+          });
         });
     } else if (typeof r === "string") {
       axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/feedback`, {
         review: r,
         phoneNumber: localStorage.getItem('phoneNumber'),
-        userId: context?.socketSession?.userID,
+        userId: localStorage.getItem('userID'),
       })
       .then(response => {
         toast.success(reviewSubmitted)
       })
       .catch(error => {
-        toast.error(reviewSubmitError)
+        toast.error(reviewSubmitError);
+        //@ts-ignore
+        logEvent(analytics, 'console_error', {
+          error_message: error.message,
+        });
       });
     }
-  }, [context?.socketSession?.userID, ratingSubmitted, reviewSubmitError, reviewSubmitted, submitError]);
+  }, [ratingSubmitted, reviewSubmitError, reviewSubmitted, submitError]);
 
 
   if (!flags?.show_feedback_page?.enabled) {

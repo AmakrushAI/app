@@ -12,6 +12,8 @@ import flagsmith from 'flagsmith/isomorphic';
 import router from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 import { useFlags } from 'flagsmith/react';
+import { useLocalization } from '../../hooks';
+import toast from 'react-hot-toast';
 
 function NavBar() {
   const flags = useFlags(['show_download_button', 'show_share_button']);
@@ -22,6 +24,8 @@ function NavBar() {
       : defaultLang === 'en'
   );
   const context = useContext(AppContext);
+  const t = useLocalization();
+
   const toggleLanguage = useCallback(
     (newLanguage: string) => () => {
       localStorage.setItem('locale', newLanguage);
@@ -32,12 +36,18 @@ function NavBar() {
   );
 
   const newChatHandler = useCallback(() => {
+    if(context?.loading){
+      toast.error(`${t("error.wait_new_chat")}`);
+      return;
+    }
     const newConversationId = uuidv4();
     localStorage.setItem('conversationId', newConversationId);
     context?.setConversationId(newConversationId);
     context?.setMessages([]);
+    context?.setIsMsgReceiving(false);
+    context?.setLoading(false);
     router.push('/');
-  }, [context]);
+  }, [context, t]);
 
   if (router.pathname === '/chat') {
     return (
@@ -48,7 +58,7 @@ function NavBar() {
             className={styles.iconContainer}>
             <Image src={plusIcon} alt="plusIcon" layout="responsive" />
           </div>
-          New chat
+          {t("label.new_chat")}
         </div>
         <div className={styles.rightSideIcons}>
           {flags?.show_share_button?.enabled && (

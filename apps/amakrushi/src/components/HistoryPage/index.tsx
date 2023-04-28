@@ -1,5 +1,5 @@
 import styles from './index.module.css';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import searchIcon from '../../assets/icons/search.svg';
 import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import ChatItem from '../chat-item';
@@ -14,26 +14,32 @@ import { useLocalization } from '../../hooks';
 import ComingSoonPage from '../coming-soon-page';
 import { useFlags } from 'flagsmith/react';
 import axios from 'axios';
-import { AppContext } from '../../context';
 
 const HistoryPage: NextPage = () => {
-  const context = useContext(AppContext);
+  const [conversations, setConversations] = useState([]);
   const flags = useFlags(['show_chat_history_page']);
   const t = useLocalization();
-
-  // useEffect(() => {
-  //   axios
-  //     .get(
-  //       `${process.env.NEXT_PUBLIC_BASE_URL}/users/conversations/${context?.socketSession?.userID}`
-  //     )
-  //     .then((res) => {
-  //       console.log('response', res);
-  //     });
-  // }, [context?.socketSession?.userID]);
 
   useEffect(() => {
     //@ts-ignore
     logEvent(analytics, 'Chat_History_page');
+
+    axios
+      .get(
+        `${
+          process.env.NEXT_PUBLIC_BASE_URL
+        }/user/conversations/${localStorage.getItem('userID')}`
+      )
+      .then((res) => {
+        setConversations(res?.data);
+        console.log('conversations:', res);
+      })
+      .catch((error) => {
+        //@ts-ignore
+        logEvent(analytics, 'console_error', {
+          error_message: error.message,
+        });
+      });
   }, []);
 
   if (!flags?.show_chat_history_page?.enabled) {
@@ -50,11 +56,15 @@ const HistoryPage: NextPage = () => {
             <Input type="text" placeholder="Search" />
           </InputGroup>
           <div>
-            {/* <ChatItem
-              key=''
-              name=''
-              messages=''
-            /> */}
+            {conversations.map((conv, key) => {
+              return (
+                <ChatItem
+                  key={key}
+                  name={conv.query}
+                  conversationId={conv.conversationId}
+                />
+              );
+            })}
           </div>
         </div>
         <Menu />

@@ -18,7 +18,8 @@
     "label.submit_review":"Submit Review",
     "label.mobile_number":"Mobile Number",
     "label.examples":"Examples",
-    "label.click":"Click",
+    "label.click":"Reload",
+    "label.new_chat":"New chat",
     "message.socket_disconnect_msg": "to connect again.",
     "message.enter_mobile":"Enter Mobile Number",
     "message.register_message":"If you are already registered then use your mobile number to login.",
@@ -54,5 +55,9 @@
     "error.fail_to_submit_review": "Failed to submit review.",
     "error.sending_otp":"Error sending OTP",
     "error.otp_not_sent":"OTP not sent",
-    "error.empty_msg": "Please type or select a message to send."
+    "error.empty_msg": "Please type or select a message to send.",
+    "error.wait_new_chat": "Please wait for reply.",
+    "toast.reaction_like":"Successfully liked the response",
+    "toast.reaction_dislike":"Successfully disliked the response",
+    "toast.reaction_reset":"Successfully removed the response"
 }
