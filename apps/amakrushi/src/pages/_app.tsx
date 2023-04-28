@@ -68,7 +68,7 @@ const App = ({
         <FlagsmithProvider flagsmith={flagsmith} serverState={flagsmithState}>
           <ContextProvider>
             <div style={{ height: "100%" }}>
-              <Toaster position="top-center" reverseOrder={false} />
+              <Toaster position="top-center" reverseOrder={false}  />
               <NavBar />
               <SafeHydrate>
                 <Component {...pageProps} />
