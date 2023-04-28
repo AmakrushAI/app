@@ -66,17 +66,17 @@
   background-color: var(--secondarygreen) !important;
 }
 
-.langName {
-  color: var(--primaryblue);
+.dialerBox {
+  background-color: white;
+  margin: 2vh;
+  border-radius: 10px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
 }
 
-.footerTitle {
-  margin-top: 2vh;
-  margin-left: 2vh;
-  font-family: 'Mulish-Bold';
-  font-size: 4.2vh;
-  font-weight: 700;
-  color: var(--secondarygreen);
+.callIconBox{
+  height: 5vh;
+  width: 5vh;
+  margin-right: 1vh;
 }
 
 .footer {
@@ -84,4 +84,15 @@
   margin-left: 2vh;
   margin-top: 2vh;
   font-size: 1.89vh;
+}
+
+.footerTitle {
+  display: flex;
+  align-items: center;
+  margin-top: 2vh;
+  margin-left: 2vh;
+  font-family: 'Mulish-Bold';
+  font-size: 4.2vh;
+  font-weight: 700;
+  color: var(--secondarygreen);
 }

@@ -17,11 +17,12 @@
   text-align: center;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
   border-radius: 8px;
+  background-color: white;
 }
 .rating h1{
   font-family: Mulish-bold;
   font-weight: bolder;
-  font-size: 3vh;
+  font-size: 2.89vh;
   margin-bottom: 1vh;
 }
 
@@ -60,12 +61,18 @@
   text-align: center;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
   border-radius: 8px;
+  background-color: white;
+}
+
+.review textarea {
+  padding: 5px;
+  border: 2px solid var(--secondarygreen);
 }
 
 .review h1{
   font-family: Mulish-bold;
   font-weight: bolder;
-  font-size: 3vh;
+  font-size: 2.89vh;
   margin-bottom: 2vh;
 }
 

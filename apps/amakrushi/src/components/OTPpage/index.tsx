@@ -1,21 +1,30 @@
-import { Box, HStack, PinInputField, PinInput } from '@chakra-ui/react';
-import React, { useState, useEffect } from 'react';
-import { NextRouter, useRouter } from 'next/router';
-import { useCookies } from 'react-cookie';
-import styles from './OTP.module.css';
-import { useLocalization } from '../../hooks';
-import { logEvent, setUserId } from 'firebase/analytics';
-import { analytics } from '../../utils/firebase';
-import toast from 'react-hot-toast';
+import { Box, HStack, PinInputField, PinInput } from "@chakra-ui/react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
+import { NextRouter, useRouter } from "next/router";
+import { useCookies } from "react-cookie";
+import styles from "./OTP.module.css";
+import { useLocalization } from "../../hooks";
+import { logEvent, setUserId } from "firebase/analytics";
+import { analytics } from "../../utils/firebase";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { FormattedMessage } from "react-intl";
+import { AppContext } from "../../context";
+import jwt_decode from "jwt-decode";
 
 const OTPpage: React.FC = () => {
   const t = useLocalization();
+  const context = useContext(AppContext);
   const router: NextRouter = useRouter();
-  const [input1, setInput1] = useState('');
-  const [input2, setInput2] = useState('');
-  const [input3, setInput3] = useState('');
-  const [input4, setInput4] = useState('');
-  const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
+  const [input1, setInput1] = useState("");
+  const [input2, setInput2] = useState("");
+  const [input3, setInput3] = useState("");
+  const [input4, setInput4] = useState("");
+  const [cookies, setCookie, removeCookie] = useCookies(["access_token"]);
+  const [isResendingOTP, setIsResendingOTP] = useState(false);
+  const [countdown, setCountdown] = useState(0);
+  const [countdownIntervalId, setCountdownIntervalId] = useState<any>(null);
+  console.log("vbn:", { context });
 
   const handleOTPSubmit: React.FormEventHandler = (event: React.FormEvent) => {
     event.preventDefault();
@@ -24,31 +33,37 @@ const OTPpage: React.FC = () => {
       fetch(
         `${process.env.NEXT_PUBLIC_OTP_BASE_URL}uci/loginOrRegister?phone=${router.query.state}&otp=${inputOTP}`,
         {
-          method: 'get',
+          method: "get",
         }
       )
         .then((response) => response.json())
         .then((data) => {
-          if (data.resp.params.status === 'Success') {
+          if (data.resp.params.status === "Success") {
             let expires = new Date();
             expires.setTime(
               expires.getTime() +
                 data.resp.result.data.user.tokenExpirationInstant * 1000
             );
-            removeCookie('access_token');
-            setCookie('access_token', data.resp.result.data.user.token, {
-              path: '/',
+            removeCookie("access_token");
+            setCookie("access_token", data.resp.result.data.user.token, {
+              path: "/",
               expires,
             });
             const phoneNumber = router.query.state;
             // @ts-ignore
-            localStorage.setItem('phoneNumber', phoneNumber);
+            localStorage.setItem("phoneNumber", phoneNumber);
             // @ts-ignore
             setUserId(analytics, phoneNumber);
-            router.push('/');
-            localStorage.setItem('auth', data.resp.result.data.user.token);
+            const decodedToken=jwt_decode(data.resp.result.data.user.token);
+            console.log('vbn:',{decodedToken})
+            localStorage.setItem("auth", data.resp.result.data.user.token);
+            
+            context?.setIsMobileAvailabe(true);
+            setTimeout(() => {
+              router.push("/");
+            }, 10);
           } else {
-            toast.error('Incorrect OTP');
+            toast.error(`${t("message.invalid_otp")}`);
           }
         })
         .catch((err) => console.log(err));
@@ -76,93 +91,139 @@ const OTPpage: React.FC = () => {
     setInput4(e.target.value);
   };
 
+  const resendOTP = useCallback(async () => {
+    if (isResendingOTP) {
+      toast.error(`${t("message.wait_resending_otp")}`);
+      return;
+    }
+
+    setIsResendingOTP(true);
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_OTP_BASE_URL}uci/sendOTP?phone=${router.query.state}`
+      );
+      if (response.status === 200) {
+        toast.success(`${t("message.otp_sent_again")}`);
+
+        setCountdown(30);
+
+        const countdownIntervalId = setInterval(() => {
+          setCountdown((prevCountdown) => prevCountdown - 1);
+        }, 1000);
+        setCountdownIntervalId(countdownIntervalId);
+
+        setTimeout(() => {
+          setIsResendingOTP(false);
+          clearInterval(countdownIntervalId);
+          setCountdownIntervalId(null);
+        }, 30000);
+      } else {
+        toast.error(`${t('error.otp_not_sent')}`);
+      }
+    } catch (error) {
+      toast.error(`${t('error.error.sending_otp')}`);
+    }
+
+    return () => {
+      if (countdownIntervalId !== null) {
+        clearInterval(countdownIntervalId);
+      }
+    };
+  }, [isResendingOTP, router.query.state, countdownIntervalId,t]);
+
   useEffect(() => {
     //@ts-ignore
-    logEvent(analytics, 'OTP_page');
+    logEvent(analytics, "OTP_page");
   }, []);
 
   return (
     <div className={styles.main}>
-      <div className={styles.title}>{t('label.title')}</div>
+      <div className={styles.title}>{t("label.title")}</div>
       <Box
         backgroundColor="var(--bg-color) !important"
         width="340px"
         height="80vh"
         display="flex"
-        background={'white'}
+        background={"white"}
         flexDirection="column"
         justifyContent="space-between"
-        borderRadius={'5'}
-        margin={'auto'}>
+        borderRadius={"5"}
+        margin={"auto"}
+      >
         <Box
           padding={1}
           textAlign="center"
           color="black"
           px="1rem"
-          marginTop="10vh">
+          marginTop="10vh"
+        >
           <div className={styles.otpVerify}>
-            {t('message.otp_verification')}
+            {t("message.otp_verification")}
           </div>
 
           <div className={styles.otpSent}>
-            {t('message.otp_message')} <b> {t('label.mobile_number')}</b>
+            {t("message.otp_message")} <b> {t("label.mobile_number")}</b>
           </div>
-          <div style={{ marginTop: '10px' }}>
+          <div style={{ marginTop: "10px" }}>
             <b>+91-{router.query.state}</b>
           </div>
           <form onSubmit={handleOTPSubmit}>
-            <HStack style={{ marginTop: '34px', justifyContent: 'center' }}>
+            <HStack style={{ marginTop: "34px", justifyContent: "center" }}>
               <PinInput otp placeholder="">
                 <PinInputField
                   className={styles.pinInputField}
                   value={input1}
                   onChange={handleOTP1}
-                  boxShadow="0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-                  0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
-                  0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-                  0 100px 80px rgba(0, 0, 0, 0.12);"
                 />
                 <PinInputField
                   className={styles.pinInputField}
                   value={input2}
                   onChange={handleOTP2}
-                  boxShadow="0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-                  0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
-                  0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-                  0 100px 80px rgba(0, 0, 0, 0.12);"
                 />
                 <PinInputField
                   className={styles.pinInputField}
                   value={input3}
                   onChange={handleOTP3}
-                  boxShadow="0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-                  0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
-                  0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-                  0 100px 80px rgba(0, 0, 0, 0.12);"
                 />
                 <PinInputField
                   className={styles.pinInputField}
                   value={input4}
                   onChange={handleOTP4}
-                  boxShadow="0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-                  0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
-                  0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-                  0 100px 80px rgba(0, 0, 0, 0.12);"
                 />
               </PinInput>
             </HStack>
-            <div style={{ display: 'flex' }}>
+
+            <div className={styles.resendOTP}>
+              {countdown > 0 ? (
+                <span>
+                  <FormattedMessage
+                    id="message.wait_minutes"
+                    defaultMessage="Please wait {countdown} seconds before resending OTP"
+                    values={{ countdown }}
+                  />
+                </span>
+              ) : (
+                <>
+                  <span>{t("message.didnt_receive")} &nbsp;</span>
+                  <p onClick={resendOTP}>{t("message.resend_again")}</p>
+                </>
+              )}
+            </div>
+
+            <div style={{ display: "flex" }}>
               <button
                 type="button"
                 className={styles.backButton}
-                onClick={() => router.push('/login')}>
-                {t('label.back')}
+                onClick={() => router.push("/login")}
+              >
+                {t("label.back")}
               </button>
               <button
                 type="submit"
                 className={styles.submitButton}
-                onClick={handleOTPSubmit}>
-                {t('label.submit')}
+                onClick={handleOTPSubmit}
+              >
+                {t("label.submit")}
               </button>
             </div>
           </form>

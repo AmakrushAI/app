@@ -1,5 +1,5 @@
 import styles from './index.module.css';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import searchIcon from '../../assets/icons/search.svg';
 import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import ChatItem from '../chat-item';
@@ -13,17 +13,28 @@ import Menu from '../menu';
 import { useLocalization } from '../../hooks';
 import ComingSoonPage from '../coming-soon-page';
 import { useFlags } from 'flagsmith/react';
+import axios from 'axios';
+import { AppContext } from '../../context';
 
 const HistoryPage: NextPage = () => {
+  const context = useContext(AppContext);
   const flags = useFlags(['show_chat_history_page']);
-  const historyString = localStorage.getItem('history');
-  const historyObj = JSON.parse(historyString ?? '{}');  
+  const t = useLocalization();
+
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `${process.env.NEXT_PUBLIC_BASE_URL}/users/conversations/${context?.socketSession?.userID}`
+  //     )
+  //     .then((res) => {
+  //       console.log('response', res);
+  //     });
+  // }, [context?.socketSession?.userID]);
 
   useEffect(() => {
     //@ts-ignore
     logEvent(analytics, 'Chat_History_page');
   }, []);
-  const t = useLocalization();
 
   if (!flags?.show_chat_history_page?.enabled) {
     return <ComingSoonPage />;
@@ -39,10 +50,12 @@ const HistoryPage: NextPage = () => {
             <Input type="text" placeholder="Search" />
           </InputGroup>
           <div>
-              {Object.entries(historyObj).map(([sessionName, messages]) => (
-                <ChatItem key={sessionName} name={sessionName} messages={messages} />
-              ))}
-            </div>        
+            {/* <ChatItem
+              key=''
+              name=''
+              messages=''
+            /> */}
+          </div>
         </div>
         <Menu />
       </>

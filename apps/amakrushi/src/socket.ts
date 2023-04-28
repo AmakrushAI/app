@@ -1,12 +1,28 @@
-import { io } from 'socket.io-client';
-
-const URL =  process.env.NEXT_PUBLIC_SOCKET_URL || "";
-
-export const socket = io(URL, {
-	query: {
-		deviceId: `phone:7398050181`
-	},
-	autoConnect: false
-});
 
 
+type SendType={
+	text:string;
+	socketSession:{userID:string;socketID:string},
+	socket: any;
+	conversationId:string | '' | null
+  }
+  
+  export const send = ({text, socketSession:session,  socket,conversationId}:SendType) => {
+	
+	localStorage.setItem('conversationId',conversationId || '')
+	console.log("debug:",{text});
+	  socket.emit("botRequest", {
+		content: {
+		  text,
+		  userId: session.userID,
+		  appId: "AKAI_App_Id",
+		  channel: "AKAI",
+		  from: session.socketID,
+		  context: null,
+		  accessToken: null,
+		},
+		to: `akai:${localStorage.getItem('phoneNumber')}`, 
+		conversationId
+	  });
+	
+  }

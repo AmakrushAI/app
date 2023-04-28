@@ -27,19 +27,20 @@ const LoginPage: React.FC = () => {
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
     if (input.length !== 10) {
-      toast.error('Enter a 10 digit number!');
+      toast.error(`${t("message.invalid_mobile")}`);
     } else {
       fetch(
         `${process.env.NEXT_PUBLIC_OTP_BASE_URL}uci/sendOTP?phone=${input}`,
         { method: 'GET' }
       ).then((response) => {
+        
         if (response.status === 200) {
-          localStorage.setItem('mobile',input)
+         // localStorage.setItem('phoneNumber',input)
           router.push({ pathname: '/otp', query: { state: input } });
         } else {
-          toast.error('OTP not sent');
+          toast.error(`${t("message.otp_not_sent")}`);
         }
-      });
+      })
     }
   };
 
