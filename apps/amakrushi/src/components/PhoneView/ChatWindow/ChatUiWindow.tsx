@@ -51,6 +51,7 @@ const ChatUiWindow: React.FC = () => {
             text: item.response,
             position: 'left',
             sentTimestamp: item.createdAt,
+            reaction: item.reaction
           },
         ]);
       setChatHistory(newHistory);
