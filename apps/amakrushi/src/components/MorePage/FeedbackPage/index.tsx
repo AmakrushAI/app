@@ -2,7 +2,7 @@ import starIcon from '../../../assets/icons/star.svg';
 import starOutlineIcon from '../../../assets/icons/star-outline.svg';
 import Image from 'next/image';
 import styles from './index.module.css';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Menu from '../../menu';
 //@ts-ignore
 import { analytics } from '../../../utils/firebase';
@@ -12,8 +12,11 @@ import { useFlags } from 'flagsmith/react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { AppContext } from '../../../context';
+import { useLocalization } from '../../../hooks';
 
-const MorePage: React.FC = () => {
+const FeedbackPage: React.FC = () => {
+  const t = useLocalization();
+  console.log("vbn aab bbb")
   const context = useContext(AppContext);
   const [rating, setRating] = useState(1);
   const [review, setReview] = useState('');
@@ -23,8 +26,11 @@ const MorePage: React.FC = () => {
     logEvent(analytics, 'Feedback_page');
   }, []);
 
+  const [submitError,ratingSubmitted,reviewSubmitted,reviewSubmitError] =useMemo(()=>[t('error.fail_to_submit'),t('message.rating_submitted'),t('message.review_submitted'),t('error.fail_to_submit_review')],[t]);
+  const [feedback,ratingLabel] =useMemo(()=>[t("label.feedback"),t("message.rating")],[t]);
+ 
   const submitReview = useCallback((r: number | string) => {
-    console.log('submitReview running:', r)
+   
     if (typeof r === "number") {
       axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/feedback`, {
         rating: r,
@@ -32,10 +38,10 @@ const MorePage: React.FC = () => {
         userId: context?.socketSession?.userID,
       })
         .then(response => {
-          toast.success("Rating submitted!");
+          toast.success(ratingSubmitted);
         })
         .catch(error => {
-          toast.error("Failed to submit rating.");
+          toast.error(submitError);
         });
     } else if (typeof r === "string") {
       axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/feedback`, {
@@ -44,23 +50,24 @@ const MorePage: React.FC = () => {
         userId: context?.socketSession?.userID,
       })
       .then(response => {
-        toast.success("Review submitted!")
+        toast.success(reviewSubmitted)
       })
       .catch(error => {
-        toast.error("Failed to submit review.")
+        toast.error(reviewSubmitError)
       });
     }
-  }, []);
+  }, [context?.socketSession?.userID, ratingSubmitted, reviewSubmitError, reviewSubmitted, submitError]);
+
 
   if (!flags?.show_feedback_page?.enabled) {
     return <ComingSoonPage />;
-  } else
+  } else 
     return (
       <>
         <div className={styles.main}>
-          <div className={styles.title}>Feedback</div>
+          <div className={styles.title}>{feedback}</div>
           <div className={styles.rating}>
-            <h1>Did you find this useful?</h1>
+            <h1>{ratingLabel}</h1>
             <div className={styles.stars}>
               {Array.from({ length: 5 }, (_, index) => {
                 if (index + 1 <= rating) {
@@ -83,11 +90,11 @@ const MorePage: React.FC = () => {
                 }
               })}
             </div>
-            <p>Tap a star to rate</p>
-            <button onClick={() => submitReview(rating)}>Submit Review</button>
+            <p>{t("message.rating_description")}</p>
+            <button onClick={() => submitReview(rating)}>{t("label.submit_review")}</button>
           </div>
           <div className={styles.review}>
-            <h1>Write your review (optional)</h1>
+            <h1>{t("message.review")}</h1>
             <textarea
               value={review}
               onChange={(e) => setReview(e.target.value)}
@@ -95,9 +102,9 @@ const MorePage: React.FC = () => {
               id="experience-feedback"
               cols={35}
               rows={5}
-              placeholder="Please write your experience's feedback."></textarea>
+              placeholder={t("message.review_description")}></textarea>
             
-            <button onClick={() => submitReview(review)}>Submit Review</button>
+            <button onClick={() => submitReview(review)}>{t("label.submit_review")}</button>
           </div>
         </div>
         <Menu />
@@ -105,4 +112,4 @@ const MorePage: React.FC = () => {
     );
 };
 
-export default MorePage;
+export default FeedbackPage;

@@ -1,5 +1,5 @@
 import styles from './index.module.css';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import logoutIcon from '../../assets/icons/logout.svg';
 import userCircleIcon from '../../assets/icons/user-circle.svg';
@@ -13,16 +13,15 @@ import Menu from '../menu';
 //@ts-ignore
 import { analytics } from '../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
+import { useLocalization } from '../../hooks';
 
 const MorePage: React.FC = () => {
   const router = useRouter();
   const [cookie, setCookie, removeCookie] = useCookies();
-
+const t=useLocalization();
   function logout() {
     removeCookie('access_token', { path: '/' });
-    localStorage.removeItem('phoneNumber');
-    localStorage.removeItem('userMsgs');
-    localStorage.removeItem('auth');
+    localStorage.clear()
     //@ts-ignore
     logEvent(analytics, 'Logout_pressed');
     router.push('/login');
@@ -33,17 +32,18 @@ const MorePage: React.FC = () => {
     logEvent(analytics, 'More_page');
   }, []);
 
+  const [welcome, profile, faqs, feedback, logoutLabel,more] =useMemo(()=>[t('label.welcome'),t('label.profile'),t('label.faqs'),t('label.feedback'),t('label.logout'),t('label.more')],[t])
   return (
     <>
       <div className={styles.main}>
-        <div className={styles.title}>More</div>
+        <div className={styles.title}>{more}</div>
 
         <div className={styles.user}>
           <div className={styles.icon1}>
             <Image src={userCircleIcon} alt="" layout='responsive' />
           </div>
           <div className={styles.userInfo}>
-            <p style={{ fontWeight: 'bold' }}>Welcome</p>
+            <p style={{ fontWeight: 'bold' }}>{welcome}</p>
             <p style={{ color: 'var(--grey)' }}>
               +91 {localStorage.getItem('phoneNumber')}
             </p>
@@ -54,7 +54,7 @@ const MorePage: React.FC = () => {
             <Image src={userAltIcon} alt="" layout='responsive'/>
           </div>
           <div className={styles.userInfo2}>
-            <p style={{ fontWeight: 'bold' }}>Profile</p>
+            <p style={{ fontWeight: 'bold' }}>{profile}</p>
           </div>
           <div className={styles.icon3}>
           <RightIcon width="5.5vh" color="black" />
@@ -65,7 +65,7 @@ const MorePage: React.FC = () => {
             <Image src={questionMarkIcon} alt="" layout='responsive' />
           </div>
           <div className={styles.userInfo2}>
-            <p style={{ fontWeight: 'bold' }}>FAQs</p>
+            <p style={{ fontWeight: 'bold' }}>{faqs}</p>
           </div>
           <div className={styles.icon3}>
           <RightIcon width="5.5vh" color="black" />
@@ -76,7 +76,7 @@ const MorePage: React.FC = () => {
             <Image src={thumbsUpIcon} alt="" layout='responsive' />
           </div>
           <div className={styles.userInfo2}>
-            <p style={{ fontWeight: 'bold' }}>Feedback</p>
+            <p style={{ fontWeight: 'bold' }}>{feedback}</p>
           </div>
           <div className={styles.icon3}>
           <RightIcon width="5.5vh" color="black" />
@@ -87,7 +87,7 @@ const MorePage: React.FC = () => {
             <Image src={logoutIcon} alt="" layout='responsive' />
           </div>
           <div className={styles.userInfo2}>
-            <p style={{ fontWeight: 'bold' }}>Logout</p>
+            <p style={{ fontWeight: 'bold' }}>{logoutLabel}</p>
           </div>
           <div className={styles.icon3}>
             <RightIcon width="5.5vh" color="black" />

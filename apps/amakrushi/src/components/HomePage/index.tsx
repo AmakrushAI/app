@@ -19,19 +19,21 @@ import sunIcon from '../../assets/icons/sun.svg'
 import { useLocalization } from '../../hooks';
 import router from 'next/router';
 import Image from 'next/image'
+import { Button } from "@chakra-ui/react";
+import toast from 'react-hot-toast';
 
 const HomePage: NextPage = () => {
   const context = useContext(AppContext);
   const t = useLocalization();
   const placeholder = useMemo(() => t('message.ask_ur_question'), [t]);
   const [messages, setMessages] = useState<Array<any>>([
-    getInitialMsgs(context?.locale),
+    getInitialMsgs(t),
   ]);
   const [inputMsg, setInputMsg] = useState('');
 
   useEffect(() => {
-    setMessages([getInitialMsgs(context?.locale)]);
-  }, [context?.locale]);
+    setMessages([getInitialMsgs(t)]);
+  }, [context.locale, t]);
 
   useEffect(() => {
     //@ts-ignore
@@ -39,9 +41,36 @@ const HomePage: NextPage = () => {
   }, []);
 
   const sendMessage = useCallback((msg: string) => {
-    router.push('/chat');
-    context?.sendMessage(msg);
-  }, [context]);
+    if(msg.length === 0) {
+      toast.error(t("error.empty_msg"));
+      return;
+    }
+    if(context?.socketSession){
+      router.push('/chat');
+      context?.sendMessage(msg);
+    }else{
+      toast(
+        (to) => (
+          <span>
+            <Button
+              onClick={() => {
+                context?.onSocketConnect({text: inputMsg});
+                toast.dismiss(to.id);
+              }}
+            >
+              {t("label.click")}
+            </Button>
+            {t("message.socket_disconnect_msg")}
+          </span>
+        ),
+        {
+          icon: "",
+          duration: 10000,
+        }
+      );
+      return;
+    }
+  }, [context, inputMsg, t]);
 
   return (
     <>
@@ -63,6 +92,7 @@ const HomePage: NextPage = () => {
             </button>
           );
         })}
+        <form onSubmit={(event) => event?.preventDefault()}>
         <div className={styles.inputBox}>
           <input
             type="text"
@@ -71,11 +101,13 @@ const HomePage: NextPage = () => {
             placeholder={placeholder}
           />
           <button
+            type='submit'
             onClick={() => sendMessage(inputMsg)}
             className={styles.sendButton}>
-            Send
+            {t('label.send')}
           </button>
         </div>
+        </form>
       </div>
       <Menu />
     </>
