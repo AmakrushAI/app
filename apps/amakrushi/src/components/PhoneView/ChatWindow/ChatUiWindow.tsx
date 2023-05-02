@@ -11,7 +11,8 @@ import React, {
   useState,
 } from 'react';
 import { useCookies } from 'react-cookie';
-
+import { analytics } from '../../../utils/firebase';
+import { logEvent } from 'firebase/analytics';
 import { AppContext } from '../../../context';
 import { useLocalization } from '../../../hooks';
 import { getMsgType } from '../../../utils/getMsgType';

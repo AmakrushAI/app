@@ -63,10 +63,8 @@
   padding-left: 10px;
   margin-right: 5px;
   border-radius: 40px;
-}
-
-.inputBox input:focus {
-  border: 1px solid var(--secondarygreen) !important;
+  border: 2px solid var(--secondarygreen);
+  outline: none;
 }
 
 .sendButton {

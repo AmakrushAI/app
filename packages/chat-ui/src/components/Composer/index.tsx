@@ -280,7 +280,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
           </Popover>
         )}
         <div>
-        <div className="Composer-inputWrap">
+        <div className="Composer-inputWrap" style={{border: `2px solid ${btnColor}`, borderRadius: '12px'}}>
           <ComposerInput invisible={false} {...inputProps} disabled={disableSend} />
         </div>
         <SendButton btnColor={btnColor} onClick={handleSendBtnClick} disabled={!text || disableSend} />
@@ -301,7 +301,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
             aria-label={isInputText ? 'Switch to voice input' : 'Switch to keyboard input'}
           />
         )}
-        <div className="Composer-inputWrap">
+        <div className="Composer-inputWrap" style={{border: `2px solid ${btnColor}`, borderRadius: '12px'}}>
       <ComposerInput invisible={!isInputText} {...inputProps} disabled={disableSend} />
           {!isInputText && <Recorder {...recorder} />}
         </div>
