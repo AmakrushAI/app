@@ -49,12 +49,12 @@ const HistoryPage: NextPage = () => {
       <>
         <div className={styles.main}>
           <div className={styles.title}>{t('label.chats')}</div>
-          <InputGroup>
+          {/* <InputGroup>
             <InputLeftElement pointerEvents="none">
               <Image src={searchIcon} alt="" width={20} height={20} />
             </InputLeftElement>
             <Input type="text" placeholder="Search" />
-          </InputGroup>
+          </InputGroup> */}
           <div>
             {conversations.map((conv, key) => {
               return (

@@ -7,7 +7,7 @@
   height: max-content;
   background-color: var(--bg-color);
   border-bottom: 1px solid var(--font);
-  padding: 1.5vh;
+  padding: 1.5vh 1.5vh 1.5vh 0;
 }
 
 .sessionContainer{
@@ -28,7 +28,6 @@
 }
 
 .deleteIconContainer {
-  /* flex: 1; */
-  height: 5vh;
-  width: 5vh;
+  height: 2.5vh;
+  width: 2.5vh;
 }

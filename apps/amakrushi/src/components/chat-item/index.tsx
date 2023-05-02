@@ -10,9 +10,11 @@ import { analytics } from '../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
 import { v4 as uuidv4 } from 'uuid';
 import { AppContext } from '../../context';
+import { useLocalization } from '../../hooks';
 
 const ChatItem: React.FC<ChatItemPropsType> = ({ name, conversationId }) => {
   const context = useContext(AppContext);
+  const t = useLocalization();
   const [isConversationDeleted, setIsConversationDeleted] = useState(false);
 
   const handleChatPage = useCallback(() => {
@@ -21,7 +23,9 @@ const ChatItem: React.FC<ChatItemPropsType> = ({ name, conversationId }) => {
   }, [conversationId]);
 
   const deleteConversation = useCallback(() => {
-    axios
+    const confirmed = window?.confirm(`${t("label.confirm_delete")}`);
+    if(confirmed){
+      axios
       .get(
         `${
           process.env.NEXT_PUBLIC_BASE_URL
@@ -43,7 +47,8 @@ const ChatItem: React.FC<ChatItemPropsType> = ({ name, conversationId }) => {
           error_message: error.message,
         });
       });
-  }, [context, conversationId]);
+    }
+  }, [context, conversationId, t]);
 
   return (
     <>
