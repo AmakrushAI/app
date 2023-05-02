@@ -178,7 +178,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   onClick={() =>
                     feedbackHandler({
                       like: 1,
-                      msgId: content?.data?.messageId,
+                      msgId: content?.data?.msgId,
                     })
                   }>
                   <MsgThumbsUp
@@ -191,7 +191,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   onClick={() =>
                     feedbackHandler({
                       like: -1,
-                      msgId: content?.data?.messageId,
+                      msgId: content?.data?.msgId,
                     })
                   }>
                   <MsgThumbsDown
