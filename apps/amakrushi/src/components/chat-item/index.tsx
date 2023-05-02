@@ -1,50 +1,67 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import styles from './index.module.css';
 import { ChatItemPropsType } from '../../types';
 import messageIcon from '../../assets/icons/message.svg';
 import deleteIcon from '../../assets/icons/delete.svg';
 import Image from 'next/image';
 import router from 'next/router';
+import axios from 'axios';
+import { analytics } from '../../utils/firebase';
+import { logEvent } from 'firebase/analytics';
+import { v4 as uuidv4 } from 'uuid';
+import { AppContext } from '../../context';
 
 const ChatItem: React.FC<ChatItemPropsType> = ({ name, conversationId }) => {
+  const context = useContext(AppContext);
+  const [isConversationDeleted, setIsConversationDeleted] = useState(false);
 
   const handleChatPage = useCallback(() => {
-    localStorage.setItem('conversationId', conversationId || null);
+    localStorage.setItem('conversationId', conversationId || 'null');
     router.push('/chat');
   }, [conversationId]);
 
-  const deleteSession = useCallback((name: string) => {
-    // console.log('here', name)
-    // // Get the history object from localStorage
-    // const storageHistory = JSON.parse(localStorage.getItem('history') || "{}");
-    // // Create a copy of the history object
-    // const newHistory = { ...storageHistory };
-    // // Check if the session exists in the history
-    // if (newHistory.hasOwnProperty(name)) {
-    //   // Delete the session property
-    //   delete newHistory[name];
-    //   console.log('here', newHistory)
-    //   // Update localStorage with the deleted session
-    //   localStorage.setItem('history', JSON.stringify(newHistory));
-    //   router.push('/history');
-    // }
-  }, []);
+  const deleteConversation = useCallback(() => {
+    axios
+      .get(
+        `${
+          process.env.NEXT_PUBLIC_BASE_URL
+        }/user/conversations/delete/${localStorage.getItem(
+          'userID'
+        )}/${conversationId}`
+      )
+      .then((res) => {
+        if (conversationId === localStorage.getItem('conversationId')) {
+          localStorage.setItem('conversationId', uuidv4());
+          context?.setConversationId(localStorage.getItem('conversationId'));
+          context?.setMessages([]);
+        }
+        setIsConversationDeleted(true);
+      })
+      .catch((error) => {
+        //@ts-ignore
+        logEvent(analytics, 'console_error', {
+          error_message: error.message,
+        });
+      });
+  }, [context, conversationId]);
 
   return (
     <>
-      <div className={styles.chatContainer}>
-        <div className={styles.sessionContainer} onClick={handleChatPage}>
-          <div className={styles.messageIconContainer}>
-            <Image src={messageIcon} alt="messageIcon" />
+      {!isConversationDeleted && (
+        <div className={styles.chatContainer}>
+          <div className={styles.sessionContainer} onClick={handleChatPage}>
+            <div className={styles.messageIconContainer}>
+              <Image src={messageIcon} alt="messageIcon" />
+            </div>
+            <div className={styles.name}>{name}</div>
           </div>
-          <div className={styles.name}>{name}</div>
+          <div
+            onClick={deleteConversation}
+            className={styles.deleteIconContainer}>
+            <Image src={deleteIcon} alt="deleteIcon" layout="responsive" />
+          </div>
         </div>
-        <div
-          onClick={() => deleteSession(name)}
-          className={styles.deleteIconContainer}>
-          <Image src={deleteIcon} alt="deleteIcon" layout="responsive" />
-        </div>
-      </div>
+      )}
     </>
   );
 };
