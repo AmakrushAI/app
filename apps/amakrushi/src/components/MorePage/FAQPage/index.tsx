@@ -112,12 +112,12 @@ const FAQPage: React.FC = () => {
       <>
         <div className={styles.main}>
           <div className={styles.title}>{t('label.faqs')}</div>
-          <InputGroup pb={2}>
+          {/* <InputGroup pb={2}>
             <InputLeftElement pointerEvents="none">
               <Image src={searchIcon} alt="" width={20} height={20} />
             </InputLeftElement>
             <Input type="text" placeholder={t('label.search')} />
-          </InputGroup>
+          </InputGroup> */}
           <Accordion allowMultiple>
             {faqData.map((faq, idx) => (
               <AccordionItem key={idx}>
