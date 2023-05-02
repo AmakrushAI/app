@@ -229,7 +229,11 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
       target: popoverTarget.current,
       onClose: handlePopoverClose
     }, accessoryContent), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-      className: "Composer-inputWrap"
+      className: "Composer-inputWrap",
+      style: {
+        border: "2px solid ".concat(btnColor),
+        borderRadius: '12px'
+      }
     }, /*#__PURE__*/React.createElement(ComposerInput, _extends({
       invisible: false
     }, inputProps, {
@@ -249,7 +253,11 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
     onClick: handleInputTypeChange,
     "aria-label": isInputText ? 'Switch to voice input' : 'Switch to keyboard input'
   }), /*#__PURE__*/React.createElement("div", {
-    className: "Composer-inputWrap"
+    className: "Composer-inputWrap",
+    style: {
+      border: "2px solid ".concat(btnColor),
+      borderRadius: '12px'
+    }
   }, /*#__PURE__*/React.createElement(ComposerInput, _extends({
     invisible: !isInputText
   }, inputProps, {

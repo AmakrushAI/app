@@ -19,8 +19,9 @@ const ChatItem: React.FC<ChatItemPropsType> = ({ name, conversationId }) => {
 
   const handleChatPage = useCallback(() => {
     localStorage.setItem('conversationId', conversationId || 'null');
+    context?.setConversationId(localStorage.getItem('conversationId'));
     router.push('/chat');
-  }, [conversationId]);
+  }, [context, conversationId]);
 
   const deleteConversation = useCallback(() => {
     const confirmed = window?.confirm(`${t("label.confirm_delete")}`);

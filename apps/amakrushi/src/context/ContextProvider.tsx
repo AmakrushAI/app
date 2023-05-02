@@ -11,7 +11,8 @@ import { AppContext } from '.';
 import _ from 'underscore';
 import { v4 as uuidv4 } from 'uuid';
 import { send } from '../socket';
-
+import { analytics } from '../utils/firebase';
+import { logEvent } from 'firebase/analytics';
 import { UserType } from '../types';
 import { IntlProvider } from 'react-intl';
 import { useLocalization } from '../hooks';
@@ -50,8 +51,6 @@ const ContextProvider: FC<{
   const [newSocket, setNewSocket] = useState<any>();
   const [conversationId, setConversationId] = useState<string | null>(
     localStorage.getItem('conversationId')
-      ? localStorage.getItem('conversationId')
-      : uuidv4()
   );
   const [isMobileAvailable, setIsMobileAvailable] = useState(
     localStorage.getItem('phoneNumber') ? true : false || false
@@ -178,7 +177,10 @@ const ContextProvider: FC<{
   );
 
   useEffect(() => {
-    if ((!isConnected && newSocket && !newSocket.connected) || (newSocket && !newSocket.connected)) {
+    if (
+      (!isConnected && newSocket && !newSocket.connected) ||
+      (newSocket && !newSocket.connected)
+    ) {
       newSocket.connect();
       setIsConnected(true);
     }
@@ -232,7 +234,7 @@ const ContextProvider: FC<{
     setCurrentUser({ ...newUser, active: true });
     setMessages([]);
   }, []);
-  console.log("vbnmm:",{newSocket})
+  console.log('vbnmm:', { newSocket });
 
   //@ts-ignore
   const sendMessage = useCallback(
