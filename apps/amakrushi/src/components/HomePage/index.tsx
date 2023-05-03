@@ -50,6 +50,7 @@ const HomePage: NextPage = () => {
         router.push('/chat');
         context?.sendMessage(msg);
       } else {
+        toast.error(t('error.disconnected'));
         return;
       }
     },
@@ -59,7 +60,7 @@ const HomePage: NextPage = () => {
   return (
     <>
       <div className={styles.main}>
-        {!(context?.socketSession && context?.newSocket?.connected) && (
+        {/* {!(context?.socketSession && context?.newSocket?.connected) && (
           <div className={styles.disconnected}>
             <p>You are disconnected &nbsp;</p> 
             <div
@@ -70,7 +71,7 @@ const HomePage: NextPage = () => {
                 <Image src={reloadIcon} alt="reloadIcon" width={24} height={24}/>
               </div>
           </div>
-        )}
+        )} */}
         <div className={styles.sunIconContainer}>
           <Image src={sunIcon} alt="sunIcon" layout="responsive" />
         </div>

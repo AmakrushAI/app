@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { ChakraProvider } from "@chakra-ui/react";
-
+import  jwt  from 'jsonwebtoken';
 import ContextProvider from "../context/ContextProvider";
 import { ReactElement, useEffect, useState } from "react";
 import "chatui/dist/index.css";
@@ -35,7 +35,7 @@ const App = ({
 }: AppProps & { flagsmithState: any }) => {
   const router = useRouter();
   const [launch, setLaunch] = useState(true);
-  const [cookie] = useCookies();
+  const [cookie, setCookie, removeCookie] = useCookies();
   useEffect(() => {
     setTimeout(() => {
       setLaunch(false);
@@ -43,6 +43,14 @@ const App = ({
   }, []);
 
   useEffect(() => {
+    const decodedToken = jwt.decode(cookie['access_token']);
+    const expires = new Date(decodedToken?.exp * 1000);
+    if (expires < new Date()) {
+      removeCookie('access_token', { path: '/' });
+      router.push('/login');
+      return;
+    }
+
     if (router.pathname === "/login" || router.pathname.startsWith("/otp")) {
       // already logged in then send to home
       if (cookie["access_token"] !== undefined) {
@@ -54,7 +62,7 @@ const App = ({
         router.push("/login");
       }
     }
-  }, [cookie, router]);
+  }, [cookie, removeCookie, router]);
 
   if (process.env.NODE_ENV === "production") {
     globalThis.console.log = () => {};
