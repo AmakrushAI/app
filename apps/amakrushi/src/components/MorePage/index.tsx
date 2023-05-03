@@ -18,10 +18,12 @@ import { useLocalization } from '../../hooks';
 const MorePage: React.FC = () => {
   const router = useRouter();
   const [cookie, setCookie, removeCookie] = useCookies();
-const t=useLocalization();
+  const t=useLocalization();
+
   function logout() {
     removeCookie('access_token', { path: '/' });
-    localStorage.clear()
+    const keysToRemove = ['phoneNumber', 'userID', 'auth', 'conversationId'];
+    keysToRemove.forEach(key => localStorage.removeItem(key));
     //@ts-ignore
     logEvent(analytics, 'Logout_pressed');
     router.push('/login');

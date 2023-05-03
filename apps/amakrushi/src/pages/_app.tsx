@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 import { ChakraProvider } from "@chakra-ui/react";
 import  jwt  from 'jsonwebtoken';
 import ContextProvider from "../context/ContextProvider";
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useCallback, useEffect, useState } from "react";
 import "chatui/dist/index.css";
 import { Toaster } from "react-hot-toast";
 
@@ -42,7 +42,7 @@ const App = ({
     }, 2500);
   }, []);
 
-  useEffect(() => {
+  const handleTokenExpiration = useCallback(() => {
     const decodedToken = jwt.decode(cookie['access_token']);
     const expires = new Date(decodedToken?.exp * 1000);
     if (expires < new Date()) {
@@ -50,19 +50,30 @@ const App = ({
       router.push('/login');
       return;
     }
-
+    
+  }, [cookie, removeCookie, router]);
+  
+  const handleLoginRedirect = useCallback(() => {
     if (router.pathname === "/login" || router.pathname.startsWith("/otp")) {
       // already logged in then send to home
-      if (cookie["access_token"] !== undefined) {
+      if (cookie["access_token"] !== undefined && localStorage.getItem('phoneNumber')) {
         router.push("/");
       }
     } else {
       // not logged in then send to login page
-      if (cookie["access_token"] === undefined) {
+      if (cookie["access_token"] === undefined || !localStorage.getItem('phoneNumber')) {
+        const keysToRemove = ['phoneNumber', 'userID', 'auth', 'conversationId'];
+        keysToRemove.forEach(key => localStorage.removeItem(key));
         router.push("/login");
       }
     }
-  }, [cookie, removeCookie, router]);
+  }, [cookie, router]);
+  
+  useEffect(() => {
+    handleTokenExpiration();
+    handleLoginRedirect();
+  }, [handleTokenExpiration, handleLoginRedirect]);
+  
 
   if (process.env.NODE_ENV === "production") {
     globalThis.console.log = () => {};
