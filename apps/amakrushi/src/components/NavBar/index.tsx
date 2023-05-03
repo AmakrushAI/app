@@ -43,6 +43,7 @@ function NavBar() {
     const newConversationId = uuidv4();
     localStorage.setItem('conversationId', newConversationId);
     context?.setConversationId(newConversationId);
+    console.log('clearing chat')
     context?.setMessages([]);
     context?.setIsMsgReceiving(false);
     context?.setLoading(false);

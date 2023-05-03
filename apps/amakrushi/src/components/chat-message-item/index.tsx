@@ -113,6 +113,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   toast.error(`${t('message.cannot_answer_again')}`);
                 } else {
                   if (context?.messages?.[0]?.exampleOptions) {
+                    console.log('clearing chat')
                     context?.setMessages([]);
                   }
                   context?.sendMessage(choice.text);

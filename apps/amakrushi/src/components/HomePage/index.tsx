@@ -46,6 +46,7 @@ const HomePage: NextPage = () => {
         return;
       }
       if (context?.socketSession && context?.newSocket?.connected) {
+        console.log('clearing mssgs')
         context?.setMessages([]);
         router.push('/chat');
         context?.sendMessage(msg);

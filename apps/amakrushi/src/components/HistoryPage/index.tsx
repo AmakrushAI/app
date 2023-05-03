@@ -31,8 +31,12 @@ const HistoryPage: NextPage = () => {
         }/user/conversations/${localStorage.getItem('userID')}`
       )
       .then((res) => {
-        setConversations(res?.data);
-        console.log('conversations:', res);
+        const sortedConversations = res?.data.sort(
+          //@ts-ignore
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        setConversations(sortedConversations);
+        console.log('conversations:', sortedConversations);
       })
       .catch((error) => {
         //@ts-ignore

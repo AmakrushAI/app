@@ -18,9 +18,9 @@ const ChatItem: React.FC<ChatItemPropsType> = ({ name, conversationId }) => {
   const [isConversationDeleted, setIsConversationDeleted] = useState(false);
 
   const handleChatPage = useCallback(() => {
-    // localStorage.setItem('conversationId', conversationId || 'null');
-    // context?.setConversationId(conversationId);
-    // router.push('/chat');
+    localStorage.setItem('conversationId', conversationId || 'null');
+    context?.setConversationId(conversationId);
+    router.push('/chat');
   }, [context, conversationId]);
 
   const deleteConversation = useCallback(() => {
@@ -35,6 +35,7 @@ const ChatItem: React.FC<ChatItemPropsType> = ({ name, conversationId }) => {
         )}/${conversationId}`
       )
       .then((res) => {
+        console.log('deleting conversation')
         if (conversationId === localStorage.getItem('conversationId')) {
           localStorage.setItem('conversationId', uuidv4());
           context?.setConversationId(localStorage.getItem('conversationId'));
