@@ -50,7 +50,7 @@ const ContextProvider: FC<{
   const [socketSession, setSocketSession] = useState<any>();
   const [newSocket, setNewSocket] = useState<any>();
   const [conversationId, setConversationId] = useState<string | null>(
-    localStorage.getItem('conversationId') || uuidv4()
+    localStorage.getItem('conversationId')
   );
   const [isMobileAvailable, setIsMobileAvailable] = useState(
     localStorage.getItem('phoneNumber') ? true : false || false
@@ -60,12 +60,6 @@ const ContextProvider: FC<{
 
   const [isConnected, setIsConnected] = useState(newSocket?.connected || false);
   console.log(messages);
-
-// useEffect(()=>{
-//   if(!localStorage.getItem('conversationId')){
-//     const conversationId= 
-//   }
-// },[])
   
   useEffect(() => {
     if (
@@ -162,8 +156,6 @@ const ContextProvider: FC<{
           media: { fileUrl: msg?.content?.media_url },
         });
       } else if (msg.content.msg_type.toUpperCase() === 'TEXT') {
-        console.log('mssgs:',messages)
-
         updateMsgState({ user, msg, media: {} });
       }
     },

@@ -95,7 +95,6 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     [onLikeDislike, reaction]
   );
   
-  console.log('vbnm', { reaction });
   const getLists = useCallback(
     ({ choices, isDisabled }: { choices: any; isDisabled: boolean }) => {
       console.log('qwer12:', { choices, isDisabled });

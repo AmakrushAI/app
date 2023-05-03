@@ -22,6 +22,7 @@ import router from 'next/router';
 import Image from 'next/image';
 import { Button } from '@chakra-ui/react';
 import toast from 'react-hot-toast';
+import { v4 as uuidv4 } from 'uuid';
 
 const HomePage: NextPage = () => {
   const context = useContext(AppContext);
@@ -37,6 +38,13 @@ const HomePage: NextPage = () => {
   useEffect(() => {
     //@ts-ignore
     logEvent(analytics, 'Home_page');
+
+   if(!localStorage.getItem('conversationId')){
+    const newConversationId = uuidv4();
+    localStorage.setItem('conversationId', newConversationId);
+    context?.setConversationId(newConversationId);
+   }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const sendMessage = useCallback(
@@ -46,7 +54,7 @@ const HomePage: NextPage = () => {
         return;
       }
       if (context?.socketSession && context?.newSocket?.connected) {
-        console.log('clearing mssgs')
+        console.log('clearing mssgs');
         context?.setMessages([]);
         router.push('/chat');
         context?.sendMessage(msg);
