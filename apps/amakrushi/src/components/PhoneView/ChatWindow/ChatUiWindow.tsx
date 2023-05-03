@@ -25,53 +25,58 @@ const ChatUiWindow: React.FC = () => {
   const [accessToken, setAccessToken] = useState('');
   const [cookies, setCookies] = useCookies();
 
-  const [chatHistory, setChatHistory] = useState([]);
-  const fetchData = useCallback(async () => {
-    try {
-      const res = await axios.get(
-        `${
-          process.env.NEXT_PUBLIC_BASE_URL
-        }/user/chathistory/${localStorage.getItem(
-          'userID'
-        )}/${localStorage.getItem('conversationId')}`
-      );
-      console.log('history:',  res.data );
-      const newHistory = res.data
-        .filter(
-          (item) =>
-          localStorage.getItem('conversationId') === 'null' ||
-          item.conversationId === localStorage.getItem('conversationId')
-        )
-        .flatMap((item) => [
-          {
-            text: item.query,
-            position: 'right',
-            repliedTimestamp: item.createdAt,
-          },
-          {
-            text: item.response,
-            position: 'left',
-            sentTimestamp: item.createdAt,
-            reaction: item.reaction,
-            msgId: item.id
-          },
-        ]);
-      setChatHistory(newHistory);
-    } catch (error) {
-      //@ts-ignore
-      logEvent(analytics, 'console_error', {
-        error_message: error.message,
-      });
-    }
-  }, []);
+  // const [chatHistory, setChatHistory] = useState([]);
+  // const fetchData = useCallback(async () => {
+  //   console.log('i ran fetchdata running')
+  //   try {
+  //     const res = await axios.get(
+  //       `${
+  //         process.env.NEXT_PUBLIC_BASE_URL
+  //       }/user/chathistory/${localStorage.getItem(
+  //         'userID'
+  //       )}/${localStorage.getItem('conversationId')}`
+  //     );
+  //     console.log('history:',  res.data );
+  //     const newHistory = res.data
+  //       .filter(
+  //         (item) =>
+  //         localStorage.getItem('conversationId') === 'null' ||
+  //         item.conversationId === localStorage.getItem('conversationId')
+  //       )
+  //       .flatMap((item) => [
+  //         {
+  //           text: item.query,
+  //           position: 'right',
+  //           repliedTimestamp: item.createdAt,
+  //         },
+  //         {
+  //           text: item.response,
+  //           position: 'left',
+  //           sentTimestamp: item.createdAt,
+  //           reaction: item.reaction,
+  //           msgId: item.id
+  //         },
+  //       ]);
+  //     setChatHistory(newHistory);
+  //     context?.setMessages(newHistory);
+  //   } catch (error) {
+  //     //@ts-ignore
+  //     logEvent(analytics, 'console_error', {
+  //       error_message: error.message,
+  //     });
+  //   }
+  // }, [context]);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
-  useEffect(() => {
-    if (chatHistory.length > 0) context?.setMessages(chatHistory);
-  }, [chatHistory, context]);
+  // useEffect(() => {
+  //   if (chatHistory.length > 0) {
+  //     console.log('i ran')
+      
+  //   }
+  // }, [chatHistory, context]);
 
   useEffect(() => {
     if (cookies['access_token'] !== undefined) {

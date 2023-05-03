@@ -58,6 +58,7 @@
     "error.otp_not_sent":"OTP not sent",
     "error.empty_msg": "Please type or select a message to send.",
     "error.wait_new_chat": "Please wait for reply.",
+    "error.disconnected": "You are disconnected. Please refresh or login again.",
     "toast.reaction_like":"Successfully liked the response",
     "toast.reaction_dislike":"Successfully disliked the response",
     "toast.reaction_reset":"Successfully removed the response"

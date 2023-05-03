@@ -110,7 +110,9 @@ const ContextProvider: FC<{
           sentTimestamp: Date.now(),
           ...media,
         };
-        setMessages((prev: any) => _.uniq([...prev, newMsg], ['messageId']));
+
+        setMessages((prev: any) => { console.log(prev); return _.uniq([...prev, newMsg], ['messageId'])});
+        
       }
     },
     []
@@ -273,7 +275,6 @@ const ContextProvider: FC<{
           } else {
           }
         } else {
-
           //@ts-ignore
           setMessages((prev: any) => [
             ...prev.map((prevMsg: any) => ({ ...prevMsg, disabled: true })),

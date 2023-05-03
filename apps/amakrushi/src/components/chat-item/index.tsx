@@ -18,9 +18,9 @@ const ChatItem: React.FC<ChatItemPropsType> = ({ name, conversationId }) => {
   const [isConversationDeleted, setIsConversationDeleted] = useState(false);
 
   const handleChatPage = useCallback(() => {
-    localStorage.setItem('conversationId', conversationId || 'null');
-    context?.setConversationId(localStorage.getItem('conversationId'));
-    router.push('/chat');
+    // localStorage.setItem('conversationId', conversationId || 'null');
+    // context?.setConversationId(conversationId);
+    // router.push('/chat');
   }, [context, conversationId]);
 
   const deleteConversation = useCallback(() => {
