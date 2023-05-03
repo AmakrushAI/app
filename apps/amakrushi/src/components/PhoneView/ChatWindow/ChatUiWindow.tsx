@@ -17,7 +17,7 @@ import { AppContext } from '../../../context';
 import { useLocalization } from '../../../hooks';
 import { getMsgType } from '../../../utils/getMsgType';
 import ChatMessageItem from '../../chat-message-item';
-
+import { v4 as uuidv4 } from 'uuid';
 const ChatUiWindow: React.FC = () => {
   const t = useLocalization();
   const context = useContext(AppContext);
@@ -44,19 +44,22 @@ const ChatUiWindow: React.FC = () => {
           error_message: error.message,
         });
       });
-  }, []);
+      
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [context?.setMessages]);
 
   const normalizedChat = (chats: any): any => {
     console.log('in normalized');
     const conversationId = localStorage.getItem('conversationId');
-    
-    const history = chats.filter((item) =>
+    console.log("chakshu:",{chats,conversationId})
+    const history = chats.filter((item:any) =>
         conversationId === 'null' || item.conversationId === conversationId
-      ).flatMap((item) => [
+      ).flatMap((item:any) => [
         {
           text: item.query,
           position: 'right',
           repliedTimestamp: item.createdAt,
+          messageId: uuidv4()
         },
         {
           text: item.response,
@@ -64,6 +67,7 @@ const ChatUiWindow: React.FC = () => {
           sentTimestamp: item.createdAt,
           reaction: item.reaction,
           msgId: item.id,
+          messageId: item.id
         },
       ]);
 

@@ -50,7 +50,7 @@ const ContextProvider: FC<{
   const [socketSession, setSocketSession] = useState<any>();
   const [newSocket, setNewSocket] = useState<any>();
   const [conversationId, setConversationId] = useState<string | null>(
-    localStorage.getItem('conversationId')
+    localStorage.getItem('conversationId') || uuidv4()
   );
   const [isMobileAvailable, setIsMobileAvailable] = useState(
     localStorage.getItem('phoneNumber') ? true : false || false
@@ -61,6 +61,12 @@ const ContextProvider: FC<{
   const [isConnected, setIsConnected] = useState(newSocket?.connected || false);
   console.log(messages);
 
+// useEffect(()=>{
+//   if(!localStorage.getItem('conversationId')){
+//     const conversationId= 
+//   }
+// },[])
+  
   useEffect(() => {
     if (
       (localStorage.getItem('phoneNumber') && localStorage.getItem('auth')) ||
@@ -97,7 +103,7 @@ const ContextProvider: FC<{
       msg: { content: { title: string; choices: any }; messageId: string };
       media: any;
     }) => {
-      console.log('mssgs:',messages)
+      
       if (msg.content.title !== '') {
         const newMsg = {
           username: user?.name,
@@ -111,8 +117,8 @@ const ContextProvider: FC<{
           sentTimestamp: Date.now(),
           ...media,
         };
-        console.log('mssgs:',messages)
-        setMessages((prev: any) => { console.log(_.uniq([...prev, newMsg], ['messageId'])); return _.uniq([...prev, newMsg], ['messageId'])});
+     
+        setMessages((prev: any) =>  _.uniq([...prev, newMsg], ['messageId']));
         
       }
     },
@@ -244,7 +250,7 @@ const ContextProvider: FC<{
   //@ts-ignore
   const sendMessage = useCallback(
     (text: string, media: any, isVisibile = true): void => {
-      console.log('mssgs:', messages)
+     // console.log('mssgs:', messages)
       setLoading(true);
       setIsMsgReceiving(true);
 
@@ -269,7 +275,7 @@ const ContextProvider: FC<{
         );
         return;
       }
-      console.log('mssgs:',messages)
+    //  console.log('mssgs:',messages)
       send({ text, socketSession, socket: newSocket, conversationId });
       if (isVisibile)
         if (media) {
@@ -280,7 +286,7 @@ const ContextProvider: FC<{
           } else {
           }
         } else {
-        console.log('mssgs:',messages)
+        //console.log('mssgs:',messages)
           //@ts-ignore
           setMessages((prev: any) => [
             ...prev.map((prevMsg: any) => ({ ...prevMsg, disabled: true })),
@@ -296,7 +302,7 @@ const ContextProvider: FC<{
               repliedTimestamp: Date.now(),
             },
           ]);
-        console.log('mssgs:',messages)
+    //    console.log('mssgs:',messages)
         }
     },
     [

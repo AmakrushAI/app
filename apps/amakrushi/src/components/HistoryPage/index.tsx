@@ -14,7 +14,7 @@ import { useLocalization } from '../../hooks';
 import ComingSoonPage from '../coming-soon-page';
 import { useFlags } from 'flagsmith/react';
 import axios from 'axios';
-
+import _ from 'underscore';
 const HistoryPage: NextPage = () => {
   const [conversations, setConversations] = useState([]);
   const flags = useFlags(['show_chat_history_page']);
@@ -31,10 +31,12 @@ const HistoryPage: NextPage = () => {
         }/user/conversations/${localStorage.getItem('userID')}`
       )
       .then((res) => {
-        const sortedConversations = res?.data.sort(
+        console.log("chakshu2:",{res})
+        const sortedConversations =  _.filter(res?.data,conv=>conv?.conversationId !==null).sort(
           //@ts-ignore
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
+//@ts-ignore
         setConversations(sortedConversations);
         console.log('conversations:', sortedConversations);
       })
