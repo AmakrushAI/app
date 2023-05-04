@@ -51,7 +51,6 @@ const ChatUiWindow: React.FC = () => {
   const normalizedChat = (chats: any): any => {
     console.log('in normalized');
     const conversationId = localStorage.getItem('conversationId');
-    console.log("chakshu:",{chats,conversationId})
     const history = chats.filter((item:any) =>
         conversationId === 'null' || item.conversationId === conversationId
       ).flatMap((item:any) => [
