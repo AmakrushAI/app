@@ -1,4 +1,4 @@
 export type ChatItemPropsType = {
   name: string;
-  messages: Array;
+  conversationId: string | null;
 };

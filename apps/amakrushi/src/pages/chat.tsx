@@ -3,8 +3,6 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 import { useLocalization } from "../hooks/useLocalization";
 import Menu from "../components/menu";
-import { useContext, useEffect } from "react";
-import { AppContext } from "../context";
 
 const ChatUiWindow = dynamic(
   () => import("../components/PhoneView/ChatWindow/ChatUiWindow"),
