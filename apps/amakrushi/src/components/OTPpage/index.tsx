@@ -26,47 +26,70 @@ const OTPpage: React.FC = () => {
   const [countdownIntervalId, setCountdownIntervalId] = useState<any>(null);
   console.log("vbn:", { context });
 
-  const handleOTPSubmit: React.FormEventHandler = (event: React.FormEvent) => {
+  const handleOTPSubmit: React.FormEventHandler = async (
+    event: React.FormEvent
+  ) => {
     event.preventDefault();
+    
+   
     const inputOTP: string = input1 + input2 + input3 + input4;
     if (inputOTP.length === 4) {
       fetch(
-        `${process.env.NEXT_PUBLIC_OTP_BASE_URL}uci/loginOrRegister?phone=${router.query.state}&otp=${inputOTP}`,
+        `${process.env.NEXT_PUBLIC_OTP_BASE_URL}api/login/otp`,
         {
-          method: "get",
+          method: "POST",
+          body: JSON.stringify({
+            loginId: router.query.state,
+            password: inputOTP,
+            // eslint-disable-next-line turbo/no-undeclared-env-vars
+            applicationId: process.env.NEXT_PUBLIC_USER_SERVICE_APP_ID,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       )
         .then((response) => response.json())
         .then((data) => {
-          if (data.resp.params.status === "Success") {
+          console.log("token:", { data });
+          if (data.params.status === "Success") {
             let expires = new Date();
             expires.setTime(
               expires.getTime() +
-                data.resp.result.data.user.tokenExpirationInstant * 1000
+                data.result.data.user.tokenExpirationInstant * 1000
             );
             removeCookie("access_token");
-            setCookie("access_token", data.resp.result.data.user.token, {
+            setCookie("access_token", data.result.data.user.token, {
               path: "/",
               expires,
             });
             const phoneNumber = router.query.state;
             // @ts-ignore
             localStorage.setItem("phoneNumber", phoneNumber);
+            const decodedToken=jwt_decode(data.result.data.user.token);
+            //@ts-ignore
+            localStorage.setItem("userID", decodedToken?.sub);
+            localStorage.setItem("auth", data.result.data.user.token);
             // @ts-ignore
-            setUserId(analytics, phoneNumber);
-            const decodedToken=jwt_decode(data.resp.result.data.user.token);
-            console.log('vbn:',{decodedToken})
-            localStorage.setItem("auth", data.resp.result.data.user.token);
-            
-            context?.setIsMobileAvailabe(true);
+            setUserId(analytics, localStorage.getItem("userID"));
+
+            context?.setIsMobileAvailable(true);
             setTimeout(() => {
               router.push("/");
             }, 10);
+        
           } else {
             toast.error(`${t("message.invalid_otp")}`);
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err)
+          //@ts-ignore
+          logEvent(analytics, 'console_error', {
+            error_message: err.message,
+          });
+        }
+        );
     }
   };
 
@@ -100,7 +123,7 @@ const OTPpage: React.FC = () => {
     setIsResendingOTP(true);
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_OTP_BASE_URL}uci/sendOTP?phone=${router.query.state}`
+        `${process.env.NEXT_PUBLIC_OTP_BASE_URL}api/sendOTP?phone=${router.query.state}`
       );
       if (response.status === 200) {
         toast.success(`${t("message.otp_sent_again")}`);
@@ -118,10 +141,14 @@ const OTPpage: React.FC = () => {
           setCountdownIntervalId(null);
         }, 30000);
       } else {
-        toast.error(`${t('error.otp_not_sent')}`);
+        toast.error(`${t("error.otp_not_sent")}`);
       }
     } catch (error) {
-      toast.error(`${t('error.error.sending_otp')}`);
+      toast.error(`${t("error.error.sending_otp")}`);
+      //@ts-ignore
+      logEvent(analytics, 'console_error', {
+        error_message: error.message,
+      });
     }
 
     return () => {
@@ -129,7 +156,7 @@ const OTPpage: React.FC = () => {
         clearInterval(countdownIntervalId);
       }
     };
-  }, [isResendingOTP, router.query.state, countdownIntervalId,t]);
+  }, [isResendingOTP, router.query.state, countdownIntervalId, t]);
 
   useEffect(() => {
     //@ts-ignore

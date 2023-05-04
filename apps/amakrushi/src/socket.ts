@@ -9,19 +9,24 @@ type SendType={
   
   export const send = ({text, socketSession:session,  socket,conversationId}:SendType) => {
 	
-	localStorage.setItem('conversationId',conversationId || '')
+	sessionStorage.setItem('conversationId', conversationId || '')
 	console.log("debug:",{text});
 	  socket.emit("botRequest", {
 		content: {
 		  text,
-		  userId: session.userID,
+		 // userId: session.userID,
+		 userId: localStorage.getItem('userID'),
+		 
 		  appId: "AKAI_App_Id",
 		  channel: "AKAI",
-		  from: session.socketID,
+		 from: localStorage.getItem('userID'),
+		  //from:  session.userID,
 		  context: null,
 		  accessToken: null,
+		  conversationId
 		},
-		to: `akai:${localStorage.getItem('phoneNumber')}`, 
+		to: localStorage.getItem('userID'), 
+		
 		conversationId
 	  });
 	

@@ -1,9 +1,9 @@
 
 .main {
-  margin: 8px 1px 8px 8px;
+  margin: 1vh 0 1vh 1vh;
   overflow-x: hidden;
   overflow-y: scroll !important;
-  height: 80vh;
+  height: 83vh;
 }
 .main button {
   box-shadow: none !important;
@@ -34,10 +34,7 @@
   font-size: 4.2vh;
   font-weight: 700;
   color: var(--secondarygreen);
-}
-
-.accordionItem {
-  margin-top: 1vh;
+  margin-bottom: 1vh;
 }
 
 .bottomSection {
@@ -71,6 +68,7 @@
   margin: 2vh;
   border-radius: 10px;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
+  padding-bottom: 1vh;
 }
 
 .callIconBox{

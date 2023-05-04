@@ -30,7 +30,8 @@ const LoginPage: React.FC = () => {
       toast.error(`${t("message.invalid_mobile")}`);
     } else {
       fetch(
-        `${process.env.NEXT_PUBLIC_OTP_BASE_URL}uci/sendOTP?phone=${input}`,
+        // `${process.env.NEXT_PUBLIC_OTP_BASE_URL}uci/sendOTP?phone=${input}`,
+        `${process.env.NEXT_PUBLIC_OTP_BASE_URL}api/sendOTP?phone=${input}`,
         { method: 'GET' }
       ).then((response) => {
         

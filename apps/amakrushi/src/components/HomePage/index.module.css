@@ -4,6 +4,17 @@
   color: var(--secondarygreen);
 }
 
+.disconnected {
+  padding-top: 0.5vh;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+  background-color: var(--red);
+  color: white;
+  font-weight: bold;
+}
+
 .sunIconContainer{
   height: 12vh;
   width: 12vh;
@@ -52,10 +63,8 @@
   padding-left: 10px;
   margin-right: 5px;
   border-radius: 40px;
-}
-
-.inputBox input:focus {
-  border: 1px solid var(--secondarygreen) !important;
+  border: 2px solid var(--secondarygreen);
+  outline: none;
 }
 
 .sendButton {

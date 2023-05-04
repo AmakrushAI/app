@@ -7,21 +7,28 @@ import { useCookies } from 'react-cookie';
 import { FC, useCallback, useContext } from 'react';
 import { useRouter } from 'next/router';
 import { AppContext } from '../../context';
+import { useLocalization } from '../../hooks';
+import toast from 'react-hot-toast';
 
 const Menu: FC = () => {
+  const t = useLocalization();
   const [cookies, setCookies] = useCookies();
   const context = useContext(AppContext);
   const router = useRouter();
 
   const urlChanger = (link: string) => {
     if (cookies['access_token'] !== undefined) {
+      if(link === '/history' && context?.loading){   
+        toast.error(`${t("error.wait_new_chat")}`);
+        return;        
+    }
       router.push(link);
     }
   };
 
   const homeUrlChanger = useCallback(() => {
     if (cookies['access_token'] !== undefined) {
-      if(context?.messages.length !== 0){
+      if(context?.messages?.length !== 0){
         router.push('/chat');
       }else router.push('/');
     }
