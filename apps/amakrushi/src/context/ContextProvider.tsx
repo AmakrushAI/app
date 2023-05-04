@@ -221,14 +221,7 @@ const ContextProvider: FC<{
 
     return () => {
       if (newSocket) {
-        // if (isSocketReady && isConnected) {
-        //   console.log("debug: return")
-        // newSocket.disconnect();
-        //socket?.off("connect", );
         newSocket.off('disconnect', onDisconnect);
-        // socket?.off("botResponse", onMessageReceived);
-        // socket?.off("session", () => setSocketSession(null));
-        // }
       }
     };
   }, [isConnected, newSocket, onMessageReceived]);

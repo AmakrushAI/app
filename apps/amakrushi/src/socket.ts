@@ -14,15 +14,19 @@ type SendType={
 	  socket.emit("botRequest", {
 		content: {
 		  text,
-		//   userId: session.userID,
-		  userId: localStorage.getItem('userID'),
+		 // userId: session.userID,
+		 userId: localStorage.getItem('userID'),
+		 
 		  appId: "AKAI_App_Id",
 		  channel: "AKAI",
-		  from: localStorage.getItem('userID'),
+		 from: localStorage.getItem('userID'),
+		  //from:  session.userID,
 		  context: null,
 		  accessToken: null,
+		  conversationId
 		},
 		to: localStorage.getItem('userID'), 
+		
 		conversationId
 	  });
 	
