@@ -1,23 +1,36 @@
 const jwt = require("jsonwebtoken");
+const jwksClient = require("jwks-rsa");
+
+var client = jwksClient({
+  // eslint-disable-next-line turbo/no-undeclared-env-vars
+  jwksUri: process.env.NEXT_PUBLIC_JWKS_URI,
+  requestHeaders: {}, // Optional
+  timeout: 30000, // Defaults to 30
+});
+function getKey(header, callback) {
+  client.getSigningKey(header.kid, function (err, key) {
+    var signingKey = key.publicKey || key.rsaPublicKey;
+    callback(null, signingKey);
+  });
+}
 
 export default function handler(req, res) {
   switch (req.method) {
     case "GET":
       res.send(authenticate());
-      return
+      return;
     default:
       return res.status(405).end(`Method ${req.method} Not allowed`);
   }
-  
-  function authenticate() {
+
+  async function authenticate() {
     try {
-      const decoded = jwt.verify(req.query.token, process.env.NEXT_PUBLIC_JWT_CERT, {
-        algorithms: ["RS256"],
+      return await jwt.verify(req.query.token, getKey, function (err, decoded) {
+        return decoded;
       });
-      return decoded;
     } catch (err) {
       throw err;
     }
   }
-  
 }
+
