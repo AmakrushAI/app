@@ -1,6 +1,6 @@
 .main {
   margin: 1vh 0 1vh 1vh;
-  min-height: 74vh;
+  height: 83vh;
   overflow-x: hidden;
   overflow-y: scroll !important;
 }

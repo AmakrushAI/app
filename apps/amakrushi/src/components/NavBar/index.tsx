@@ -41,9 +41,8 @@ function NavBar() {
       return;
     }
     const newConversationId = uuidv4();
-    localStorage.setItem('conversationId', newConversationId);
+    sessionStorage.setItem('conversationId', newConversationId);
     context?.setConversationId(newConversationId);
-    console.log('clearing chat')
     context?.setMessages([]);
     context?.setIsMsgReceiving(false);
     context?.setLoading(false);

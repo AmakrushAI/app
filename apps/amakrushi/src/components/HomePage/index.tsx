@@ -39,9 +39,9 @@ const HomePage: NextPage = () => {
     //@ts-ignore
     logEvent(analytics, 'Home_page');
 
-   if(!localStorage.getItem('conversationId')){
+   if(!sessionStorage.getItem('conversationId')){
     const newConversationId = uuidv4();
-    localStorage.setItem('conversationId', newConversationId);
+    sessionStorage.setItem('conversationId', newConversationId);
     context?.setConversationId(newConversationId);
    }
   // eslint-disable-next-line react-hooks/exhaustive-deps

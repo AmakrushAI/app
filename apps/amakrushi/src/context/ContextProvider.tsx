@@ -50,7 +50,7 @@ const ContextProvider: FC<{
   const [socketSession, setSocketSession] = useState<any>();
   const [newSocket, setNewSocket] = useState<any>();
   const [conversationId, setConversationId] = useState<string | null>(
-    localStorage.getItem('conversationId')
+    sessionStorage.getItem('conversationId')
   );
   const [isMobileAvailable, setIsMobileAvailable] = useState(
     localStorage.getItem('phoneNumber') ? true : false || false

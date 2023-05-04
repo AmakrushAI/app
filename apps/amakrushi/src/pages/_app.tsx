@@ -62,7 +62,7 @@ const App = ({
     } else {
       // not logged in then send to login page
       if (cookie["access_token"] === undefined || !localStorage.getItem('phoneNumber')) {
-        const keysToRemove = ['phoneNumber', 'userID', 'auth', 'conversationId'];
+        const keysToRemove = ['phoneNumber', 'userID', 'auth'];
         keysToRemove.forEach(key => localStorage.removeItem(key));
         router.push("/login");
       }
