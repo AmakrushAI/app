@@ -47,9 +47,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
 }) => {
   const t = useLocalization();
   const context = useContext(AppContext);
-  const [reaction, setReaction] = useState(
-    message?.content?.data?.reaction || 0
-  );
+  console.log('woo',message)
+  const [reaction, setReaction] = useState(0);
 
   const onLikeDislike = useCallback(
     ({ value, msgId }: { value: 0 | 1 | -1; msgId: string }) => {
@@ -182,7 +181,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                     })
                   }>
                   <MsgThumbsUp
-                    fill={reaction === 1}
+                    fill={(message?.content?.data?.reaction || reaction) === 1}
                     width="20px"
                     color="var(--secondarygreen)"
                   />
@@ -195,7 +194,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                     })
                   }>
                   <MsgThumbsDown
-                    fill={reaction === -1}
+                    fill={(message?.content?.data?.reaction || reaction) === -1}
                     width="20px"
                     color="var(--secondarygreen)"
                   />
