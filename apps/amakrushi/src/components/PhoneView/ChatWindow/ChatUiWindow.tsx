@@ -31,7 +31,7 @@ const ChatUiWindow: React.FC = () => {
         `${process.env.NEXT_PUBLIC_BASE_URL
         }/user/chathistory/${localStorage.getItem(
           'userID'
-        )}/${localStorage.getItem('conversationId')}`
+        )}/${sessionStorage.getItem('conversationId')}`
       )
       .then((res) => {
         console.log('history:', res.data);
@@ -50,7 +50,7 @@ const ChatUiWindow: React.FC = () => {
 
   const normalizedChat = (chats: any): any => {
     console.log('in normalized');
-    const conversationId = localStorage.getItem('conversationId');
+    const conversationId = sessionStorage.getItem('conversationId');
     const history = chats.filter((item:any) =>
         conversationId === 'null' || item.conversationId === conversationId
       ).flatMap((item:any) => [

@@ -9,7 +9,7 @@ type SendType={
   
   export const send = ({text, socketSession:session,  socket,conversationId}:SendType) => {
 	
-	localStorage.setItem('conversationId', conversationId || '')
+	sessionStorage.setItem('conversationId', conversationId || '')
 	console.log("debug:",{text});
 	  socket.emit("botRequest", {
 		content: {

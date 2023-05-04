@@ -61,7 +61,7 @@ const HistoryPage: NextPage = () => {
             <Input type="text" placeholder="Search" />
           </InputGroup> */}
           <div>
-            {conversations.map((conv, key) => {
+            {conversations.map((conv:any, key) => {
               return (
                 <ChatItem
                   key={key}
