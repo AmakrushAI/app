@@ -37,8 +37,9 @@ const ChatItem: React.FC<ChatItemPropsType> = ({ name, conversationId }) => {
       .then((res) => {
         console.log('deleting conversation')
         if (conversationId === sessionStorage.getItem('conversationId')) {
-          sessionStorage.setItem('conversationId', uuidv4());
-          context?.setConversationId(sessionStorage.getItem('conversationId'));
+          const newConversationId= uuidv4();
+          sessionStorage.setItem('conversationId',newConversationId);
+          context?.setConversationId(newConversationId);
           context?.setMessages([]);
         }
         setIsConversationDeleted(true);

@@ -26,7 +26,7 @@ const ChatUiWindow: React.FC = () => {
   const [cookies, setCookies] = useCookies();
 
   useEffect(() => {
-    axios
+    !context?.loading && axios
       .get(
         `${process.env.NEXT_PUBLIC_BASE_URL
         }/user/chathistory/${localStorage.getItem(
