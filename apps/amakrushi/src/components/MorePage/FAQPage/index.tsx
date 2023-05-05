@@ -94,13 +94,12 @@ const FAQPage: React.FC = () => {
           document.body.removeChild(a);
         })
         .catch((error) => {
-          console.error(error)
+          console.error(error);
           //@ts-ignore
           logEvent(analytics, 'console_error', {
             error_message: error.message,
           });
-        }
-        );
+        });
     },
     [flags]
   );
@@ -124,12 +123,18 @@ const FAQPage: React.FC = () => {
                 <h2>
                   <AccordionButton fontSize={'1.89vh'}>
                     <Box as="span" flex="1" textAlign="left">
-                      {faq.question}
+                      {localStorage.getItem('locale') === 'or'
+                        ? faq.question
+                        : faq.questionInEnglish}
                     </Box>
                     <AccordionIcon />
                   </AccordionButton>
                 </h2>
-                <AccordionPanel pb={4}  fontSize={'1.89vh'}>{faq.answer}</AccordionPanel>
+                <AccordionPanel pb={4} fontSize={'1.89vh'}>
+                  {localStorage.getItem('locale') === 'or'
+                    ? faq.answer
+                    : faq.answerInEnglish}
+                </AccordionPanel>
               </AccordionItem>
             ))}
           </Accordion>

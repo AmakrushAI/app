@@ -24,6 +24,7 @@ const MorePage: React.FC = () => {
     removeCookie('access_token', { path: '/' });
     const keysToRemove = ['phoneNumber', 'userID', 'auth'];
     keysToRemove.forEach(key => localStorage.removeItem(key));
+    sessionStorage.removeItem('conversationId');
     //@ts-ignore
     logEvent(analytics, 'Logout_pressed');
     router.push('/login');
