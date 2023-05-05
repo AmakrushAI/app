@@ -1,5 +1,5 @@
 import styles from './index.module.css';
-import React, { useEffect, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import logoutIcon from '../../assets/icons/logout.svg';
 import userCircleIcon from '../../assets/icons/user-circle.svg';
@@ -14,9 +14,11 @@ import Menu from '../menu';
 import { analytics } from '../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
 import { useLocalization } from '../../hooks';
+import { AppContext } from '../../context';
 
 const MorePage: React.FC = () => {
   const router = useRouter();
+  const context = useContext(AppContext);
   const [cookie, setCookie, removeCookie] = useCookies();
   const t=useLocalization();
 
@@ -24,9 +26,11 @@ const MorePage: React.FC = () => {
     removeCookie('access_token', { path: '/' });
     localStorage.clear();
     sessionStorage.clear();
+    context?.setMessages([]);
     //@ts-ignore
     logEvent(analytics, 'Logout_pressed');
     router.push('/login');
+    if(typeof window !== "undefined") window.location.reload();
   }
 
   useEffect(() => {
