@@ -15,6 +15,7 @@ const LoginPage: React.FC = () => {
   const router = useRouter();
   const [input, setInput] = useState('');
   const [value, setValue] = React.useState('2');
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const t = useLocalization();
   // Setting the input value
   const handleNumber: React.ChangeEventHandler = (
@@ -29,16 +30,17 @@ const LoginPage: React.FC = () => {
     if (input.length !== 10) {
       toast.error(`${t("message.invalid_mobile")}`);
     } else {
+      setIsButtonDisabled(true);
       fetch(
         // `${process.env.NEXT_PUBLIC_OTP_BASE_URL}uci/sendOTP?phone=${input}`,
         `${process.env.NEXT_PUBLIC_OTP_BASE_URL}api/sendOTP?phone=${input}`,
         { method: 'GET' }
-      ).then((response) => {
-        
+      ).then((response) => {        
         if (response.status === 200) {
          // localStorage.setItem('phoneNumber',input)
           router.push({ pathname: '/otp', query: { state: input } });
         } else {
+          setIsButtonDisabled(false);
           toast.error(`${t("message.otp_not_sent")}`);
         }
       })
@@ -93,7 +95,7 @@ const LoginPage: React.FC = () => {
         >
           {t("message.register_message")}
         </div> */}
-            <button className={styles.submitButton} onClick={handleOTPPage}>
+            <button className={styles.submitButton} onClick={handleOTPPage} disabled={isButtonDisabled}>
               {t('label.continue')}
             </button>
           </div>

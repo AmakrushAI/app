@@ -15,6 +15,7 @@ import React, {
   ReactElement,
   useCallback,
   useContext,
+  useEffect,
   useState,
 } from 'react';
 import { Button } from 'react-bootstrap';
@@ -47,8 +48,11 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
 }) => {
   const t = useLocalization();
   const context = useContext(AppContext);
-  console.log('woo',message)
-  const [reaction, setReaction] = useState(0);
+  const [reaction, setReaction] = useState(message?.content?.data?.reaction);
+  
+  useEffect(() => {
+    setReaction(message?.content?.data?.reaction);
+  }, [message?.content?.data?.reaction]);
 
   const onLikeDislike = useCallback(
     ({ value, msgId }: { value: 0 | 1 | -1; msgId: string }) => {
@@ -177,11 +181,11 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   onClick={() =>
                     feedbackHandler({
                       like: 1,
-                      msgId: content?.data?.msgId,
+                      msgId: content?.data?.messageId,
                     })
                   }>
                   <MsgThumbsUp
-                    fill={(message?.content?.data?.reaction || reaction) === 1}
+                    fill={reaction === 1}
                     width="20px"
                     color="var(--secondarygreen)"
                   />
@@ -190,11 +194,11 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   onClick={() =>
                     feedbackHandler({
                       like: -1,
-                      msgId: content?.data?.msgId,
+                      msgId: content?.data?.messageId,
                     })
                   }>
                   <MsgThumbsDown
-                    fill={(message?.content?.data?.reaction || reaction) === -1}
+                    fill={reaction === -1}
                     width="20px"
                     color="var(--secondarygreen)"
                   />
