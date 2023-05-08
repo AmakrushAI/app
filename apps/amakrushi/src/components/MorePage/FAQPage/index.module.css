@@ -1,9 +1,11 @@
-
 .main {
   margin: 1vh 0 1vh 1vh;
   overflow-x: hidden;
   overflow-y: scroll !important;
-  height: 83vh;
+  width: 98%;
+  position: fixed;
+  bottom: 7vh;
+  top: 70px;
 }
 .main button {
   box-shadow: none !important;
@@ -71,7 +73,7 @@
   padding-bottom: 1vh;
 }
 
-.callIconBox{
+.callIconBox {
   height: 5vh;
   width: 5vh;
   margin-right: 1vh;
