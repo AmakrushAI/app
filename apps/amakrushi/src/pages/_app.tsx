@@ -1,29 +1,29 @@
-import "../styles/globals.css";
-import type { AppProps } from "next/app";
-import { ChakraProvider } from "@chakra-ui/react";
-import  jwt  from 'jsonwebtoken';
-import ContextProvider from "../context/ContextProvider";
-import { ReactElement, useCallback, useEffect, useState } from "react";
-import "chatui/dist/index.css";
-import { Toaster } from "react-hot-toast";
+import '../styles/globals.css';
+import type { AppProps } from 'next/app';
+import { ChakraProvider } from '@chakra-ui/react';
+import ContextProvider from '../context/ContextProvider';
+import { ReactElement, useCallback, useEffect, useState } from 'react';
+import 'chatui/dist/index.css';
+import { Toaster } from 'react-hot-toast';
 
-import { useCookies } from "react-cookie";
-import { useRouter } from "next/router";
-import dynamic from "next/dynamic";
+import { useCookies } from 'react-cookie';
+import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 
-import flagsmith from "flagsmith/isomorphic";
-import { FlagsmithProvider } from "flagsmith/react";
+import flagsmith from 'flagsmith/isomorphic';
+import { FlagsmithProvider } from 'flagsmith/react';
+import { useLogin } from '../hooks';
 
-const LaunchPage = dynamic(() => import("../components/LaunchPage"), {
+const LaunchPage = dynamic(() => import('../components/LaunchPage'), {
   ssr: false,
 });
-const NavBar = dynamic(() => import("../components/NavBar"), {
+const NavBar = dynamic(() => import('../components/NavBar'), {
   ssr: false,
 });
 function SafeHydrate({ children }: { children: ReactElement }) {
   return (
     <div suppressHydrationWarning>
-      {typeof window === "undefined" ? null : children}
+      {typeof window === 'undefined' ? null : children}
     </div>
   );
 }
@@ -34,6 +34,7 @@ const App = ({
   flagsmithState,
 }: AppProps & { flagsmithState: any }) => {
   const router = useRouter();
+  const { isAuthenticated, login } = useLogin();
   const [launch, setLaunch] = useState(true);
   const [cookie, setCookie, removeCookie] = useCookies();
   useEffect(() => {
@@ -42,17 +43,6 @@ const App = ({
     }, 2500);
   }, []);
 
-  const handleTokenExpiration = useCallback(() => {
-    const decodedToken = jwt.decode(cookie['access_token']);
-    const expires = new Date(decodedToken?.exp * 1000);
-    if (expires < new Date()) {
-      removeCookie('access_token', { path: '/' });
-      router.push('/login');
-      return;
-    }
-    
-  }, [cookie, removeCookie, router]);
-  
   const handleLoginRedirect = useCallback(() => {
     if (router.pathname === "/login" || router.pathname.startsWith("/otp")) {
       // already logged in then send to home
@@ -68,14 +58,18 @@ const App = ({
       }
     }
   }, [cookie, router]);
-  
-  useEffect(() => {
-    handleTokenExpiration();
-    handleLoginRedirect();
-  }, [handleTokenExpiration, handleLoginRedirect]);
-  
 
-  if (process.env.NODE_ENV === "production") {
+  useEffect(() => {
+    handleLoginRedirect();
+  }, [handleLoginRedirect]);
+
+  useEffect(() => {
+      if(!isAuthenticated){
+        login();
+      }
+  }, [isAuthenticated, login]);
+
+  if (process.env.NODE_ENV === 'production') {
     globalThis.console.log = () => {};
   }
 
@@ -86,8 +80,8 @@ const App = ({
       <ChakraProvider>
         <FlagsmithProvider flagsmith={flagsmith} serverState={flagsmithState}>
           <ContextProvider>
-            <div style={{ height: "100%" }}>
-              <Toaster position="top-center" reverseOrder={false}  />
+            <div style={{ height: '100%' }}>
+              <Toaster position="top-center" reverseOrder={false} />
               <NavBar />
               <SafeHydrate>
                 <Component {...pageProps} />

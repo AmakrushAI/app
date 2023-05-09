@@ -14,13 +14,13 @@ import { useCookies } from 'react-cookie';
 import { analytics } from '../../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
 import { AppContext } from '../../../context';
-import { useLocalization, useLogin } from '../../../hooks';
+import { useLocalization } from '../../../hooks';
 import { getMsgType } from '../../../utils/getMsgType';
 import ChatMessageItem from '../../chat-message-item';
 import { v4 as uuidv4 } from 'uuid';
 import toast from 'react-hot-toast';
 const ChatUiWindow: React.FC = () => {
-  const {isAuthenticated,login}=useLogin();
+  // const {isAuthenticated,login}=useLogin();
   const t = useLocalization();
   const context = useContext(AppContext);
   const router = useRouter();
@@ -78,12 +78,12 @@ const ChatUiWindow: React.FC = () => {
     return history;
   };
 
-  useEffect(() => {
+  // useEffect(() => {
    
-    if(!isAuthenticated){
-      login();
-    }
-  }, [isAuthenticated, login]);
+  //   if(!isAuthenticated){
+  //     login();
+  //   }
+  // }, [isAuthenticated, login]);
 
   const handleSend = useCallback(
     (type: string, val: any) => {
