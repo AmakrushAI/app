@@ -18,7 +18,9 @@ import { useLocalization } from '../../../hooks';
 import { getMsgType } from '../../../utils/getMsgType';
 import ChatMessageItem from '../../chat-message-item';
 import { v4 as uuidv4 } from 'uuid';
+import toast from 'react-hot-toast';
 const ChatUiWindow: React.FC = () => {
+ 
   const t = useLocalization();
   const context = useContext(AppContext);
   const router = useRouter();
@@ -76,28 +78,7 @@ const ChatUiWindow: React.FC = () => {
     return history;
   };
 
-  useEffect(() => {
-    if (cookies['access_token'] !== undefined) {
-      axios
-        .get(`/api/auth?token=${cookies['access_token']}`)
-        .then((response) => {
-          if (response.data === null) {
-            throw 'Invalid Access Token';
-            // // router.push("/login");
-          }
-        })
-        .catch((err) => {
-          //@ts-ignore
-          logEvent(analytics, 'console_error', {
-            error_message: err.message,
-          });
-          throw err;
-        });
-      setAccessToken(cookies['access_token']);
-    } else {
-      router.push('/login');
-    }
-  }, [cookies, router]);
+
 
   const handleSend = useCallback(
     (type: string, val: any) => {
