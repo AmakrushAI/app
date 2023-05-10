@@ -96,7 +96,7 @@ const App = ({
 
 App.getInitialProps = async () => {
   await flagsmith.init({
-    environmentID: process.env.NEXT_PUBLIC_ENVIRONMENT_ID,
+    environmentID: process.env.NEXT_PUBLIC_ENVIRONMENT_ID
   });
   return { flagsmithState: flagsmith.getState() };
 };

@@ -32,39 +32,44 @@ import { ChatMessageItemPropType } from '../../types';
 import { getFormatedTime } from '../../utils/getUtcTime';
 import { useLocalization } from '../../hooks/useLocalization';
 import { getReactionUrl } from '../../utils/getUrls';
+import { useFlags } from 'flagsmith/react';
 
-
-const getToastMessage=(t:any,reaction:number):string=>{
-  if(reaction===1)
-  return t('toast.reaction_like');
-  if(reaction===-1)
-  return t('toast.reaction_dislike')
-  return t('toast.reaction_reset')
-}
+const getToastMessage = (t: any, reaction: number): string => {
+  if (reaction === 1) return t('toast.reaction_like');
+  if (reaction === -1) return '';
+  return t('toast.reaction_reset');
+};
 const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   currentUser,
   message,
   onSend,
 }) => {
+  const flags = useFlags(['dialer_number']);
   const t = useLocalization();
   const context = useContext(AppContext);
   const [reaction, setReaction] = useState(message?.content?.data?.reaction);
-  
+
   useEffect(() => {
     setReaction(message?.content?.data?.reaction);
-
-   }, [message?.content?.data?.reaction]);
-
-
+  }, [message?.content?.data?.reaction]);
 
   const onLikeDislike = useCallback(
     ({ value, msgId }: { value: 0 | 1 | -1; msgId: string }) => {
       let url = getReactionUrl({ msgId, reaction: value });
-      
+
       axios
         .get(url)
         .then((res: any) => {
-          toast.success(`${getToastMessage(t,value)}`);
+          if (value === -1) {
+            const dial = window?.confirm(
+              `Please call ${flags.dialer_number.value} to resolve your query with Ama Krushi Call centre`
+            );
+            if (dial) {
+              const anchor = document.createElement('a');
+              anchor.href = `tel:${flags.dialer_number.value}`;
+              anchor.click();
+            }
+          } else toast.success(`${getToastMessage(t, value)}`);
         })
         .catch((error: any) => {
           //@ts-ignore
@@ -73,7 +78,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
           });
         });
     },
-    [t]
+    [flags.dialer_number.value, t]
   );
 
   const feedbackHandler = useCallback(
@@ -100,7 +105,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     },
     [onLikeDislike, reaction]
   );
-  
+
   const getLists = useCallback(
     ({ choices, isDisabled }: { choices: any; isDisabled: boolean }) => {
       console.log('qwer12:', { choices, isDisabled });
@@ -118,7 +123,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   toast.error(`${t('message.cannot_answer_again')}`);
                 } else {
                   if (context?.messages?.[0]?.exampleOptions) {
-                    console.log('clearing chat')
+                    console.log('clearing chat');
                     context?.setMessages([]);
                   }
                   context?.sendMessage(choice.text);
@@ -145,7 +150,18 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
       return <Typing />;
     case 'text':
       return (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative',
+          }}>
+          <div
+            className={
+              content?.data?.position === 'right'
+                ? styles.messageTriangleRight
+                : styles.messageTriangleLeft
+            }></div>
           <Bubble type="text">
             <span
               className="onHover"
