@@ -158,7 +158,7 @@ const FAQPage: React.FC = () => {
                 <div className={styles.footer}>
                   {t('message.dial_description')}
                 </div>
-                <a href="tel:155333" className={styles.footerTitle}>
+                <a href={`tel:${flags.dialer_number.value}`} className={styles.footerTitle}>
                   <div className={styles.callIconBox}>
                     <Image src={callIcon} alt="callIcon" layout="responsive" />
                   </div>

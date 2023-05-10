@@ -12,7 +12,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { AppContext } from '../../context';
 import { useLocalization } from '../../hooks';
 
-const ChatItem: React.FC<ChatItemPropsType> = ({ name, conversationId }) => {
+const ChatItem: React.FC<ChatItemPropsType> = ({
+  name,
+  conversationId,
+  deleteConversationById,
+}) => {
   const context = useContext(AppContext);
   const t = useLocalization();
   const [isConversationDeleted, setIsConversationDeleted] = useState(false);
@@ -24,34 +28,35 @@ const ChatItem: React.FC<ChatItemPropsType> = ({ name, conversationId }) => {
   }, [context, conversationId]);
 
   const deleteConversation = useCallback(() => {
-    const confirmed = window?.confirm(`${t("label.confirm_delete")}`);
-    if(confirmed){
+    const confirmed = window?.confirm(`${t('label.confirm_delete')}`);
+    if (confirmed) {
       axios
-      .get(
-        `${
-          process.env.NEXT_PUBLIC_BASE_URL
-        }/user/conversations/delete/${localStorage.getItem(
-          'userID'
-        )}/${conversationId}`
-      )
-      .then((res) => {
-        console.log('deleting conversation')
-        if (conversationId === sessionStorage.getItem('conversationId')) {
-          const newConversationId= uuidv4();
-          sessionStorage.setItem('conversationId',newConversationId);
-          context?.setConversationId(newConversationId);
-          context?.setMessages([]);
-        }
-        setIsConversationDeleted(true);
-      })
-      .catch((error) => {
-        //@ts-ignore
-        logEvent(analytics, 'console_error', {
-          error_message: error.message,
+        .get(
+          `${
+            process.env.NEXT_PUBLIC_BASE_URL
+          }/user/conversations/delete/${localStorage.getItem(
+            'userID'
+          )}/${conversationId}`
+        )
+        .then((res) => {
+          console.log('deleting conversation');
+          if (conversationId === sessionStorage.getItem('conversationId')) {
+            const newConversationId = uuidv4();
+            sessionStorage.setItem('conversationId', newConversationId);
+            context?.setConversationId(newConversationId);
+            context?.setMessages([]);
+          }
+          deleteConversationById(conversationId);
+          setIsConversationDeleted(true);
+        })
+        .catch((error) => {
+          //@ts-ignore
+          logEvent(analytics, 'console_error', {
+            error_message: error.message,
+          });
         });
-      });
     }
-  }, [context, conversationId, t]);
+  }, [context, conversationId, deleteConversationById, t]);
 
   return (
     <>

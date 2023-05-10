@@ -32,3 +32,27 @@
   font-weight: 700;
   color: var(--secondarygreen);
 }
+
+.noHistory{
+  height: 35vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.noHistory div{
+  margin-top: 4vh;
+  margin-left: 2vh;
+  font-family: 'Mulish-Bold';
+  font-size: 4vh;
+  text-align: center;
+  color: var(--grey);  
+}
+.noHistory p{
+  margin-top: 4vh;
+  margin-left: 2vh;
+  font-family: 'Mulish-Bold';
+  font-size: 1.65vh;
+  text-align: center;
+  color: var(--secondarygreen);  
+}
