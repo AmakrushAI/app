@@ -33,6 +33,7 @@ const App = ({
   pageProps,
   flagsmithState,
 }: AppProps & { flagsmithState: any }) => {
+  console.log("asdfg:",{flagsmithState})
   const router = useRouter();
   const { isAuthenticated, login } = useLogin();
   const [launch, setLaunch] = useState(true);
@@ -96,7 +97,9 @@ const App = ({
 
 App.getInitialProps = async () => {
   await flagsmith.init({
+    api:process.env.NEXT_PUBLIC_FLAGSMITH_API,
     environmentID: process.env.NEXT_PUBLIC_ENVIRONMENT_ID
+    
   });
   return { flagsmithState: flagsmith.getState() };
 };

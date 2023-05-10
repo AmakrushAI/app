@@ -52,16 +52,14 @@ const HistoryPage: NextPage = () => {
 
   // Function to delete conversation by conversationId
   const deleteConversationById = useCallback((conversationIdToDelete: any) => {
-    const filteredConversations = conversations.filter(
+    const filteredConversations = [...conversations].filter(
       (conversation: any) => conversation.conversationId !== conversationIdToDelete
     );
-    console.log('hie:', filteredConversations)
     setConversations(filteredConversations);
-    console.log('hie::', conversations)
   }, [conversations]);
   
 
-  console.log('hie rerender', conversations)
+ 
   if (!flags?.show_chat_history_page?.enabled) {
     return <ComingSoonPage />;
   } else
@@ -77,10 +75,10 @@ const HistoryPage: NextPage = () => {
           </InputGroup> */}
           <div>
             {conversations.length > 0
-              ? conversations.map((conv: any, key) => {
+              ? conversations.map((conv: any) => {
                   return (
                     <ChatItem
-                      key={key}
+                      key={conv.id}
                       name={conv.query}
                       conversationId={conv.conversationId}
                       deleteConversationById={deleteConversationById}
