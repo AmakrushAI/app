@@ -32,7 +32,6 @@ import { ChatMessageItemPropType } from '../../types';
 import { getFormatedTime } from '../../utils/getUtcTime';
 import { useLocalization } from '../../hooks/useLocalization';
 import { getReactionUrl } from '../../utils/getUrls';
-import { useFlags } from 'flagsmith/react';
 
 const getToastMessage = (t: any, reaction: number): string => {
   if (reaction === 1) return t('toast.reaction_like');
@@ -44,15 +43,15 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   message,
   onSend,
 }) => {
-  const flags = useFlags(['dialer_number']);
   const t = useLocalization();
   const context = useContext(AppContext);
   const [reaction, setReaction] = useState(message?.content?.data?.reaction);
 
-
   useEffect(() => {
     setReaction(message?.content?.data?.reaction);
-  }, [message?.content?.data?.reaction]);
+   }, [message?.content?.data?.reaction]);
+
+
 
   const onLikeDislike = useCallback(
     ({ value, msgId }: { value: 0 | 1 | -1; msgId: string }) => {
