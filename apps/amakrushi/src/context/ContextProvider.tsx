@@ -108,16 +108,21 @@ const ContextProvider: FC<{
           botUuid: user?.id,
           reaction: 0,
           messageId: msg?.messageId,
+          //@ts-ignore
+          conversationId:msg?.content?.conversationId,
           sentTimestamp: Date.now(),
           ...media,
         };
-     
+        //@ts-ignore
+        if(conversationId===msg?.content?.conversationId)
         setMessages((prev: any) =>  _.uniq([...prev, newMsg], ['messageId']));
         
       }
     },
-    []
+    [conversationId]
   );
+
+  console.log("erty:",{conversationId})
 
   const onMessageReceived = useCallback(
     (msg: any): void => {

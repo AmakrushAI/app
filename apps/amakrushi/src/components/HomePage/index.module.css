@@ -78,3 +78,8 @@
   border-radius: 40px !important;
   background-color: var(--secondarygreen) !important;
 }
+
+.sendButtonContainer{
+  height: 5vh;
+  width: 5vh;
+}

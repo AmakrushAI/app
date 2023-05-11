@@ -230,34 +230,32 @@ const RenderVoiceRecorder = ({setInputMsg}) => {
   };
 console.log('ghji',{output})
   return (
-    <Grid container spacing={1}>
-      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+    <div>
+      <div>
         {recordAudio === 'start' ? (
           <div className={styles.center}>
             <Image
               src={Stop}
-              alt=""
+              alt="stopIcon"
               onClick={() => handleStopRecording()}
               style={{ cursor: 'pointer' }}
-              width={40}
-              height={40}
+              layout='responsive'
             />{' '}
           </div>
         ) : (
           <div className={styles.center}>
             <Image
               src={Start}
-              alt=""
+              alt="startIcon"
               onClick={() => {
                 handleStartRecording();
               }}
               style={{ cursor: 'pointer' }}
-              width={40}
-              height={40}
+              layout='responsive'
             />{' '}
           </div>
         )}
-      </Grid>
+      </div>
       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
         {/* <div className={styles.center}>
           <Typography style={{ height: '12px' }} variant="caption">
@@ -308,7 +306,7 @@ console.log('ghji',{output})
           </Grid>
         </Grid>
       </Grid> 
-    </Grid>
+    </div>
   );
 };
 
