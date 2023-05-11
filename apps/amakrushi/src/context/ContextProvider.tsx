@@ -111,7 +111,8 @@ const ContextProvider: FC<{
           sentTimestamp: Date.now(),
           ...media,
         };
-     
+   //@ts-ignore
+   if(conversationId===msg?.content?.conversationId)
         setMessages((prev: any) =>  _.uniq([...prev, newMsg], ['messageId']));
         
       }

@@ -13,6 +13,7 @@ import dynamic from 'next/dynamic';
 import flagsmith from 'flagsmith/isomorphic';
 import { FlagsmithProvider } from 'flagsmith/react';
 import { useLogin } from '../hooks';
+import axios from 'axios';
 
 const LaunchPage = dynamic(() => import('../components/LaunchPage'), {
   ssr: false,
@@ -74,6 +75,19 @@ const App = ({
     globalThis.console.log = () => {};
   }
 
+
+  useEffect(()=>{
+    axios
+    .get(`/api/sha`)
+    .then((response) => {
+     console.warn("sha:",{response})
+    })
+    .catch((err) => {
+      console.error("sha error:",{err})
+    });
+
+  },[]);
+  
   if (launch) {
     return <LaunchPage />;
   } else {
