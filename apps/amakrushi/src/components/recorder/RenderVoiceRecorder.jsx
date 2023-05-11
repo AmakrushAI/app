@@ -8,9 +8,11 @@ import styles from './styles.module.css';
 import ComputeAPI from './Model/ModelSearch/HostedInference';
 import toast from 'react-hot-toast';
 import { AppContext } from '../../context';
+import { useLocalization } from '../../hooks';
 
 const RenderVoiceRecorder = ({setInputMsg}) => {
- 
+
+  const t = useLocalization(); 
   const [gender, setGender] = useState('female');
   const [recordAudio, setRecordAudio] = useState('');
   const [base, setBase] = useState('');
@@ -101,7 +103,7 @@ const RenderVoiceRecorder = ({setInputMsg}) => {
    return ['63c9585dc37c442f683d69dd','hi']
   },[])
   const makeComputeAPICall = (type) => {
-    toast.success('Please wait while we process your request...');
+    toast.success(`${t("message.recorder_wait")}`);
     setAudio(null); 
 
       const apiObj = new ComputeAPI(
@@ -218,9 +220,7 @@ const RenderVoiceRecorder = ({setInputMsg}) => {
         }
       })
       .catch(async (error) => {
-        toast.error(
-          'Unable to process your request at the moment. Please try after sometime.'
-        );
+        toast.error(`${t("message.recorder_error")}`);
       });
   };
 

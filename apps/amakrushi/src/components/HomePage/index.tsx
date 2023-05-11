@@ -15,7 +15,6 @@ import Menu from '../menu';
 import { getInitialMsgs } from '../../utils/textUtility';
 import { AppContext } from '../../context';
 
-import sendIcon from '../../assets/icons/sendIcon.svg';
 import RightIcon from '../../assets/icons/right';
 import sunIcon from '../../assets/icons/sun.svg';
 import reloadIcon from '../../assets/icons/reload.svg';
@@ -118,9 +117,6 @@ const HomePage: NextPage = () => {
               className={styles.sendButton}
               >
               {t('label.send')}
-              {/* <div className={styles.sendButtonContainer}>
-              <Image src={sendIcon} alt='sendIcon' layout='responsive'/>
-              </div> */}
             </button>
           </div>
           

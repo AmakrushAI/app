@@ -42,6 +42,8 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     onBlur = props.onBlur,
     onChange = props.onChange,
     onSend = props.onSend,
+    VoiceToText = props.voiceToText,
+    voiceToTextProps = props.voiceToTextProps,
     _props$disableSend = props.disableSend,
     disableSend = _props$disableSend === void 0 ? false : _props$disableSend,
     onImageSend = props.onImageSend,
@@ -273,7 +275,9 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     invisible: !isInputText
   }, inputProps, {
     disabled: disableSend
-  })), !isInputText && /*#__PURE__*/_react.default.createElement(_Recorder.Recorder, recorder)), !text && rightAction && /*#__PURE__*/_react.default.createElement(_Action.Action, rightAction), hasToolbar && /*#__PURE__*/_react.default.createElement(_Action.Action, {
+  })), !isInputText && /*#__PURE__*/_react.default.createElement(_Recorder.Recorder, recorder)), !text && rightAction && /*#__PURE__*/_react.default.createElement(_Action.Action, rightAction), !text && VoiceToText ? /*#__PURE__*/_react.default.createElement(VoiceToText, (0, _extends2.default)({}, voiceToTextProps, {
+    setInputMsg: setText
+  })) : null, hasToolbar && /*#__PURE__*/_react.default.createElement(_Action.Action, {
     className: (0, _clsx.default)('Composer-toggleBtn', {
       active: isAccessoryOpen
     }),

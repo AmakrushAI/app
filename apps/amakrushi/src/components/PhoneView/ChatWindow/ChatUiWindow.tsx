@@ -1,7 +1,6 @@
 import axios from 'axios';
 //@ts-ignore
 import Chat from 'chatui';
-import { useRouter } from 'next/router';
 import React, {
   ReactElement,
   useCallback,
@@ -10,7 +9,6 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { useCookies } from 'react-cookie';
 import { analytics } from '../../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
 import { AppContext } from '../../../context';
@@ -18,36 +16,46 @@ import { useLocalization } from '../../../hooks';
 import { getMsgType } from '../../../utils/getMsgType';
 import ChatMessageItem from '../../chat-message-item';
 import { v4 as uuidv4 } from 'uuid';
+
 import toast from 'react-hot-toast';
+import RenderVoiceRecorder from '../../recorder/RenderVoiceRecorder';
+import DownTimePage from '../../down-time-page';
+
 const ChatUiWindow: React.FC = () => {
  
   const t = useLocalization();
   const context = useContext(AppContext);
-  const router = useRouter();
-  const [accessToken, setAccessToken] = useState('');
-  const [cookies, setCookies] = useCookies();
+  const [isDown, setIsDown] = useState(false);
 
   useEffect(() => {
-    !context?.loading && axios
-      .get(
-        `${process.env.NEXT_PUBLIC_BASE_URL
-        }/user/chathistory/${localStorage.getItem(
-          'userID'
-        )}/${sessionStorage.getItem('conversationId')}`
-      )
-      .then((res) => {
-        console.log('history:', res.data);
-        const normalizedChats = normalizedChat(res.data);
-        if(normalizedChats.length>0) context?.setMessages(normalizedChats);
-      })
-      .catch((error) => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/health/5`);
+        const status = res.data.status;
+        console.log("hie",status)
+        if (status === 'OK') {
+          setIsDown(false);
+          const chatHistory = await axios.get(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/user/chathistory/${localStorage.getItem('userID')}/${sessionStorage.getItem('conversationId')}`
+          );
+          console.log('history:', chatHistory.data);
+          const normalizedChats = normalizedChat(chatHistory.data);
+          if (normalizedChats.length > 0) {
+            context?.setMessages(normalizedChats);
+          }
+        } else {
+          setIsDown(true);
+          console.log('Server status is not OK');
+        }
+      } catch (error) {
         //@ts-ignore
         logEvent(analytics, 'console_error', {
           error_message: error.message,
         });
-      });
-      
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+      }
+    };
+    !context?.loading && fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context?.setMessages]);
 
   const normalizedChat = (chats: any): any => {
@@ -77,8 +85,6 @@ const ChatUiWindow: React.FC = () => {
 
     return history;
   };
-
-
 
   const handleSend = useCallback(
     (type: string, val: any) => {
@@ -115,6 +121,9 @@ console.log("fghj:",{messages:context?.messages})
   console.log('debug:', { msgToRender });
 
   const placeholder = useMemo(() => t('message.ask_ur_question'), [t]);
+  if(isDown){
+    return <DownTimePage/>
+  }else
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <Chat
@@ -123,6 +132,8 @@ console.log("fghj:",{messages:context?.messages})
         disableSend={context?.loading}
         //@ts-ignore
         messages={msgToRender}
+        voiceToText={RenderVoiceRecorder}
+        
         //@ts-ignore
         renderMessageContent={(props): ReactElement => (
           <ChatMessageItem
