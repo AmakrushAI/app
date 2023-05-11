@@ -77,17 +77,18 @@ const App = ({
 
 
   useEffect(()=>{
-    axios
-    .get(`/api/sha`)
-    .then((response) => {
-     console.warn("sha:",{response})
-    })
-    .catch((err) => {
-      console.error("sha error:",{err})
-    });
-
+    // axios
+    // .get(`/api/sha`)
+    // .then((response) => {
+    //  console.warn("sha:",{response})
+    // })
+    // .catch((err) => {
+    //   console.error("sha error:",{err})
+    // });
+    const shaFull = require('child_process').execSync(`git rev-parse HEAD`).toString().trim();
+    console.log("sha:",{shaFull})
   },[]);
-  
+
   if (launch) {
     return <LaunchPage />;
   } else {
