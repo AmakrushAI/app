@@ -47,7 +47,7 @@
 }
 
 .inputBox {
-  height: 36px;
+  height: fit-content;
   display: flex;
   text-align: center;
   position: absolute;

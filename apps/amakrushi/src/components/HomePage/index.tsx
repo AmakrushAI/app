@@ -23,6 +23,7 @@ import Image from 'next/image';
 import { Button } from '@chakra-ui/react';
 import toast from 'react-hot-toast';
 import { v4 as uuidv4 } from 'uuid';
+import RenderVoiceRecorder from '../recorder/RenderVoiceRecorder';
 
 const HomePage: NextPage = () => {
   const context = useContext(AppContext);
@@ -100,6 +101,9 @@ const HomePage: NextPage = () => {
         })}
         <form onSubmit={(event) => event?.preventDefault()}>
           <div className={styles.inputBox}>
+          <div>
+          <RenderVoiceRecorder/>
+          </div>
             <input
               type="text"
               value={inputMsg}
