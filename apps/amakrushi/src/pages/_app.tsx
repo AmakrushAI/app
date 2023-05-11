@@ -13,6 +13,7 @@ import dynamic from 'next/dynamic';
 import flagsmith from 'flagsmith/isomorphic';
 import { FlagsmithProvider } from 'flagsmith/react';
 import { useLogin } from '../hooks';
+import axios from 'axios';
 
 const LaunchPage = dynamic(() => import('../components/LaunchPage'), {
   ssr: false,
