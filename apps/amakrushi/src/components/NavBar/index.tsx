@@ -49,7 +49,7 @@ function NavBar() {
     router.push('/');
   }, [context, t]);
 
-  if (router.pathname === '/chat') {
+  if (router.pathname === '/chat' && !context?.isDown) {
     return (
       <div className={styles.navbar2}>
         <div className={styles.newChatContainer}>
