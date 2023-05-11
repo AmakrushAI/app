@@ -46,7 +46,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   const t = useLocalization();
   const context = useContext(AppContext);
   const [reaction, setReaction] = useState(message?.content?.data?.reaction);
-  const [dialerPopup, setDialerPopup] = useState(false);
+  // const [dialerPopup, setDialerPopup] = useState(false);
 
   useEffect(() => {
     setReaction(message?.content?.data?.reaction);
@@ -62,7 +62,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
         .get(url)
         .then((res: any) => {
           if (value === -1) {
-            setDialerPopup(true);
+            // setDialerPopup(true);
           } else toast.success(`${getToastMessage(t, value)}`);
         })
         .catch((error: any) => {
