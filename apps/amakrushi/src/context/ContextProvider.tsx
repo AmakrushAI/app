@@ -333,7 +333,6 @@ const ContextProvider: FC<{
   });
 
   useEffect(() => {
-    if (isDown) return;
     let secondTimer: any;
     const timer = setTimeout(() => {
       if (isMsgReceiving && loading) {
@@ -352,7 +351,7 @@ const ContextProvider: FC<{
       clearTimeout(timer);
       clearTimeout(secondTimer);
     };
-  }, [isDown, isMsgReceiving, loading, t, timer1, timer2]);
+  }, [isMsgReceiving, loading, t, timer1, timer2]);
 
   const values = useMemo(
     () => ({
