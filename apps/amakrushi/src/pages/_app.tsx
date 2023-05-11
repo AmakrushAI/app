@@ -13,7 +13,9 @@ import dynamic from 'next/dynamic';
 import flagsmith from 'flagsmith/isomorphic';
 import { FlagsmithProvider } from 'flagsmith/react';
 import { useLogin } from '../hooks';
+
 import axios from 'axios';
+
 
 const LaunchPage = dynamic(() => import('../components/LaunchPage'), {
   ssr: false,
@@ -65,11 +67,13 @@ const App = ({
     handleLoginRedirect();
   }, [handleLoginRedirect]);
 
+
   useEffect(() => {
       if(!isAuthenticated){
         login();
       }
   }, [isAuthenticated, login]);
+
 
   if (process.env.NODE_ENV === 'production') {
     globalThis.console.log = () => {};
