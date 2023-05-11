@@ -36,7 +36,7 @@ import { useFlags } from 'flagsmith/react';
 
 const getToastMessage = (t: any, reaction: number): string => {
   if (reaction === 1) return t('toast.reaction_like');
-  if (reaction === -1) return '';
+  if (reaction === -1) return t('toast.reaction_dislike');
   return t('toast.reaction_reset');
 };
 const ChatMessageItem: FC<ChatMessageItemPropType> = ({
@@ -48,7 +48,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   const t = useLocalization();
   const context = useContext(AppContext);
   const [reaction, setReaction] = useState(message?.content?.data?.reaction);
-  const [dialerPopup, setDialerPopup] = useState(false);
+
 
   useEffect(() => {
     setReaction(message?.content?.data?.reaction);
@@ -61,9 +61,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
       axios
         .get(url)
         .then((res: any) => {
-          if (value === -1) {
-            setDialerPopup(true);
-          } else toast.success(`${getToastMessage(t, value)}`);
+          toast.success(`${getToastMessage(t, value)}`);
         })
         .catch((error: any) => {
           //@ts-ignore

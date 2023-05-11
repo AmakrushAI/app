@@ -17,26 +17,23 @@ import { getMsgType } from '../../../utils/getMsgType';
 import ChatMessageItem from '../../chat-message-item';
 import { v4 as uuidv4 } from 'uuid';
 import DownTimePage from '../../down-time-page';
-import flagsmith from 'flagsmith';
+import { useFlags } from 'flagsmith/react';
 
 const ChatUiWindow: React.FC = () => {
   const t = useLocalization();
   const context = useContext(AppContext);
-  const [isDown, setIsDown] = useState(true);
-  const health_check_time = flagsmith.getValue('health_check_time', {
-    fallback: 5,
-  });
+  const flags = useFlags(['health_check_time']);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/health/${health_check_time}`
+          `${process.env.NEXT_PUBLIC_BASE_URL}/health/${flags?.health_check_time?.value}`
         );
         const status = res.data.status;
         console.log('hie', status);
         if (status === 'OK') {
-          setIsDown(false);
+          context?.setIsDown(false);
           const chatHistory = await axios.get(
             `${
               process.env.NEXT_PUBLIC_BASE_URL
@@ -50,7 +47,7 @@ const ChatUiWindow: React.FC = () => {
             context?.setMessages(normalizedChats);
           }
         } else {
-          setIsDown(true);
+          context?.setIsDown(true);
           console.log('Server status is not OK');
         }
       } catch (error) {
@@ -62,7 +59,7 @@ const ChatUiWindow: React.FC = () => {
     };
     !context?.loading && fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [context.setMessages, isDown]);
+  }, [context?.setMessages, context?.isDown]);
 
   const normalizedChat = (chats: any): any => {
     console.log('in normalized');
@@ -130,7 +127,7 @@ const ChatUiWindow: React.FC = () => {
   console.log('debug:', { msgToRender });
 
   const placeholder = useMemo(() => t('message.ask_ur_question'), [t]);
-  if (isDown) {
+  if (context?.isDown) {
     return <DownTimePage />;
   } else
     return (

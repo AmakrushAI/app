@@ -57,6 +57,7 @@ const ContextProvider: FC<{
   );
   const timer1 = flagsmith.getValue('timer1', { fallback: 5000 });
   const timer2 = flagsmith.getValue('timer2', { fallback: 25000 });
+  const [isDown, setIsDown] = useState(true);
 
   const [isConnected, setIsConnected] = useState(newSocket?.connected || false);
   console.log(messages);
@@ -240,6 +241,7 @@ const ContextProvider: FC<{
   const sendMessage = useCallback(
     (text: string, media: any, isVisibile = true): void => {
      // console.log('mssgs:', messages)
+     if(isDown) return;
       setLoading(true);
       setIsMsgReceiving(true);
 
@@ -294,14 +296,7 @@ const ContextProvider: FC<{
     //    console.log('mssgs:',messages)
         }
     },
-    [
-      t,
-      newSocket,
-      socketSession,
-      conversationId,
-      onSocketConnect,
-      currentUser?.id,
-    ]
+    [isDown, newSocket, socketSession, conversationId, t, onSocketConnect, currentUser?.id]
   );
 
   useEffect(() => {
@@ -318,6 +313,7 @@ const ContextProvider: FC<{
   });
 
   useEffect(() => {
+    if(isDown) return;
     let secondTimer: any;
     const timer = setTimeout(() => {
       if (isMsgReceiving && loading) {
@@ -336,7 +332,7 @@ const ContextProvider: FC<{
       clearTimeout(timer);
       clearTimeout(secondTimer);
     };
-  }, [isMsgReceiving, loading, t, timer1, timer2]);
+  }, [isDown, isMsgReceiving, loading, t, timer1, timer2]);
 
   const values = useMemo(
     () => ({
@@ -359,6 +355,8 @@ const ContextProvider: FC<{
       setConversationId,
       onSocketConnect,
       newSocket,
+      isDown,
+      setIsDown,
     }),
     [
       locale,
@@ -379,6 +377,8 @@ const ContextProvider: FC<{
       setConversationId,
       onSocketConnect,
       newSocket,
+      isDown,
+      setIsDown,
     ]
   );
 
