@@ -51,7 +51,9 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
 
   useEffect(() => {
     setReaction(message?.content?.data?.reaction);
-  }, [message?.content?.data?.reaction]);
+   }, [message?.content?.data?.reaction]);
+
+
 
   const onLikeDislike = useCallback(
     ({ value, msgId }: { value: 0 | 1 | -1; msgId: string }) => {
