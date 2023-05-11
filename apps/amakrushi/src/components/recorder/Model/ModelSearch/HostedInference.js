@@ -58,6 +58,7 @@ export default class HostedInference extends API {
       bodyData.input = [{ source: this.input }];
     } else if (this.task === "asr") {
       if (this.record) {
+        console.log("fgh:",{input:this.input})
         bodyData.audioContent = this.input.split("base64,")[1];
       } else {
         bodyData.audioUri = this.input;

@@ -98,7 +98,7 @@ const ChatUiWindow: React.FC = () => {
       })),
     [context?.messages]
   );
-
+console.log("fghj:",{messages:context?.messages})
   const msgToRender = useMemo(() => {
     return context?.isMsgReceiving
       ? [

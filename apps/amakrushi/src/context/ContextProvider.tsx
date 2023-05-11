@@ -97,7 +97,7 @@ const ContextProvider: FC<{
       msg: { content: { title: string; choices: any }; messageId: string };
       media: any;
     }) => {
-      
+      console.log("fgh",{msg})
       if (msg.content.title !== '') {
         const newMsg = {
           username: user?.name,
