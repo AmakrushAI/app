@@ -3,7 +3,7 @@
 
 export default function handler(req, res) {
     const shaFull = require('child_process').execSync(`git rev-parse HEAD`).toString().trim();
-    console.log("sha:",{req,res,shaFull})
+   
     switch (req.method) {
       case "GET":{
         res.send(shaFull);
