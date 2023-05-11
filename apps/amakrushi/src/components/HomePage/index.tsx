@@ -39,6 +39,8 @@ const HomePage: NextPage = () => {
     //@ts-ignore
     logEvent(analytics, 'Home_page');
 
+    context?.fetchIsDown(); // check if server is down
+
    if(!sessionStorage.getItem('conversationId')){
     const newConversationId = uuidv4();
     sessionStorage.setItem('conversationId', newConversationId);

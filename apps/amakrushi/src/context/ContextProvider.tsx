@@ -20,6 +20,8 @@ import toast from 'react-hot-toast';
 import flagsmith from 'flagsmith/isomorphic';
 import { io } from 'socket.io-client';
 import { Button } from '@chakra-ui/react';
+import axios from 'axios';
+import { useFlags } from 'flagsmith/react';
 
 function loadMessages(locale: string) {
   switch (locale) {
@@ -41,7 +43,7 @@ const ContextProvider: FC<{
   children: ReactElement;
 }> = ({ locale, children, localeMsgs, setLocale }) => {
   const t = useLocalization();
-
+  const flags = useFlags(['health_check_time']);
   const [users, setUsers] = useState<UserType[]>([]);
   const [currentUser, setCurrentUser] = useState<UserType>();
   const [loading, setLoading] = useState(false);
@@ -61,7 +63,7 @@ const ContextProvider: FC<{
 
   const [isConnected, setIsConnected] = useState(newSocket?.connected || false);
   console.log(messages);
-  
+
   useEffect(() => {
     if (
       (localStorage.getItem('phoneNumber') && localStorage.getItem('auth')) ||
@@ -98,7 +100,6 @@ const ContextProvider: FC<{
       msg: { content: { title: string; choices: any }; messageId: string };
       media: any;
     }) => {
-      
       if (msg.content.title !== '') {
         const newMsg = {
           username: user?.name,
@@ -110,15 +111,14 @@ const ContextProvider: FC<{
           reaction: 0,
           messageId: msg?.messageId,
           //@ts-ignore
-          conversationId:msg?.content?.conversationId,
+          conversationId: msg?.content?.conversationId,
           sentTimestamp: Date.now(),
           ...media,
         };
-        
-         //@ts-ignore
-     if(conversationId===msg?.content?.conversationId)
-     setMessages((prev: any) =>  _.uniq([...prev, newMsg], ['messageId']));
-        
+
+        //@ts-ignore
+        if (conversationId === msg?.content?.conversationId)
+          setMessages((prev: any) => _.uniq([...prev, newMsg], ['messageId']));
       }
     },
     [conversationId]
@@ -126,7 +126,7 @@ const ContextProvider: FC<{
 
   const onMessageReceived = useCallback(
     (msg: any): void => {
-      console.log('mssgs:',messages)
+      console.log('mssgs:', messages);
       console.log('#-debug:', { msg });
       setLoading(false);
       setIsMsgReceiving(false);
@@ -240,8 +240,7 @@ const ContextProvider: FC<{
   //@ts-ignore
   const sendMessage = useCallback(
     (text: string, media: any, isVisibile = true): void => {
-     // console.log('mssgs:', messages)
-     if(isDown) return;
+      // console.log('mssgs:', messages)
       setLoading(true);
       setIsMsgReceiving(true);
 
@@ -266,7 +265,7 @@ const ContextProvider: FC<{
         );
         return;
       }
-    //  console.log('mssgs:',messages)
+      //  console.log('mssgs:',messages)
       send({ text, socketSession, socket: newSocket, conversationId });
       if (isVisibile)
         if (media) {
@@ -277,7 +276,7 @@ const ContextProvider: FC<{
           } else {
           }
         } else {
-        //console.log('mssgs:',messages)
+          //console.log('mssgs:',messages)
           //@ts-ignore
           setMessages((prev: any) => [
             ...prev.map((prevMsg: any) => ({ ...prevMsg, disabled: true })),
@@ -293,11 +292,32 @@ const ContextProvider: FC<{
               repliedTimestamp: Date.now(),
             },
           ]);
-    //    console.log('mssgs:',messages)
+          //    console.log('mssgs:',messages)
         }
     },
-    [isDown, newSocket, socketSession, conversationId, t, onSocketConnect, currentUser?.id]
+    [newSocket, socketSession, conversationId, t, onSocketConnect, currentUser?.id]
   );
+
+  const fetchIsDown = useCallback(async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/health/${flags?.health_check_time?.value}`
+        );
+        const status = res.data.status;
+        console.log('hie', status);
+        if (status === 'OK') {
+          setIsDown(false);
+        } else {
+          setIsDown(true);
+          console.log('Server status is not OK');
+        }
+      } catch (error) {
+        //@ts-ignore
+        logEvent(analytics, 'console_error', {
+          error_message: error.message,
+        });
+      }
+    }, [setIsDown, flags]);
 
   useEffect(() => {
     if (!socketSession && newSocket) {
@@ -313,7 +333,7 @@ const ContextProvider: FC<{
   });
 
   useEffect(() => {
-    if(isDown) return;
+    if (isDown) return;
     let secondTimer: any;
     const timer = setTimeout(() => {
       if (isMsgReceiving && loading) {
@@ -356,7 +376,7 @@ const ContextProvider: FC<{
       onSocketConnect,
       newSocket,
       isDown,
-      setIsDown,
+      fetchIsDown
     }),
     [
       locale,
@@ -378,7 +398,7 @@ const ContextProvider: FC<{
       onSocketConnect,
       newSocket,
       isDown,
-      setIsDown,
+      fetchIsDown
     ]
   );
 

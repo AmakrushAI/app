@@ -17,23 +17,16 @@ import { getMsgType } from '../../../utils/getMsgType';
 import ChatMessageItem from '../../chat-message-item';
 import { v4 as uuidv4 } from 'uuid';
 import DownTimePage from '../../down-time-page';
-import { useFlags } from 'flagsmith/react';
 
 const ChatUiWindow: React.FC = () => {
   const t = useLocalization();
-  const context = useContext(AppContext);
-  const flags = useFlags(['health_check_time']);
+  const context = useContext(AppContext);  
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/health/${flags?.health_check_time?.value}`
-        );
-        const status = res.data.status;
-        console.log('hie', status);
-        if (status === 'OK') {
-          context?.setIsDown(false);
+        await context?.fetchIsDown();
+        if(context?.isDown){
           const chatHistory = await axios.get(
             `${
               process.env.NEXT_PUBLIC_BASE_URL
@@ -46,9 +39,6 @@ const ChatUiWindow: React.FC = () => {
           if (normalizedChats.length > 0) {
             context?.setMessages(normalizedChats);
           }
-        } else {
-          context?.setIsDown(true);
-          console.log('Server status is not OK');
         }
       } catch (error) {
         //@ts-ignore
@@ -59,7 +49,7 @@ const ChatUiWindow: React.FC = () => {
     };
     !context?.loading && fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [context?.setMessages, context?.isDown]);
+  }, [context?.setMessages, context?.fetchIsDown]);
 
   const normalizedChat = (chats: any): any => {
     console.log('in normalized');

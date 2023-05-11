@@ -36,7 +36,6 @@ const App = ({
   pageProps,
   flagsmithState,
 }: AppProps & { flagsmithState: any }) => {
-  console.log("asdfg:",{flagsmithState})
   const router = useRouter();
   const { isAuthenticated, login } = useLogin();
   const [launch, setLaunch] = useState(true);
