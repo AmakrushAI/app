@@ -1,5 +1,5 @@
 import styles from './index.module.css';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import searchIcon from '../../assets/icons/search.svg';
 import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import ChatItem from '../chat-item';
@@ -31,13 +31,16 @@ const HistoryPage: NextPage = () => {
         }/user/conversations/${localStorage.getItem('userID')}`
       )
       .then((res) => {
-        const sortedConversations =  _.filter(res?.data,conv=>conv?.conversationId !==null).sort(
+        const sortedConversations = _.filter(
+          res?.data,
+          (conv) => conv?.conversationId !== null
+        ).sort(
           //@ts-ignore
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
-          //@ts-ignore
+        //@ts-ignore
         setConversations(sortedConversations);
-        console.log('conversations:', sortedConversations);
+        console.log('hie', sortedConversations);
       })
       .catch((error) => {
         //@ts-ignore
@@ -47,6 +50,16 @@ const HistoryPage: NextPage = () => {
       });
   }, []);
 
+  // Function to delete conversation by conversationId
+  const deleteConversationById = useCallback((conversationIdToDelete: any) => {
+    const filteredConversations = [...conversations].filter(
+      (conversation: any) => conversation.conversationId !== conversationIdToDelete
+    );
+    setConversations(filteredConversations);
+  }, [conversations]);
+  
+
+ 
   if (!flags?.show_chat_history_page?.enabled) {
     return <ComingSoonPage />;
   } else
@@ -61,15 +74,23 @@ const HistoryPage: NextPage = () => {
             <Input type="text" placeholder="Search" />
           </InputGroup> */}
           <div>
-            {conversations.map((conv:any, key) => {
-              return (
-                <ChatItem
-                  key={key}
-                  name={conv.query}
-                  conversationId={conv.conversationId}
-                />
-              );
-            })}
+            {conversations.length > 0
+              ? conversations.map((conv: any) => {
+                  return (
+                    <ChatItem
+                      key={conv.id}
+                      name={conv.query}
+                      conversationId={conv.conversationId}
+                      deleteConversationById={deleteConversationById}
+                    />
+                  );
+                })
+              : (
+                  <div className={styles.noHistory}>
+                    <div>{t('label.no_history')}</div>
+                    <p>{t('message.no_history')}</p>
+                  </div>
+                )}
           </div>
         </div>
         <Menu />

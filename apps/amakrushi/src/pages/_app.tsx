@@ -14,6 +14,9 @@ import flagsmith from 'flagsmith/isomorphic';
 import { FlagsmithProvider } from 'flagsmith/react';
 import { useLogin } from '../hooks';
 
+import axios from 'axios';
+
+
 const LaunchPage = dynamic(() => import('../components/LaunchPage'), {
   ssr: false,
 });
@@ -33,6 +36,7 @@ const App = ({
   pageProps,
   flagsmithState,
 }: AppProps & { flagsmithState: any }) => {
+  console.log("asdfg:",{flagsmithState})
   const router = useRouter();
   const { isAuthenticated, login } = useLogin();
   const [launch, setLaunch] = useState(true);
@@ -63,11 +67,13 @@ const App = ({
     handleLoginRedirect();
   }, [handleLoginRedirect]);
 
+
   useEffect(() => {
       if(!isAuthenticated){
         login();
       }
   }, [isAuthenticated, login]);
+
 
   if (process.env.NODE_ENV === 'production') {
     globalThis.console.log = () => {};
@@ -96,7 +102,9 @@ const App = ({
 
 App.getInitialProps = async () => {
   await flagsmith.init({
-    environmentID: process.env.NEXT_PUBLIC_ENVIRONMENT_ID,
+    api:process.env.NEXT_PUBLIC_FLAGSMITH_API,
+    environmentID: process.env.NEXT_PUBLIC_ENVIRONMENT_ID
+    
   });
   return { flagsmithState: flagsmith.getState() };
 };

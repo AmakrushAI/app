@@ -1,3 +1,31 @@
+.messageTriangleRight {
+  content: ' ';
+  margin-right: 1vh;
+	position: absolute;
+	width: 0;
+	height: 0;
+  left: auto;
+	right: -20px;
+  top: 0px;
+	bottom: auto;
+	border: 20px solid;
+	border-color: var(--secondarygreen) transparent transparent transparent;
+}
+
+.messageTriangleLeft {
+  margin-left: 1vh;
+  content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+  left: -20px;
+	right: auto;
+  top: 0px;
+	bottom: auto;
+	border: 22px solid;
+	border-color: white transparent transparent transparent;
+}
+
 .onHover {
   font-weight: bold;
   color: var(--secondarygreen);
