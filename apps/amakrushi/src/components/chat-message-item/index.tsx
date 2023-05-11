@@ -48,6 +48,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   const t = useLocalization();
   const context = useContext(AppContext);
   const [reaction, setReaction] = useState(message?.content?.data?.reaction);
+  const [dialerPopup, setDialerPopup] = useState(false);
 
   useEffect(() => {
     setReaction(message?.content?.data?.reaction);
@@ -61,14 +62,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
         .get(url)
         .then((res: any) => {
           if (value === -1) {
-            const dial = window?.confirm(
-              `Please call ${flags.dialer_number.value} to resolve your query with Ama Krushi Call centre`
-            );
-            if (dial) {
-              const anchor = document.createElement('a');
-              anchor.href = `tel:${flags.dialer_number.value}`;
-              anchor.click();
-            }
+            setDialerPopup(true);
           } else toast.success(`${getToastMessage(t, value)}`);
         })
         .catch((error: any) => {
@@ -78,7 +72,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
           });
         });
     },
-    [flags.dialer_number.value, t]
+    [t]
   );
 
   const feedbackHandler = useCallback(

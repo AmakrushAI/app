@@ -1,7 +1,6 @@
 import axios from 'axios';
 //@ts-ignore
 import Chat from 'chatui';
-import { useRouter } from 'next/router';
 import React, {
   ReactElement,
   useCallback,
@@ -10,7 +9,6 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { useCookies } from 'react-cookie';
 import { analytics } from '../../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
 import { AppContext } from '../../../context';
@@ -18,49 +16,68 @@ import { useLocalization } from '../../../hooks';
 import { getMsgType } from '../../../utils/getMsgType';
 import ChatMessageItem from '../../chat-message-item';
 import { v4 as uuidv4 } from 'uuid';
-import toast from 'react-hot-toast';
+import DownTimePage from '../../down-time-page';
+import flagsmith from 'flagsmith';
+
 const ChatUiWindow: React.FC = () => {
- 
   const t = useLocalization();
   const context = useContext(AppContext);
-  const router = useRouter();
-  const [accessToken, setAccessToken] = useState('');
-  const [cookies, setCookies] = useCookies();
+  const [isDown, setIsDown] = useState(true);
+  const health_check_time = flagsmith.getValue('health_check_time', {
+    fallback: 5,
+  });
 
   useEffect(() => {
-    !context?.loading && axios
-      .get(
-        `${process.env.NEXT_PUBLIC_BASE_URL
-        }/user/chathistory/${localStorage.getItem(
-          'userID'
-        )}/${sessionStorage.getItem('conversationId')}`
-      )
-      .then((res) => {
-        console.log('history:', res.data);
-        const normalizedChats = normalizedChat(res.data);
-        if(normalizedChats.length>0) context?.setMessages(normalizedChats);
-      })
-      .catch((error) => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/health/${health_check_time}`
+        );
+        const status = res.data.status;
+        console.log('hie', status);
+        if (status === 'OK') {
+          setIsDown(false);
+          const chatHistory = await axios.get(
+            `${
+              process.env.NEXT_PUBLIC_BASE_URL
+            }/user/chathistory/${localStorage.getItem(
+              'userID'
+            )}/${sessionStorage.getItem('conversationId')}`
+          );
+          console.log('history:', chatHistory.data);
+          const normalizedChats = normalizedChat(chatHistory.data);
+          if (normalizedChats.length > 0) {
+            context?.setMessages(normalizedChats);
+          }
+        } else {
+          setIsDown(true);
+          console.log('Server status is not OK');
+        }
+      } catch (error) {
         //@ts-ignore
         logEvent(analytics, 'console_error', {
           error_message: error.message,
         });
-      });
-      
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [context?.setMessages]);
+      }
+    };
+    !context?.loading && fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [context.setMessages, isDown]);
 
   const normalizedChat = (chats: any): any => {
     console.log('in normalized');
     const conversationId = sessionStorage.getItem('conversationId');
-    const history = chats.filter((item:any) =>
-        conversationId === 'null' || item.conversationId === conversationId
-      ).flatMap((item:any) => [
+    const history = chats
+      .filter(
+        (item: any) =>
+          conversationId === 'null' || item.conversationId === conversationId
+      )
+      .flatMap((item: any) => [
         {
           text: item.query,
           position: 'right',
           repliedTimestamp: item.createdAt,
-          messageId: uuidv4()
+          messageId: uuidv4(),
         },
         {
           text: item.response,
@@ -68,7 +85,7 @@ const ChatUiWindow: React.FC = () => {
           sentTimestamp: item.createdAt,
           reaction: item.reaction,
           msgId: item.id,
-          messageId: item.id
+          messageId: item.id,
         },
       ]);
 
@@ -78,11 +95,9 @@ const ChatUiWindow: React.FC = () => {
     return history;
   };
 
-
-
   const handleSend = useCallback(
     (type: string, val: any) => {
-      console.log('mssgs:', context?.messages)
+      console.log('mssgs:', context?.messages);
       if (type === 'text' && val.trim()) {
         context?.sendMessage(val.trim());
       }
@@ -115,29 +130,32 @@ const ChatUiWindow: React.FC = () => {
   console.log('debug:', { msgToRender });
 
   const placeholder = useMemo(() => t('message.ask_ur_question'), [t]);
-  return (
-    <div style={{ height: '100%', width: '100%' }}>
-      <Chat
-        btnColor="var(--secondarygreen)"
-        background="var(--bg-color)"
-        disableSend={context?.loading}
-        //@ts-ignore
-        messages={msgToRender}
-        //@ts-ignore
-        renderMessageContent={(props): ReactElement => (
-          <ChatMessageItem
-            key={props}
-            message={props}
-            currentUser={context?.currentUser}
-            onSend={handleSend}
-          />
-        )}
-        onSend={handleSend}
-        locale="en-US"
-        placeholder={placeholder}
-      />
-    </div>
-  );
+  if (isDown) {
+    return <DownTimePage />;
+  } else
+    return (
+      <div style={{ height: '100%', width: '100%' }}>
+        <Chat
+          btnColor="var(--secondarygreen)"
+          background="var(--bg-color)"
+          disableSend={context?.loading}
+          //@ts-ignore
+          messages={msgToRender}
+          //@ts-ignore
+          renderMessageContent={(props): ReactElement => (
+            <ChatMessageItem
+              key={props}
+              message={props}
+              currentUser={context?.currentUser}
+              onSend={handleSend}
+            />
+          )}
+          onSend={handleSend}
+          locale="en-US"
+          placeholder={placeholder}
+        />
+      </div>
+    );
 };
 
 export default ChatUiWindow;

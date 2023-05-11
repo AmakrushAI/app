@@ -73,6 +73,7 @@
   color: white;
   font-family: 'Mulish-regular';
   width: 26vw !important;
+  max-width: 100px !important;
   padding: 4px;
   border: none;
   border-radius: 40px !important;
