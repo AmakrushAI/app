@@ -32,11 +32,12 @@ const ChatItem: React.FC<ChatItemPropsType> = ({
     if (confirmed) {
       axios
         .get(
-          `${
-            process.env.NEXT_PUBLIC_BASE_URL
-          }/user/conversations/delete/${localStorage.getItem(
-            'userID'
-          )}/${conversationId}`
+          `${process.env.NEXT_PUBLIC_BASE_URL}/user/conversations/delete/${conversationId}`,
+          {
+            headers: {
+              authorization: `Bearer ${localStorage.getItem('auth')}`,
+            },
+          }
         )
         .then((res) => {
           console.log('deleting conversation');

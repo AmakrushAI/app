@@ -58,7 +58,11 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
       let url = getReactionUrl({ msgId, reaction: value });
 
       axios
-        .get(url)
+        .get(url, {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem('auth')}`,
+          },
+        })
         .then((res: any) => {
           if (value === -1) {
             context?.setShowDialerPopup(true);
@@ -151,7 +155,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
             display: 'flex',
             flexDirection: 'column',
             position: 'relative',
-            maxWidth: '90vw'
+            maxWidth: '90vw',
           }}>
           <div
             className={
