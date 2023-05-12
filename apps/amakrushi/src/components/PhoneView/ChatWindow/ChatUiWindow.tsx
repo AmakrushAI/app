@@ -30,9 +30,12 @@ const ChatUiWindow: React.FC = () => {
           const chatHistory = await axios.get(
             `${
               process.env.NEXT_PUBLIC_BASE_URL
-            }/user/chathistory/${localStorage.getItem(
-              'userID'
-            )}/${sessionStorage.getItem('conversationId')}`
+            }/user/chathistory/${sessionStorage.getItem('conversationId')}`,
+            {
+              headers: {
+                authorization: `Bearer ${localStorage.getItem('auth')}`,
+              },
+            }
           );
           console.log('history:', chatHistory.data);
           const normalizedChats = normalizedChat(chatHistory.data);
@@ -40,7 +43,7 @@ const ChatUiWindow: React.FC = () => {
             context?.setMessages(normalizedChats);
           }
         }
-      } catch (error) {
+      } catch (error:any) {
         //@ts-ignore
         logEvent(analytics, 'console_error', {
           error_message: error.message,

@@ -25,11 +25,11 @@ const HistoryPage: NextPage = () => {
     logEvent(analytics, 'Chat_History_page');
 
     axios
-      .get(
-        `${
-          process.env.NEXT_PUBLIC_BASE_URL
-        }/user/conversations/${localStorage.getItem('userID')}`
-      )
+      .get(`${process.env.NEXT_PUBLIC_BASE_URL}/user/conversations`, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem('auth')}`,
+        },
+      })
       .then((res) => {
         const sortedConversations = _.filter(
           res?.data,
