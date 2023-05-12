@@ -17,7 +17,7 @@ import toast from 'react-hot-toast';
 
 function NavBar() {
   const flags = useFlags(['show_download_button', 'show_share_button']);
-  const defaultLang = flagsmith.getValue('default_lang', { fallback: 'en' });
+  const defaultLang = flagsmith.getValue('default_lang', { fallback: 'or' });
   const [isEngActive, setIsEngActive] = useState(
     localStorage.getItem('locale')
       ? localStorage.getItem('locale') === 'en'
@@ -49,7 +49,7 @@ function NavBar() {
     router.push('/');
   }, [context, t]);
 
-  if (router.pathname === '/chat') {
+  if (router.pathname === '/chat' && !context?.isDown) {
     return (
       <div className={styles.navbar2}>
         <div className={styles.newChatContainer}>

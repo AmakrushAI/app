@@ -36,7 +36,6 @@ import { useFlags } from 'flagsmith/react';
 
 const getToastMessage = (t: any, reaction: number): string => {
   if (reaction === 1) return t('toast.reaction_like');
-  if (reaction === -1) return '';
   return t('toast.reaction_reset');
 };
 const ChatMessageItem: FC<ChatMessageItemPropType> = ({
@@ -49,11 +48,10 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   const context = useContext(AppContext);
   const [reaction, setReaction] = useState(message?.content?.data?.reaction);
 
+
   useEffect(() => {
     setReaction(message?.content?.data?.reaction);
-   }, [message?.content?.data?.reaction]);
-
-
+  }, [message?.content?.data?.reaction]);
 
   const onLikeDislike = useCallback(
     ({ value, msgId }: { value: 0 | 1 | -1; msgId: string }) => {
@@ -63,15 +61,10 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
         .get(url)
         .then((res: any) => {
           if (value === -1) {
-            const dial = window?.confirm(
-              `Please call ${flags.dialer_number.value} to resolve your query with Ama Krushi Call centre`
-            );
-            if (dial) {
-              const anchor = document.createElement('a');
-              anchor.href = `tel:${flags.dialer_number.value}`;
-              anchor.click();
-            }
-          } else toast.success(`${getToastMessage(t, value)}`);
+            context?.setShowDialerPopup(true);
+          } else {
+            toast.success(`${getToastMessage(t, value)}`);
+          }
         })
         .catch((error: any) => {
           //@ts-ignore
@@ -80,7 +73,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
           });
         });
     },
-    [flags.dialer_number.value, t]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [t]
   );
 
   const feedbackHandler = useCallback(
@@ -157,6 +151,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
             display: 'flex',
             flexDirection: 'column',
             position: 'relative',
+            maxWidth: '90vw'
           }}>
           <div
             className={
