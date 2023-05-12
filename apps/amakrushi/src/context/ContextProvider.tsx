@@ -60,7 +60,7 @@ const ContextProvider: FC<{
   const timer1 = flagsmith.getValue('timer1', { fallback: 5000 });
   const timer2 = flagsmith.getValue('timer2', { fallback: 25000 });
   const [isDown, setIsDown] = useState(true);
-
+  const [showDialerPopup, setShowDialerPopup] = useState(false);
   const [isConnected, setIsConnected] = useState(newSocket?.connected || false);
   console.log(messages);
 
@@ -375,7 +375,9 @@ const ContextProvider: FC<{
       onSocketConnect,
       newSocket,
       isDown,
-      fetchIsDown
+      fetchIsDown,
+      showDialerPopup,
+      setShowDialerPopup
     }),
     [
       locale,
@@ -397,7 +399,9 @@ const ContextProvider: FC<{
       onSocketConnect,
       newSocket,
       isDown,
-      fetchIsDown
+      fetchIsDown,
+      showDialerPopup,
+      setShowDialerPopup
     ]
   );
 
@@ -412,7 +416,7 @@ const ContextProvider: FC<{
 };
 
 const SSR: FC<{ children: ReactElement }> = ({ children }) => {
-  const defaultLang = flagsmith.getValue('default_lang', { fallback: 'en' });
+  const defaultLang = flagsmith.getValue('default_lang', { fallback: 'or' });
   const [locale, setLocale] = useState(
     localStorage.getItem('locale') || defaultLang
   );

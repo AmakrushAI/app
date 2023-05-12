@@ -36,7 +36,6 @@ import { useFlags } from 'flagsmith/react';
 
 const getToastMessage = (t: any, reaction: number): string => {
   if (reaction === 1) return t('toast.reaction_like');
-  if (reaction === -1) return t('toast.reaction_dislike');
   return t('toast.reaction_reset');
 };
 const ChatMessageItem: FC<ChatMessageItemPropType> = ({
@@ -61,7 +60,11 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
       axios
         .get(url)
         .then((res: any) => {
-          toast.success(`${getToastMessage(t, value)}`);
+          if (value === -1) {
+            context?.setShowDialerPopup(true);
+          } else {
+            toast.success(`${getToastMessage(t, value)}`);
+          }
         })
         .catch((error: any) => {
           //@ts-ignore
@@ -70,6 +73,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
           });
         });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [t]
   );
 
@@ -147,6 +151,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
             display: 'flex',
             flexDirection: 'column',
             position: 'relative',
+            maxWidth: '90vw'
           }}>
           <div
             className={

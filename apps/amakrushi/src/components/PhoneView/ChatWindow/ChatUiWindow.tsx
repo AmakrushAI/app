@@ -26,7 +26,7 @@ const ChatUiWindow: React.FC = () => {
     const fetchData = async () => {
       try {
         await context?.fetchIsDown();
-        if(context?.isDown){
+        if(!context?.isDown){
           const chatHistory = await axios.get(
             `${
               process.env.NEXT_PUBLIC_BASE_URL
@@ -48,7 +48,7 @@ const ChatUiWindow: React.FC = () => {
       }
     };
     !context?.loading && fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps    
   }, [context?.setMessages, context?.fetchIsDown]);
 
   const normalizedChat = (chats: any): any => {
