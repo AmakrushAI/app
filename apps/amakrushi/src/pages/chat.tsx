@@ -9,7 +9,7 @@ import styles from "../components/dialer-popup/index.module.css";
 import DialerPopUp from "../components/dialer-popup";
 
 const ChatUiWindow = dynamic(
-  () => import('../components/PhoneView/ChatWindow/ChatUiWindow'),
+  () => import("../components/PhoneView/ChatWindow/ChatUiWindow"),
   { ssr: false }
 );
 
@@ -20,12 +20,12 @@ const Chat: NextPage = () => {
   return (
     <>
       <Head>
-        <title> {t('label.title')}</title>
+        <title> {t("label.title")}</title>
       </Head>
-      {context.showDialerPopup && (
+      {context?.showDialerPopup && (
   <div
     className={styles.overlay}
-    onClick={() => context.setShowDialerPopup(false)}
+    onClick={() => context?.setShowDialerPopup(false)}
   >
     {/* Only render the DialerPopup component when showDialerPopup is true */}
       {context?.showDialerPopup && 
