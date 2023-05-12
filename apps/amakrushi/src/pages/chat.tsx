@@ -1,15 +1,15 @@
-import type { NextPage } from 'next';
-import Head from 'next/head';
-import dynamic from 'next/dynamic';
-import { useLocalization } from '../hooks/useLocalization';
-import Menu from '../components/menu';
-import { useContext } from 'react';
-import { AppContext } from '../context';
-import styles from '../components/dialer-popup/index.module.css';
-import DialerPopUp from '../components/dialer-popup';
+import type { NextPage } from "next";
+import Head from "next/head";
+import dynamic from "next/dynamic";
+import { useLocalization } from "../hooks/useLocalization";
+import Menu from "../components/menu";
+import { useContext } from "react";
+import { AppContext } from "../context";
+import styles from "../components/dialer-popup/index.module.css";
+import DialerPopUp from "../components/dialer-popup";
 
 const ChatUiWindow = dynamic(
-  () => import('../components/PhoneView/ChatWindow/ChatUiWindow'),
+  () => import("../components/PhoneView/ChatWindow/ChatUiWindow"),
   { ssr: false }
 );
 
@@ -20,12 +20,12 @@ const Chat: NextPage = () => {
   return (
     <>
       <Head>
-        <title> {t('label.title')}</title>
+        <title> {t("label.title")}</title>
       </Head>
-      {context.showDialerPopup && (
+      {context?.showDialerPopup && (
   <div
     className={styles.overlay}
-    onClick={() => context.setShowDialerPopup(false)}
+    onClick={() => context?.setShowDialerPopup(false)}
   >
     {/* Only render the DialerPopup component when showDialerPopup is true */}
       {context?.showDialerPopup && 
@@ -38,10 +38,10 @@ const Chat: NextPage = () => {
       
       <div
         style={{
-          position: 'fixed',
-          width: '100%',
-          bottom: '7vh',
-          top: '70px',
+          position: "fixed",
+          width: "100%",
+          bottom: "7vh",
+          top: "70px",
         }}>
         <ChatUiWindow />
       </div>
