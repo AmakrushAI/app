@@ -9,9 +9,12 @@ import ComputeAPI from './Model/ModelSearch/HostedInference';
 import toast from 'react-hot-toast';
 import { AppContext } from '../../context';
 import { useLocalization } from '../../hooks';
+import flagsmith from 'flagsmith/isomorphic';
 
 const RenderVoiceRecorder = ({setInputMsg}) => {
 
+  const model_id_1 = flagsmith.getValue('model_id_1');
+  const model_id_2 = flagsmith.getValue('model_id_2');
   const t = useLocalization(); 
   const [gender, setGender] = useState('female');
   const [recordAudio, setRecordAudio] = useState('');
@@ -95,13 +98,13 @@ const RenderVoiceRecorder = ({setInputMsg}) => {
 
   const [modelId,source] =useMemo(()=>{
    if(localStorage.getItem('locale')==='en'){
-    return  ['620fb95d751fc8007d24083a','en']
+    return  [model_id_1, 'en']
    }
   //  if(localStorage.getItem('locale')==='or'){
   //   return ['63c9582bc37c442f683d69d9','or']
   //  }
-   return ['63c9585dc37c442f683d69dd','hi']
-  },[])
+   return [model_id_2, 'hi']
+  },[model_id_1, model_id_2])
   const makeComputeAPICall = (type) => {
     toast.success(`${t("message.recorder_wait")}`);
     setAudio(null); 
