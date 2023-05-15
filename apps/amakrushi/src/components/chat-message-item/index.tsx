@@ -58,7 +58,11 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
       let url = getReactionUrl({ msgId, reaction: value });
 
       axios
-        .get(url)
+        .get(url, {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem('auth')}`,
+          },
+        })
         .then((res: any) => {
           if (value === -1) {
             context?.setShowDialerPopup(true);
