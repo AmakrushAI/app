@@ -16,38 +16,36 @@ import { useLocalization } from '../../../hooks';
 import { getMsgType } from '../../../utils/getMsgType';
 import ChatMessageItem from '../../chat-message-item';
 import { v4 as uuidv4 } from 'uuid';
-
 import toast from 'react-hot-toast';
 import RenderVoiceRecorder from '../../recorder/RenderVoiceRecorder';
 import DownTimePage from '../../down-time-page';
 
 const ChatUiWindow: React.FC = () => {
- 
   const t = useLocalization();
   const context = useContext(AppContext);
-  const [isDown, setIsDown] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/health/5`);
-        const status = res.data.status;
-        console.log("hie",status)
-        if (status === 'OK') {
-          setIsDown(false);
+        await context?.fetchIsDown();
+        if(!context?.isDown){
           const chatHistory = await axios.get(
-            `${process.env.NEXT_PUBLIC_BASE_URL}/user/chathistory/${localStorage.getItem('userID')}/${sessionStorage.getItem('conversationId')}`
+            `${
+              process.env.NEXT_PUBLIC_BASE_URL
+            }/user/chathistory/${sessionStorage.getItem('conversationId')}`,
+            {
+              headers: {
+                authorization: `Bearer ${localStorage.getItem('auth')}`,
+              },
+            }
           );
           console.log('history:', chatHistory.data);
           const normalizedChats = normalizedChat(chatHistory.data);
           if (normalizedChats.length > 0) {
             context?.setMessages(normalizedChats);
           }
-        } else {
-          setIsDown(true);
-          console.log('Server status is not OK');
         }
-      } catch (error) {
+      } catch (error:any) {
         //@ts-ignore
         logEvent(analytics, 'console_error', {
           error_message: error.message,
@@ -56,19 +54,22 @@ const ChatUiWindow: React.FC = () => {
     };
     !context?.loading && fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [context?.setMessages]);
+  }, [context?.setMessages, context?.fetchIsDown]);
 
   const normalizedChat = (chats: any): any => {
     console.log('in normalized');
     const conversationId = sessionStorage.getItem('conversationId');
-    const history = chats.filter((item:any) =>
-        conversationId === 'null' || item.conversationId === conversationId
-      ).flatMap((item:any) => [
+    const history = chats
+      .filter(
+        (item: any) =>
+          conversationId === 'null' || item.conversationId === conversationId
+      )
+      .flatMap((item: any) => [
         {
           text: item.query,
           position: 'right',
           repliedTimestamp: item.createdAt,
-          messageId: uuidv4()
+          messageId: uuidv4(),
         },
         {
           text: item.response,
@@ -76,7 +77,7 @@ const ChatUiWindow: React.FC = () => {
           sentTimestamp: item.createdAt,
           reaction: item.reaction,
           msgId: item.id,
-          messageId: item.id
+          messageId: item.id,
         },
       ]);
 
@@ -88,7 +89,7 @@ const ChatUiWindow: React.FC = () => {
 
   const handleSend = useCallback(
     (type: string, val: any) => {
-      console.log('mssgs:', context?.messages)
+      console.log('mssgs:', context?.messages);
       if (type === 'text' && val.trim()) {
         context?.sendMessage(val.trim());
       }
@@ -121,34 +122,33 @@ console.log("fghj:",{messages:context?.messages})
   console.log('debug:', { msgToRender });
 
   const placeholder = useMemo(() => t('message.ask_ur_question'), [t]);
-  if(isDown){
-    return <DownTimePage/>
-  }else
-  return (
-    <div style={{ height: '100%', width: '100%' }}>
-      <Chat
-        btnColor="var(--secondarygreen)"
-        background="var(--bg-color)"
-        disableSend={context?.loading}
-        //@ts-ignore
-        messages={msgToRender}
-        voiceToText={RenderVoiceRecorder}
-        
-        //@ts-ignore
-        renderMessageContent={(props): ReactElement => (
-          <ChatMessageItem
-            key={props}
-            message={props}
-            currentUser={context?.currentUser}
-            onSend={handleSend}
-          />
-        )}
-        onSend={handleSend}
-        locale="en-US"
-        placeholder={placeholder}
-      />
-    </div>
-  );
+
+  if (context?.isDown) {
+    return <DownTimePage />;
+  } else
+    return (
+      <div style={{ height: '100%', width: '100%' }}>
+        <Chat
+          btnColor="var(--secondarygreen)"
+          background="var(--bg-color)"
+          disableSend={context?.loading}
+          //@ts-ignore
+          messages={msgToRender}
+          //@ts-ignore
+          renderMessageContent={(props): ReactElement => (
+            <ChatMessageItem
+              key={props}
+              message={props}
+              currentUser={context?.currentUser}
+              onSend={handleSend}
+            />
+          )}
+          onSend={handleSend}
+          locale="en-US"
+          placeholder={placeholder}
+        />
+      </div>
+    );
 };
 
 export default ChatUiWindow;

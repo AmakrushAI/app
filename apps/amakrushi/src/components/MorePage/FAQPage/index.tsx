@@ -43,7 +43,12 @@ const FAQPage: React.FC = () => {
       while (true) {
         try {
           const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_BASE_URL}/faq?page=${page}`
+            `${process.env.NEXT_PUBLIC_BASE_URL}/faq?page=${page}`,
+            {
+              headers: {
+                authorization: `Bearer ${localStorage.getItem('auth')}`,
+              },
+            }
           );
           const newData = response.data.faqs;
 
@@ -117,6 +122,7 @@ const FAQPage: React.FC = () => {
             </InputLeftElement>
             <Input type="text" placeholder={t('label.search')} />
           </InputGroup> */}
+          {/* @ts-ignore */}
           <Accordion allowMultiple>
             {faqData.map((faq, idx) => (
               <AccordionItem key={idx}>
@@ -158,7 +164,9 @@ const FAQPage: React.FC = () => {
                 <div className={styles.footer}>
                   {t('message.dial_description')}
                 </div>
-                <a href={`tel:${flags.dialer_number.value}`} className={styles.footerTitle}>
+                <a
+                  href={`tel:${flags.dialer_number.value}`}
+                  className={styles.footerTitle}>
                   <div className={styles.callIconBox}>
                     <Image src={callIcon} alt="callIcon" layout="responsive" />
                   </div>
