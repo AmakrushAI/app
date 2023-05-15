@@ -155,7 +155,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
             display: 'flex',
             flexDirection: 'column',
             position: 'relative',
-            maxWidth: '90vw',
+            maxWidth: '90vw'
           }}>
           <div
             className={
