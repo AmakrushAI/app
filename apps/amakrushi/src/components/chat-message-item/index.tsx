@@ -157,9 +157,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     [context, t]
   );
 
-
   const { content, type } = message;
-  console.log("bnm:", { content, type })
+
   switch (type) {
     case 'loader':
       return <Typing />;
@@ -402,3 +401,5 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
 };
 
 export default ChatMessageItem;
+
+ 
