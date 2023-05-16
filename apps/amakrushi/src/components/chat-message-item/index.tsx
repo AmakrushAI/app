@@ -18,13 +18,14 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { Button } from 'react-bootstrap';
+
 import { toast } from 'react-hot-toast';
 
 import styles from './index.module.css';
 import { analytics } from '../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
 import RightIcon from '../../assets/icons/right.jsx';
+import CopyText from '../../assets/icons/copy-text.svg';
 import MsgThumbsUp from '../../assets/icons/msg-thumbs-up.jsx';
 import MsgThumbsDown from '../../assets/icons/msg-thumbs-down.jsx';
 import { AppContext } from '../../context';
@@ -33,6 +34,9 @@ import { getFormatedTime } from '../../utils/getUtcTime';
 import { useLocalization } from '../../hooks/useLocalization';
 import { getReactionUrl } from '../../utils/getUrls';
 import { useFlags } from 'flagsmith/react';
+import Image from 'next/image';
+import { Button } from '@chakra-ui/react';
+import flagsmith from 'flagsmith/isomorphic';
 
 const getToastMessage = (t: any, reaction: number): string => {
   if (reaction === 1) return t('toast.reaction_like');
@@ -43,7 +47,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   message,
   onSend,
 }) => {
-  const flags = useFlags(['dialer_number']);
+  const flags = useFlags(['show_msg_id']);
+ 
   const t = useLocalization();
   const context = useContext(AppContext);
   const [reaction, setReaction] = useState(message?.content?.data?.reaction);
@@ -81,6 +86,15 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     [t]
   );
 
+
+  async function copyTextToClipboard(text: string) {
+    console.log("here")
+    if ('clipboard' in navigator) {
+      return await navigator.clipboard.writeText(text);
+    } else {
+      return document.execCommand('copy', true, text);
+    }
+  }
   const feedbackHandler = useCallback(
     ({ like, msgId }: { like: 0 | 1 | -1; msgId: string }) => {
       console.log('vbnm:', { reaction, like });
@@ -143,8 +157,9 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     [context, t]
   );
 
-  const { content, type } = message;
 
+  const { content, type } = message;
+  console.log("bnm:", { content, type })
   switch (type) {
     case 'loader':
       return <Typing />;
@@ -173,12 +188,28 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   content?.data?.position === 'right' ? 'white' : 'var(--font)',
               }}>
               {content.text}
+
             </span>
             <div
               style={{
                 display: 'flex',
-                justifyContent: 'flex-end',
+                justifyContent: content?.data?.position === 'left' ? 'space-between' : 'flex-end',
               }}>
+      
+              {content?.data?.position === "left" && flags?.show_msg_id?.enabled &&(
+                <span>
+                  <Button colorScheme='teal' variant='outline' size='xs' onClick={() => copyTextToClipboard(content?.data?.messageId).then(() => {
+                    toast.success("coppied");
+                  })
+                    .catch((err) => {
+                      console.log(err);
+                    })}>
+                    {content?.data?.messageId}
+                  </Button>
+
+                </span>)
+              }
+
               <span
                 style={{
                   color:
@@ -189,9 +220,10 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 }}>
                 {getFormatedTime(
                   content?.data?.sentTimestamp ||
-                    content?.data?.repliedTimestamp
+                  content?.data?.repliedTimestamp
                 )}
               </span>
+
             </div>
           </Bubble>
           {content?.data?.position === 'left' && (
@@ -255,7 +287,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                      content?.data?.repliedTimestamp
+                    content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -289,7 +321,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                      content?.data?.repliedTimestamp
+                    content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -327,7 +359,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                      content?.data?.repliedTimestamp
+                    content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
