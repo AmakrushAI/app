@@ -53,9 +53,12 @@ const ChatUiWindow: React.FC = () => {
       }
     };
     !context?.loading && fetchData();
+
    
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context?.setMessages, context?.fetchIsDown,context?.loading,context?.isDown]);
+
+  
 
   const normalizedChat = (chats: any): any => {
     console.log('in normalized');
