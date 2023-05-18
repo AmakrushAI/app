@@ -6,6 +6,7 @@ import { useLocalization } from "../hooks/useLocalization";
 import HomePage from "../components/HomePage";
 import { useContext, useEffect } from "react";
 import { AppContext } from "../context";
+import DownTimePage from "../components/down-time-page";
 
 const Home: NextPage = () => {
   const t = useLocalization();
@@ -36,6 +37,7 @@ const Home: NextPage = () => {
           }}
         >
           <HomePage />
+          {/* <DownTimePage/> */}
         </div>
         <ColorModeScript />
       </CookiesProvider>

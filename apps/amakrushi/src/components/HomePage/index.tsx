@@ -14,6 +14,7 @@ import { logEvent } from 'firebase/analytics';
 import Menu from '../menu';
 import { getInitialMsgs } from '../../utils/textUtility';
 import { AppContext } from '../../context';
+
 import RightIcon from '../../assets/icons/right';
 import sunIcon from '../../assets/icons/sun.svg';
 import reloadIcon from '../../assets/icons/reload.svg';
@@ -23,6 +24,7 @@ import Image from 'next/image';
 import { Button } from '@chakra-ui/react';
 import toast from 'react-hot-toast';
 import { v4 as uuidv4 } from 'uuid';
+import RenderVoiceRecorder from '../recorder/RenderVoiceRecorder';
 
 const HomePage: NextPage = () => {
   const context = useContext(AppContext);
@@ -102,6 +104,9 @@ const HomePage: NextPage = () => {
         })}
         <form onSubmit={(event) => event?.preventDefault()}>
           <div className={styles.inputBox}>
+          <div>
+          <RenderVoiceRecorder setInputMsg={setInputMsg}/>
+          </div>
             <input
               type="text"
               value={inputMsg}
@@ -111,10 +116,12 @@ const HomePage: NextPage = () => {
             <button
               type="submit"
               onClick={() => sendMessage(inputMsg)}
-              className={styles.sendButton}>
+              className={styles.sendButton}
+              >
               {t('label.send')}
             </button>
           </div>
+          
         </form>
       </div>
       <Menu />

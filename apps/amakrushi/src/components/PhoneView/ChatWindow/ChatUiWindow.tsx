@@ -16,11 +16,13 @@ import { useLocalization } from '../../../hooks';
 import { getMsgType } from '../../../utils/getMsgType';
 import ChatMessageItem from '../../chat-message-item';
 import { v4 as uuidv4 } from 'uuid';
+import toast from 'react-hot-toast';
+import RenderVoiceRecorder from '../../recorder/RenderVoiceRecorder';
 import DownTimePage from '../../down-time-page';
 
 const ChatUiWindow: React.FC = () => {
   const t = useLocalization();
-  const context = useContext(AppContext);  
+  const context = useContext(AppContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -109,7 +111,7 @@ const ChatUiWindow: React.FC = () => {
       })),
     [context?.messages]
   );
-
+console.log("fghj:",{messages:context?.messages})
   const msgToRender = useMemo(() => {
     return context?.isMsgReceiving
       ? [
@@ -126,6 +128,7 @@ const ChatUiWindow: React.FC = () => {
   console.log('debug:', { msgToRender });
 
   const placeholder = useMemo(() => t('message.ask_ur_question'), [t]);
+
   if (context?.isDown) {
     return <DownTimePage />;
   } else
