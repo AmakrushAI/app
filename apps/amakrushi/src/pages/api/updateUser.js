@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     },{
       headers: {
         Authorization: process.env.NEXT_PUBLIC_FUS_AUTH,
-        'x-application-id': process.env.NEXT_PUBLIC_APPLICATION_ID,
+        'x-application-id': process.env.NEXT_PUBLIC_FUS_APP_ID,
       },
     });
 
