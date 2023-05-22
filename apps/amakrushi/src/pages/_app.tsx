@@ -36,7 +36,6 @@ const App = ({
   pageProps,
   flagsmithState,
 }: AppProps & { flagsmithState: any }) => {
-  console.log("asdfg:",{flagsmithState})
   const router = useRouter();
   const { isAuthenticated, login } = useLogin();
   const [launch, setLaunch] = useState(true);
@@ -50,18 +49,19 @@ const App = ({
   const handleLoginRedirect = useCallback(() => {
     if (router.pathname === "/login" || router.pathname.startsWith("/otp")) {
       // already logged in then send to home
-      if (cookie["access_token"] !== undefined && localStorage.getItem('phoneNumber')) {
+      if (cookie["access_token"] !== undefined && localStorage.getItem('userID')) {
         router.push("/");
       }
     } else {
       // not logged in then send to login page
-      if (cookie["access_token"] === undefined || !localStorage.getItem('phoneNumber')) {
+      if (cookie["access_token"] === undefined || !localStorage.getItem('userID')) {
+        removeCookie('access_token', { path: '/' });
         localStorage.clear();
         sessionStorage.clear();
         router.push("/login");
       }
     }
-  }, [cookie, router]);
+  }, [cookie, removeCookie, router]);
 
   useEffect(() => {
     handleLoginRedirect();
