@@ -28,7 +28,10 @@ messaging.onBackgroundMessage((payload) => {
     body: payload.notification.body,
     icon: payload.notification.image,
     tag: 'notification',
+    vibrate: [200, 100, 200],
+    renotify: true,
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
+
