@@ -350,6 +350,7 @@ const ContextProvider: FC<{
             toast.error(`${t('message.retry')}`);
             setIsMsgReceiving(false);
             setLoading(false);
+            fetchIsDown();
           }
         }, timer2);
       }
@@ -359,7 +360,7 @@ const ContextProvider: FC<{
       clearTimeout(timer);
       clearTimeout(secondTimer);
     };
-  }, [isDown, isMsgReceiving, loading, t, timer1, timer2]);
+  }, [fetchIsDown, isDown, isMsgReceiving, loading, t, timer1, timer2]);
 
   const values = useMemo(
     () => ({
