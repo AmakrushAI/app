@@ -22,6 +22,7 @@ import { io } from 'socket.io-client';
 import { Button } from '@chakra-ui/react';
 import axios from 'axios';
 import { useFlags } from 'flagsmith/react';
+import { useCookies } from 'react-cookie';
 
 function loadMessages(locale: string) {
   switch (locale) {
@@ -55,18 +56,19 @@ const ContextProvider: FC<{
     sessionStorage.getItem('conversationId')
   );
   const [isMobileAvailable, setIsMobileAvailable] = useState(
-    localStorage.getItem('phoneNumber') ? true : false || false
+    localStorage.getItem('userID') ? true : false || false
   );
   const timer1 = flagsmith.getValue('timer1', { fallback: 5000 });
   const timer2 = flagsmith.getValue('timer2', { fallback: 25000 });
   const [isDown, setIsDown] = useState(true);
   const [showDialerPopup, setShowDialerPopup] = useState(false);
   const [isConnected, setIsConnected] = useState(newSocket?.connected || false);
+  const [cookie, setCookie, removeCookie] = useCookies();
   console.log(messages);
 
   useEffect(() => {
     if (
-      (localStorage.getItem('phoneNumber') && localStorage.getItem('auth')) ||
+      (localStorage.getItem('userID') && localStorage.getItem('auth')) ||
       isMobileAvailable
     ) {
       setNewSocket(
@@ -240,6 +242,11 @@ const ContextProvider: FC<{
   //@ts-ignore
   const sendMessage = useCallback(
     (text: string, media: any, isVisibile = true): void => {
+      if(!localStorage.getItem('userID') || !sessionStorage.getItem('conversationId')){
+        removeCookie('access_token', { path: '/' });
+        location?.reload();
+        return;
+      }
       // console.log('mssgs:', messages)
       setLoading(true);
       setIsMsgReceiving(true);

@@ -26,6 +26,13 @@ const OTPpage: React.FC = () => {
   const [countdownIntervalId, setCountdownIntervalId] = useState<any>(null);
   console.log("vbn:", { context });
 
+  useEffect(() => {
+    if(!router.query.state || router.query.state?.length !== 10){
+      router.push('/login')
+    }
+  }, [router])
+  
+
   const handleOTPSubmit: React.FormEventHandler = async (
     event: React.FormEvent
   ) => {
