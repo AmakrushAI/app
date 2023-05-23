@@ -52,6 +52,7 @@ const App = ({
   const handleLoginRedirect = useCallback(() => {
     if (router.pathname === '/login' || router.pathname.startsWith('/otp')) {
       // already logged in then send to home
+
       if (
         cookie['access_token'] &&
         localStorage.getItem('userID')
@@ -64,12 +65,13 @@ const App = ({
         !cookie['access_token'] ||
         !localStorage.getItem('userID')
       ) {
+
         localStorage.clear();
         sessionStorage.clear();
         router.push('/login');
       }
     }
-  }, [cookie, router]);
+  }, [cookie, removeCookie, router]);
 
   useEffect(() => {
     handleLoginRedirect();
