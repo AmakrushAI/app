@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react';
 import { NextPage } from 'next';
-
+import axios from 'axios';
 //@ts-ignore
 import { analytics } from '../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
@@ -43,12 +43,12 @@ const HomePage: NextPage = () => {
 
     context?.fetchIsDown(); // check if server is down
 
-   if(!sessionStorage.getItem('conversationId')){
-    const newConversationId = uuidv4();
-    sessionStorage.setItem('conversationId', newConversationId);
-    context?.setConversationId(newConversationId);
-   }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (!sessionStorage.getItem('conversationId')) {
+      const newConversationId = uuidv4();
+      sessionStorage.setItem('conversationId', newConversationId);
+      context?.setConversationId(newConversationId);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const sendMessage = useCallback(
@@ -69,6 +69,41 @@ const HomePage: NextPage = () => {
     },
     [context, t]
   );
+  const handleTranslate = useCallback(async (msg: string) => {
+    if (msg.length === 0) {
+      toast.error(t('error.empty_msg'));
+    } else {
+      try {
+        const input = [];
+        for(const word of msg.split(' ')){
+          input.push({
+            source: word
+          })
+        }
+        const response = await axios.post(
+          'https://meity-auth.ulcacontrib.org/ulca/apis/v0/model/compute',
+          {
+            modelId: '62b042b878d51611abf708c7',
+            task: 'transliteration',
+            input: input
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          }
+        );
+        console.log(response.data.output);
+        const translatedArray = [];
+        for(const element of response.data.output){
+          translatedArray.push(element?.target?.[0])
+        }
+        setInputMsg(translatedArray.join(" "))
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }, [t]);
 
   return (
     <>
@@ -104,9 +139,9 @@ const HomePage: NextPage = () => {
         })}
         <form onSubmit={(event) => event?.preventDefault()}>
           <div className={styles.inputBox}>
-          <div>
-          <RenderVoiceRecorder setInputMsg={setInputMsg}/>
-          </div>
+            <div>
+              <RenderVoiceRecorder setInputMsg={setInputMsg} />
+            </div>
             <input
               type="text"
               value={inputMsg}
@@ -114,14 +149,17 @@ const HomePage: NextPage = () => {
               placeholder={placeholder}
             />
             <button
+              onClick={() => handleTranslate(inputMsg)}
+              className={styles.translateButton}>
+              {t('label.translate')}
+            </button>
+            <button
               type="submit"
               onClick={() => sendMessage(inputMsg)}
-              className={styles.sendButton}
-              >
+              className={styles.sendButton}>
               {t('label.send')}
             </button>
           </div>
-          
         </form>
       </div>
       <Menu />
