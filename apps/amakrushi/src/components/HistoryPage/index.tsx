@@ -32,7 +32,7 @@ const HistoryPage: NextPage = () => {
       })
       .then((res) => {
         const sortedConversations = _.filter(
-          res?.data,
+          res?.data?.userHistory,
           (conv) => conv?.conversationId !== null
         ).sort(
           //@ts-ignore

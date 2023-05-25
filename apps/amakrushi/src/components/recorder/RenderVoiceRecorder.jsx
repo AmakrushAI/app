@@ -98,12 +98,12 @@ const RenderVoiceRecorder = ({setInputMsg}) => {
 
   const [modelId,source] =useMemo(()=>{
    if(localStorage.getItem('locale')==='en'){
-    return  [model_id_1, 'en']
+    return  [model_id_1, 'hi']
    }
   //  if(localStorage.getItem('locale')==='or'){
   //   return ['63c9582bc37c442f683d69d9','or']
   //  }
-   return [model_id_2, 'hi']
+   return [model_id_2, 'or']
   },[model_id_1, model_id_2])
   const makeComputeAPICall = (type) => {
     toast.success(`${t("message.recorder_wait")}`);
