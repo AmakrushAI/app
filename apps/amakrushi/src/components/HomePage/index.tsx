@@ -69,7 +69,7 @@ const HomePage: NextPage = () => {
     },
     [context, t]
   );
-  const handleTranslate = useCallback(async (msg: string) => {
+  const handleTransliterate = useCallback(async (msg: string) => {
     if (msg.length === 0) {
       toast.error(t('error.empty_msg'));
     } else {
@@ -94,11 +94,11 @@ const HomePage: NextPage = () => {
           }
         );
         console.log(response.data.output);
-        const translatedArray = [];
+        const transliteratedArray = [];
         for(const element of response.data.output){
-          translatedArray.push(element?.target?.[0])
+          transliteratedArray.push(element?.target?.[0])
         }
-        setInputMsg(translatedArray.join(" "))
+        setInputMsg(transliteratedArray.join(" "))
       } catch (error) {
         console.error(error);
       }
@@ -149,9 +149,9 @@ const HomePage: NextPage = () => {
               placeholder={placeholder}
             />
             <button
-              onClick={() => handleTranslate(inputMsg)}
-              className={styles.translateButton}>
-              {t('label.translate')}
+              onClick={() => handleTransliterate(inputMsg)}
+              className={styles.transliterateButton}>
+              {t('label.transliterate')}
             </button>
             <button
               type="submit"

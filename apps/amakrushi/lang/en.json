@@ -22,7 +22,7 @@
     "label.new_chat":"New chat",
     "label.confirm_delete":"Are you sure you want to delete this conversation?",
     "label.no_history":"No Chats",
-    "label.translate":"Transliterate",
+    "label.transliterate":"Transliterate",
     "message.no_history":"Your Chat History with AI will come here",
     "message.socket_disconnect_msg": "to connect again.",
     "message.enter_mobile":"Enter Mobile Number",
