@@ -22,6 +22,7 @@ import { io } from 'socket.io-client';
 import { Button } from '@chakra-ui/react';
 import axios from 'axios';
 import { useFlags } from 'flagsmith/react';
+import { useCookies } from 'react-cookie';
 
 function loadMessages(locale: string) {
   switch (locale) {
@@ -55,18 +56,19 @@ const ContextProvider: FC<{
     sessionStorage.getItem('conversationId')
   );
   const [isMobileAvailable, setIsMobileAvailable] = useState(
-    localStorage.getItem('phoneNumber') ? true : false || false
+    localStorage.getItem('userID') ? true : false || false
   );
   const timer1 = flagsmith.getValue('timer1', { fallback: 5000 });
   const timer2 = flagsmith.getValue('timer2', { fallback: 25000 });
   const [isDown, setIsDown] = useState(true);
   const [showDialerPopup, setShowDialerPopup] = useState(false);
   const [isConnected, setIsConnected] = useState(newSocket?.connected || false);
+  const [cookie, setCookie, removeCookie] = useCookies();
   console.log(messages);
 
   useEffect(() => {
     if (
-      (localStorage.getItem('phoneNumber') && localStorage.getItem('auth')) ||
+      (localStorage.getItem('userID') && localStorage.getItem('auth')) ||
       isMobileAvailable
     ) {
       setNewSocket(
@@ -240,6 +242,14 @@ const ContextProvider: FC<{
   //@ts-ignore
   const sendMessage = useCallback(
     (text: string, media: any, isVisibile = true): void => {
+      if (
+        !localStorage.getItem('userID') ||
+        !sessionStorage.getItem('conversationId')
+      ) {
+        removeCookie('access_token', { path: '/' });
+        location?.reload();
+        return;
+      }
       // console.log('mssgs:', messages)
       setLoading(true);
       setIsMsgReceiving(true);
@@ -295,29 +305,36 @@ const ContextProvider: FC<{
           //    console.log('mssgs:',messages)
         }
     },
-    [newSocket, socketSession, conversationId, t, onSocketConnect, currentUser?.id]
+    [
+      newSocket,
+      socketSession,
+      conversationId,
+      t,
+      onSocketConnect,
+      currentUser?.id,
+    ]
   );
 
   const fetchIsDown = useCallback(async () => {
-      try {
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/health/${flags?.health_check_time?.value}`
-        );
-        const status = res.data.status;
-        console.log('hie', status);
-        if (status === 'OK') {
-          setIsDown(false);
-        } else {
-          setIsDown(true);
-          console.log('Server status is not OK');
-        }
-      } catch (error) {
-        //@ts-ignore
-        logEvent(analytics, 'console_error', {
-          error_message: error.message,
-        });
+    try {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/health/${flags?.health_check_time?.value}`
+      );
+      const status = res.data.status;
+      console.log('hie', status);
+      if (status === 'OK') {
+        setIsDown(false);
+      } else {
+        setIsDown(true);
+        console.log('Server status is not OK');
       }
-    }, [setIsDown, flags]);
+    } catch (error) {
+      //@ts-ignore
+      logEvent(analytics, 'console_error', {
+        error_message: error.message,
+      });
+    }
+  }, [setIsDown, flags]);
 
   useEffect(() => {
     if (!socketSession && newSocket) {
@@ -343,6 +360,12 @@ const ContextProvider: FC<{
             toast.error(`${t('message.retry')}`);
             setIsMsgReceiving(false);
             setLoading(false);
+            fetchIsDown();
+            //@ts-ignore
+            logEvent(analytics, 'msg_delay', {
+              user_id: localStorage.getItem('userID'),
+              phone_number: localStorage.getItem('phoneNumber'),
+            });
           }
         }, timer2);
       }
@@ -352,7 +375,7 @@ const ContextProvider: FC<{
       clearTimeout(timer);
       clearTimeout(secondTimer);
     };
-  }, [isDown, isMsgReceiving, loading, t, timer1, timer2]);
+  }, [fetchIsDown, isDown, isMsgReceiving, loading, t, timer1, timer2]);
 
   const values = useMemo(
     () => ({
@@ -378,7 +401,7 @@ const ContextProvider: FC<{
       isDown,
       fetchIsDown,
       showDialerPopup,
-      setShowDialerPopup
+      setShowDialerPopup,
     }),
     [
       locale,
@@ -402,7 +425,7 @@ const ContextProvider: FC<{
       isDown,
       fetchIsDown,
       showDialerPopup,
-      setShowDialerPopup
+      setShowDialerPopup,
     ]
   );
 

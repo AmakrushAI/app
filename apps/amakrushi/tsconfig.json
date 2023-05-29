@@ -26,7 +26,7 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.d.ts",
- "src/pages/camera.js"  ],
+ "src/pages/camera.js", "public/firebase-messaging-sw.js"  ],
   "exclude": [
     "node_modules"
   ],
