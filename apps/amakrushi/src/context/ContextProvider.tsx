@@ -242,7 +242,10 @@ const ContextProvider: FC<{
   //@ts-ignore
   const sendMessage = useCallback(
     (text: string, media: any, isVisibile = true): void => {
-      if(!localStorage.getItem('userID') || !sessionStorage.getItem('conversationId')){
+      if (
+        !localStorage.getItem('userID') ||
+        !sessionStorage.getItem('conversationId')
+      ) {
         removeCookie('access_token', { path: '/' });
         location?.reload();
         return;
@@ -302,29 +305,36 @@ const ContextProvider: FC<{
           //    console.log('mssgs:',messages)
         }
     },
-    [newSocket, socketSession, conversationId, t, onSocketConnect, currentUser?.id]
+    [
+      newSocket,
+      socketSession,
+      conversationId,
+      t,
+      onSocketConnect,
+      currentUser?.id,
+    ]
   );
 
   const fetchIsDown = useCallback(async () => {
-      try {
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/health/${flags?.health_check_time?.value}`
-        );
-        const status = res.data.status;
-        console.log('hie', status);
-        if (status === 'OK') {
-          setIsDown(false);
-        } else {
-          setIsDown(true);
-          console.log('Server status is not OK');
-        }
-      } catch (error) {
-        //@ts-ignore
-        logEvent(analytics, 'console_error', {
-          error_message: error.message,
-        });
+    try {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/health/${flags?.health_check_time?.value}`
+      );
+      const status = res.data.status;
+      console.log('hie', status);
+      if (status === 'OK') {
+        setIsDown(false);
+      } else {
+        setIsDown(true);
+        console.log('Server status is not OK');
       }
-    }, [setIsDown, flags]);
+    } catch (error) {
+      //@ts-ignore
+      logEvent(analytics, 'console_error', {
+        error_message: error.message,
+      });
+    }
+  }, [setIsDown, flags]);
 
   useEffect(() => {
     if (!socketSession && newSocket) {
@@ -351,6 +361,11 @@ const ContextProvider: FC<{
             setIsMsgReceiving(false);
             setLoading(false);
             fetchIsDown();
+            //@ts-ignore
+            logEvent(analytics, 'msg_delay', {
+              user_id: localStorage.getItem('userID'),
+              phone_number: localStorage.getItem('phoneNumber'),
+            });
           }
         }, timer2);
       }
@@ -386,7 +401,7 @@ const ContextProvider: FC<{
       isDown,
       fetchIsDown,
       showDialerPopup,
-      setShowDialerPopup
+      setShowDialerPopup,
     }),
     [
       locale,
@@ -410,7 +425,7 @@ const ContextProvider: FC<{
       isDown,
       fetchIsDown,
       showDialerPopup,
-      setShowDialerPopup
+      setShowDialerPopup,
     ]
   );
 
