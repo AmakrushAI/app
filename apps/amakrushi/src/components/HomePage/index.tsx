@@ -25,6 +25,7 @@ import { Button } from '@chakra-ui/react';
 import toast from 'react-hot-toast';
 import { v4 as uuidv4 } from 'uuid';
 import RenderVoiceRecorder from '../recorder/RenderVoiceRecorder';
+import englishDictionary from '../../../eng_words_dictionary.json';
 
 const HomePage: NextPage = () => {
   const context = useContext(AppContext);
@@ -52,58 +53,74 @@ const HomePage: NextPage = () => {
   }, []);
 
   const sendMessage = useCallback(
-    (msg: string) => {
+    async (msg: string) => {
       if (msg.length === 0) {
         toast.error(t('error.empty_msg'));
         return;
       }
-      if (context?.socketSession && context?.newSocket?.connected) {
-        console.log('clearing mssgs');
-        context?.setMessages([]);
-        router.push('/chat');
-        context?.sendMessage(msg);
-      } else {
-        toast.error(t('error.disconnected'));
-        return;
+      // Function to check if a word is an English word
+      const isEnglishWord = (word: string) => {
+        // Assuming you have a dictionary of English words called "englishDictionary"
+        return englishDictionary.hasOwnProperty(word.toLowerCase());
+      };
+      try {
+        const words = msg.split(' ');
+        const englishWordCount = words.filter(isEnglishWord).length;
+        const englishWordPercentage = englishWordCount / words.length;
+
+        if (englishWordPercentage > 0.5) {
+          console.log('skipping transliteration, english detected')
+          // More than 80% of words are English, skip transliteration
+          if (context?.socketSession && context?.newSocket?.connected) {
+            console.log('clearing mssgs');
+            context?.setMessages([]);
+            router.push('/chat');
+            context?.sendMessage(msg);
+          } else {
+            toast.error(t('error.disconnected'));
+            return;
+          }
+        } else {
+          // Call transliteration API
+          const input = words.map((word) => ({
+            source: word,
+          }));
+
+          const response = await axios.post(
+            'https://meity-auth.ulcacontrib.org/ulca/apis/v0/model/compute',
+            {
+              modelId: '62b042b878d51611abf708c7',
+              task: 'transliteration',
+              input: input,
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+          console.log('transliterated msg: ', response.data.output);
+          const transliteratedArray = [];
+          for (const element of response.data.output) {
+            transliteratedArray.push(element?.target?.[0]);
+          }
+
+          if (context?.socketSession && context?.newSocket?.connected) {
+            console.log('clearing mssgs');
+            context?.setMessages([]);
+            router.push('/chat');
+            context?.sendMessage(transliteratedArray.join(' '));
+          } else {
+            toast.error(t('error.disconnected'));
+            return;
+          }
+        }
+      } catch (error) {
+        console.error(error);
       }
     },
     [context, t]
   );
-  const handleTransliterate = useCallback(async (msg: string) => {
-    if (msg.length === 0) {
-      toast.error(t('error.empty_msg'));
-    } else {
-      try {
-        const input = [];
-        for(const word of msg.split(' ')){
-          input.push({
-            source: word
-          })
-        }
-        const response = await axios.post(
-          'https://meity-auth.ulcacontrib.org/ulca/apis/v0/model/compute',
-          {
-            modelId: '62b042b878d51611abf708c7',
-            task: 'transliteration',
-            input: input
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json'
-            },
-          }
-        );
-        console.log(response.data.output);
-        const transliteratedArray = [];
-        for(const element of response.data.output){
-          transliteratedArray.push(element?.target?.[0])
-        }
-        setInputMsg(transliteratedArray.join(" "))
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }, [t]);
 
   return (
     <>
@@ -148,11 +165,11 @@ const HomePage: NextPage = () => {
               onChange={(e) => setInputMsg(e.target.value)}
               placeholder={placeholder}
             />
-            <button
+            {/* <button
               onClick={() => handleTransliterate(inputMsg)}
               className={styles.transliterateButton}>
               {t('label.transliterate')}
-            </button>
+            </button> */}
             <button
               type="submit"
               onClick={() => sendMessage(inputMsg)}
