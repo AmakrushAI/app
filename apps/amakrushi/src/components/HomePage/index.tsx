@@ -70,7 +70,7 @@ const HomePage: NextPage = () => {
 
         if (englishWordPercentage > 0.5) {
           console.log('skipping transliteration, english detected')
-          // More than 80% of words are English, skip transliteration
+          // More than 50% of words are English, skip transliteration
           if (context?.socketSession && context?.newSocket?.connected) {
             console.log('clearing mssgs');
             context?.setMessages([]);

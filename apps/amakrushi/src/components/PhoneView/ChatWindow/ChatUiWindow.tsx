@@ -19,6 +19,7 @@ import { v4 as uuidv4 } from 'uuid';
 import toast from 'react-hot-toast';
 import RenderVoiceRecorder from '../../recorder/RenderVoiceRecorder';
 import DownTimePage from '../../down-time-page';
+import englishDictionary from '../../../../eng_words_dictionary.json';
 
 const ChatUiWindow: React.FC = () => {
   const t = useLocalization();
@@ -28,7 +29,7 @@ const ChatUiWindow: React.FC = () => {
     const fetchData = async () => {
       try {
         await context?.fetchIsDown();
-        if(!context?.isDown){
+        if (!context?.isDown) {
           const chatHistory = await axios.get(
             `${
               process.env.NEXT_PUBLIC_BASE_URL
@@ -45,7 +46,7 @@ const ChatUiWindow: React.FC = () => {
             context?.setMessages(normalizedChats);
           }
         }
-      } catch (error:any) {
+      } catch (error: any) {
         //@ts-ignore
         logEvent(analytics, 'console_error', {
           error_message: error.message,
@@ -88,10 +89,66 @@ const ChatUiWindow: React.FC = () => {
   };
 
   const handleSend = useCallback(
-    (type: string, val: any) => {
+    async (type: string, msg: any) => {
+      if (msg.length === 0) {
+        toast.error(t('error.empty_msg'));
+        return;
+      }
       console.log('mssgs:', context?.messages);
-      if (type === 'text' && val.trim()) {
-        context?.sendMessage(val.trim());
+      const isEnglishWord = (word: string) => {
+        // Assuming you have a dictionary of English words called "englishDictionary"
+        return englishDictionary.hasOwnProperty(word.toLowerCase());
+      };
+      try {
+        const words = msg.split(' ');
+        const englishWordCount = words.filter(isEnglishWord).length;
+        const englishWordPercentage = englishWordCount / words.length;
+
+        if (englishWordPercentage > 0.5) {
+          console.log('skipping transliteration, english detected');
+          // More than 50% of words are English, skip transliteration
+          if (context?.socketSession && context?.newSocket?.connected) {
+            if (type === 'text' && msg.trim()) {
+              context?.sendMessage(msg.trim());
+            }
+          } else {
+            toast.error(t('error.disconnected'));
+            return;
+          }
+        } else {
+          // Call transliteration API
+          const input = words.map((word: string) => ({
+            source: word,
+          }));
+
+          const response = await axios.post(
+            'https://meity-auth.ulcacontrib.org/ulca/apis/v0/model/compute',
+            {
+              modelId: '62b042b878d51611abf708c7',
+              task: 'transliteration',
+              input: input,
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+          console.log('transliterated msg: ', response.data.output);
+          const transliteratedArray = [];
+          for (const element of response.data.output) {
+            transliteratedArray.push(element?.target?.[0]);
+          }
+
+          if (context?.socketSession && context?.newSocket?.connected) {
+            context?.sendMessage(transliteratedArray.join(' '));
+          } else {
+            toast.error(t('error.disconnected'));
+            return;
+          }
+        }
+      } catch (error) {
+        console.error(error);
       }
     },
     [context]
@@ -105,7 +162,7 @@ const ChatUiWindow: React.FC = () => {
       })),
     [context?.messages]
   );
-console.log("fghj:",{messages:context?.messages})
+  console.log('fghj:', { messages: context?.messages });
   const msgToRender = useMemo(() => {
     return context?.isMsgReceiving
       ? [
