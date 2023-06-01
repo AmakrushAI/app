@@ -37,11 +37,16 @@ const App = ({
   Component,
   pageProps,
 }: AppProps) => {
+
   const router = useRouter();
   const { isAuthenticated, login } = useLogin();
   const [launch, setLaunch] = useState(true);
   const [cookie, setCookie, removeCookie] = useCookies();
-const [flagsmithState, setflagsmithState] = useState(null)
+
+  const [flagsmithState, setflagsmithState] = useState(null)
+
+
+
   useEffect(() => {
     setTimeout(() => {
       setLaunch(false);
@@ -89,7 +94,7 @@ const [flagsmithState, setflagsmithState] = useState(null)
         router.push('/login');
       }
     }
-  }, [cookie, router]);
+  }, [cookie, removeCookie, router]);
 
   useEffect(() => {
     handleLoginRedirect();
@@ -143,8 +148,6 @@ const [flagsmithState, setflagsmithState] = useState(null)
     globalThis.console.log = () => {};
   }
 
-  console.log({flagsmithState})
-
   if (launch || !flagsmithState) {
     return <LaunchPage />;
   } else {
@@ -174,5 +177,6 @@ const [flagsmithState, setflagsmithState] = useState(null)
 //   });
 //   return { flagsmithState: flagsmith.getState() };
 // };
+
 
 export default App;
