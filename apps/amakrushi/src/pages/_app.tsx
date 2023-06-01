@@ -52,7 +52,7 @@ const [flagsmithState, setflagsmithState] = useState(null)
   useEffect(() =>{
     const getFlagSmithState =async ()=>{
       await flagsmith.init({
-        api: process.env.NEXT_PUBLIC_FLAGSMITH_API,
+        // api: process.env.NEXT_PUBLIC_FLAGSMITH_API,
         environmentID: process.env.NEXT_PUBLIC_ENVIRONMENT_ID || '',
       })
       if(flagsmith.getState())
@@ -174,4 +174,5 @@ const [flagsmithState, setflagsmithState] = useState(null)
 //   });
 //   return { flagsmithState: flagsmith.getState() };
 // };
+
 export default App;
