@@ -36,18 +36,41 @@ function SafeHydrate({ children }: { children: ReactElement }) {
 const App = ({
   Component,
   pageProps,
-  flagsmithState,
-}: AppProps & { flagsmithState: any }) => {
+}: AppProps) => {
+
   const router = useRouter();
   const { isAuthenticated, login } = useLogin();
   const [launch, setLaunch] = useState(true);
   const [cookie, setCookie, removeCookie] = useCookies();
+
+  const [flagsmithState, setflagsmithState] = useState(null)
+
+
 
   useEffect(() => {
     setTimeout(() => {
       setLaunch(false);
     }, 2500);
   }, []);
+
+
+  useEffect(() =>{
+    const getFlagSmithState =async ()=>{
+      await flagsmith.init({
+        // api: process.env.NEXT_PUBLIC_FLAGSMITH_API,
+        environmentID: process.env.NEXT_PUBLIC_ENVIRONMENT_ID || '',
+      })
+      if(flagsmith.getState())
+     { 
+      //@ts-ignore
+      setflagsmithState(flagsmith.getState())
+    }
+    }
+    getFlagSmithState()
+   
+  },[])
+
+ 
 
   const handleLoginRedirect = useCallback(() => {
     if (router.pathname === '/login' || router.pathname.startsWith('/otp')) {
@@ -125,7 +148,7 @@ const App = ({
     globalThis.console.log = () => {};
   }
 
-  if (launch) {
+  if (launch || !flagsmithState) {
     return <LaunchPage />;
   } else {
     return (
@@ -147,11 +170,13 @@ const App = ({
   }
 };
 
-App.getInitialProps = async () => {
-  await flagsmith.init({
-    api: process.env.NEXT_PUBLIC_FLAGSMITH_API,
-    environmentID: process.env.NEXT_PUBLIC_ENVIRONMENT_ID,
-  });
-  return { flagsmithState: flagsmith.getState() };
-};
+// App.getInitialProps = async () => {
+//   await flagsmith.init({
+//     api: process.env.NEXT_PUBLIC_FLAGSMITH_API,
+//     environmentID: process.env.NEXT_PUBLIC_ENVIRONMENT_ID,
+//   });
+//   return { flagsmithState: flagsmith.getState() };
+// };
+
+
 export default App;
