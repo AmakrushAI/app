@@ -101,7 +101,7 @@ const App = ({
 
 App.getInitialProps = async () => {
   await flagsmith.init({
-    api:process.env.NEXT_PUBLIC_FLAGSMITH_API,
+    // api:process.env.NEXT_PUBLIC_FLAGSMITH_API,
     environmentID: process.env.NEXT_PUBLIC_ENVIRONMENT_ID
     
   });
