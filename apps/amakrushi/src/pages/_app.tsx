@@ -15,9 +15,10 @@ import { FlagsmithProvider } from 'flagsmith/react';
 import { useLogin } from '../hooks';
 
 import axios from 'axios';
-import { messaging } from '../utils/firebase';
+import { messaging, analytics } from '../utils/firebase';
 import { getToken } from 'firebase/messaging';
 import FcmNotification from '../utils/FcmNotification';
+import { logEvent } from 'firebase/analytics';
 
 const LaunchPage = dynamic(() => import('../components/LaunchPage'), {
   ssr: false,
@@ -41,12 +42,21 @@ const App = ({
   const { isAuthenticated, login } = useLogin();
   const [launch, setLaunch] = useState(true);
   const [cookie, setCookie, removeCookie] = useCookies();
-const [flagsmithState, setflagsmithState] = useState(null)
+  const [flagsmithState, setflagsmithState] = useState(null);
+
   useEffect(() => {
+    const isEventLogged = sessionStorage.getItem('isSplashScreenLogged');
+    if (!isEventLogged) {
+      //@ts-ignore
+      logEvent(analytics, 'Splash_screen');
+      sessionStorage.setItem('isSplashScreenLogged', 'true');
+    }
+    
     setTimeout(() => {
       setLaunch(false);
     }, 2500);
   }, []);
+  
 
 
   useEffect(() =>{
