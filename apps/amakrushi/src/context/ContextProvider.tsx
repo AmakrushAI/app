@@ -275,6 +275,8 @@ const ContextProvider: FC<{
         );
         return;
       }
+      //@ts-ignore
+      logEvent(analytics, 'query_sent');
       //  console.log('mssgs:',messages)
       send({ text, socketSession, socket: newSocket, conversationId });
       if (isVisibile)
