@@ -275,6 +275,8 @@ const ContextProvider: FC<{
         );
         return;
       }
+      //@ts-ignore
+      logEvent(analytics, 'Query_sent');
       //  console.log('mssgs:',messages)
       send({ text, socketSession, socket: newSocket, conversationId });
       if (isVisibile)
@@ -362,7 +364,7 @@ const ContextProvider: FC<{
             setLoading(false);
             fetchIsDown();
             //@ts-ignore
-            logEvent(analytics, 'msg_delay', {
+            logEvent(analytics, 'Msg_delay', {
               user_id: localStorage.getItem('userID'),
               phone_number: localStorage.getItem('phoneNumber'),
             });
