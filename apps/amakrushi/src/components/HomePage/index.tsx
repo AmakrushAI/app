@@ -25,7 +25,6 @@ import { Button } from '@chakra-ui/react';
 import toast from 'react-hot-toast';
 import { v4 as uuidv4 } from 'uuid';
 import RenderVoiceRecorder from '../recorder/RenderVoiceRecorder';
-import englishDictionary from '../../../eng_words_dictionary.json';
 
 const HomePage: NextPage = () => {
   const context = useContext(AppContext);
@@ -58,62 +57,40 @@ const HomePage: NextPage = () => {
         toast.error(t('error.empty_msg'));
         return;
       }
-      // Function to check if a word is an English word
-      const isEnglishWord = (word: string) => {
-        // Assuming you have a dictionary of English words called "englishDictionary"
-        return englishDictionary.hasOwnProperty(word.toLowerCase());
-      };
       try {
         const words = msg.split(' ');
-        const englishWordCount = words.filter(isEnglishWord).length;
-        const englishWordPercentage = englishWordCount / words.length;
+        // Call transliteration API
+        const input = words.map((word) => ({
+          source: word,
+        }));
 
-        if (englishWordPercentage > 0.5) {
-          console.log('skipping transliteration, english detected')
-          // More than 50% of words are English, skip transliteration
-          if (context?.socketSession && context?.newSocket?.connected) {
-            console.log('clearing mssgs');
-            context?.setMessages([]);
-            router.push('/chat');
-            context?.sendMessage(msg);
-          } else {
-            toast.error(t('error.disconnected'));
-            return;
-          }
-        } else {
-          // Call transliteration API
-          const input = words.map((word) => ({
-            source: word,
-          }));
-
-          const response = await axios.post(
-            'https://meity-auth.ulcacontrib.org/ulca/apis/v0/model/compute',
-            {
-              modelId: '62b042b878d51611abf708c7',
-              task: 'transliteration',
-              input: input,
+        const response = await axios.post(
+          'https://meity-auth.ulcacontrib.org/ulca/apis/v0/model/compute',
+          {
+            modelId: '62b042b878d51611abf708c7',
+            task: 'transliteration',
+            input: input,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
             },
-            {
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            }
-          );
-          console.log('transliterated msg: ', response.data.output);
-          const transliteratedArray = [];
-          for (const element of response.data.output) {
-            transliteratedArray.push(element?.target?.[0]);
           }
+        );
+        console.log('transliterated msg: ', response.data.output);
+        const transliteratedArray = [];
+        for (const element of response.data.output) {
+          transliteratedArray.push(element?.target?.[0]);
+        }
 
-          if (context?.socketSession && context?.newSocket?.connected) {
-            console.log('clearing mssgs');
-            context?.setMessages([]);
-            router.push('/chat');
-            context?.sendMessage(transliteratedArray.join(' '));
-          } else {
-            toast.error(t('error.disconnected'));
-            return;
-          }
+        if (context?.socketSession && context?.newSocket?.connected) {
+          console.log('clearing mssgs');
+          context?.setMessages([]);
+          router.push('/chat');
+          context?.sendMessage(transliteratedArray.join(' '));
+        } else {
+          toast.error(t('error.disconnected'));
+          return;
         }
       } catch (error) {
         console.error(error);
