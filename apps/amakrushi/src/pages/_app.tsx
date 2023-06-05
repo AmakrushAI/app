@@ -46,10 +46,6 @@ const App = ({
   const [flagsmithState, setflagsmithState] = useState(null);
 
 
-  const [flagsmithState, setflagsmithState] = useState(null)
-
-
-
   useEffect(() => {
     const isEventLogged = sessionStorage.getItem('isSplashScreenLogged');
     if (!isEventLogged) {
@@ -63,25 +59,6 @@ const App = ({
     }, 2500);
   }, []);
   
-
-
-  useEffect(() =>{
-    const getFlagSmithState =async ()=>{
-      await flagsmith.init({
-        // api: process.env.NEXT_PUBLIC_FLAGSMITH_API,
-        environmentID: process.env.NEXT_PUBLIC_ENVIRONMENT_ID || '',
-      })
-      if(flagsmith.getState())
-     { 
-      //@ts-ignore
-      setflagsmithState(flagsmith.getState())
-    }
-    }
-    getFlagSmithState()
-   
-  },[])
-
- 
 
 
   useEffect(() =>{
@@ -207,6 +184,5 @@ const App = ({
 //   });
 //   return { flagsmithState: flagsmith.getState() };
 // };
-
 
 export default App;
