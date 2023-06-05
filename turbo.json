@@ -19,7 +19,8 @@
     "NODE_ENV",
     "NEXT_PUBLIC_ENV",
     "NEXT_PUBLIC_USER_SERVICE_APP_ID",
-    "NEXT_PUBLIC_JWKS_URI"
+    "NEXT_PUBLIC_JWKS_URI",
+    "NEXT_PUBLIC_DHRUVA_AUTH"
   ],
 
   "globalDependencies": ["**/.env.*local"],

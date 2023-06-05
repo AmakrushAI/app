@@ -46,12 +46,20 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
   };
 
   const blobToBase64 = (blob) => {
-    var reader = new FileReader();
-    reader.readAsDataURL(blob.blob);
-    reader.onloadend = function () {
-      let base64data = reader.result;
-      setBase(base64data);
-    };
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        const base64data = reader.result;
+        resolve(base64data);
+      };
+
+      reader.onerror = (error) => {
+        reject(error);
+      };
+
+      reader.readAsDataURL(blob);
+    });
   };
 
   useEffect(() => {
@@ -62,16 +70,21 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
     }
   }, [data, handleCompute, base]);
 
-  const onStopRecording = (data) => {
+  const onStopRecording = async (data) => {
     setData(data.url);
-    setBase(blobToBase64(data));
-    //  setTimeout(()=>{
-    //   handleCompute()
-    //  },50)
-    // setOutput({
-    //   asr: '',
-    //   translation: '',
-    // });
+    try {
+      const base64Data = await blobToBase64(data.blob);
+      setBase(base64Data);
+      //  setTimeout(()=>{
+      //   handleCompute()
+      //  },50)
+      // setOutput({
+      //   asr: '',
+      //   translation: '',
+      // });
+    } catch (error) {
+      console.error('Error converting Blob to Base64:', error);
+    }
   };
 
   const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
@@ -102,46 +115,45 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
   }, [model_id_1, model_id_2]);
 
   const makeComputeAPICall = async (type) => {
-    if(!(localStorage.getItem('locale') === 'en')){
-      console.log('Calling Dhruva API')
-      
-      const url = "https://api.dhruva.ai4bharat.org/services/inference/asr?serviceId=ai4bharat%2Fconformer-multilingual-indo_aryan-gpu--t4";
+    if (!(localStorage.getItem('locale') === 'en')) {
+
+      const url =
+        'https://api.dhruva.ai4bharat.org/services/inference/asr?serviceId=ai4bharat%2Fconformer-multilingual-indo_aryan-gpu--t4';
       const headers = {
-        "Content-Type": "application/json",
-        "authorization": "nLjwgV6Yj7_p-3tfX269cxMNevYOWnzZrkMJtQREEZlDUltoPlOsbzCW_iHjitbO"
+        'Content-Type': 'application/json',
+        authorization: process.env.NEXT_PUBLIC_DHRUVA_AUTH,
       };
-      
+
       const data = {
-        "config": {
-          "language": {
-            "sourceLanguage": "or"
-          }
+        config: {
+          language: {
+            sourceLanguage: 'or',
+          },
         },
-        "audio": [
+        audio: [
           {
-            "audioContent": base
-          }
-        ]
+            audioContent: base.split('base64,')[1],
+          },
+        ],
       };
-      
+
       try {
         const response = await fetch(url, {
           method: 'POST',
           headers: headers,
-          body: JSON.stringify(data)
+          body: JSON.stringify(data),
         });
-        
+
         if (response.ok) {
-          const text = await response.text();
-          console.log('Response:', text);
-          setInputMsg(text);
+          const text = await response.json();
+          setInputMsg(text?.output?.[0]?.source);
         } else {
           console.error('Error:', response.status);
         }
       } catch (err) {
         toast.error(`${t('message.recorder_error')}`);
       }
-      
+
       return;
     }
     toast.success(`${t('message.recorder_wait')}`);
