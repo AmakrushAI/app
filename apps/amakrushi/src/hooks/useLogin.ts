@@ -33,6 +33,9 @@ export const useLogin = () => {
           .then((response) => {
             if (response.data === null) {
               toast.error('Invalid Access Token');
+              removeCookie('access_token', { path: '/' });
+              localStorage.clear();
+              sessionStorage.clear();
               router.push('/login');
               console.log('response null');
             } else {
@@ -45,6 +48,9 @@ export const useLogin = () => {
             logEvent(analytics, 'console_error', {
               error_message: err.message,
             });
+            removeCookie('access_token', { path: '/' });
+            localStorage.clear();
+            sessionStorage.clear();
             router.push('/login');
             console.log('catch err');
           });

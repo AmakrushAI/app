@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
+import { getMessaging, onMessage } from 'firebase/messaging'
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -13,3 +14,10 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const analytics = typeof window !== 'undefined' ? getAnalytics(app) : null;
+export const messaging = typeof window !== 'undefined' ? getMessaging(app) : null;
+export const onMessageListener = () =>
+  new Promise((resolve) => {    
+    onMessage(messaging, (payload) => {
+      resolve(payload);
+    });
+  });
