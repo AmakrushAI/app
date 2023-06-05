@@ -11,11 +11,10 @@ import { AppContext } from '../../context';
 import { useLocalization } from '../../hooks';
 import flagsmith from 'flagsmith/isomorphic';
 
-const RenderVoiceRecorder = ({setInputMsg}) => {
-
+const RenderVoiceRecorder = ({ setInputMsg }) => {
   const model_id_1 = flagsmith.getValue('model_id_1');
   const model_id_2 = flagsmith.getValue('model_id_2');
-  const t = useLocalization(); 
+  const t = useLocalization();
   const [gender, setGender] = useState('female');
   const [recordAudio, setRecordAudio] = useState('');
   const [base, setBase] = useState('');
@@ -55,21 +54,20 @@ const RenderVoiceRecorder = ({setInputMsg}) => {
     };
   };
 
-
-  useEffect(()=>{
-    if(data && base)
-   { handleCompute();
-     setData();
-     setBase();
+  useEffect(() => {
+    if (data && base) {
+      handleCompute();
+      setData();
+      setBase();
     }
-  },[data,handleCompute,base]);
+  }, [data, handleCompute, base]);
 
   const onStopRecording = (data) => {
     setData(data.url);
     setBase(blobToBase64(data));
-  //  setTimeout(()=>{
-  //   handleCompute()
-  //  },50)
+    //  setTimeout(()=>{
+    //   handleCompute()
+    //  },50)
     // setOutput({
     //   asr: '',
     //   translation: '',
@@ -96,22 +94,62 @@ const RenderVoiceRecorder = ({setInputMsg}) => {
     return blob;
   };
 
-  const [modelId,source] =useMemo(()=>{
-   if(localStorage.getItem('locale')==='en'){
-    return  [model_id_1, 'hi']
-   }
-  //  if(localStorage.getItem('locale')==='or'){
-  //   return ['63c9582bc37c442f683d69d9','or']
-  //  }
-   return [model_id_2, 'or']
-  },[model_id_1, model_id_2])
-  const makeComputeAPICall = (type) => {
-    toast.success(`${t("message.recorder_wait")}`);
-    setAudio(null); 
+  const [modelId, source] = useMemo(() => {
+    if (localStorage.getItem('locale') === 'en') {
+      return [model_id_1, 'hi'];
+    }
+    return [model_id_2, 'or'];
+  }, [model_id_1, model_id_2]);
 
-      const apiObj = new ComputeAPI(
-      modelId, //modelId
+  const makeComputeAPICall = async (type) => {
+    if(!(localStorage.getItem('locale') === 'en')){
+      console.log('Calling Dhruva API')
       
+      const url = "https://api.dhruva.ai4bharat.org/services/inference/asr?serviceId=ai4bharat%2Fconformer-multilingual-indo_aryan-gpu--t4";
+      const headers = {
+        "Content-Type": "application/json",
+        "authorization": "nLjwgV6Yj7_p-3tfX269cxMNevYOWnzZrkMJtQREEZlDUltoPlOsbzCW_iHjitbO"
+      };
+      
+      const data = {
+        "config": {
+          "language": {
+            "sourceLanguage": "or"
+          }
+        },
+        "audio": [
+          {
+            "audioContent": base
+          }
+        ]
+      };
+      
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify(data)
+        });
+        
+        if (response.ok) {
+          const text = await response.text();
+          console.log('Response:', text);
+          setInputMsg(text);
+        } else {
+          console.error('Error:', response.status);
+        }
+      } catch (err) {
+        toast.error(`${t('message.recorder_error')}`);
+      }
+      
+      return;
+    }
+    toast.success(`${t('message.recorder_wait')}`);
+    setAudio(null);
+
+    const apiObj = new ComputeAPI(
+      modelId, //modelId
+
       type === 'url' ? url : base, //input URL
       'asr', //task
       type === 'voice' ? true : false, //boolean record audio
@@ -129,8 +167,7 @@ const RenderVoiceRecorder = ({setInputMsg}) => {
     //   '' //gender
     // );
 
-
-    console.log("ghji:",{body:apiObj.getBody()})
+    console.log('ghji:', { body: apiObj.getBody() });
     fetch(apiObj.apiEndPoint(), {
       method: 'post',
       body: JSON.stringify(apiObj.getBody()),
@@ -209,21 +246,21 @@ const RenderVoiceRecorder = ({setInputMsg}) => {
           //             'Unable to process your request at the moment. Please try after sometime.'
           //           );
           //         });
-            //   } else {
-            //     toast.error(rsp_data.message);
-            //   }
-            // })
-            // .catch(async (error) => {
-            //   toast.error(
-            //     'Unable to process your request at the moment. Please try after sometime.'
-            //   );
-            // });
+          //   } else {
+          //     toast.error(rsp_data.message);
+          //   }
+          // })
+          // .catch(async (error) => {
+          //   toast.error(
+          //     'Unable to process your request at the moment. Please try after sometime.'
+          //   );
+          // });
         } else {
           toast.error(rsp_data.message);
         }
       })
       .catch(async (error) => {
-        toast.error(`${t("message.recorder_error")}`);
+        toast.error(`${t('message.recorder_error')}`);
       });
   };
 
@@ -231,7 +268,7 @@ const RenderVoiceRecorder = ({setInputMsg}) => {
   const handleCompute = () => {
     makeComputeAPICall('voice');
   };
-console.log('ghji',{output})
+  console.log('ghji', { output });
   return (
     <div>
       <div>
@@ -242,7 +279,7 @@ console.log('ghji',{output})
               alt="stopIcon"
               onClick={() => handleStopRecording()}
               style={{ cursor: 'pointer' }}
-              layout='responsive'
+              layout="responsive"
             />{' '}
           </div>
         ) : (
@@ -254,7 +291,7 @@ console.log('ghji',{output})
                 handleStartRecording();
               }}
               style={{ cursor: 'pointer' }}
-              layout='responsive'
+              layout="responsive"
             />{' '}
           </div>
         )}
@@ -284,7 +321,7 @@ console.log('ghji',{output})
           )}
         </div> */}
       </Grid>
-       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
         <Grid container spacing={1}>
           {/* <Grid item xs={8} sm={12} md={10} lg={10} xl={10}>
             <Typography variant={'caption'}>Max duration: 1 min</Typography>
@@ -297,7 +334,7 @@ console.log('ghji',{output})
             lg={2}
             xl={2}
             className={styles.flexEndStyle}>
-           {/* <Button
+            {/* <Button
               style={{}}
               color="primary"
               variant="contained"
@@ -308,7 +345,7 @@ console.log('ghji',{output})
             </Button> */}
           </Grid>
         </Grid>
-      </Grid> 
+      </Grid>
     </div>
   );
 };
