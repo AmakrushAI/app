@@ -58,8 +58,6 @@
     "message.review_description": "Please write your experience's feedback.",
     "message.temporarily_down": "We're temporarily down",
     "message.temporarily_down_description": "We are experiencing high user volume at the moment, please try logging in after some time",
-    "message.recorder_wait": "Please wait while we process your request...",
-    "message.recorder_error": "Unable to process your request at the moment. Please try after sometime.",
     "message.dialer_popup":"You may speak to an Ama Krushi expert to get a satisfactory response",
     "error.fail_to_submit":"Failed to submit rating.",
     "error.fail_to_submit_review": "Failed to submit review.",

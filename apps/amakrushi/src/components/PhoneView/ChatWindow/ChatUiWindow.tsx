@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios from "axios";
 //@ts-ignore
-import Chat from 'chatui';
+import Chat from "chatui";
 import React, {
   ReactElement,
   useCallback,
@@ -8,17 +8,16 @@ import React, {
   useEffect,
   useMemo,
   useState,
-} from 'react';
-import { analytics } from '../../../utils/firebase';
-import { logEvent } from 'firebase/analytics';
-import { AppContext } from '../../../context';
-import { useLocalization } from '../../../hooks';
-import { getMsgType } from '../../../utils/getMsgType';
-import ChatMessageItem from '../../chat-message-item';
-import { v4 as uuidv4 } from 'uuid';
-import toast from 'react-hot-toast';
-import RenderVoiceRecorder from '../../recorder/RenderVoiceRecorder';
-import DownTimePage from '../../down-time-page';
+} from "react";
+import { analytics } from "../../../utils/firebase";
+import { logEvent } from "firebase/analytics";
+import { AppContext } from "../../../context";
+import { useLocalization } from "../../../hooks";
+import { getMsgType } from "../../../utils/getMsgType";
+import ChatMessageItem from "../../chat-message-item";
+import { v4 as uuidv4 } from "uuid";
+import toast from "react-hot-toast";
+import DownTimePage from "../../down-time-page";
 
 const ChatUiWindow: React.FC = () => {
   const t = useLocalization();
@@ -32,14 +31,14 @@ const ChatUiWindow: React.FC = () => {
           const chatHistory = await axios.get(
             `${
               process.env.NEXT_PUBLIC_BASE_URL
-            }/user/chathistory/${sessionStorage.getItem('conversationId')}`,
+            }/user/chathistory/${sessionStorage.getItem("conversationId")}`,
             {
               headers: {
-                authorization: `Bearer ${localStorage.getItem('auth')}`,
+                authorization: `Bearer ${localStorage.getItem("auth")}`,
               },
             }
           );
-          console.log('history:', chatHistory.data);
+          console.log("history:", chatHistory.data);
           const normalizedChats = normalizedChat(chatHistory.data);
           if (normalizedChats.length > 0) {
             context?.setMessages(normalizedChats);
@@ -47,7 +46,7 @@ const ChatUiWindow: React.FC = () => {
         }
       } catch (error: any) {
         //@ts-ignore
-        logEvent(analytics, 'console_error', {
+        logEvent(analytics, "console_error", {
           error_message: error.message,
         });
       }
@@ -57,23 +56,23 @@ const ChatUiWindow: React.FC = () => {
   }, [context?.setMessages, context?.fetchIsDown]);
 
   const normalizedChat = (chats: any): any => {
-    console.log('in normalized');
-    const conversationId = sessionStorage.getItem('conversationId');
+    console.log("in normalized");
+    const conversationId = sessionStorage.getItem("conversationId");
     const history = chats
       .filter(
         (item: any) =>
-          conversationId === 'null' || item.conversationId === conversationId
+          conversationId === "null" || item.conversationId === conversationId
       )
       .flatMap((item: any) => [
         {
           text: item.query,
-          position: 'right',
+          position: "right",
           repliedTimestamp: item.createdAt,
           messageId: uuidv4(),
         },
         {
           text: item.response,
-          position: 'left',
+          position: "left",
           sentTimestamp: item.createdAt,
           reaction: item.reaction,
           msgId: item.id,
@@ -81,8 +80,8 @@ const ChatUiWindow: React.FC = () => {
         },
       ]);
 
-    console.log('historyyy', history);
-    console.log('history length:', history.length);
+    console.log("historyyy", history);
+    console.log("history length:", history.length);
 
     return history;
   };
@@ -90,80 +89,86 @@ const ChatUiWindow: React.FC = () => {
   const handleSend = useCallback(
     async (type: string, msg: any) => {
       if (msg.length === 0) {
-        toast.error(t('error.empty_msg'));
+        toast.error(t("error.empty_msg"));
         return;
       }
-      console.log('mssgs:', context?.messages);
+      console.log("mssgs:", context?.messages);
       try {
-        const words = msg.split(' ');
-        // Call transliteration API
-        const input = words.map((word: string) => ({
-          source: word,
-        }));
+        if (!(localStorage.getItem("locale") === "en")) {
+          const words = msg.split(" ");
+          // Call transliteration API
+          const input = words.map((word: string) => ({
+            source: word,
+          }));
 
-        const response = await axios.post(
-          'https://meity-auth.ulcacontrib.org/ulca/apis/v0/model/compute',
-          {
-            modelId: '62b042b878d51611abf708c7',
-            task: 'transliteration',
-            input: input,
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
+          const response = await axios.post(
+            "https://meity-auth.ulcacontrib.org/ulca/apis/v0/model/compute",
+            {
+              modelId: "62b042b878d51611abf708c7",
+              task: "transliteration",
+              input: input,
             },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          console.log("transliterated msg: ", response.data.output);
+          const transliteratedArray = [];
+          for (const element of response.data.output) {
+            transliteratedArray.push(element?.target?.[0]);
           }
-        );
-        console.log('transliterated msg: ', response.data.output);
-        const transliteratedArray = [];
-        for (const element of response.data.output) {
-          transliteratedArray.push(element?.target?.[0]);
-        }
 
-        if (context?.socketSession && context?.newSocket?.connected) {
-          context?.sendMessage(transliteratedArray.join(' '));
+          if (context?.socketSession && context?.newSocket?.connected) {
+            context?.sendMessage(transliteratedArray.join(" "));
+          } else {
+            toast.error(t("error.disconnected"));
+            return;
+          }
         } else {
-          toast.error(t('error.disconnected'));
-          return;
+          if (type === "text" && msg.trim()) {
+            context?.sendMessage(msg.trim());
+          }
         }
       } catch (error) {
         console.error(error);
       }
     },
-    [context]
+    [context, t]
   );
   const normalizeMsgs = useMemo(
     () =>
       context?.messages?.map((msg: any) => ({
         type: getMsgType(msg),
         content: { text: msg?.text, data: { ...msg } },
-        position: msg?.position ?? 'right',
+        position: msg?.position ?? "right",
       })),
     [context?.messages]
   );
-  console.log('fghj:', { messages: context?.messages });
+  console.log("fghj:", { messages: context?.messages });
   const msgToRender = useMemo(() => {
     return context?.isMsgReceiving
       ? [
           ...normalizeMsgs,
           {
-            type: 'loader',
-            position: 'left',
-            botUuid: '1',
+            type: "loader",
+            position: "left",
+            botUuid: "1",
           },
         ]
       : normalizeMsgs;
   }, [context?.isMsgReceiving, normalizeMsgs]);
 
-  console.log('debug:', { msgToRender });
+  console.log("debug:", { msgToRender });
 
-  const placeholder = useMemo(() => t('message.ask_ur_question'), [t]);
+  const placeholder = useMemo(() => t("message.ask_ur_question"), [t]);
 
   if (context?.isDown) {
     return <DownTimePage />;
   } else
     return (
-      <div style={{ height: '100%', width: '100%' }}>
+      <div style={{ height: "100%", width: "100%" }}>
         <Chat
           btnColor="var(--secondarygreen)"
           background="var(--bg-color)"
