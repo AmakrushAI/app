@@ -21,6 +21,8 @@ var Chat = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     locales = props.locales,
     navbar = props.navbar,
     renderNavbar = props.renderNavbar,
+    voiceToText = props.voiceToText,
+    voiceToTextProps = props.voiceToTextProps,
     loadMoreText = props.loadMoreText,
     renderBeforeMessageList = props.renderBeforeMessageList,
     messagesRef = props.messagesRef,
@@ -111,9 +113,11 @@ var Chat = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     visible: quickRepliesVisible,
     onClick: onQuickReplyClick,
     onScroll: onQuickReplyScroll
-  }), true && /*#__PURE__*/_react.default.createElement(Composer, {
+  }), /*#__PURE__*/_react.default.createElement(Composer, {
     wideBreakpoint: wideBreakpoint,
     ref: composerRef,
+    voiceToText: voiceToText,
+    voiceToTextProps: voiceToTextProps,
     inputType: inputType,
     text: text,
     textOnce: textOnce,

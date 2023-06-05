@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useImperativeHandle, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useImperativeHandle, useCallback, ReactElement } from 'react';
 import clsx from 'clsx';
 import { IconButtonProps } from '../IconButton';
 import { Recorder, RecorderProps } from '../Recorder';
@@ -36,6 +36,8 @@ export type ComposerProps = {
   rightAction?: IconButtonProps;
   disableSend:boolean;
   btnColor:string;
+  voiceToText?:any;
+  voiceToTextProps?:any;
 };
 
 export interface ComposerHandle {
@@ -55,6 +57,8 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
     onBlur,
     onChange,
     onSend,
+    voiceToText: VoiceToText,
+    voiceToTextProps,
     disableSend=false,
     onImageSend,
     onAccessoryToggle,
@@ -65,6 +69,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
     btnColor,
   } = props;
 
+  
   const [text, setText] = useState(initialText);
   const [textOnce, setTextOnce] = useState('');
   const [placeholder, setPlaceholder] = useState(oPlaceholder);
@@ -306,6 +311,8 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
           {!isInputText && <Recorder {...recorder} />}
         </div>
         {!text && rightAction && <Action {...rightAction} />}
+       
+        {!text && VoiceToText ? <VoiceToText  {...voiceToTextProps} setInputMsg={setText} /> : null}
         {hasToolbar && (
           <Action
             className={clsx('Composer-toggleBtn', {

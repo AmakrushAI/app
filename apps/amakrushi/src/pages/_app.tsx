@@ -185,5 +185,4 @@ const App = ({
 //   return { flagsmithState: flagsmith.getState() };
 // };
 
-
 export default App;
