@@ -67,7 +67,7 @@ const HomePage: NextPage = () => {
           const response = await axios.post(
             "https://meity-auth.ulcacontrib.org/ulca/apis/v0/model/compute",
             {
-              modelId: "62b042b878d51611abf708c7",
+              modelId: process.env.NEXT_PUBLIC_TRANSLITERATION_MODELID,
               task: "transliteration",
               input: input,
             },
@@ -151,11 +151,6 @@ const HomePage: NextPage = () => {
               onChange={(e) => setInputMsg(e.target.value)}
               placeholder={placeholder}
             />
-            {/* <button
-              onClick={() => handleTransliterate(inputMsg)}
-              className={styles.transliterateButton}>
-              {t('label.transliterate')}
-            </button> */}
             <button
               type="submit"
               onClick={() => sendMessage(inputMsg)}
