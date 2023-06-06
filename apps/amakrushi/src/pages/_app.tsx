@@ -139,8 +139,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     };
 
     updateAndRequestPermission();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router]);
+  }, [isAuthenticated]);
 
   if (process.env.NODE_ENV === 'production') {
     globalThis.console.log = () => {};
