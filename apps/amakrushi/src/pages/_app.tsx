@@ -5,15 +5,12 @@ import ContextProvider from '../context/ContextProvider';
 import { ReactElement, useCallback, useEffect, useState } from 'react';
 import 'chatui/dist/index.css';
 import { Toaster } from 'react-hot-toast';
-
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
-
 import flagsmith from 'flagsmith/isomorphic';
 import { FlagsmithProvider } from 'flagsmith/react';
 import { useLogin } from '../hooks';
-
 import axios from 'axios';
 import { messaging, analytics } from '../utils/firebase';
 import { getToken } from 'firebase/messaging';
@@ -34,17 +31,12 @@ function SafeHydrate({ children }: { children: ReactElement }) {
   );
 }
 
-const App = ({
-  Component,
-  pageProps,
-}: AppProps) => {
-
+const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
   const { isAuthenticated, login } = useLogin();
   const [launch, setLaunch] = useState(true);
   const [cookie, setCookie, removeCookie] = useCookies();
   const [flagsmithState, setflagsmithState] = useState(null);
-
 
   useEffect(() => {
     const isEventLogged = sessionStorage.getItem('isSplashScreenLogged');
@@ -53,55 +45,41 @@ const App = ({
       logEvent(analytics, 'Splash_screen');
       sessionStorage.setItem('isSplashScreenLogged', 'true');
     }
-    
+
     setTimeout(() => {
       setLaunch(false);
     }, 2500);
   }, []);
-  
 
-
-  useEffect(() =>{
-    const getFlagSmithState =async ()=>{
+  useEffect(() => {
+    const getFlagSmithState = async () => {
       await flagsmith.init({
         // api: process.env.NEXT_PUBLIC_FLAGSMITH_API,
         environmentID: process.env.NEXT_PUBLIC_ENVIRONMENT_ID || '',
-      })
-      if(flagsmith.getState())
-     { 
-      //@ts-ignore
-      setflagsmithState(flagsmith.getState())
-    }
-    }
-    getFlagSmithState()
-   
-  },[])
-
- 
+      });
+      if (flagsmith.getState()) {
+        //@ts-ignore
+        setflagsmithState(flagsmith.getState());
+      }
+    };
+    getFlagSmithState();
+  }, []);
 
   const handleLoginRedirect = useCallback(() => {
     if (router.pathname === '/login' || router.pathname.startsWith('/otp')) {
       // already logged in then send to home
-
-      if (
-        cookie['access_token'] &&
-        localStorage.getItem('userID')
-      ) {
+      if (cookie['access_token'] && localStorage.getItem('userID')) {
         router.push('/');
       }
     } else {
       // not logged in then send to login page
-      if (
-        !cookie['access_token'] ||
-        !localStorage.getItem('userID')
-      ) {
-
+      if (!cookie['access_token'] || !localStorage.getItem('userID')) {
         localStorage.clear();
         sessionStorage.clear();
         router.push('/login');
       }
     }
-  }, [cookie, removeCookie, router]);
+  }, [cookie, router]);
 
   useEffect(() => {
     handleLoginRedirect();
@@ -114,42 +92,55 @@ const App = ({
   }, [isAuthenticated, login]);
 
   useEffect(() => {
-    if (!isAuthenticated || !localStorage.getItem('userID')) return;
-    // Request user for notification permission
-    const requestPermission = async () => {
+    const userID = localStorage.getItem('userID');
+    if (!isAuthenticated || !userID) return;
+
+    const requestPermission = async (): Promise<string | null> => {
       const permission = await Notification.requestPermission();
       if (permission === 'granted') {
-        // Get token
         const token = await getToken(messaging, {
           vapidKey: process.env.NEXT_PUBLIC_FCM_VAPID_KEY,
         });
         localStorage.setItem('fcm-token', token);
         console.log('Token', token);
+        return token;
       }
+      return null; // Return null if permission isn't granted
     };
-    const updateUser = async () => {
+
+    const updateUser = async (
+      fcmToken: string | Promise<string> | null,
+      permissionPromise: Promise<string | null>
+    ): Promise<void> => {
       try {
-        const userID = localStorage.getItem('userID');
         const user = await axios.get(`/api/getUser?userID=${userID}`);
-        const fcmToken = localStorage.getItem('fcm-token');
+        console.log('i am inside updateUser');
+        const storedFcmToken = localStorage.getItem('fcm-token');
         if (
-          fcmToken &&
-          user?.data?.user?.username
+          storedFcmToken &&
+          user?.data?.user?.username &&
+          storedFcmToken !== user?.data?.user?.data?.fcmToken
         ) {
-          if (!user?.data?.user?.data?.fcmToken || fcmToken !== user?.data?.user?.data?.fcmToken) {
-            const res = await axios.put(
-              `/api/updateUser?userID=${userID}&fcmToken=${fcmToken}&username=${user?.data?.user?.username}`
-            );
-          }
+          await axios.put(
+            `/api/updateUser?userID=${userID}&fcmToken=${await fcmToken}&username=${
+              user?.data?.user?.username
+            }`
+          );
         }
       } catch (err) {
         console.error(err);
       }
     };
 
-    requestPermission();
-    updateUser();
-  }, [isAuthenticated]);
+    const updateAndRequestPermission = async (): Promise<void> => {
+      const permissionPromise = requestPermission();
+      const fcmToken = localStorage.getItem('fcm-token');
+      await updateUser(fcmToken, permissionPromise);
+    };
+
+    updateAndRequestPermission();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router]);
 
   if (process.env.NODE_ENV === 'production') {
     globalThis.console.log = () => {};
