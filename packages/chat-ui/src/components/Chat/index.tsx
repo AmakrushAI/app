@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { LocaleProvider } from '../LocaleProvider';
 import { Navbar, NavbarProps } from '../Navbar';
 import {
@@ -32,6 +32,8 @@ export type ChatProps = Omit<ComposerProps, 'onFocus' | 'onChange' | 'onBlur'> &
      * 导航栏渲染函数
      */
     renderNavbar?: () => React.ReactNode;
+    voiceToText?:ReactElement;
+    voiceToTextProps?:any;
     /**
      * 加载更多文案
      */
@@ -152,6 +154,8 @@ export const Chat = React.forwardRef<HTMLDivElement, ChatProps>((props, ref) => 
     locales,
     navbar,
     renderNavbar,
+    voiceToText,
+    voiceToTextProps,
     loadMoreText,
     renderBeforeMessageList,
     messagesRef,
@@ -238,9 +242,11 @@ export const Chat = React.forwardRef<HTMLDivElement, ChatProps>((props, ref) => 
             />
           )}
           
-         {true && <Composer
+         <Composer
             wideBreakpoint={wideBreakpoint}
             ref={composerRef}
+            voiceToText={voiceToText}
+            voiceToTextProps={voiceToTextProps}
             inputType={inputType}
             text={text}
             textOnce={textOnce}
@@ -259,7 +265,7 @@ export const Chat = React.forwardRef<HTMLDivElement, ChatProps>((props, ref) => 
             btnColor={btnColor}
             onImageSend={onImageSend}
             rightAction={rightAction}
-          />}
+          />
         </div>
       </div>
     </LocaleProvider>

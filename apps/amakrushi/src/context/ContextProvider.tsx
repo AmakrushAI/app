@@ -121,10 +121,13 @@ const ContextProvider: FC<{
         //@ts-ignore
         if (conversationId === msg?.content?.conversationId)
           setMessages((prev: any) => _.uniq([...prev, newMsg], ['messageId']));
+
       }
     },
     [conversationId]
   );
+
+  console.log("erty:",{conversationId})
 
   const onMessageReceived = useCallback(
     (msg: any): void => {

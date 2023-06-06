@@ -1,35 +1,36 @@
-import styles from './index.module.css';
+import styles from "./index.module.css";
 import React, {
   useCallback,
   useContext,
   useEffect,
   useMemo,
   useState,
-} from 'react';
-import { NextPage } from 'next';
-
+} from "react";
+import { NextPage } from "next";
+import axios from "axios";
 //@ts-ignore
-import { analytics } from '../../utils/firebase';
-import { logEvent } from 'firebase/analytics';
-import Menu from '../menu';
-import { getInitialMsgs } from '../../utils/textUtility';
-import { AppContext } from '../../context';
-import RightIcon from '../../assets/icons/right';
-import sunIcon from '../../assets/icons/sun.svg';
-import reloadIcon from '../../assets/icons/reload.svg';
-import { useLocalization } from '../../hooks';
-import router from 'next/router';
-import Image from 'next/image';
-import { Button } from '@chakra-ui/react';
-import toast from 'react-hot-toast';
-import { v4 as uuidv4 } from 'uuid';
+import { analytics } from "../../utils/firebase";
+import { logEvent } from "firebase/analytics";
+import Menu from "../menu";
+import { getInitialMsgs } from "../../utils/textUtility";
+import { AppContext } from "../../context";
+
+import RightIcon from "../../assets/icons/right";
+import sunIcon from "../../assets/icons/sun.svg";
+import reloadIcon from "../../assets/icons/reload.svg";
+import { useLocalization } from "../../hooks";
+import router from "next/router";
+import Image from "next/image";
+import { Button } from "@chakra-ui/react";
+import toast from "react-hot-toast";
+import { v4 as uuidv4 } from "uuid";
 
 const HomePage: NextPage = () => {
   const context = useContext(AppContext);
   const t = useLocalization();
-  const placeholder = useMemo(() => t('message.ask_ur_question'), [t]);
+  const placeholder = useMemo(() => t("message.ask_ur_question"), [t]);
   const [messages, setMessages] = useState<Array<any>>([getInitialMsgs(t)]);
-  const [inputMsg, setInputMsg] = useState('');
+  const [inputMsg, setInputMsg] = useState("");
 
   useEffect(() => {
     setMessages([getInitialMsgs(t)]);
@@ -37,32 +38,74 @@ const HomePage: NextPage = () => {
 
   useEffect(() => {
     //@ts-ignore
-    logEvent(analytics, 'Home_page');
+    logEvent(analytics, "Home_page");
 
     context?.fetchIsDown(); // check if server is down
 
-   if(!sessionStorage.getItem('conversationId')){
-    const newConversationId = uuidv4();
-    sessionStorage.setItem('conversationId', newConversationId);
-    context?.setConversationId(newConversationId);
-   }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (!sessionStorage.getItem("conversationId")) {
+      const newConversationId = uuidv4();
+      sessionStorage.setItem("conversationId", newConversationId);
+      context?.setConversationId(newConversationId);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const sendMessage = useCallback(
-    (msg: string) => {
+    async (msg: string) => {
       if (msg.length === 0) {
-        toast.error(t('error.empty_msg'));
+        toast.error(t("error.empty_msg"));
         return;
       }
-      if (context?.socketSession && context?.newSocket?.connected) {
-        console.log('clearing mssgs');
-        context?.setMessages([]);
-        router.push('/chat');
-        context?.sendMessage(msg);
-      } else {
-        toast.error(t('error.disconnected'));
-        return;
+      try {
+        if (!(localStorage.getItem("locale") === "en")) {
+          const words = msg.split(" ");
+          // Call transliteration API
+          const input = words.map((word) => ({
+            source: word,
+          }));
+
+          const response = await axios.post(
+            "https://meity-auth.ulcacontrib.org/ulca/apis/v0/model/compute",
+            {
+              modelId: process.env.NEXT_PUBLIC_TRANSLITERATION_MODELID,
+              task: "transliteration",
+              input: input,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          console.log("transliterated msg: ", response.data.output);
+          const transliteratedArray = [];
+          for (const element of response.data.output) {
+            transliteratedArray.push(element?.target?.[0]);
+          }
+
+          if (context?.socketSession && context?.newSocket?.connected) {
+            console.log("clearing mssgs");
+            context?.setMessages([]);
+            router.push("/chat");
+            context?.sendMessage(transliteratedArray.join(" "));
+          } else {
+            toast.error(t("error.disconnected"));
+            return;
+          }
+        } else {
+          if (context?.socketSession && context?.newSocket?.connected) {
+            console.log("clearing mssgs");
+            context?.setMessages([]);
+            router.push("/chat");
+            context?.sendMessage(msg);
+          } else {
+            toast.error(t("error.disconnected"));
+            return;
+          }
+
+        }
+      } catch (error) {
+        console.error(error);
       }
     },
     [context, t]
@@ -112,7 +155,7 @@ const HomePage: NextPage = () => {
               type="submit"
               onClick={() => sendMessage(inputMsg)}
               className={styles.sendButton}>
-              {t('label.send')}
+              {t("label.send")}
             </button>
           </div>
         </form>
