@@ -91,55 +91,59 @@ const App = ({ Component, pageProps }: AppProps) => {
     }
   }, [isAuthenticated, login]);
 
+
+   const updateUser = useCallback(async (
+        fcmToken: string | null | undefined,
+       // permissionPromise: Promise<string | null>
+      ): Promise<void> => {
+        try {
+           const userID = localStorage.getItem('userID');
+          const user = await axios.get(`/api/getUser?userID=${userID}`);
+          console.log('i am inside updateUser');
+          if (
+            fcmToken &&
+            user?.data?.user?.username &&
+            fcmToken !== user?.data?.user?.data?.fcmToken
+          ) {
+            await axios.put(
+              `/api/updateUser?userID=${userID}&fcmToken=${fcmToken}&username=${
+                user?.data?.user?.username
+              }`
+            );
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      },[]);
+
+
   useEffect(() => {
     const userID = localStorage.getItem('userID');
-    if (!isAuthenticated || !userID) return;
-
-    const requestPermission = async (): Promise<string | null> => {
-      const permission = await Notification.requestPermission();
-      if (permission === 'granted') {
-        const token = await getToken(messaging, {
-          vapidKey: process.env.NEXT_PUBLIC_FCM_VAPID_KEY,
-        });
-        localStorage.setItem('fcm-token', token);
-        console.log('Token', token);
-        return token;
-      }
-      return null; // Return null if permission isn't granted
-    };
-
-    const updateUser = async (
-      fcmToken: string | Promise<string> | null,
-      permissionPromise: Promise<string | null>
-    ): Promise<void> => {
-      try {
-        const user = await axios.get(`/api/getUser?userID=${userID}`);
-        console.log('i am inside updateUser');
-        const storedFcmToken = localStorage.getItem('fcm-token');
-        if (
-          storedFcmToken &&
-          user?.data?.user?.username &&
-          storedFcmToken !== user?.data?.user?.data?.fcmToken
-        ) {
-          await axios.put(
-            `/api/updateUser?userID=${userID}&fcmToken=${await fcmToken}&username=${
-              user?.data?.user?.username
-            }`
-          );
+    if (isAuthenticated || userID) {
+      const requestPermission = async (): Promise<string | null> => {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+          const token = await getToken(messaging, {
+            vapidKey: process.env.NEXT_PUBLIC_FCM_VAPID_KEY,
+          });
+          localStorage.setItem('fcm-token', token);
+          console.log('Token', token);
+          return token;
         }
-      } catch (err) {
-        console.error(err);
-      }
-    };
+        return null; // Return null if permission isn't granted
+      };
 
-    const updateAndRequestPermission = async (): Promise<void> => {
-      const permissionPromise = requestPermission();
-      const fcmToken = localStorage.getItem('fcm-token');
-      await updateUser(fcmToken, permissionPromise);
-    };
+     
 
-    updateAndRequestPermission();
-  }, [isAuthenticated]);
+      const updateAndRequestPermission = async (): Promise<void> => {
+        const permissionPromise =await requestPermission();
+        console.log({permissionPromise})
+        await updateUser(permissionPromise);
+      };
+
+      updateAndRequestPermission();
+    }
+  }, [isAuthenticated,updateUser]);
 
   if (process.env.NODE_ENV === 'production') {
     globalThis.console.log = () => {};
