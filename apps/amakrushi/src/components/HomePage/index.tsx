@@ -24,17 +24,26 @@ import Image from "next/image";
 import { Button } from "@chakra-ui/react";
 import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
+import { useFlags } from "flagsmith/react";
 
 const HomePage: NextPage = () => {
   const context = useContext(AppContext);
   const t = useLocalization();
   const placeholder = useMemo(() => t("message.ask_ur_question"), [t]);
-  const [messages, setMessages] = useState<Array<any>>([getInitialMsgs(t)]);
+  const flags = useFlags([
+    'en_example_ques_one',
+    'en_example_ques_two',
+    'en_example_ques_three',
+    'or_example_ques_one',
+    'or_example_ques_two',
+    'or_example_ques_three',
+  ]);
+  const [messages, setMessages] = useState<Array<any>>([getInitialMsgs(t, flags, context?.locale)]);
   const [inputMsg, setInputMsg] = useState("");
 
   useEffect(() => {
-    setMessages([getInitialMsgs(t)]);
-  }, [context.locale, t]);
+    setMessages([getInitialMsgs(t, flags, context?.locale)]);
+  }, [t, context?.locale, flags]);
 
   useEffect(() => {
     //@ts-ignore
@@ -102,7 +111,6 @@ const HomePage: NextPage = () => {
             toast.error(t("error.disconnected"));
             return;
           }
-
         }
       } catch (error) {
         console.error(error);
