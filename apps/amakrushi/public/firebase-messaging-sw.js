@@ -1,10 +1,10 @@
-importScripts('https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js');
+importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js");
 importScripts(
-  'https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js'
+  "https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"
 );
 
 // Set Firebase configuration, once available
-self.addEventListener('fetch', () => {
+self.addEventListener("fetch", () => {
   const urlParams = new URLSearchParams(location.search);
   self.firebaseConfig = Object.fromEntries(urlParams);
 });
@@ -21,29 +21,43 @@ const defaultConfig = {
 firebase.initializeApp(self.firebaseConfig || defaultConfig);
 const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage((payload) => {
-  console.log('Received background message ', payload);
+messaging.setBackgroundMessageHandler((payload) => {
+  console.log("Received background message ", payload);
+
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
     icon: payload.notification.image,
-    tag: 'notification',
+    tag: "notification",
     vibrate: [200, 100, 200],
     renotify: true,
-    data: {
-      click_action: payload.notification.click_action // Add the click_action property to the notification data
-    }
+    data: { url: payload.notification.clickUrl },
   };
 
-  // self.registration.showNotification(notificationTitle, notificationOptions);
+  return self.registration.showNotification(
+    notificationTitle,
+    notificationOptions
+  );
 });
 
-self.addEventListener('notificationclick', function(event) {
+//Code for adding event on click of notification
+self.addEventListener("notificationclick", function (event) {
+  let url = event.notification.data.url;
   event.notification.close();
-  
-  const clickAction = event.notification.data.click_action;
-  
-  if (clickAction) {
-    clients.openWindow(clickAction);
-  }
+  event.waitUntil(
+    clients.matchAll({ type: "window" }).then((windowClients) => {
+      // Check if there is already a window/tab open with the target URL
+      for (var i = 0; i < windowClients.length; i++) {
+        var client = windowClients[i];
+        // If so, just focus it.
+        if (client.url === url && "focus" in client) {
+          return client.focus();
+        }
+      }
+      // If not, then open the target URL in a new window/tab.
+      if (clients.openWindow) {
+        return clients.openWindow(url);
+      }
+    })
+  );
 });
