@@ -30,8 +30,20 @@ messaging.onBackgroundMessage((payload) => {
     tag: 'notification',
     vibrate: [200, 100, 200],
     renotify: true,
+    data: {
+      click_action: payload.notification.click_action // Add the click_action property to the notification data
+    }
   };
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  // self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
+self.addEventListener('notificationclick', function(event) {
+  event.notification.close();
+  
+  const clickAction = event.notification.data.click_action;
+  
+  if (clickAction) {
+    clients.openWindow(clickAction);
+  }
+});
