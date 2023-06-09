@@ -10,7 +10,12 @@ function FeaturePopup() {
 
     request.onsuccess = (event) => {
       const db = event.target.result;
-
+      if (!db.objectStoreNames.contains("featureDetailsStore")) {
+        console.log("featureDetailsDB doesn't exist.");
+        db.close();
+        return;
+      }
+      
       const transaction = db.transaction("featureDetailsStore", "readwrite");
       const objectStore = transaction.objectStore("featureDetailsStore");
 
