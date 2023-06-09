@@ -16,6 +16,7 @@ import { messaging, analytics } from '../utils/firebase';
 import { getToken } from 'firebase/messaging';
 import FcmNotification from '../utils/FcmNotification';
 import { logEvent } from 'firebase/analytics';
+import FeaturePopup from '../components/FeaturePopup';
 
 const LaunchPage = dynamic(() => import('../components/LaunchPage'), {
   ssr: false,
@@ -158,6 +159,7 @@ const App = ({ Component, pageProps }: AppProps) => {
           <ContextProvider>
             <div style={{ height: '100%' }}>
               <FcmNotification />
+              <FeaturePopup/>
               <Toaster position="top-center" reverseOrder={false} />
               <NavBar />
               <SafeHydrate>

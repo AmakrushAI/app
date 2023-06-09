@@ -35,14 +35,23 @@ messaging.onBackgroundMessage((payload) => {
     data: {url: payload.data?.[`gcm.notification.data`]},
   };
 
+  // Store the feature details in the notification payload
+  notificationOptions.data.featureDetails = payload.data?.[`gcm.notification.featureDetails`];
+
   self.registration.showNotification(title, notificationOptions);
 });
 
 //Code for adding event on click of notification
 self.addEventListener('notificationclick', (event) => {
-  
+  console.log("hi", event);
   if (event.notification.data && event.notification.data.url) {
     self.clients.openWindow(event.notification.data.url);
+    // Retrieve the feature details from the notification payload
+    const featureDetails = event.notification.data.featureDetails;
+    if (featureDetails) {
+      // Store the feature details in IndexedDB
+      storeFeatureDetails(featureDetails);
+    }
   } else {
     self.clients.openWindow(event.currentTarget.origin);
   }
@@ -50,3 +59,39 @@ self.addEventListener('notificationclick', (event) => {
   // close notification after click
   event.notification.close();
 });
+
+function storeFeatureDetails(details) {
+  // Open IndexedDB database
+  const request = self.indexedDB.open("featureDetailsDB", 1);
+
+  // Create object store and save details
+  request.onupgradeneeded = (event) => {
+    const db = event.target.result;
+    db.createObjectStore("featureDetailsStore", { keyPath: "id" });
+  };
+
+  request.onsuccess = (event) => {
+    const db = event.target.result;
+
+    const transaction = db.transaction("featureDetailsStore", "readwrite");
+    const objectStore = transaction.objectStore("featureDetailsStore");
+    
+    // Check if the entry exists
+    const getRequest = objectStore.get(1);
+    getRequest.onsuccess = (event) => {
+      const existingEntry = event.target.result;
+      
+      if (existingEntry) {
+        // Update the existing entry
+        objectStore.put({ id: 1, details });
+      } else {
+        // Add a new entry
+        objectStore.add({ id: 1, details });
+      }
+    };
+
+    transaction.oncomplete = () => {
+      db.close();
+    };
+  };
+}
