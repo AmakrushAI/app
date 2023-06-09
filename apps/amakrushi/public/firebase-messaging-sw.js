@@ -21,46 +21,32 @@ const defaultConfig = {
 firebase.initializeApp(self.firebaseConfig || defaultConfig);
 const messaging = firebase.messaging();
 
-messaging.setBackgroundMessageHandler((payload) => {
+messaging.onBackgroundMessage((payload) => {
   console.log("Received background message ", payload);
 
-  const notificationTitle = payload.notification.title;
+  const { title, body, image } = payload.notification;
+
   const notificationOptions = {
-    body: payload.notification.body,
-    icon: payload.notification.image,
+    body,
+    icon: image,
     tag: "notification",
     vibrate: [200, 100, 200],
     renotify: true,
-    data: {
-      url: payload.notification.click_action,
-    },
+    data: {url: payload.data?.[`gcm.notification.data`]},
   };
 
-  return self.registration.showNotification(
-    notificationTitle,
-    notificationOptions
-  );
+  self.registration.showNotification(title, notificationOptions);
 });
 
 //Code for adding event on click of notification
-self.addEventListener("notificationclick", function (event) {
-  event.notification.close();
-  var url = event.notification.data.url;
-
-  // Check if the URL is defined and not empty
-  if (url && url.length > 0) {
-    event.waitUntil(
-      clients.openWindow(url).then(function (windowClient) {
-        // Check if the window was successfully opened
-        if (windowClient) {
-          windowClient.focus();
-        } else {
-          // Opening the URL in a new window/tab failed, redirecting the current window instead
-          self.clients.openWindow(url);
-        }
-      })
-    );
+self.addEventListener('notificationclick', (event) => {
+  
+  if (event.notification.data && event.notification.data.url) {
+    self.clients.openWindow(event.notification.data.url);
+  } else {
+    self.clients.openWindow(event.currentTarget.origin);
   }
+  
+  // close notification after click
+  event.notification.close();
 });
-
-
