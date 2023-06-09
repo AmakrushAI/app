@@ -31,7 +31,7 @@ messaging.setBackgroundMessageHandler((payload) => {
     tag: "notification",
     vibrate: [200, 100, 200],
     renotify: true,
-    data: { url: payload.notification.clickUrl },
+    data: { url: payload.notification.url },
   };
 
   return self.registration.showNotification(
