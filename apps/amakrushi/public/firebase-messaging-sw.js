@@ -64,9 +64,17 @@ function storeFeatureDetails(details) {
   // Open IndexedDB database
   const request = self.indexedDB.open("featureDetailsDB", 1);
 
+  request.onupgradeneeded = (event) => {
+    const db = event.target.result;
+    // Create the object store
+    db.createObjectStore("featureDetailsStore", { keyPath: "id" });
+  };
+
   request.onsuccess = (event) => {
     const db = event.target.result;
-
+    if (!db.objectStoreNames.contains("featureDetailsStore")) {
+      db.createObjectStore("featureDetailsStore", { keyPath: "id" });
+    }
     const transaction = db.transaction(["featureDetailsStore"], "readwrite");
     const objectStore = transaction.objectStore("featureDetailsStore");
 
@@ -87,16 +95,5 @@ function storeFeatureDetails(details) {
     transaction.oncomplete = () => {
       db.close();
     };
-  };
-
-  request.onupgradeneeded = (event) => {
-    const db = event.target.result;
-
-    // Create the object store
-    const objectStore = db.createObjectStore("featureDetailsStore", {
-      keyPath: "id",
-      autoIncrement: true,
-    });
-    objectStore.createIndex("detailsIndex", "details", { unique: false });
   };
 }
