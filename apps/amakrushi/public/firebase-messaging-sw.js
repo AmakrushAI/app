@@ -66,15 +66,15 @@ function storeFeatureDetails(details) {
 
   request.onupgradeneeded = (event) => {
     const db = event.target.result;
-    // Create the object store
-    db.createObjectStore("featureDetailsStore", { keyPath: "id" });
+    // Check if the object store already exists
+    if (!db.objectStoreNames.contains("featureDetailsStore")) {
+      // Create the object store
+      db.createObjectStore("featureDetailsStore", { keyPath: "id", autoIncrement: true });
+    }
   };
 
   request.onsuccess = (event) => {
-    const db = event.target.result;
-    if (!db.objectStoreNames.contains("featureDetailsStore")) {
-      db.createObjectStore("featureDetailsStore", { keyPath: "id" });
-    }
+    const db = event.target.result;  
     const transaction = db.transaction(["featureDetailsStore"], "readwrite");
     const objectStore = transaction.objectStore("featureDetailsStore");
 
