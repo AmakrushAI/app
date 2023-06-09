@@ -31,7 +31,9 @@ messaging.setBackgroundMessageHandler((payload) => {
     tag: "notification",
     vibrate: [200, 100, 200],
     renotify: true,
-    data: { url: payload.notification.url },
+    data: {
+      url: payload.notification.click_action,
+    },
   };
 
   return self.registration.showNotification(
@@ -42,22 +44,23 @@ messaging.setBackgroundMessageHandler((payload) => {
 
 //Code for adding event on click of notification
 self.addEventListener("notificationclick", function (event) {
-  let url = event.notification.data.url;
   event.notification.close();
-  event.waitUntil(
-    clients.matchAll({ type: "window" }).then((windowClients) => {
-      // Check if there is already a window/tab open with the target URL
-      for (var i = 0; i < windowClients.length; i++) {
-        var client = windowClients[i];
-        // If so, just focus it.
-        if (client.url === url && "focus" in client) {
-          return client.focus();
+  var url = event.notification.data.url;
+
+  // Check if the URL is defined and not empty
+  if (url && url.length > 0) {
+    event.waitUntil(
+      clients.openWindow(url).then(function (windowClient) {
+        // Check if the window was successfully opened
+        if (windowClient) {
+          windowClient.focus();
+        } else {
+          // Opening the URL in a new window/tab failed, redirecting the current window instead
+          self.clients.openWindow(url);
         }
-      }
-      // If not, then open the target URL in a new window/tab.
-      if (clients.openWindow) {
-        return clients.openWindow(url);
-      }
-    })
-  );
+      })
+    );
+  }
 });
+
+
