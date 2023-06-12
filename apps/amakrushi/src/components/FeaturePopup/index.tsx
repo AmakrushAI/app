@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import styles from "./styles.module.css";
+import React, { useEffect, useState } from 'react';
+import styles from './styles.module.css';
 
 function FeaturePopup() {
   const [popupData, setPopupData] = useState(null);
@@ -10,7 +10,7 @@ function FeaturePopup() {
     if (!dbExists) {
       indexedDB.databases().then((databases) => {
         for (let i = 0; i < databases.length; i++) {
-          if (databases[i].name === "featureDetailsDB") {
+          if (databases[i].name === 'featureDetailsDB') {
             setDbExists(true);
             break;
           }
@@ -18,22 +18,22 @@ function FeaturePopup() {
       });
     }
     if (dbExists) {
-      const request = indexedDB.open("featureDetailsDB", 1);
+      const request = indexedDB.open('featureDetailsDB', 1);
 
-      request.onsuccess = (event) => {
+      request.onsuccess = (event: any) => {
         const db = event.target.result;
-        if (!db.objectStoreNames.contains("featureDetailsStore")) {
+        if (!db.objectStoreNames.contains('featureDetailsStore')) {
           console.log("featureDetailsDB doesn't exist.");
           db.close();
           return;
         }
 
-        const transaction = db.transaction("featureDetailsStore", "readwrite");
-        const objectStore = transaction.objectStore("featureDetailsStore");
+        const transaction = db.transaction('featureDetailsStore', 'readwrite');
+        const objectStore = transaction.objectStore('featureDetailsStore');
 
         // Retrieve the entry with id: 1
         const getRequest = objectStore.get(1);
-        getRequest.onsuccess = (event) => {
+        getRequest.onsuccess = (event: any) => {
           const entry = event.target.result;
           if (!entry) return;
           const details = JSON.parse(entry.details);
@@ -56,18 +56,18 @@ function FeaturePopup() {
   const handleClose = () => {
     if (popupData) {
       // Open IndexedDB database
-      const request = indexedDB.open("featureDetailsDB", 1);
+      const request = indexedDB.open('featureDetailsDB', 1);
 
-      request.onsuccess = (event) => {
+      request.onsuccess = (event: any) => {
         const db = event.target.result;
-        const transaction = db.transaction("featureDetailsStore", "readwrite");
-        const objectStore = transaction.objectStore("featureDetailsStore");
+        const transaction = db.transaction('featureDetailsStore', 'readwrite');
+        const objectStore = transaction.objectStore('featureDetailsStore');
 
         // Delete the record using the fixed key "featureDetails"
         const deleteRequest = objectStore.delete(1);
 
         deleteRequest.onsuccess = () => {
-          console.log("Record deleted successfully");
+          console.log('Record deleted successfully');
         };
 
         transaction.oncomplete = () => {

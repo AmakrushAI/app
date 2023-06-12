@@ -92,31 +92,30 @@ const App = ({ Component, pageProps }: AppProps) => {
     }
   }, [isAuthenticated, login]);
 
-
-   const updateUser = useCallback(async (
-        fcmToken: string | null | undefined,
-       // permissionPromise: Promise<string | null>
-      ): Promise<void> => {
-        try {
-           const userID = localStorage.getItem('userID');
-          const user = await axios.get(`/api/getUser?userID=${userID}`);
-          console.log('i am inside updateUser');
-          if (
-            fcmToken &&
-            user?.data?.user?.username &&
-            fcmToken !== user?.data?.user?.data?.fcmToken
-          ) {
-            await axios.put(
-              `/api/updateUser?userID=${userID}&fcmToken=${fcmToken}&username=${
-                user?.data?.user?.username
-              }`
-            );
-          }
-        } catch (err) {
-          console.error(err);
+  const updateUser = useCallback(
+    async (
+      fcmToken: string | null | undefined
+      // permissionPromise: Promise<string | null>
+    ): Promise<void> => {
+      try {
+        const userID = localStorage.getItem('userID');
+        const user = await axios.get(`/api/getUser?userID=${userID}`);
+        console.log('i am inside updateUser');
+        if (
+          fcmToken &&
+          user?.data?.user?.username &&
+          fcmToken !== user?.data?.user?.data?.fcmToken
+        ) {
+          await axios.put(
+            `/api/updateUser?userID=${userID}&fcmToken=${fcmToken}&username=${user?.data?.user?.username}`
+          );
         }
-      },[]);
-
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    []
+  );
 
   useEffect(() => {
     const userID = localStorage.getItem('userID');
@@ -134,17 +133,15 @@ const App = ({ Component, pageProps }: AppProps) => {
         return null; // Return null if permission isn't granted
       };
 
-     
-
       const updateAndRequestPermission = async (): Promise<void> => {
-        const permissionPromise =await requestPermission();
-        console.log({permissionPromise})
+        const permissionPromise = await requestPermission();
+        console.log({ permissionPromise });
         await updateUser(permissionPromise);
       };
 
       updateAndRequestPermission();
     }
-  }, [isAuthenticated,updateUser]);
+  }, [isAuthenticated, updateUser]);
 
   if (process.env.NODE_ENV === 'production') {
     globalThis.console.log = () => {};
@@ -159,7 +156,7 @@ const App = ({ Component, pageProps }: AppProps) => {
           <ContextProvider>
             <div style={{ height: '100%' }}>
               <FcmNotification />
-              <FeaturePopup/>
+              <FeaturePopup />
               <Toaster position="top-center" reverseOrder={false} />
               <NavBar />
               <SafeHydrate>
