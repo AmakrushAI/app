@@ -44,7 +44,8 @@ const FcmNotification = () => {
     if (notification.title) {
       notify();
     }
-  }, [notification, notify]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [notification]);
 
   onMessageListener()
     .then((payload: any) => {
