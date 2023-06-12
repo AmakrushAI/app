@@ -6,6 +6,7 @@ const FcmNotification = () => {
   const [notification, setNotification] = useState({
     title: '',
     body: '',
+    icon: '',
     featureDetails: null,
   });
 
@@ -15,7 +16,11 @@ const FcmNotification = () => {
         backgroundColor: 'var(--primarygreen)',
         color: 'var(--tertiarygreen)',
       },
-      duration: 7000,
+      duration: 8000,
+      icon: notification.icon ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={notification.icon} alt="" width={50} height={50} />
+      ) : null,
     });
 
   function ToastDisplay() {
@@ -44,6 +49,7 @@ const FcmNotification = () => {
   useEffect(() => {
     onMessageListener()
       .then((payload: any) => {
+        console.log('hello', payload);
         const featureDetails = JSON.parse(
           payload.data?.['gcm.notification.featureDetails']
         );
@@ -54,12 +60,14 @@ const FcmNotification = () => {
           setNotification({
             title: payload?.notification?.title,
             body: payload?.notification?.body,
+            icon: payload?.notification?.image,
             featureDetails,
           });
         } else {
           setNotification({
             title: payload?.notification?.title,
             body: payload?.notification?.body,
+            icon: payload?.notification?.image,
             featureDetails: null,
           });
         }
