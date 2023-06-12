@@ -44,36 +44,31 @@ const FcmNotification = () => {
     if (notification.title) {
       notify();
     }
-  }, [notification]);
+  }, [notification, notify]);
 
-  useEffect(() => {
-    onMessageListener()
-      .then((payload: any) => {
-        console.log('hello', payload);
-        const featureDetails = JSON.parse(
-          payload.data?.['gcm.notification.featureDetails']
-        );
-        if (
-          featureDetails?.description !== '' &&
-          featureDetails?.title !== ''
-        ) {
-          setNotification({
-            title: payload?.notification?.title,
-            body: payload?.notification?.body,
-            icon: payload?.notification?.image,
-            featureDetails,
-          });
-        } else {
-          setNotification({
-            title: payload?.notification?.title,
-            body: payload?.notification?.body,
-            icon: payload?.notification?.image,
-            featureDetails: null,
-          });
-        }
-      })
-      .catch((err) => console.log('failed: ', err));
-  }, []);
+  onMessageListener()
+    .then((payload: any) => {
+      console.log('hello', payload);
+      const featureDetails = JSON.parse(
+        payload.data?.['gcm.notification.featureDetails']
+      );
+      if (featureDetails?.description !== '' && featureDetails?.title !== '') {
+        setNotification({
+          title: payload?.notification?.title,
+          body: payload?.notification?.body,
+          icon: payload?.notification?.image,
+          featureDetails,
+        });
+      } else {
+        setNotification({
+          title: payload?.notification?.title,
+          body: payload?.notification?.body,
+          icon: payload?.notification?.image,
+          featureDetails: null,
+        });
+      }
+    })
+    .catch((err) => console.log('failed: ', err));
 
   return <Toaster />;
 };
