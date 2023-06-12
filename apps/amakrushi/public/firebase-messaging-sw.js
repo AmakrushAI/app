@@ -1,10 +1,10 @@
-importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js");
+importScripts('https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js');
 importScripts(
-  "https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"
+  'https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js'
 );
 
 // Set Firebase configuration, once available
-self.addEventListener("fetch", () => {
+self.addEventListener('fetch', () => {
   const urlParams = new URLSearchParams(location.search);
   self.firebaseConfig = Object.fromEntries(urlParams);
 });
@@ -22,14 +22,14 @@ firebase.initializeApp(self.firebaseConfig || defaultConfig);
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-  console.log("Received background message ", payload);
+  console.log('Received background message ', payload);
 
   const { title, body, image } = payload.notification;
 
   const notificationOptions = {
     body,
     icon: image,
-    tag: "notification",
+    tag: 'notification',
     vibrate: [200, 100, 200],
     renotify: true,
     data: { url: payload.data?.[`gcm.notification.data`] },
@@ -43,8 +43,8 @@ messaging.onBackgroundMessage((payload) => {
 });
 
 //Code for adding event on click of notification
-self.addEventListener("notificationclick", (event) => {
-  console.log("hi", event);
+self.addEventListener('notificationclick', (event) => {
+  console.log('hi', event);
   if (event.notification.data && event.notification.data.url) {
     self.clients.openWindow(event.notification.data.url);
   } else {
@@ -52,7 +52,12 @@ self.addEventListener("notificationclick", (event) => {
   }
   // Retrieve the feature details from the notification payload
   const featureDetails = event.notification.data.featureDetails;
-  if (featureDetails) {
+  const parsedFeatureDetails = JSON.parse(featureDetails);
+  if (
+    featureDetails &&
+    parsedFeatureDetails?.title &&
+    parsedFeatureDetails?.description
+  ) {
     // Store the feature details in IndexedDB
     storeFeatureDetails(featureDetails);
   }
@@ -62,21 +67,24 @@ self.addEventListener("notificationclick", (event) => {
 
 function storeFeatureDetails(details) {
   // Open IndexedDB database
-  const request = self.indexedDB.open("featureDetailsDB", 1);
+  const request = self.indexedDB.open('featureDetailsDB', 1);
 
   request.onupgradeneeded = (event) => {
     const db = event.target.result;
     // Check if the object store already exists
-    if (!db.objectStoreNames.contains("featureDetailsStore")) {
+    if (!db.objectStoreNames.contains('featureDetailsStore')) {
       // Create the object store
-      db.createObjectStore("featureDetailsStore", { keyPath: "id", autoIncrement: true });
+      db.createObjectStore('featureDetailsStore', {
+        keyPath: 'id',
+        autoIncrement: true,
+      });
     }
   };
 
   request.onsuccess = (event) => {
-    const db = event.target.result;  
-    const transaction = db.transaction(["featureDetailsStore"], "readwrite");
-    const objectStore = transaction.objectStore("featureDetailsStore");
+    const db = event.target.result;
+    const transaction = db.transaction(['featureDetailsStore'], 'readwrite');
+    const objectStore = transaction.objectStore('featureDetailsStore');
 
     // Check if the entry exists
     const getRequest = objectStore.get(1);
