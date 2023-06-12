@@ -178,4 +178,4 @@ const App = ({ Component, pageProps }: AppProps) => {
 //   return { flagsmithState: flagsmith.getState() };
 // };
 
-export default App;
+export default App
