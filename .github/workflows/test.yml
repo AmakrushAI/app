@@ -30,7 +30,7 @@ jobs:
         run: npm run format:check      
 
       - name: Install browser binaries
-      run: npx playwright install
+        run: npx playwright install
 
       - name: Run the tests and generate coverage report
         run: npm run test
@@ -40,4 +40,3 @@ jobs:
 
       - name: Start the dev server and Playwright testing
         run: npm run dev & sleep 5 && npm run e2e:test
-      
