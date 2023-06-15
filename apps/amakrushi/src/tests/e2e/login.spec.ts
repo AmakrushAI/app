@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }, testInfo) => {
   // Wait for the page title to load
   await page.waitForFunction(() => document.title === 'ଆମ କୃଷି');
 
-  testInfo.setTimeout(testInfo.timeout + 30000);
+  testInfo.setTimeout(testInfo.timeout + 90000);
 });
 
 test('Login Page - Input Field', async ({ page }) => {

@@ -1,4 +1,4 @@
-name: CI/CD check
+name: E2E Testing
 
 on:
   push:
