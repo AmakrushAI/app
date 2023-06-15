@@ -26,5 +26,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install browser binaries
+        run: npx playwright install
+
       - name: Start the dev server and Playwright testing
         run: npm run dev & sleep 5 && npm run e2e:test
