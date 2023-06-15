@@ -10,8 +10,10 @@
     "build": "turbo run build",
     "dev": "concurrently \"yarn run watch\" \"turbo run dev\"",
     "lint": "turbo run lint",
+    "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "watch": "lerna run watch --parallel"
+    "watch": "lerna run watch --parallel",
+    "e2e:test": "cd apps/amakrushi && npm run e2e:test"
   },
   "devDependencies": {
     "concurrently": "^8.0.1",
