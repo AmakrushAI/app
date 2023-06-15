@@ -5,7 +5,11 @@ test.beforeEach(async ({ page }) => {
   // Navigate to the login page
   await page.goto('http://localhost:3000');
   // Wait for the page title to load
-  await page.waitForFunction(() => document.title === 'ଆମ କୃଷି');
+  const pageTitle = await page.title();
+  console.log('Page title:', pageTitle);
+  await page.waitForFunction(() => document.title === 'ଆମ କୃଷି', {
+    timeout: 5000,
+  });
 });
 
 test('Login Page - Input Field', async ({ page }) => {
@@ -14,7 +18,9 @@ test('Login Page - Input Field', async ({ page }) => {
   expect(mobileNumberInput).not.toBeNull(); // Assert that the input field exists
 
   if (mobileNumberInput) {
-    const inputPlaceholder = await mobileNumberInput.getAttribute('placeholder');
+    const inputPlaceholder = await mobileNumberInput.getAttribute(
+      'placeholder'
+    );
     expect(inputPlaceholder).toBe('ମୋବାଇଲ୍ ନମ୍ବର ପ୍ରବେଶ କରନ୍ତୁ |');
   } else {
     throw new Error('Mobile number input field not found.');
