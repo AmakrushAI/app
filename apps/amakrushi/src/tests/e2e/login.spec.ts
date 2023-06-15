@@ -1,13 +1,11 @@
 import { test, expect } from '@playwright/test';
 
 // This code will run before each test
-test.beforeEach(async ({ page }, testInfo) => {
+test.beforeEach(async ({ page }) => {
   // Navigate to the login page
   await page.goto('http://localhost:3000');
   // Wait for the page title to load
   await page.waitForFunction(() => document.title === 'ଆମ କୃଷି');
-
-  testInfo.setTimeout(testInfo.timeout + 90000);
 });
 
 test('Login Page - Input Field', async ({ page }) => {
