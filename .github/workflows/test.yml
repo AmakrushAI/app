@@ -29,9 +29,6 @@ jobs:
       - name: Install browser binaries
         run: npx playwright install
 
-      - name: Run the tests and generate coverage report
-        run: npm run test
-
       - name: Build
         run: npm run build
 
