@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   // Navigate to the login page
   await page.goto('http://localhost:3000');
   // Wait for the page title to load
-  // await page.waitForFunction(() => document.title === 'ଆମ କୃଷି');
+  await page.waitForFunction(() => document.title === 'ଆମ କୃଷି');
 });
 
 test('Login Page - Input Field', async ({ page }) => {

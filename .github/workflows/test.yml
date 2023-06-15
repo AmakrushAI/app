@@ -30,4 +30,11 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Start the dev server and Playwright testing
-        run: npm run dev & sleep 70 && npm run e2e:test
+        run: |
+          npm run dev &
+
+          # Wait until the server is ready
+          until nc -z localhost 3000; do sleep 1; done
+
+          # Run Playwright tests
+          npm run e2e:test
