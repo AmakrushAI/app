@@ -5,12 +5,7 @@ const config: PlaywrightTestConfig = {
   outputDir: './src/tests/test-results',
   use: {
     video: 'on',
-    baseURL: 'http://localhost:3000/',
-  },
-  webServer: {
-    command: 'npm start',
-    url: 'http://localhost:3000/',
-    timeout: 120000,
+    baseURL: 'http://localhost:3000',
   },
 };
 

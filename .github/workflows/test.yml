@@ -52,9 +52,3 @@ jobs:
           NEXT_PUBLIC_DHRUVA_AUTH: ${{secrets.NEXT_PUBLIC_DHRUVA_AUTH}}
           NEXT_PUBLIC_TRANSLITERATION_MODELID: ${{secrets.NEXT_PUBLIC_TRANSLITERATION_MODELID}}
         run: npm run dev & sleep 65 && npm run e2e:test
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
