@@ -5,8 +5,11 @@ test.beforeEach(async ({ page }) => {
   // Navigate to the login page
   await page.goto('http://localhost:3000');
   // Wait for the page title to load
+  await page.waitForLoadState('networkidle');
   const pageTitle = await page.title();
   console.log('Page title:', pageTitle);
+  await page.screenshot({ path: 'page-screenshot.png' });
+
   await page.waitForFunction(() => document.title === 'ଆମ କୃଷି', {
     timeout: 5000,
   });
