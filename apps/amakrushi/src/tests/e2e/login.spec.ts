@@ -6,13 +6,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto('http://localhost:3000');
   // Wait for the page title to load
   await page.waitForLoadState('networkidle');
-  const pageTitle = await page.title();
-  console.log('Page title:', pageTitle);
-  await page.screenshot({ path: 'page-screenshot.png' });
-
-  await page.waitForFunction(() => document.title === 'ଆମ କୃଷି', {
-    timeout: 5000,
-  });
+  await page.waitForFunction(() => document.title === 'ଆମ କୃଷି');
 });
 
 test('Login Page - Input Field', async ({ page }) => {
@@ -42,7 +36,7 @@ test('Login Page - Continue Button', async ({ page }) => {
     expect(await continueButton?.innerText()).toBe('ଜାରି ରଖ');
     await continueButton?.click();
 
-    // Verify the URL after clicking continue
+    // Verify the URL remains same after clicking continue
     const currentURL = page.url();
     expect(currentURL).toBe('http://localhost:3000/login');
   } else {
@@ -62,7 +56,7 @@ test('OTP Page - URL and Verification', async ({ page }) => {
     await continueButton?.click();
 
     // Verify the URL after clicking continue
-    const otpURL = new URL('http://localhost:3000/otp?state=903435053');
+    const otpURL = new URL('http://localhost:3000/otp?state=9034350533');
     await page.waitForURL((url) => url.href.startsWith(otpURL.href));
 
     // Verify the new URL after clicking continue
