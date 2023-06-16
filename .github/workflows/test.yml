@@ -24,13 +24,13 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Install browser binaries
         run: npx playwright install --with-deps
 
       - name: Start the dev server and Playwright testing
-        env: 
+        env:
           NEXT_PUBLIC_ENVIRONMENT_ID: ${{secrets.NEXT_PUBLIC_ENVIRONMENT_ID}}
           NEXT_PUBLIC_FLAGSMITH_API: ${{secrets.NEXT_PUBLIC_FLAGSMITH_API}}
           NEXT_PUBLIC_SOCKET_URL: ${{secrets.NEXT_PUBLIC_SOCKET_URL}}
@@ -51,11 +51,4 @@ jobs:
           NEXT_PUBLIC_FUS_AUTH: ${{secrets.NEXT_PUBLIC_FUS_AUTH}}
           NEXT_PUBLIC_DHRUVA_AUTH: ${{secrets.NEXT_PUBLIC_DHRUVA_AUTH}}
           NEXT_PUBLIC_TRANSLITERATION_MODELID: ${{secrets.NEXT_PUBLIC_TRANSLITERATION_MODELID}}
-        run: xvfb-run -a npm run dev & sleep 65 && xvfb-run -a ffmpeg -y -f x11grab -video_size 1024x768 -i $DISPLAY -codec:v libx264 -r 30 -preset ultrafast output.mp4 && npm run e2e:test && pkill -9 ffmpeg
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: workflow-artifacts
-          path: |
-            output.mp4
+        run: npm run dev & sleep 65 && npm run e2e:test
