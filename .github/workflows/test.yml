@@ -51,4 +51,16 @@ jobs:
           NEXT_PUBLIC_FUS_AUTH: ${{secrets.NEXT_PUBLIC_FUS_AUTH}}
           NEXT_PUBLIC_DHRUVA_AUTH: ${{secrets.NEXT_PUBLIC_DHRUVA_AUTH}}
           NEXT_PUBLIC_TRANSLITERATION_MODELID: ${{secrets.NEXT_PUBLIC_TRANSLITERATION_MODELID}}
-        run: npm run dev & sleep 65 && npm run e2e:test
+        run: |
+          npm run dev &
+          sleep 65
+          ffmpeg -y -f x11grab -video_size 1024x768 -i $DISPLAY -codec:v libx264 -r 30 -preset ultrafast output.mp4
+          npm run e2e:test
+          pkill -9 ffmpeg
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: workflow-artifacts
+          path: |
+            output.mp4
