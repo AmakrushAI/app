@@ -31,7 +31,6 @@ jobs:
 
       - name: Start the dev server and Playwright testing
         env:
-          environment: E2E
           NEXT_PUBLIC_ENVIRONMENT_ID: ${{secrets.NEXT_PUBLIC_ENVIRONMENT_ID}}
           NEXT_PUBLIC_FLAGSMITH_API: ${{secrets.NEXT_PUBLIC_FLAGSMITH_API}}
           NEXT_PUBLIC_SOCKET_URL: ${{secrets.NEXT_PUBLIC_SOCKET_URL}}
