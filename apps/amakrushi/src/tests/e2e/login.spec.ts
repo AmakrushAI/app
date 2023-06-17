@@ -6,13 +6,12 @@ test.beforeEach(async ({ page }) => {
   await page.goto('http://localhost:3000');
   // Wait for the page title to load
   await page.waitForLoadState('networkidle');
-  // await page.waitForFunction(() => document.title === 'ଆମ କୃଷି');
+  await page.waitForFunction(() => document.title === 'ଆମ କୃଷି');
 });
 
-test('Login Page - Input Field', async ({ page }) => {
+test('Login Page - Mobile input field', async ({ page }) => {
   // Find the mobile number input field
   const mobileNumberInput = await page.$('#mobile-number-input');
-  console.log("Mobile Number Input: ", mobileNumberInput);
   expect(mobileNumberInput).not.toBeNull(); // Assert that the input field exists
 
   if (mobileNumberInput) {
@@ -25,7 +24,7 @@ test('Login Page - Input Field', async ({ page }) => {
   }
 });
 
-test('Login Page - Continue Button', async ({ page }) => {
+test('Login Page - Less than 10 digits', async ({ page }) => {
   // Find the mobile number input field
   const mobileNumberInput = await page.$('#mobile-number-input');
   expect(mobileNumberInput).not.toBeNull(); // Assert that the input field exists
@@ -45,7 +44,7 @@ test('Login Page - Continue Button', async ({ page }) => {
   }
 });
 
-test('OTP Page - URL and Verification', async ({ page }) => {
+test('Login Page - Send OTP', async ({ page }) => {
   // Find the mobile number input field
   const mobileNumberInput = await page.$('#mobile-number-input');
   expect(mobileNumberInput).not.toBeNull(); // Assert that the input field exists
