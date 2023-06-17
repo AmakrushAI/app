@@ -52,9 +52,10 @@ jobs:
           NEXT_PUBLIC_DHRUVA_AUTH: ${{secrets.NEXT_PUBLIC_DHRUVA_AUTH}}
           NEXT_PUBLIC_TRANSLITERATION_MODELID: ${{secrets.NEXT_PUBLIC_TRANSLITERATION_MODELID}}
         run: npm run dev & sleep 65 && npm run e2e:test
-      - uses: actions/upload-artifact@v3
+      - name: Uploading Test Video (can be downloaded from Summary)
+        uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: Report
+          name: Test Video
           path: test-results
           retention-days: 2
