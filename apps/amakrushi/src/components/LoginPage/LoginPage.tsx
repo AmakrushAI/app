@@ -68,7 +68,7 @@ const LoginPage: React.FC = () => {
 
         <form onSubmit={(event) => event?.preventDefault()}>
           <div className={styles.container}>
-            <NumberInput style={{ margin: '5vh auto 0px auto', width: '100%' }}>
+            <NumberInput id='mobile-number-input' style={{ margin: '5vh auto 0px auto', width: '100%' }}>
               <NumberInputField
                 height="45px"
                 padding="18px 16px"
@@ -95,7 +95,7 @@ const LoginPage: React.FC = () => {
         >
           {t("message.register_message")}
         </div> */}
-            <button className={styles.submitButton} onClick={handleOTPPage} disabled={isButtonDisabled}>
+            <button id='login-continue-button' className={styles.submitButton} onClick={handleOTPPage} disabled={isButtonDisabled}>
               {t('label.continue')}
             </button>
           </div>

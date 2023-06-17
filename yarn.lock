@@ -2102,23 +2102,9 @@
   "version" "3.6.0"
 
 "@cypress/mount-utils@1.0.2":
-  "integrity" "sha512-Fn3fdTiyayHoy8Ol0RSu4MlBH2maQ2ZEXeEVKl/zHHXEQpld5HX3vdNLhK5YLij8cLynA4DxOT/nO9iEnIiOXw=="
-  "resolved" "https://registry.npmjs.org/@cypress/mount-utils/-/mount-utils-1.0.2.tgz"
   "version" "1.0.2"
 
-"@cypress/react@^5.12.5":
-  "integrity" "sha512-9ARxdLMVrrmh853xe6j9gNdXdh+vqM7lMrvJ+MGoT4Wae+nE0q3guNgotFZjFot0ZP/npw8r3NFyJO216ddbEA=="
-  "resolved" "https://registry.npmjs.org/@cypress/react/-/react-5.12.5.tgz"
-  "version" "5.12.5"
-  dependencies:
-    "@cypress/mount-utils" "1.0.2"
-    "debug" "^4.3.2"
-    "find-webpack" "2.2.1"
-    "find-yarn-workspace-root" "2.0.0"
-
 "@cypress/request@^2.88.10":
-  "integrity" "sha512-M83/wfQ1EkspjkE2lNWNV5ui2Cv7UCv1swW1DqljahbzLVWltcsexQh8jYtuS/vzFXP+HySntGM83ZXA9fn17w=="
-  "resolved" "https://registry.npmjs.org/@cypress/request/-/request-2.88.11.tgz"
   "version" "2.88.11"
   dependencies:
     "aws-sign2" "~0.7.0"
@@ -2140,19 +2126,7 @@
     "tunnel-agent" "^0.6.0"
     "uuid" "^8.3.2"
 
-"@cypress/webpack-dev-server@^1.8.4":
-  "integrity" "sha512-kDg57ozD4vzIwHa0FhT44IoMKqsgFy7WV5SbBjWLBPdoOhuCdf22gy8VukaxwYqh+MFKxqVJ7hqVLErmMgpAYA=="
-  "resolved" "https://registry.npmjs.org/@cypress/webpack-dev-server/-/webpack-dev-server-1.8.4.tgz"
-  "version" "1.8.4"
-  dependencies:
-    "debug" "^4.3.2"
-    "lodash" "^4.17.21"
-    "semver" "^7.3.4"
-    "webpack-merge" "^5.4.0"
-
 "@cypress/xvfb@^1.2.4":
-  "integrity" "sha512-skbBzPggOVYCbnGgV+0dmBdW/s77ZkAOXIC1knS8NagwDjBrNC1LuXtQJeiN6l+m7lzmHtaoUw/ctJKdqkG57Q=="
-  "resolved" "https://registry.npmjs.org/@cypress/xvfb/-/xvfb-1.2.4.tgz"
   "version" "1.2.4"
   dependencies:
     "debug" "^3.1.0"
@@ -3330,26 +3304,6 @@
     "write-pkg" "4.0.0"
     "yargs" "16.2.0"
 
-"@magicbell/magicbell-react@^8.5.3":
-  "version" "8.5.6"
-  dependencies:
-    "@emotion/react" "^11.4.1"
-    "@magicbell/react-headless" "^2.6.4"
-    "@tippyjs/react" "^4.2.4"
-    "ably" "^1.2.14"
-    "axios" "^0.26.0"
-    "dayjs" "^1.10.4"
-    "humps" "^2.0.1"
-    "immer" "^9.0.7"
-    "miragejs" "^0.1.41"
-    "ramda" "^0.28.0"
-    "react-infinite-scroll-component" "^6.0.0"
-    "react-use" "^17.2.1"
-    "timeago.js" "^4.0.2"
-    "tinycolor2" "^1.4.2"
-    "tslib" "^2.3.1"
-    "zustand" "^3.6.4"
-
 "@magicbell/react-headless@^2.6.4":
   "version" "2.6.4"
   dependencies:
@@ -3934,6 +3888,16 @@
   dependencies:
     "node-addon-api" "^3.2.1"
     "node-gyp-build" "^4.3.0"
+
+"@playwright/test@^1.35.0":
+  "integrity" "sha512-6qXdd5edCBynOwsz1YcNfgX8tNWeuS9fxy5o59D0rvHXxRtjXRebB4gE4vFVfEMXl/z8zTnAzfOs7aQDEs8G4Q=="
+  "resolved" "https://registry.npmjs.org/@playwright/test/-/test-1.35.0.tgz"
+  "version" "1.35.0"
+  dependencies:
+    "@types/node" "*"
+    "playwright-core" "1.35.0"
+  optionalDependencies:
+    "fsevents" "2.3.2"
 
 "@pmmmwh/react-refresh-webpack-plugin@^0.5.1", "@pmmmwh/react-refresh-webpack-plugin@^0.5.3":
   "version" "0.5.10"
@@ -5124,11 +5088,20 @@
     "lodash" "^4.17.15"
     "redent" "^3.0.0"
 
-"@testing-library/react@^10.4.9", "@testing-library/react@^12.1.5":
+"@testing-library/react@^10.4.9":
   "version" "10.4.9"
   dependencies:
     "@babel/runtime" "^7.10.3"
     "@testing-library/dom" "^7.22.3"
+
+"@testing-library/react@^12.1.5":
+  "integrity" "sha512-OfTXCJUFgjd/digLUuPxa0+/3ZxsQmE7ub9kcbW/wi96Bh3o/p5vrETcBGfP17NWPGqeYYl5LTRpwyGoMC4ysg=="
+  "resolved" "https://registry.npmjs.org/@testing-library/react/-/react-12.1.5.tgz"
+  "version" "12.1.5"
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "@testing-library/dom" "^8.0.0"
+    "@types/react-dom" "<18.0.0"
 
 "@testing-library/user-event@^12.8.3":
   "version" "12.8.3"
@@ -5347,11 +5320,19 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@*", "@types/jest@^25.2.3", "@types/jest@^28.1.1":
+"@types/jest@*", "@types/jest@^25.2.3":
   "version" "25.2.3"
   dependencies:
     "jest-diff" "^25.2.1"
     "pretty-format" "^25.2.1"
+
+"@types/jest@^28.1.1":
+  "integrity" "sha512-8TJkV++s7B6XqnDrzR1m/TT0A0h948Pnl/097veySPN67VRAgQ4gZ7n2KfJo2rVq6njQjdxU3GCCyDvAeuHoiw=="
+  "resolved" "https://registry.npmjs.org/@types/jest/-/jest-28.1.8.tgz"
+  "version" "28.1.8"
+  dependencies:
+    "expect" "^28.0.0"
+    "pretty-format" "^28.0.0"
 
 "@types/js-cookie@^2.2.6":
   "version" "2.2.7"
@@ -5424,10 +5405,6 @@
 
 "@types/node@^17.0.12":
   "version" "17.0.45"
-  dependencies:
-    "@types/prop-types" "*"
-    "@types/scheduler" "*"
-    "csstype" "^3.0.2"
 
 "@types/normalize-package-data@^2.4.0":
   "version" "2.4.1"
@@ -5471,7 +5448,7 @@
   dependencies:
     "@types/react" "^17"
 
-"@types/react-dom@^18.0.4", "@types/react-dom@^18.0.5":
+"@types/react-dom@^18.0.5":
   "integrity" "sha512-OWPWTUrY/NIrjsAPkAk1wW9LZeIjSvkXRhclsFO8CZcZGCOg2G0YZy4ft+rOyYxy8B7ui5iZzi9OkDebZ7/QSA=="
   "resolved" "https://registry.npmjs.org/@types/react-dom/-/react-dom-18.0.5.tgz"
   "version" "18.0.5"
@@ -5488,7 +5465,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^18.0.10", "@types/react@^18.0.9", "@types/react@>=16.9.11", "@types/react@16 || 17 || 18":
+"@types/react@*", "@types/react@^18.0.10", "@types/react@>=16.9.11", "@types/react@16 || 17 || 18":
   "integrity" "sha512-dIugadZuIPrRzvIEevIu7A1smqOAjkSMv8qOfwPt9Ve6i6JT/FQcCHyk2qIAxwsQNKZt5/oGR0T4z9h2dXRAkg=="
   "resolved" "https://registry.npmjs.org/@types/react/-/react-18.0.10.tgz"
   "version" "18.0.10"
@@ -6167,7 +6144,6 @@
     "@chakra-ui/react" "^1.8.8"
     "@emotion/react" "^11.7.1"
     "@emotion/styled" "^11.6.0"
-    "@magicbell/magicbell-react" "^8.5.3"
     "@material-ui/core" "^4.12.4"
     "@next/bundle-analyzer" "^13.3.0"
     "@storybook/react" "^6.5.9"
@@ -6176,7 +6152,6 @@
     "@testing-library/user-event" "^12.8.3"
     "@types/jest" "^25.2.3"
     "@types/node" "^12.20.46"
-    "audio-react-recorder" "^1.0.4"
     "axios" "^1.3.5"
     "bootstrap" "^5.1.3"
     "chatui" "*"
@@ -6504,13 +6479,6 @@
 
 "atob@^2.1.2":
   "version" "2.1.2"
-
-"audio-react-recorder@^1.0.4":
-  "integrity" "sha512-an7eX0yOGDbZOSu2LvnfWIsI41pkx9nXgtBVbI+9ByS91WKqoVGVb5pbmqHax5sZty2DjOIG/neuxcghIU/ucg=="
-  "resolved" "https://registry.npmjs.org/audio-react-recorder/-/audio-react-recorder-1.0.4.tgz"
-  "version" "1.0.4"
-  dependencies:
-    "prop-types" "^15.7.2"
 
 "autoprefixer@^10.4.13", "autoprefixer@^10.4.7":
   "version" "10.4.14"
@@ -8235,52 +8203,6 @@
 "cyclist@^1.0.1":
   "version" "1.0.1"
 
-"cypress@^9.7.0":
-  "version" "9.7.0"
-  dependencies:
-    "@cypress/request" "^2.88.10"
-    "@cypress/xvfb" "^1.2.4"
-    "@types/node" "^14.14.31"
-    "@types/sinonjs__fake-timers" "8.1.1"
-    "@types/sizzle" "^2.3.2"
-    "arch" "^2.2.0"
-    "blob-util" "^2.0.2"
-    "bluebird" "^3.7.2"
-    "buffer" "^5.6.0"
-    "cachedir" "^2.3.0"
-    "chalk" "^4.1.0"
-    "check-more-types" "^2.24.0"
-    "cli-cursor" "^3.1.0"
-    "cli-table3" "~0.6.1"
-    "commander" "^5.1.0"
-    "common-tags" "^1.8.0"
-    "dayjs" "^1.10.4"
-    "debug" "^4.3.2"
-    "enquirer" "^2.3.6"
-    "eventemitter2" "^6.4.3"
-    "execa" "4.1.0"
-    "executable" "^4.1.1"
-    "extract-zip" "2.0.1"
-    "figures" "^3.2.0"
-    "fs-extra" "^9.1.0"
-    "getos" "^3.2.1"
-    "is-ci" "^3.0.0"
-    "is-installed-globally" "~0.4.0"
-    "lazy-ass" "^1.6.0"
-    "listr2" "^3.8.3"
-    "lodash" "^4.17.21"
-    "log-symbols" "^4.0.0"
-    "minimist" "^1.2.6"
-    "ospath" "^1.2.2"
-    "pretty-bytes" "^5.6.0"
-    "proxy-from-env" "1.0.0"
-    "request-progress" "^3.0.0"
-    "semver" "^7.3.2"
-    "supports-color" "^8.1.1"
-    "tmp" "~0.2.1"
-    "untildify" "^4.0.0"
-    "yauzl" "^2.10.0"
-
 "damerau-levenshtein@^1.0.8":
   "version" "1.0.8"
 
@@ -9305,7 +9227,7 @@
     "text-table" "^0.2.0"
     "v8-compile-cache" "^2.0.3"
 
-"eslint@^8.15.0", "eslint@^8.17.0", "eslint@^8.3.0", "eslint@8.18.0":
+"eslint@^8.17.0", "eslint@^8.3.0", "eslint@8.18.0":
   "version" "8.18.0"
   dependencies:
     "@eslint/eslintrc" "^1.3.0"
@@ -12391,12 +12313,22 @@
     "merge-stream" "^2.0.0"
     "supports-color" "^8.0.0"
 
-"jest@^27.4.3", "jest@^28.1.1":
+"jest@^27.4.3":
   "version" "27.5.1"
   dependencies:
     "@jest/core" "^27.5.1"
     "import-local" "^3.0.2"
     "jest-cli" "^27.5.1"
+
+"jest@^28.1.1":
+  "integrity" "sha512-N4GT5on8UkZgH0O5LUavMRV1EDEhNTL0KEfRmDIeZHSV7p2XgLoY9t9VDUgL6o+yfdgYHVxuz81G8oB9VG5uyA=="
+  "resolved" "https://registry.npmjs.org/jest/-/jest-28.1.3.tgz"
+  "version" "28.1.3"
+  dependencies:
+    "@jest/core" "^28.1.3"
+    "@jest/types" "^28.1.3"
+    "import-local" "^3.0.2"
+    "jest-cli" "^28.1.3"
 
 "jiti@^1.17.2":
   "version" "1.18.2"
@@ -14987,6 +14919,11 @@
   dependencies:
     "find-up" "^3.0.0"
 
+"playwright-core@1.35.0":
+  "integrity" "sha512-muMXyPmIx/2DPrCHOD1H1ePT01o7OdKxKj2ebmCAYvqhUy+Y1bpal7B0rdoxros7YrXI294JT/DWw2LqyiqTPA=="
+  "resolved" "https://registry.npmjs.org/playwright-core/-/playwright-core-1.35.0.tgz"
+  "version" "1.35.0"
+
 "pnp-webpack-plugin@^1.7.0":
   "version" "1.7.0"
   dependencies:
@@ -16208,16 +16145,16 @@
     "object-assign" "^4.1.1"
     "prop-types" "^15.6.2"
 
-"react@^18.1.0", "react@17.0.2":
-  "version" "17.0.2"
-  dependencies:
-    "loose-envify" "^1.1.0"
-    "object-assign" "^4.1.1"
-
 "react@^18.2.0":
   "version" "18.2.0"
   dependencies:
     "loose-envify" "^1.1.0"
+
+"react@17.0.2":
+  "version" "17.0.2"
+  dependencies:
+    "loose-envify" "^1.1.0"
+    "object-assign" "^4.1.1"
 
 "read-cache@^1.0.0":
   "version" "1.0.0"

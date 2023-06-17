@@ -1,8 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalEnv": [
-    "NEXT_PUBLIC_MAGICBELL_API_KEY",
-    "NEXT_PUBLIC_MAGICBELL_USER_EMAIL",
     "NEXT_PUBLIC_OTP_BASE_URL",
     "NEXT_PUBLIC_FIREBASE_API_KEY",
     "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN",
