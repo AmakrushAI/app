@@ -71,7 +71,7 @@ const ChatUiWindow: React.FC = () => {
           conversationId === "null" || item.conversationId === conversationId
       )
       .flatMap((item: any) => [
-        {
+       item.query?.length && {
           text: item.query,
           position: "right",
           repliedTimestamp: item.createdAt,
@@ -85,7 +85,7 @@ const ChatUiWindow: React.FC = () => {
           msgId: item.id,
           messageId: item.id,
         },
-      ]);
+      ].filter(Boolean));
 
     console.log("historyyy", history);
     console.log("history length:", history.length);
