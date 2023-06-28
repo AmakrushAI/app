@@ -98,7 +98,7 @@ const OTPpage: React.FC = () => {
           );
       }
     }else {
-      toast.error("No Internet")
+      toast.error(`${t("label.no_internet")}`)
     }
    
    

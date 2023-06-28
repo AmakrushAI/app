@@ -49,7 +49,7 @@ const LoginPage: React.FC = () => {
             toast.error(err.message);
           });
       } else {
-        toast.error("No Interet");
+        toast.error(`${t("label.no_internet")}`)
       }
     }
   };
