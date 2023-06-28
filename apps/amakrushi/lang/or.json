@@ -22,6 +22,7 @@
     "label.new_chat":"ନୂଆ ଚାଟ୍",
     "label.confirm_delete":"ଆପଣ ନିଶ୍ଚିତ କି ଆପଣ ଏହି ବାର୍ତ୍ତାଳାପକୁ ବିଲୋପ କରିବାକୁ ଚାହୁଁଛନ୍ତି?",
     "label.no_history":"କ chat ଣସି ଚାଟ୍ ନାହିଁ |",
+    "label.no_internet":"ନା ଇଣ୍ଟରନେଟ୍ ",
     "message.no_history":"AI ସହିତ ଆପଣଙ୍କର ଚାଟ୍ ଇତିହାସ ଏଠାକୁ ଆସିବ |",
     "message.socket_disconnect_msg": "ପୁନର୍ବାର ସଂଯୋଗ କରିବାକୁ |",
     "message.enter_mobile":"ମୋବାଇଲ୍ ନମ୍ବର ପ୍ରବେଶ କରନ୍ତୁ |",
