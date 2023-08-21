@@ -1,7 +1,7 @@
 import styles from './index.module.css';
 import React, { useCallback, useEffect, useState } from 'react';
 import searchIcon from '../../assets/icons/search.svg';
-import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import { Input, InputGroup, InputLeftElement, Spinner } from '@chakra-ui/react';
 import ChatItem from '../chat-item';
 import { NextPage } from 'next';
 import Image from 'next/image';
@@ -19,10 +19,13 @@ const HistoryPage: NextPage = () => {
   const [conversations, setConversations] = useState([]);
   const flags = useFlags(['show_chat_history_page']);
   const t = useLocalization();
+  const [gettingHistory, setGettingHistory] = useState(false);
 
   useEffect(() => {
     //@ts-ignore
     logEvent(analytics, 'Chat_History_page');
+
+    setGettingHistory(true);
 
     axios
       .get(`${process.env.NEXT_PUBLIC_BASE_URL}/user/conversations`, {
@@ -41,25 +44,29 @@ const HistoryPage: NextPage = () => {
         //@ts-ignore
         setConversations(sortedConversations);
         console.log('hie', sortedConversations);
+        setGettingHistory(false);
       })
       .catch((error) => {
         //@ts-ignore
         logEvent(analytics, 'console_error', {
           error_message: error.message,
         });
+        setGettingHistory(false);
       });
   }, []);
 
   // Function to delete conversation by conversationId
-  const deleteConversationById = useCallback((conversationIdToDelete: any) => {
-    const filteredConversations = [...conversations].filter(
-      (conversation: any) => conversation.conversationId !== conversationIdToDelete
-    );
-    setConversations(filteredConversations);
-  }, [conversations]);
-  
+  const deleteConversationById = useCallback(
+    (conversationIdToDelete: any) => {
+      const filteredConversations = [...conversations].filter(
+        (conversation: any) =>
+          conversation.conversationId !== conversationIdToDelete
+      );
+      setConversations(filteredConversations);
+    },
+    [conversations]
+  );
 
- 
   if (!flags?.show_chat_history_page?.enabled) {
     return <ComingSoonPage />;
   } else
@@ -74,23 +81,28 @@ const HistoryPage: NextPage = () => {
             <Input type="text" placeholder="Search" />
           </InputGroup> */}
           <div>
-            {conversations.length > 0
-              ? conversations.map((conv: any) => {
-                  return (
-                    <ChatItem
-                      key={conv.id}
-                      name={conv.query}
-                      conversationId={conv.conversationId}
-                      deleteConversationById={deleteConversationById}
-                    />
-                  );
-                })
-              : (
-                  <div className={styles.noHistory}>
-                    <div>{t('label.no_history')}</div>
-                    <p>{t('message.no_history')}</p>
-                  </div>
-                )}
+            {conversations.length > 0 ? (
+              conversations.map((conv: any) => {
+                return (
+                  <ChatItem
+                    key={conv.id}
+                    name={conv.query}
+                    conversationId={conv.conversationId}
+                    deleteConversationById={deleteConversationById}
+                  />
+                );
+              })
+            ) : gettingHistory ? (
+              <div style={{ textAlign: 'center' }}>
+                 {/* @ts-ignore */}
+                <Spinner size="xl" />
+              </div>
+            ) : (
+              <div className={styles.noHistory}>
+                <div>{t('label.no_history')}</div>
+                <p>{t('message.no_history')}</p>
+              </div>
+            )}
           </div>
         </div>
         <Menu />

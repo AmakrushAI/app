@@ -21,7 +21,7 @@ import reloadIcon from '../../assets/icons/reload.svg';
 import { useLocalization } from '../../hooks';
 import router from 'next/router';
 import Image from 'next/image';
-import { Button } from '@chakra-ui/react';
+import { Button, Spinner } from '@chakra-ui/react';
 import toast from 'react-hot-toast';
 import { v4 as uuidv4 } from 'uuid';
 import RenderVoiceRecorder from '../recorder/RenderVoiceRecorder';
@@ -124,6 +124,24 @@ const HomePage: NextPage = () => {
           
         </form>
       </div>
+      {context?.sttReq && (
+            <div
+              style={{
+                height: '100vh',
+                width: '100vw',
+                zIndex: 1000,
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+                {/* @ts-ignore */}
+              <Spinner />
+            </div>
+          )}
       <Menu />
     </>
   );

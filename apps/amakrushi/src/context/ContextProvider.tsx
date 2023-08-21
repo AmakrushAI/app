@@ -62,6 +62,7 @@ const ContextProvider: FC<{
   const [isDown, setIsDown] = useState(true);
   const [showDialerPopup, setShowDialerPopup] = useState(false);
   const [isConnected, setIsConnected] = useState(newSocket?.connected || false);
+  const [sttReq, setSttReq] = useState(false); // To show spinner while stt request pending
   console.log(messages);
 
   useEffect(() => {
@@ -381,7 +382,9 @@ const ContextProvider: FC<{
       isDown,
       fetchIsDown,
       showDialerPopup,
-      setShowDialerPopup
+      setShowDialerPopup,
+      sttReq,
+      setSttReq
     }),
     [
       locale,
@@ -405,7 +408,9 @@ const ContextProvider: FC<{
       isDown,
       fetchIsDown,
       showDialerPopup,
-      setShowDialerPopup
+      setShowDialerPopup,
+      sttReq,
+      setSttReq
     ]
   );
 

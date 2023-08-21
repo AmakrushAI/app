@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { AppContext } from "../context";
 import styles from "../components/dialer-popup/index.module.css";
 import DialerPopUp from "../components/dialer-popup";
+import { Spinner } from "@chakra-ui/react";
 
 const ChatUiWindow = dynamic(
   () => import("../components/PhoneView/ChatWindow/ChatUiWindow"),
@@ -45,6 +46,24 @@ const Chat: NextPage = () => {
         }}>
         <ChatUiWindow />
       </div>
+      {context?.sttReq && (
+            <div
+              style={{
+                height: '100vh',
+                width: '100vw',
+                zIndex: 1000,
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+                {/* @ts-ignore */}
+              <Spinner />
+            </div>
+          )}
       <Menu />
     </>
   );
