@@ -16,7 +16,6 @@ import { useLocalization } from '../../../hooks';
 import { getMsgType } from '../../../utils/getMsgType';
 import ChatMessageItem from '../../chat-message-item';
 import { v4 as uuidv4 } from 'uuid';
-import toast from 'react-hot-toast';
 import RenderVoiceRecorder from '../../recorder/RenderVoiceRecorder';
 import DownTimePage from '../../down-time-page';
 
