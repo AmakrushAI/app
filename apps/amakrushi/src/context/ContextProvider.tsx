@@ -59,7 +59,7 @@ const ContextProvider: FC<{
   );
   const timer1 = flagsmith.getValue('timer1', { fallback: 5000 });
   const timer2 = flagsmith.getValue('timer2', { fallback: 25000 });
-  const [isDown, setIsDown] = useState(false);
+  const [isDown, setIsDown] = useState(true);
   const [showDialerPopup, setShowDialerPopup] = useState(false);
   const [isConnected, setIsConnected] = useState(newSocket?.connected || false);
   const [sttReq, setSttReq] = useState(false); // To show spinner while stt request pending
@@ -326,7 +326,7 @@ const ContextProvider: FC<{
         error_message: error.message,
       });
     }
-  }, [setIsDown, flags]);
+  }, [flags?.health_check_time?.value]);
 
   useEffect(() => {
     if (!socketSession && newSocket) {
