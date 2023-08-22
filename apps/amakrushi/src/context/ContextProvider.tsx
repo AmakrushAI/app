@@ -315,7 +315,7 @@ const ContextProvider: FC<{
       const status = res.data.status;
       console.log('hie', status);
       if (status === 'OK') {
-        setIsDown(true);
+        setIsDown(false);
       } else {
         setIsDown(true);
         console.log('Server status is not OK');
