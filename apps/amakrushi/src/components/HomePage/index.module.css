@@ -23,23 +23,44 @@
 }
 
 .title {
-  margin-top: 2vh;
+  position: relative;
+  top: 35%;
   text-align: center;
   font-family: 'Mulish-Bold';
   font-size: 4.265vh;
   font-weight: 700;
 }
 
+.exampleMessages {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 70px;
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out, visibility 0.5s ease-in-out;
+}
+
+.invisible{
+  opacity: 0;
+  transform: translateY(50px); /* Initial downward position */
+  visibility: hidden;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0); /* Reset to default position */
+  visibility: visible;
+}
+
+
 .buttonChoice {
   display: flex;
   align-items: center;
-  margin: 3vh auto 2vh;
+  margin: auto;
   background-color: white;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-  border-radius: 0 25px;
   justify-content: space-between;
+  min-height: 5vh;
   height: fit-content;
-  width: 85vw;
+  width: 90vw;
   padding: 1vh;
   text-align: left;
   font-size: 16px;
@@ -47,6 +68,7 @@
 }
 
 .inputBox {
+  min-height: 5vh;
   height: fit-content;
   display: flex;
   text-align: center;
