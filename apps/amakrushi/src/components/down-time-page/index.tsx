@@ -6,6 +6,7 @@ import downTimeIcon from '../../assets/images/downtime.png';
 import { useLocalization } from '../../hooks';
 import { useFlags } from 'flagsmith/react';
 import callIcon from '../../assets/icons/call-icon.svg';
+import router from 'next/router';
 
 function DownTimePage() {
   const t = useLocalization();
@@ -41,7 +42,7 @@ function DownTimePage() {
         <button
           type="button"
           className={styles.viewPrevChatsButton}
-          onClick={() => window?.location.reload()}>
+          onClick={() => {router.push('/history')}}>
           {t('message.down_time_view_prev_chats')}
         </button>
       </div>
