@@ -52,7 +52,7 @@ function NavBar() {
       });
 
       const blob = new Blob([response.data], { type: 'application/pdf' });
-      const file = new File([blob], 'Chat.pdf');
+      const file = new File([blob], 'Chat.pdf', {type: blob.type});
 
       if (type === 'download') {
         const link = document.createElement('a');
@@ -61,7 +61,7 @@ function NavBar() {
         link.click();
       } else if (type === 'share') {
         if (navigator.canShare({ files: [file] })) {
-          navigator
+          await navigator
             .share({
               files: [file],
               title: 'Chat',
