@@ -115,7 +115,7 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
       setAudio(null);
       
       // Define the API endpoint
-      const apiEndpoint = process.env.NEXT_PUBLIC_ASR_API;
+      const apiEndpoint = process.env.NEXT_PUBLIC_BASE_URL;
       
       // Create a FormData object
       const formData = new FormData();
@@ -128,7 +128,7 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
       
       context?.setSttReq(true);
       // Send the WAV data to the API
-      const resp = await fetch(apiEndpoint, {
+      const resp = await fetch(apiEndpoint+'/aitools/asr', {
         method: 'POST',
         body: formData
       });
