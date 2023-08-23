@@ -22,6 +22,7 @@ import { io } from 'socket.io-client';
 import { Button, Spinner } from '@chakra-ui/react';
 import axios from 'axios';
 import { useFlags } from 'flagsmith/react';
+import { useCookies } from 'react-cookie';
 
 function loadMessages(locale: string) {
   switch (locale) {
@@ -55,19 +56,20 @@ const ContextProvider: FC<{
     sessionStorage.getItem('conversationId')
   );
   const [isMobileAvailable, setIsMobileAvailable] = useState(
-    localStorage.getItem('phoneNumber') ? true : false || false
+    localStorage.getItem('userID') ? true : false || false
   );
   const timer1 = flagsmith.getValue('timer1', { fallback: 5000 });
   const timer2 = flagsmith.getValue('timer2', { fallback: 25000 });
   const [isDown, setIsDown] = useState(true);
   const [showDialerPopup, setShowDialerPopup] = useState(false);
   const [isConnected, setIsConnected] = useState(newSocket?.connected || false);
+  const [cookie, setCookie, removeCookie] = useCookies();
   const [sttReq, setSttReq] = useState(false); // To show spinner while stt request pending
   console.log(messages);
 
   useEffect(() => {
     if (
-      (localStorage.getItem('phoneNumber') && localStorage.getItem('auth')) ||
+      (localStorage.getItem('userID') && localStorage.getItem('auth')) ||
       isMobileAvailable
     ) {
       setNewSocket(
@@ -119,6 +121,7 @@ const ContextProvider: FC<{
         //@ts-ignore
         if (conversationId === msg?.content?.conversationId)
           setMessages((prev: any) => _.uniq([...prev, newMsg], ['messageId']));
+
       }
     },
     [conversationId]
@@ -242,6 +245,14 @@ const ContextProvider: FC<{
   //@ts-ignore
   const sendMessage = useCallback(
     (text: string, media: any, isVisibile = true): void => {
+      if (
+        !localStorage.getItem('userID') ||
+        !sessionStorage.getItem('conversationId')
+      ) {
+        removeCookie('access_token', { path: '/' });
+        location?.reload();
+        return;
+      }
       // console.log('mssgs:', messages)
       setLoading(true);
       setIsMsgReceiving(true);
@@ -267,6 +278,8 @@ const ContextProvider: FC<{
         );
         return;
       }
+      //@ts-ignore
+      logEvent(analytics, 'Query_sent');
       //  console.log('mssgs:',messages)
       send({ text, socketSession, socket: newSocket, conversationId });
       if (isVisibile)
@@ -307,7 +320,6 @@ const ContextProvider: FC<{
     ]
   );
 
-  const fetchIsDown = useCallback(async () => {
     try {
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_BASE_URL}/health/${flags?.health_check_time?.value}`
@@ -356,6 +368,12 @@ const ContextProvider: FC<{
             // updateMsgState({user: { name: '', id: '' }, msg: {content: {title: 'Unable to answer. Please ask your question again.', choices: null, conversationId: sessionStorage.getItem("conversationId")}, messageId: uuidv4()}, media: null})
             setIsMsgReceiving(false);
             setLoading(false);
+            fetchIsDown();
+            //@ts-ignore
+            logEvent(analytics, 'Msg_delay', {
+              user_id: localStorage.getItem('userID'),
+              phone_number: localStorage.getItem('phoneNumber'),
+            });
           }
         }, timer2);
       }
@@ -365,7 +383,7 @@ const ContextProvider: FC<{
       clearTimeout(timer);
       clearTimeout(secondTimer);
     };
-  }, [isDown, isMsgReceiving, loading, t, timer1, timer2, updateMsgState]);
+  }, [fetchIsDown, isMsgReceiving, loading, t, timer1, timer2]);
 
   const values = useMemo(
     () => ({
