@@ -4,18 +4,20 @@ export const getInitialMsgs = (t:(arg0:string)=>string):any => {
       buttonChoices: [
         {
           key: "1",
-          text: t("message.example_one")
+          text: t("message.example_one"),
+          img: '/example_image_one.png'
         },
         {
           key: "2",
-          text: t("message.example_two")
+          text: t("message.example_two"),
+          img: '/example_image_two.png'
         },
         {
           key: "3",
-          text: t("message.example_three")
+          text: t("message.example_three"),
+          img: '/example_image_three.png'
         },
       ],
-      text: t("label.examples"),
     },
     position: "left",
     exampleOptions: true,

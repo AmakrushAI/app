@@ -19,7 +19,7 @@ import { useLocalization } from '../hooks';
 import toast from 'react-hot-toast';
 import flagsmith from 'flagsmith/isomorphic';
 import { io } from 'socket.io-client';
-import { Button } from '@chakra-ui/react';
+import { Button, Spinner } from '@chakra-ui/react';
 import axios from 'axios';
 import { useFlags } from 'flagsmith/react';
 
@@ -98,7 +98,7 @@ const ContextProvider: FC<{
       media,
     }: {
       user: { name: string; id: string };
-      msg: { content: { title: string; choices: any }; messageId: string };
+      msg: { content: { title: string; choices: any, conversationId: any }; messageId: string };
       media: any;
     }) => {
       if (msg.content.title !== '') {
@@ -111,7 +111,6 @@ const ContextProvider: FC<{
           botUuid: user?.id,
           reaction: 0,
           messageId: msg?.messageId,
-          //@ts-ignore
           conversationId: msg?.content?.conversationId,
           sentTimestamp: Date.now(),
           ...media,
@@ -120,13 +119,12 @@ const ContextProvider: FC<{
         //@ts-ignore
         if (conversationId === msg?.content?.conversationId)
           setMessages((prev: any) => _.uniq([...prev, newMsg], ['messageId']));
-
       }
     },
     [conversationId]
   );
 
-  console.log("erty:",{conversationId})
+  console.log('erty:', { conversationId });
 
   const onMessageReceived = useCallback(
     (msg: any): void => {
@@ -299,29 +297,36 @@ const ContextProvider: FC<{
           //    console.log('mssgs:',messages)
         }
     },
-    [newSocket, socketSession, conversationId, t, onSocketConnect, currentUser?.id]
+    [
+      newSocket,
+      socketSession,
+      conversationId,
+      t,
+      onSocketConnect,
+      currentUser?.id,
+    ]
   );
 
   const fetchIsDown = useCallback(async () => {
-      try {
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/health/${flags?.health_check_time?.value}`
-        );
-        const status = res.data.status;
-        console.log('hie', status);
-        if (status === 'OK') {
-          setIsDown(false);
-        } else {
-          setIsDown(true);
-          console.log('Server status is not OK');
-        }
-      } catch (error) {
-        //@ts-ignore
-        logEvent(analytics, 'console_error', {
-          error_message: error.message,
-        });
+    try {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/health/${flags?.health_check_time?.value}`
+      );
+      const status = res.data.status;
+      console.log('hie', status);
+      if (status === 'OK') {
+        setIsDown(false);
+      } else {
+        setIsDown(true);
+        console.log('Server status is not OK');
       }
-    }, [setIsDown, flags]);
+    } catch (error: any) {
+      //@ts-ignore
+      logEvent(analytics, 'console_error', {
+        error_message: error.message,
+      });
+    }
+  }, [flags?.health_check_time?.value]);
 
   useEffect(() => {
     if (!socketSession && newSocket) {
@@ -341,10 +346,14 @@ const ContextProvider: FC<{
     let secondTimer: any;
     const timer = setTimeout(() => {
       if (isMsgReceiving && loading) {
-        toast.error(`${t('message.taking_longer')}`);
+        toast(() => <span>{t('message.taking_longer')}</span>, {
+          // @ts-ignore
+          icon: <Spinner />,
+        });
         secondTimer = setTimeout(() => {
           if (isMsgReceiving && loading) {
             toast.error(`${t('message.retry')}`);
+            // updateMsgState({user: { name: '', id: '' }, msg: {content: {title: 'Unable to answer. Please ask your question again.', choices: null, conversationId: sessionStorage.getItem("conversationId")}, messageId: uuidv4()}, media: null})
             setIsMsgReceiving(false);
             setLoading(false);
           }
@@ -356,7 +365,7 @@ const ContextProvider: FC<{
       clearTimeout(timer);
       clearTimeout(secondTimer);
     };
-  }, [isDown, isMsgReceiving, loading, t, timer1, timer2]);
+  }, [isDown, isMsgReceiving, loading, t, timer1, timer2, updateMsgState]);
 
   const values = useMemo(
     () => ({
@@ -384,7 +393,7 @@ const ContextProvider: FC<{
       showDialerPopup,
       setShowDialerPopup,
       sttReq,
-      setSttReq
+      setSttReq,
     }),
     [
       locale,
@@ -410,7 +419,7 @@ const ContextProvider: FC<{
       showDialerPopup,
       setShowDialerPopup,
       sttReq,
-      setSttReq
+      setSttReq,
     ]
   );
 

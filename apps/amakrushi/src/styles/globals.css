@@ -42,7 +42,8 @@ body{
 
 :root{
   --font: #000000B5;
-  --grey: #D0D0D0;
+  --lightgrey: #D0D0D0;
+  --grey: #828282;
   --darkgrey: #333232;
   --primarydarkblue: #282a37;
   --darkblue: #080664;

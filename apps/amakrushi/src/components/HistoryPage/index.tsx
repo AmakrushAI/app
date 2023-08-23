@@ -80,7 +80,7 @@ const HistoryPage: NextPage = () => {
             </InputLeftElement>
             <Input type="text" placeholder="Search" />
           </InputGroup> */}
-          <div>
+          <div style={{minHeight: '80vh'}}>
             {conversations.length > 0 ? (
               conversations.map((conv: any) => {
                 return (

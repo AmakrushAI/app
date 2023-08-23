@@ -14,6 +14,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useFlags } from 'flagsmith/react';
 import { useLocalization } from '../../hooks';
 import toast from 'react-hot-toast';
+const axios = require('axios');
 
 function NavBar() {
   const flags = useFlags(['show_download_button', 'show_share_button']);
@@ -35,9 +36,54 @@ function NavBar() {
     [context]
   );
 
+  const downloadShareHandler = async (type: string) => {
+    try {
+      const url = `${
+        process.env.NEXT_PUBLIC_BASE_URL
+      }/user/chathistory/generate-pdf/${sessionStorage.getItem(
+        'conversationId'
+      )}`;
+
+      const response = await axios.post(url, null, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem('auth')}`,
+        },
+        responseType: 'arraybuffer', // This is important to handle binary data
+      });
+
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const file = new File([blob], 'Chat.pdf', {type: blob.type});
+
+      if (type === 'download') {
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'Chat.pdf';
+        link.click();
+      } else if (type === 'share') {
+        if (navigator.canShare({ files: [file] })) {
+          await navigator
+            .share({
+              files: [file],
+              title: 'Chat',
+              text: 'Check out my chat with AmaKrushAI!',
+            })
+            .catch((error) => {
+              console.error('Error sharing', error);
+            });
+        } else {
+          console.error("Your system doesn't support sharing this file.");
+        }
+      } else {
+        console.log(response.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const newChatHandler = useCallback(() => {
-    if(context?.loading){
-      toast.error(`${t("error.wait_new_chat")}`);
+    if (context?.loading) {
+      toast.error(`${t('error.wait_new_chat')}`);
       return;
     }
     const newConversationId = uuidv4();
@@ -58,16 +104,20 @@ function NavBar() {
             className={styles.iconContainer}>
             <Image src={plusIcon} alt="plusIcon" layout="responsive" />
           </div>
-          {t("label.new_chat")}
+          {t('label.new_chat')}
         </div>
         <div className={styles.rightSideIcons}>
           {flags?.show_share_button?.enabled && (
-            <div className={styles.iconContainer}>
+            <div
+              className={styles.iconContainer}
+              onClick={() => downloadShareHandler('share')}>
               <Image src={shareIcon} alt="shareIcon" layout="responsive" />
             </div>
           )}
           {flags?.show_download_button?.enabled && (
-            <div className={styles.iconContainer}>
+            <div
+              className={styles.iconContainer}
+              onClick={() => downloadShareHandler('download')}>
               <Image
                 src={downloadIcon}
                 alt="downloadIcon"

@@ -42,7 +42,7 @@
 }
 
 .navbar button {
-  background: var(--grey);
+  background: var(--lightgrey);
   width: 14vw;
   height: 7vw;
   max-height: 45px;

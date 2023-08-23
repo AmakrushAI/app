@@ -16,8 +16,7 @@ import { getInitialMsgs } from '../../utils/textUtility';
 import { AppContext } from '../../context';
 
 import RightIcon from '../../assets/icons/right';
-import sunIcon from '../../assets/icons/sun.svg';
-import reloadIcon from '../../assets/icons/reload.svg';
+// import reloadIcon from '../../assets/icons/reload.svg';
 import { useLocalization } from '../../hooks';
 import router from 'next/router';
 import Image from 'next/image';
@@ -32,6 +31,7 @@ const HomePage: NextPage = () => {
   const placeholder = useMemo(() => t('message.ask_ur_question'), [t]);
   const [messages, setMessages] = useState<Array<any>>([getInitialMsgs(t)]);
   const [inputMsg, setInputMsg] = useState('');
+  const [showExampleMessages, setShowExampleMessages] = useState(false);
 
   useEffect(() => {
     setMessages([getInitialMsgs(t)]);
@@ -43,12 +43,12 @@ const HomePage: NextPage = () => {
 
     context?.fetchIsDown(); // check if server is down
 
-   if(!sessionStorage.getItem('conversationId')){
-    const newConversationId = uuidv4();
-    sessionStorage.setItem('conversationId', newConversationId);
-    context?.setConversationId(newConversationId);
-   }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (!sessionStorage.getItem('conversationId')) {
+      const newConversationId = uuidv4();
+      sessionStorage.setItem('conversationId', newConversationId);
+      context?.setConversationId(newConversationId);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const sendMessage = useCallback(
@@ -85,63 +85,69 @@ const HomePage: NextPage = () => {
               </div>
           </div>
         )} */}
-        <div className={styles.sunIconContainer}>
-          <Image src={sunIcon} alt="sunIcon" layout="responsive" />
+        <div className={styles.title}>{t('label.ask_me')}</div>
+        <div
+          className={
+            styles.exampleMessages + (showExampleMessages ?  ` ${styles.visible}` : ` ${styles.invisible}`)
+          }>
+          {messages?.[0]?.payload?.buttonChoices?.map((choice: any) => {
+            return (
+              <button
+                onClick={() => sendMessage(choice.text)}
+                className={styles.buttonChoice}
+                key={choice.key}>
+                  <Image src={choice.img} alt="img" width={60} height={60} style={{marginRight: '2px'}}/>
+                {choice.text}
+                <div className={styles.rightIcon}>
+                  <RightIcon width="5.5vh" color="var(--secondarygreen)" />
+                </div>
+              </button>
+            );
+          })}
         </div>
-        <div className={styles.title}>{messages?.[0]?.payload?.text}</div>
-        {messages?.[0]?.payload?.buttonChoices?.map((choice: any) => {
-          return (
-            <button
-              onClick={() => sendMessage(choice.text)}
-              className={styles.buttonChoice}
-              key={choice.key}>
-              {choice.text}
-              <div className={styles.rightIcon}>
-                <RightIcon width="5.5vh" color="var(--secondarygreen)" />
-              </div>
-            </button>
-          );
-        })}
+
         <form onSubmit={(event) => event?.preventDefault()}>
           <div className={styles.inputBox}>
-          <div>
-          <RenderVoiceRecorder setInputMsg={setInputMsg}/>
-          </div>
             <input
               type="text"
               value={inputMsg}
               onChange={(e) => setInputMsg(e.target.value)}
               placeholder={placeholder}
+              onClick={() => setShowExampleMessages(true)}
             />
-            <button
-              type="submit"
-              onClick={() => sendMessage(inputMsg)}
-              className={styles.sendButton}
-              >
-              {t('label.send')}
-            </button>
+            {inputMsg.length === 0 ? (
+              <div>
+                <RenderVoiceRecorder setInputMsg={setInputMsg} />
+              </div>
+            ) : (
+              <button
+                type="submit"
+                onClick={() => sendMessage(inputMsg)}
+                className={styles.sendButton}>
+                {t('label.send')}
+              </button>
+            )}
           </div>
-          
         </form>
       </div>
       {context?.sttReq && (
-            <div
-              style={{
-                height: '100vh',
-                width: '100vw',
-                zIndex: 1000,
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-                {/* @ts-ignore */}
-              <Spinner />
-            </div>
-          )}
+        <div
+          style={{
+            height: '100vh',
+            width: '100vw',
+            zIndex: 1000,
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          {/* @ts-ignore */}
+          <Spinner />
+        </div>
+      )}
       <Menu />
     </>
   );
