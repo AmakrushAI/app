@@ -14,6 +14,7 @@ type SendType={
 	  socket.emit("botRequest", {
 		content: {
 		  text,
+			asrId: sessionStorage.getItem('asrId'),
 		 // userId: session.userID,
 		 userId: localStorage.getItem('userID'),
 		 

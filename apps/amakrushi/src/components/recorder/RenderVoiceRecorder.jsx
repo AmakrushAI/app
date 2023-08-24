@@ -135,11 +135,10 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
   
       context?.setSttReq(false);
       if (resp.ok) {
-        const rsp_data = await resp.text();
-        if (rsp_data !== '') {
+        const rsp_data = await resp.json();
           console.log('hi', rsp_data);
-          setInputMsg(rsp_data);
-        }
+          setInputMsg(rsp_data.text);
+          sessionStorage.setItem('asrId', rsp_data.id);
       } else {
         toast.error("Something went wrong. Try again later.");
         console.log(resp);

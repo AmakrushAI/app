@@ -307,6 +307,7 @@ const ContextProvider: FC<{
               repliedTimestamp: Date.now(),
             },
           ]);
+          sessionStorage.removeItem('asrId');
           //    console.log('mssgs:',messages)
         }
     },
@@ -346,6 +347,11 @@ const ContextProvider: FC<{
       console.log('vbn:', { socketSession, newSocket });
     }
   }, [newSocket, socketSession]);
+
+  // Remove ASR ID from session storage on conversation change
+  useEffect(()=> {
+    sessionStorage.removeItem('asrId');
+  }, [conversationId])
 
   console.log('vbn: aa', {
     socketSession,
