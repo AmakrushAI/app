@@ -93,7 +93,7 @@ const HomePage: NextPage = () => {
             transliteratedArray.push(element?.target?.[0]);
           }
 
-          if (context?.socketSession && context?.newSocket?.connected) {
+          if (context?.newSocket?.socket?.connected) {
             console.log("clearing mssgs");
             context?.setMessages([]);
             router.push("/chat");
@@ -103,7 +103,7 @@ const HomePage: NextPage = () => {
             return;
           }
         } else {
-          if (context?.socketSession && context?.newSocket?.connected) {
+          if (context?.newSocket?.socket?.connected) {
             console.log("clearing mssgs");
             context?.setMessages([]);
             router.push("/chat");
@@ -123,7 +123,7 @@ const HomePage: NextPage = () => {
   return (
     <>
       <div className={styles.main}>
-        {/* {!(context?.socketSession && context?.newSocket?.connected) && (
+        {/* {!(context?.socketSession && context?.newSocket?.socket?.connected) && (
           <div className={styles.disconnected}>
             <p>You are disconnected &nbsp;</p> 
             <div

@@ -51,7 +51,6 @@ const ContextProvider: FC<{
   const [loading, setLoading] = useState(false);
   const [isMsgReceiving, setIsMsgReceiving] = useState(false);
   const [messages, setMessages] = useState<Array<any>>([]);
-  const [socketSession, setSocketSession] = useState<any>();
   const [newSocket, setNewSocket] = useState<any>();
   const [conversationId, setConversationId] = useState<string | null>(
     sessionStorage.getItem('conversationId')
@@ -97,6 +96,7 @@ const ContextProvider: FC<{
         });
     }
     return cleanup;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateMsgState = useCallback(
@@ -128,11 +128,12 @@ const ContextProvider: FC<{
         };
 
         //@ts-ignore
-        if (conversationId === msg?.content?.conversationId)
+        if (sessionStorage.getItem('conversationId') === msg?.content?.conversationId){
           setMessages((prev: any) => _.uniq([...prev, newMsg], ['messageId']));
+        }
       }
     },
-    [conversationId]
+    []
   );
 
   console.log('erty:', { conversationId });
@@ -264,6 +265,7 @@ const ContextProvider: FC<{
       // console.log('mssgs:', messages)
       setLoading(true);
       setIsMsgReceiving(true);
+      sessionStorage.setItem('conversationId', conversationId || '');
 
       // if (!newSocket?.connected || !socketSession) {
       //   toast(
@@ -291,9 +293,9 @@ const ContextProvider: FC<{
       logEvent(analytics, 'Query_sent');
       //  console.log('mssgs:',messages)
       // send({ text, socketSession, socket: newSocket, conversationId });
+      console.log("my mssg:", text)
       newSocket.sendMessage({
-        content: {
-          text,
+          text: text,
           to: localStorage.getItem('userID'),
           from: localStorage.getItem('phoneNumber'),
           optional: {
@@ -302,9 +304,7 @@ const ContextProvider: FC<{
           },
           asrId: sessionStorage.getItem('asrId'),
           userId: localStorage.getItem('userID'),
-          conversationId
-        },
-        to: localStorage.getItem('userID'),
+          conversationId: sessionStorage.getItem('conversationId')
       });
       if (isVisibile)
         if (media) {
@@ -338,7 +338,6 @@ const ContextProvider: FC<{
     [
       removeCookie,
       newSocket,
-      socketSession,
       conversationId,
       // t,
       // onSocketConnect,
@@ -367,19 +366,12 @@ const ContextProvider: FC<{
     }
   }, [flags?.health_check_time?.value]);
 
-  useEffect(() => {
-    if (!socketSession && newSocket) {
-      console.log('vbn:', { socketSession, newSocket });
-    }
-  }, [newSocket, socketSession]);
-
   // Remove ASR ID from session storage on conversation change
   useEffect(() => {
     sessionStorage.removeItem('asrId');
   }, [conversationId]);
 
   console.log('vbn: aa', {
-    socketSession,
     newSocket,
     // isConnected,
     // isMobileAvailable,
@@ -428,7 +420,6 @@ const ContextProvider: FC<{
       setMessages,
       loading,
       setLoading,
-      socketSession,
       isMsgReceiving,
       setIsMsgReceiving,
       locale,
@@ -453,7 +444,6 @@ const ContextProvider: FC<{
       setLocale,
       localeMsgs,
       currentUser,
-      socketSession,
       users,
       onChangeCurrentUser,
       sendMessage,
