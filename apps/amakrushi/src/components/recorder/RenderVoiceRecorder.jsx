@@ -146,7 +146,11 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
     } catch (error) {
       context?.setSttReq(false);
       console.error(error);
-      toast.error(error.message);
+      if(error.message === "Unexpected end of JSON input"){
+        toast.error(`${t('label.no_audio')}`);
+      }else{
+        toast.error(error.message);
+      }
     }
   };
 

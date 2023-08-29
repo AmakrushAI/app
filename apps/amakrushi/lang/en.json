@@ -24,6 +24,7 @@
     "label.no_history":"No Chats",
     "label.call_amakrushi":"Call Ama Krushi",
     "label.no_internet":"No Internet",
+    "label.no_audio":"Please speak clearly.",
     "message.no_history":"Your Chat History with AI will come here",
     "message.socket_disconnect_msg": "to connect again.",
     "message.enter_mobile":"Enter Mobile Number",
