@@ -14,6 +14,7 @@ import { ComposerInput } from './ComposerInput';
 import { SendButton } from './SendButton';
 import { Action } from './Action';
 import toggleClass from '../../utils/toggleClass';
+import Keyboard from './keyboard';
 export var CLASS_NAME_FOCUSING = 'S--focusing';
 export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
   var _props$text = props.text,
@@ -76,6 +77,10 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
     _useState14 = _slicedToArray(_useState13, 2),
     isWide = _useState14[0],
     setWide = _useState14[1];
+  var _useState15 = useState(false),
+    _useState16 = _slicedToArray(_useState15, 2),
+    keyboardClicked = _useState16[0],
+    setKeyboardClicked = _useState16[1];
   useEffect(function () {
     var mq = wideBreakpoint && window.matchMedia ? window.matchMedia("(min-width: ".concat(wideBreakpoint, ")")) : false;
     function handleMq(e) {
@@ -247,7 +252,10 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
     })));
   }
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "Composer"
+    className: "Composer",
+    style: {
+      justifyContent: text || keyboardClicked ? "center" : 'center'
+    }
   }, recorder.canRecord && /*#__PURE__*/React.createElement(Action, {
     className: "Composer-inputTypeBtn",
     "data-icon": inputTypeIcon,
@@ -257,16 +265,26 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
   }), /*#__PURE__*/React.createElement("div", {
     className: "Composer-inputWrap",
     style: {
-      border: "2px solid ".concat(btnColor),
+      border: text || keyboardClicked ? "2px solid ".concat(btnColor) : 'none',
+      flex: text || keyboardClicked ? "1" : '0',
       borderRadius: '12px'
     }
-  }, /*#__PURE__*/React.createElement(ComposerInput, _extends({
+  }, !keyboardClicked && !text && /*#__PURE__*/React.createElement("div", {
+    onClick: function onClick() {
+      return setKeyboardClicked(true);
+    }
+  }, /*#__PURE__*/React.createElement(Keyboard, null)), (text || keyboardClicked) && /*#__PURE__*/React.createElement(ComposerInput, _extends({
     invisible: !isInputText
   }, inputProps, {
     disabled: disableSend
-  })), !isInputText && /*#__PURE__*/React.createElement(Recorder, recorder)), !text && rightAction && /*#__PURE__*/React.createElement(Action, rightAction), !text && VoiceToText ? /*#__PURE__*/React.createElement(VoiceToText, _extends({}, voiceToTextProps, {
+  })), !isInputText && /*#__PURE__*/React.createElement(Recorder, recorder)), !text && rightAction && /*#__PURE__*/React.createElement(Action, rightAction), !text && VoiceToText ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      height: '5vh',
+      width: '5vh'
+    }
+  }, /*#__PURE__*/React.createElement(VoiceToText, _extends({}, voiceToTextProps, {
     setInputMsg: setText
-  })) : null, hasToolbar && /*#__PURE__*/React.createElement(Action, {
+  }))) : null, hasToolbar && /*#__PURE__*/React.createElement(Action, {
     className: clsx('Composer-toggleBtn', {
       active: isAccessoryOpen
     }),

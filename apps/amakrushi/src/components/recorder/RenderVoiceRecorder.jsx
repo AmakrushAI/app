@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Stop from '../../assets/icons/stop.gif';
-import Start from '../../assets/icons/startIcon.svg';
+import Start from '../../assets/icons/startIcon.png';
 import AudioReactRecorder, { RecordState } from 'audio-react-recorder';
 import { Grid } from '@material-ui/core';
 import styles from './styles.module.css';
@@ -12,7 +12,7 @@ import { useLocalization } from '../../hooks';
 const RenderVoiceRecorder = ({ setInputMsg }) => {
   const context = useContext(AppContext);
   const t = useLocalization();
-  const [recordAudio, setRecordAudio] = useState('');
+  const [recordAudio, setRecordAudio] = useState(RecordState.STOP);
   const [base, setBase] = useState('');
 
   const handleStopRecording = () => {
@@ -41,7 +41,7 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
   };
 
   const onStopRecording = async (data) => {
-    if(recordAudio === RecordState.START){
+    if (recordAudio === RecordState.START) {
       return;
     }
     try {
@@ -56,47 +56,51 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
   const makeComputeAPICall = async () => {
     try {
       // console.log("base", base)
-      const prefix = "data:audio/wav;base64,";
+      const prefix = 'data:audio/wav;base64,';
       const actualBase64 = base.substring(prefix.length);
-      const audioData = Uint8Array.from(atob(actualBase64), c => c.charCodeAt(0));
-      
+      const audioData = Uint8Array.from(atob(actualBase64), (c) =>
+        c.charCodeAt(0)
+      );
+
       toast.success(`${t('message.recorder_wait')}`);
-      
+
       // Define the API endpoint
       const apiEndpoint = process.env.NEXT_PUBLIC_BASE_URL;
-      
+
       // Create a FormData object
       const formData = new FormData();
-      
+
       // Append the WAV file to the FormData object
       // Here, we're creating a Blob from the decoded data and appending it to the FormData
       const blob = new Blob([audioData], { type: 'audio/wav' });
       // console.log("This is the file", file);
       formData.append('file', blob, 'audio.wav');
-      
+
       context?.setSttReq(true);
       // Send the WAV data to the API
-      const resp = await fetch(apiEndpoint+'/aitools/asr', {
+      const resp = await fetch(apiEndpoint + '/aitools/asr', {
         method: 'POST',
-        body: formData
+        body: formData,
       });
-  
-      context?.setSttReq(false);
+
       if (resp.ok) {
         const rsp_data = await resp.json();
-          console.log('hi', rsp_data);
-          setInputMsg(rsp_data.text);
-          sessionStorage.setItem('asrId', rsp_data.id);
+        console.log('hi', rsp_data);
+        if (rsp_data.text === '')
+          throw new Error('Unexpected end of JSON input');
+        setInputMsg(rsp_data.text.trim());
+        sessionStorage.setItem('asrId', rsp_data.id);
       } else {
-        toast.error("Something went wrong. Try again later.");
+        toast.error('Something went wrong. Try again later.');
         console.log(resp);
       }
+      context?.setSttReq(false);
     } catch (error) {
       context?.setSttReq(false);
       console.error(error);
-      if(error.message === "Unexpected end of JSON input"){
+      if (error.message === 'Unexpected end of JSON input') {
         toast.error(`${t('label.no_audio')}`);
-      }else{
+      } else {
         toast.error(error.message);
       }
     }
@@ -147,8 +151,7 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
             md={2}
             lg={2}
             xl={2}
-            className={styles.flexEndStyle}>
-          </Grid>
+            className={styles.flexEndStyle}></Grid>
         </Grid>
       </Grid>
     </div>

@@ -65,7 +65,27 @@ const ContextProvider: FC<{
   const [isConnected, setIsConnected] = useState(newSocket?.connected || false);
   const [cookie, setCookie, removeCookie] = useCookies();
   const [sttReq, setSttReq] = useState(false); // To show spinner while stt request pending
-  console.log(messages);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  		
+  useEffect(() => {
+    function onlineHandler() {
+        setIsOnline(true);
+    }
+
+    function offlineHandler() {
+        setIsOnline(false);
+        onMessageReceived({content: { title: "No signal \nCheck your internet connection", choices: null, conversationId: conversationId, msg_type: 'text', timeTaken: 4999, btns: true }, messageId: uuidv4() });
+    }
+
+    window.addEventListener("online", onlineHandler);
+    window.addEventListener("offline", offlineHandler);
+
+
+    return () => {
+        window.removeEventListener("online", onlineHandler);
+        window.removeEventListener("offline", offlineHandler);
+    };
+  }, []);
 
   useEffect(() => {
     if (
@@ -100,7 +120,7 @@ const ContextProvider: FC<{
       media,
     }: {
       user: { name: string; id: string };
-      msg: { content: { title: string; choices: any, conversationId: any }; messageId: string };
+      msg: { content: { title: string; choices: any, conversationId: any, btns?: boolean }; messageId: string };
       media: any;
     }) => {
       if (msg.content.title !== '') {
@@ -115,6 +135,7 @@ const ContextProvider: FC<{
           messageId: msg?.messageId,
           conversationId: msg?.content?.conversationId,
           sentTimestamp: Date.now(),
+          btns: msg.content.btns,
           ...media,
         };
 
@@ -132,7 +153,8 @@ const ContextProvider: FC<{
   const onMessageReceived = useCallback(
     (msg: any): void => {
       console.log('mssgs:', messages);
-      console.log('#-debug:', { msg });
+      console.log('#-debug:', msg.content );
+      console.log('#-debug:', msg.content.msg_type );
       setLoading(false);
       setIsMsgReceiving(false);
       //@ts-ignore
@@ -166,10 +188,12 @@ const ContextProvider: FC<{
           media: { fileUrl: msg?.content?.media_url },
         });
       } else if (msg.content.msg_type.toUpperCase() === 'TEXT') {
-        updateMsgState({ user, msg, media: {} });
+        if(msg.content.timeTaken < 5000 && isOnline){
+          updateMsgState({ user, msg, media: {} });
+        }
       }
     },
-    [messages, updateMsgState]
+    [isOnline, messages, updateMsgState]
   );
 
   //@ts-ignore
@@ -372,9 +396,7 @@ const ContextProvider: FC<{
         secondTimer = setTimeout(() => {
           if (isMsgReceiving && loading) {
             toast.error(`${t('message.retry')}`);
-            // updateMsgState({user: { name: '', id: '' }, msg: {content: {title: 'Unable to answer. Please ask your question again.', choices: null, conversationId: sessionStorage.getItem("conversationId")}, messageId: uuidv4()}, media: null})
-            setIsMsgReceiving(false);
-            setLoading(false);
+            onMessageReceived({content: { title: "No signal \nCheck your internet connection", choices: null, conversationId: conversationId, msg_type: 'text', timeTaken: 4999, btns: true }, messageId: uuidv4() });
             fetchIsDown();
             //@ts-ignore
             logEvent(analytics, 'Msg_delay', {
@@ -382,15 +404,15 @@ const ContextProvider: FC<{
               phone_number: localStorage.getItem('phoneNumber'),
             });
           }
-        }, timer2);
+        }, 5000);
       }
-    }, timer1);
+    }, 10);
 
     return () => {
       clearTimeout(timer);
       clearTimeout(secondTimer);
     };
-  }, [fetchIsDown, isMsgReceiving, loading, t, timer1, timer2]);
+  }, [conversationId, fetchIsDown, isDown, isMsgReceiving, loading, onMessageReceived, t, timer1, timer2]);
 
   const values = useMemo(
     () => ({

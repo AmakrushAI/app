@@ -28,9 +28,14 @@
   margin: auto;
   margin-top: 3vh;
   margin-bottom: 3vh;
-  height: 15vh;
-  width: 15vh;
+  width: 357px;
+  height: 158px;
+  background: url('../../assets/images/downTimeGIF.gif'), #F6FAFF;
+  background-size: contain; 
+  background-repeat: no-repeat; 
+  background-blend-mode:multiply;
 }
+
 
 .miniText {
   margin: auto;

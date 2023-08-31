@@ -44,7 +44,14 @@ const ChatUiWindow: React.FC = () => {
           console.log("ghji:",chatHistory)
           console.log('history:', chatHistory.data);
 
-          const normalizedChats = normalizedChat(chatHistory.data);
+          const modifiedChatHistory = chatHistory.data.map((chat:any) => {
+            if (chat.response.trim() === "") {
+              chat.response = "No signal \nCheck your internet connection";
+            }
+            return chat;
+          });
+
+          const normalizedChats = normalizedChat(modifiedChatHistory);
           if (normalizedChats.length > 0) {
             context?.setMessages(normalizedChats);
           }

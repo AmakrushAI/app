@@ -2,7 +2,7 @@
 import Menu from '../menu';
 import styles from './index.module.css';
 import Image from 'next/image';
-import downTimeIcon from '../../assets/images/downtime.png';
+import downTimeIcon from '../../assets/images/downTimeGIF.gif';
 import { useLocalization } from '../../hooks';
 import { useFlags } from 'flagsmith/react';
 import callIcon from '../../assets/icons/call-icon.svg';
@@ -15,7 +15,7 @@ function DownTimePage() {
     <div className={styles.container}>
       <div className={styles.title}>{t('message.down_time_title')}</div>
       <div className={styles.imageContainer}>
-        <Image src={downTimeIcon} alt="downTimeIcon" layout="responsive" />
+        {/* Contains the down time gif in css */}
       </div>
       <span>{t('message.temporarily_down')}</span>
       {/* <p className={styles.miniText}>
@@ -28,7 +28,9 @@ function DownTimePage() {
           <div className={styles.callIconBox}>
             <Image src={callIcon} alt="callIcon" layout="responsive" />
           </div>
-          <p style={{textDecoration: 'underline'}}>{t('label.call_amakrushi')}</p>
+          <p style={{ textDecoration: 'underline' }}>
+            {t('label.call_amakrushi')}
+          </p>
         </a>
       </div>
 
@@ -42,7 +44,9 @@ function DownTimePage() {
         <button
           type="button"
           className={styles.viewPrevChatsButton}
-          onClick={() => {router.push('/history')}}>
+          onClick={() => {
+            router.push('/history');
+          }}>
           {t('message.down_time_view_prev_chats')}
         </button>
       </div>

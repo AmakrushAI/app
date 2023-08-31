@@ -1,10 +1,6 @@
 .center {
   display: block;
   justify-content: center;
-  height: 5vh;
-  width: 5vh;
-}
-.centerAudio {
-  display: flex;
-  justify-content: center;
+  height: 100%;
+  width: 100%;
 }

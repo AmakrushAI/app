@@ -24,11 +24,20 @@
 
 .title {
   position: relative;
-  top: 35%;
+  top: 10%;
   text-align: center;
   font-family: 'Mulish-Bold';
-  font-size: 4.265vh;
+  font-size: 3.5vh;
   font-weight: 700;
+}
+
+.voiceRecorder{
+  position: relative;
+  margin: auto;
+  top: 18%;
+  text-align: center;
+  height: 18vh;
+  width: 18vh;
 }
 
 .exampleMessages {
@@ -65,6 +74,18 @@
   text-align: left;
   font-size: 16px;
   font-weight: bold;
+}
+
+.keyboard{
+  margin: auto;
+  cursor: pointer;
+}
+
+.keyboard p {
+  color: var(--secondarygreen);
+  font-family: Mulish-bold;
+  text-decoration: underline;
+  font-size: 18px;
 }
 
 .inputBox {
