@@ -41,6 +41,9 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
   };
 
   const onStopRecording = async (data) => {
+    if(recordAudio === RecordState.START){
+      return;
+    }
     try {
       const base64Data = await blobToBase64(data.blob);
       setBase(base64Data);
