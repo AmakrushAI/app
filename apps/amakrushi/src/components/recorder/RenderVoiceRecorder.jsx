@@ -12,27 +12,8 @@ import { useLocalization } from '../../hooks';
 const RenderVoiceRecorder = ({ setInputMsg }) => {
   const context = useContext(AppContext);
   const t = useLocalization();
-  const [gender, setGender] = useState('female');
   const [recordAudio, setRecordAudio] = useState('');
   const [base, setBase] = useState('');
-  const [data, setData] = useState('');
-  const [outputBase64, setOutputBase64] = useState('');
-  const [suggestEditValues, setSuggestEditValues] = useState({
-    asr: '',
-    translation: '',
-  });
-  const [audio, setAudio] = useState('');
-  const [output, setOutput] = useState({
-    asr: '',
-    translation: '',
-  });
-  const [filter, setFilter] = useState({
-    src: 'hi',
-    tgt: 'en',
-    asr: '',
-    translation: '',
-    tts: '',
-  });
 
   const handleStopRecording = () => {
     setRecordAudio(RecordState.STOP);
@@ -59,52 +40,17 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
     });
   };
 
-  useEffect(() => {
-    if (data && base) {
-      handleCompute();
-      setData();
-      setBase();
-    }
-  }, [data, handleCompute, base]);
-
   const onStopRecording = async (data) => {
-    setData(data.url);
     try {
       const base64Data = await blobToBase64(data.blob);
       setBase(base64Data);
-      //  setTimeout(()=>{
-      //   handleCompute()
-      //  },50)
-      // setOutput({
-      //   asr: '',
-      //   translation: '',
-      // });
+      makeComputeAPICall();
     } catch (error) {
       console.error('Error converting Blob to Base64:', error);
     }
   };
 
-  const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
-    const byteCharacters = atob(b64Data);
-    const byteArrays = [];
-
-    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-      const slice = byteCharacters.slice(offset, offset + sliceSize);
-
-      const byteNumbers = new Array(slice.length);
-      for (let i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i);
-      }
-
-      const byteArray = new Uint8Array(byteNumbers);
-      byteArrays.push(byteArray);
-    }
-
-    const blob = new Blob(byteArrays, { type: contentType });
-    return blob;
-  };
-
-  const makeComputeAPICall = async (type) => {
+  const makeComputeAPICall = async () => {
     try {
       // console.log("base", base)
       const prefix = "data:audio/wav;base64,";
@@ -112,7 +58,6 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
       const audioData = Uint8Array.from(atob(actualBase64), c => c.charCodeAt(0));
       
       toast.success(`${t('message.recorder_wait')}`);
-      setAudio(null);
       
       // Define the API endpoint
       const apiEndpoint = process.env.NEXT_PUBLIC_BASE_URL;
@@ -154,11 +99,6 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
     }
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleCompute = () => {
-    makeComputeAPICall('voice');
-  };
-  console.log('ghji', { output });
   return (
     <div>
       <div>
@@ -187,11 +127,6 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
         )}
       </div>
       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-        {/* <div className={styles.center}>
-          <Typography style={{ height: '12px' }} variant="caption">
-            {recordAudio === 'start' ? 'Recording...' : ''}
-          </Typography>{' '}
-        </div> */}
         <div style={{ display: 'none' }}>
           <AudioReactRecorder
             state={recordAudio}
@@ -199,23 +134,9 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
             style={{ display: 'none' }}
           />
         </div>
-        {/* <div className={styles.centerAudio} style={{ height: '60px' }}>
-          {data ? (
-            <audio
-              src={data}
-              style={{ minWidth: '100%' }}
-              controls
-              id="sample"></audio>
-          ) : (
-            <></>
-          )}
-        </div> */}
       </Grid>
       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
         <Grid container spacing={1}>
-          {/* <Grid item xs={8} sm={12} md={10} lg={10} xl={10}>
-            <Typography variant={'caption'}>Max duration: 1 min</Typography>
-          </Grid> */}
           <Grid
             item
             xs={4}
@@ -224,15 +145,6 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
             lg={2}
             xl={2}
             className={styles.flexEndStyle}>
-            {/* <Button
-              style={{}}
-              color="primary"
-              variant="contained"
-              size={'small'}
-              disabled={data ? false : true}
-              onClick={() => handleCompute()}>
-              Convert
-            </Button> */}
           </Grid>
         </Grid>
       </Grid>
