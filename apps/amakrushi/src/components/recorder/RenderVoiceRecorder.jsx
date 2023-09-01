@@ -13,7 +13,6 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
   const context = useContext(AppContext);
   const t = useLocalization();
   const [recordAudio, setRecordAudio] = useState('');
-  const [base, setBase] = useState('');
 
   const handleStopRecording = () => {
     setRecordAudio(RecordState.STOP);
@@ -46,16 +45,15 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
     }
     try {
       const base64Data = await blobToBase64(data.blob);
-      setBase(base64Data);
-      makeComputeAPICall();
+      makeComputeAPICall(base64Data);
     } catch (error) {
       console.error('Error converting Blob to Base64:', error);
     }
   };
 
-  const makeComputeAPICall = async () => {
+  const makeComputeAPICall = async (base) => {
     try {
-      // console.log("base", base)
+      console.log("base", base);
       const prefix = "data:audio/wav;base64,";
       const actualBase64 = base.substring(prefix.length);
       const audioData = Uint8Array.from(atob(actualBase64), c => c.charCodeAt(0));
