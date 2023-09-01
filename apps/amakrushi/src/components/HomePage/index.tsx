@@ -123,18 +123,6 @@ const HomePage: NextPage = () => {
   return (
     <>
       <div className={styles.main}>
-        {/* {!(context?.socketSession && context?.newSocket?.socket?.connected) && (
-          <div className={styles.disconnected}>
-            <p>You are disconnected &nbsp;</p> 
-            <div
-                onClick={() => {
-                  context?.onSocketConnect({text: ""});
-                }}
-              >
-                <Image src={reloadIcon} alt="reloadIcon" width={24} height={24}/>
-              </div>
-          </div>
-        )} */}
         <div className={styles.title}>{t('label.ask_me')}</div>
         <div
           className={

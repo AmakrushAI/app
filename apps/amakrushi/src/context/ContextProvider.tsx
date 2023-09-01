@@ -179,70 +179,6 @@ const ContextProvider: FC<{
     [messages, updateMsgState]
   );
 
-  //@ts-ignore
-  // const onSocketConnect = useCallback(
-  //   ({ text }: { text: string }): void => {
-  //     setIsConnected(false);
-  //     setTimeout(() => {
-  //       newSocket?.connect();
-  //       setIsConnected(true);
-  //     }, 30);
-
-  //     setTimeout(() => {
-  //       if (newSocket?.connected) sendMessage(text, null);
-  //     }, 40);
-  //     //@ts-ignore
-  //   },
-  //   [newSocket, sendMessage]
-  // );
-
-  // useEffect(() => {
-  //   if (
-  //     (!isConnected && newSocket && !newSocket.connected) ||
-  //     (newSocket && !newSocket.connected)
-  //   ) {
-  //     newSocket.connect();
-  //     setIsConnected(true);
-  //   }
-  // }, [isConnected, newSocket]);
-
-  // useEffect(() => {
-  //   function onConnect(): void {
-  //     setIsConnected(true);
-  //   }
-
-  //   function onDisconnect(): void {
-  //     setIsConnected(false);
-  //   }
-
-  //   function onSessionCreated(sessionArg: { session: any }) {
-  //     setSocketSession(sessionArg);
-  //   }
-
-  //   function onException(exception: any) {
-  //     toast.error(exception?.message);
-  //     //@ts-ignore
-  //     logEvent(analytics, 'console_error', {
-  //       error_message: exception?.message,
-  //     });
-  //   }
-
-  //   if (newSocket) {
-  //     newSocket.on('connect', onConnect);
-  //     newSocket.on('disconnect', onDisconnect);
-  //     newSocket.on('botResponse', onMessageReceived);
-
-  //     newSocket.on('exception', onException);
-  //     newSocket.on('session', onSessionCreated);
-  //   }
-
-  //   return () => {
-  //     if (newSocket) {
-  //       newSocket.off('disconnect', onDisconnect);
-  //     }
-  //   };
-  // }, [isConnected, newSocket, onMessageReceived]);
-
   const onChangeCurrentUser = useCallback((newUser: UserType) => {
     setCurrentUser({ ...newUser, active: true });
     // setMessages([]);
@@ -265,32 +201,9 @@ const ContextProvider: FC<{
       setIsMsgReceiving(true);
       sessionStorage.setItem('conversationId', conversationId || '');
 
-      // if (!newSocket?.connected || !socketSession) {
-      //   toast(
-      //     (to) => (
-      //       <span>
-      //         {/* @ts-ignore */}
-      //         <Button
-      //           onClick={() => {
-      //             onSocketConnect({ text });
-      //             toast.dismiss(to.id);
-      //           }}>
-      //           {t('label.click')}
-      //         </Button>
-      //         {t('message.socket_disconnect_msg')}
-      //       </span>
-      //     ),
-      //     {
-      //       icon: '',
-      //       duration: 10000,
-      //     }
-      //   );
-      //   return;
-      // }
       //@ts-ignore
       logEvent(analytics, 'Query_sent');
-      //  console.log('mssgs:',messages)
-      // send({ text, socketSession, socket: newSocket, conversationId });
+
       console.log("my mssg:", text)
       newSocket.sendMessage({
           text: text,
@@ -337,8 +250,6 @@ const ContextProvider: FC<{
       removeCookie,
       newSocket,
       conversationId,
-      // t,
-      // onSocketConnect,
       currentUser?.id,
     ]
   );
@@ -369,12 +280,6 @@ const ContextProvider: FC<{
     sessionStorage.removeItem('asrId');
   }, [conversationId]);
 
-  console.log('vbn: aa', {
-    newSocket,
-    // isConnected,
-    // isMobileAvailable,
-  });
-
   useEffect(() => {
     if (isDown) return;
     let secondTimer: any;
@@ -387,7 +292,6 @@ const ContextProvider: FC<{
         secondTimer = setTimeout(() => {
           if (isMsgReceiving && loading) {
             toast.error(`${t('message.retry')}`);
-            // updateMsgState({user: { name: '', id: '' }, msg: {content: {title: 'Unable to answer. Please ask your question again.', choices: null, conversationId: sessionStorage.getItem("conversationId")}, messageId: uuidv4()}, media: null})
             setIsMsgReceiving(false);
             setLoading(false);
             fetchIsDown();
@@ -423,10 +327,7 @@ const ContextProvider: FC<{
       locale,
       setLocale,
       localeMsgs,
-      // isMobileAvailable,
-      // setIsMobileAvailable,
       setConversationId,
-      // onSocketConnect,
       newSocket,
       isDown,
       fetchIsDown,
@@ -437,8 +338,6 @@ const ContextProvider: FC<{
     }),
     [
       locale,
-      // isMobileAvailable,
-      // setIsMobileAvailable,
       setLocale,
       localeMsgs,
       currentUser,
@@ -451,7 +350,6 @@ const ContextProvider: FC<{
       isMsgReceiving,
       setIsMsgReceiving,
       setConversationId,
-      // onSocketConnect,
       newSocket,
       isDown,
       fetchIsDown,
