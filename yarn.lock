@@ -20666,7 +20666,7 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
-socket-package@^0.13.0:
+socket-package@0.13.0:
   version "0.13.0"
   resolved "https://registry.yarnpkg.com/socket-package/-/socket-package-0.13.0.tgz#66da2ce8383eb2892dc09e6358c4a8dbfd8e6cf4"
   integrity sha512-xLJ423aFMlnVRhFq2rdM125QDc7mTi+o4seOiECjZAbcTyupdfTSNI6l+OpltMUDjWjXMrQ4Vxy4wK2YnU8Pig==

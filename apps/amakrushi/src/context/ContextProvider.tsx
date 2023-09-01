@@ -10,7 +10,6 @@ import {
 import { AppContext } from '.';
 import _ from 'underscore';
 import { v4 as uuidv4 } from 'uuid';
-import { send } from '../socket';
 import { analytics } from '../utils/firebase';
 import { logEvent } from 'firebase/analytics';
 import { UserType } from '../types';
@@ -18,7 +17,6 @@ import { IntlProvider } from 'react-intl';
 import { useLocalization } from '../hooks';
 import toast from 'react-hot-toast';
 import flagsmith from 'flagsmith/isomorphic';
-import { io } from 'socket.io-client';
 import { Button, Spinner } from '@chakra-ui/react';
 import axios from 'axios';
 import { useFlags } from 'flagsmith/react';
