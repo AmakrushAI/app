@@ -125,7 +125,7 @@ const ChatUiWindow: React.FC = () => {
             transliteratedArray.push(element?.target?.[0]);
           }
 
-          if (context?.socketSession && context?.newSocket?.connected) {
+          if (context?.newSocket?.socket?.connected) {
             context?.sendMessage(transliteratedArray.join(" "));
           } else {
             toast.error(t("error.disconnected"));

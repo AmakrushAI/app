@@ -79,7 +79,6 @@ const OTPpage: React.FC = () => {
               // @ts-ignore
               setUserId(analytics, localStorage.getItem("userID"));
   
-              context?.setIsMobileAvailable(true);
               setTimeout(() => {
                 router.push("/");
               }, 10);
@@ -154,7 +153,7 @@ const OTPpage: React.FC = () => {
       } else {
         toast.error(`${t("error.otp_not_sent")}`);
       }
-    } catch (error) {
+    } catch (error: any) {
       toast.error(`${t("error.error.sending_otp")}`);
       //@ts-ignore
       logEvent(analytics, 'console_error', {
@@ -206,6 +205,7 @@ const OTPpage: React.FC = () => {
             <b>+91-{router.query.state}</b>
           </div>
           <form onSubmit={handleOTPSubmit}>
+            {/* @ts-ignore */}
             <HStack style={{ marginTop: "34px", justifyContent: "center" }}>
               <PinInput otp placeholder="">
                 <PinInputField

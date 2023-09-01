@@ -10,7 +10,6 @@ import {
 import { AppContext } from '.';
 import _ from 'underscore';
 import { v4 as uuidv4 } from 'uuid';
-import { send } from '../socket';
 import { analytics } from '../utils/firebase';
 import { logEvent } from 'firebase/analytics';
 import { UserType } from '../types';
@@ -18,11 +17,11 @@ import { IntlProvider } from 'react-intl';
 import { useLocalization } from '../hooks';
 import toast from 'react-hot-toast';
 import flagsmith from 'flagsmith/isomorphic';
-import { io } from 'socket.io-client';
 import { Button, Spinner } from '@chakra-ui/react';
 import axios from 'axios';
 import { useFlags } from 'flagsmith/react';
 import { useCookies } from 'react-cookie';
+import { UCI } from 'socket-package';
 
 function loadMessages(locale: string) {
   switch (locale) {
@@ -50,48 +49,53 @@ const ContextProvider: FC<{
   const [loading, setLoading] = useState(false);
   const [isMsgReceiving, setIsMsgReceiving] = useState(false);
   const [messages, setMessages] = useState<Array<any>>([]);
-  const [socketSession, setSocketSession] = useState<any>();
   const [newSocket, setNewSocket] = useState<any>();
   const [conversationId, setConversationId] = useState<string | null>(
     sessionStorage.getItem('conversationId')
-  );
-  const [isMobileAvailable, setIsMobileAvailable] = useState(
-    localStorage.getItem('userID') ? true : false || false
   );
   const timer1 = flagsmith.getValue('timer1', { fallback: 5000 });
   const timer2 = flagsmith.getValue('timer2', { fallback: 25000 });
   const [isDown, setIsDown] = useState(true);
   const [showDialerPopup, setShowDialerPopup] = useState(false);
-  const [isConnected, setIsConnected] = useState(newSocket?.connected || false);
+  // const [isConnected, setIsConnected] = useState(newSocket?.connected || false);
   const [cookie, setCookie, removeCookie] = useCookies();
   const [sttReq, setSttReq] = useState(false); // To show spinner while stt request pending
   console.log(messages);
 
   useEffect(() => {
-    if (
-      (localStorage.getItem('userID') && localStorage.getItem('auth')) ||
-      isMobileAvailable
-    ) {
+    if (localStorage.getItem('userID') && localStorage.getItem('auth')) {
       setNewSocket(
-        io(URL, {
-          transportOptions: {
-            polling: {
-              extraHeaders: {
-                Authorization: `Bearer ${localStorage.getItem('auth')}`,
-                channel: 'akai',
+        new UCI(
+          URL,
+          {
+            transportOptions: {
+              polling: {
+                extraHeaders: {
+                  Authorization: `Bearer ${localStorage.getItem('auth')}`,
+                  channel: 'akai',
+                },
               },
             },
+            query: {
+              deviceId: localStorage.getItem('userID'),
+            },
+            autoConnect: false,
+            // transports: ['polling', 'websocket'],
+            upgrade: false,
           },
-          query: {
-            deviceId: localStorage.getItem('userID'),
-          },
-          autoConnect: false,
-          // transports: ['polling', 'websocket'],
-          upgrade: false,
-        })
+          onMessageReceived
+        )
       );
     }
-  }, [isMobileAvailable]);
+    function cleanup() {
+      if (newSocket)
+        newSocket.onDisconnect(() => {
+          console.log('Socket disconnected');
+        });
+    }
+    return cleanup;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const updateMsgState = useCallback(
     ({
@@ -100,7 +104,10 @@ const ContextProvider: FC<{
       media,
     }: {
       user: { name: string; id: string };
-      msg: { content: { title: string; choices: any, conversationId: any }; messageId: string };
+      msg: {
+        content: { title: string; choices: any; conversationId: any };
+        messageId: string;
+      };
       media: any;
     }) => {
       if (msg.content.title !== '') {
@@ -119,12 +126,12 @@ const ContextProvider: FC<{
         };
 
         //@ts-ignore
-        if (conversationId === msg?.content?.conversationId)
+        if (sessionStorage.getItem('conversationId') === msg?.content?.conversationId){
           setMessages((prev: any) => _.uniq([...prev, newMsg], ['messageId']));
-
+        }
       }
     },
-    [conversationId]
+    []
   );
 
   console.log('erty:', { conversationId });
@@ -172,70 +179,6 @@ const ContextProvider: FC<{
     [messages, updateMsgState]
   );
 
-  //@ts-ignore
-  const onSocketConnect = useCallback(
-    ({ text }: { text: string }): void => {
-      setIsConnected(false);
-      setTimeout(() => {
-        newSocket?.connect();
-        setIsConnected(true);
-      }, 30);
-
-      setTimeout(() => {
-        if (newSocket?.connected) sendMessage(text, null);
-      }, 40);
-      //@ts-ignore
-    },
-    [newSocket, sendMessage]
-  );
-
-  useEffect(() => {
-    if (
-      (!isConnected && newSocket && !newSocket.connected) ||
-      (newSocket && !newSocket.connected)
-    ) {
-      newSocket.connect();
-      setIsConnected(true);
-    }
-  }, [isConnected, newSocket]);
-
-  useEffect(() => {
-    function onConnect(): void {
-      setIsConnected(true);
-    }
-
-    function onDisconnect(): void {
-      setIsConnected(false);
-    }
-
-    function onSessionCreated(sessionArg: { session: any }) {
-      setSocketSession(sessionArg);
-    }
-
-    function onException(exception: any) {
-      toast.error(exception?.message);
-      //@ts-ignore
-      logEvent(analytics, 'console_error', {
-        error_message: exception?.message,
-      });
-    }
-
-    if (newSocket) {
-      newSocket.on('connect', onConnect);
-      newSocket.on('disconnect', onDisconnect);
-      newSocket.on('botResponse', onMessageReceived);
-
-      newSocket.on('exception', onException);
-      newSocket.on('session', onSessionCreated);
-    }
-
-    return () => {
-      if (newSocket) {
-        newSocket.off('disconnect', onDisconnect);
-      }
-    };
-  }, [isConnected, newSocket, onMessageReceived]);
-
   const onChangeCurrentUser = useCallback((newUser: UserType) => {
     setCurrentUser({ ...newUser, active: true });
     // setMessages([]);
@@ -256,32 +199,24 @@ const ContextProvider: FC<{
       // console.log('mssgs:', messages)
       setLoading(true);
       setIsMsgReceiving(true);
+      sessionStorage.setItem('conversationId', conversationId || '');
 
-      if (!newSocket?.connected || !socketSession) {
-        toast(
-          (to) => (
-            <span>
-              <Button
-                onClick={() => {
-                  onSocketConnect({ text });
-                  toast.dismiss(to.id);
-                }}>
-                {t('label.click')}
-              </Button>
-              {t('message.socket_disconnect_msg')}
-            </span>
-          ),
-          {
-            icon: '',
-            duration: 10000,
-          }
-        );
-        return;
-      }
       //@ts-ignore
       logEvent(analytics, 'Query_sent');
-      //  console.log('mssgs:',messages)
-      send({ text, socketSession, socket: newSocket, conversationId });
+
+      console.log("my mssg:", text)
+      newSocket.sendMessage({
+          text: text,
+          to: localStorage.getItem('userID'),
+          from: localStorage.getItem('phoneNumber'),
+          optional: {
+            appId: 'AKAI_App_Id',
+            channel: 'AKAI',
+          },
+          asrId: sessionStorage.getItem('asrId'),
+          userId: localStorage.getItem('userID'),
+          conversationId: sessionStorage.getItem('conversationId')
+      });
       if (isVisibile)
         if (media) {
           if (media.mimeType.slice(0, 5) === 'image') {
@@ -312,11 +247,9 @@ const ContextProvider: FC<{
         }
     },
     [
+      removeCookie,
       newSocket,
-      socketSession,
       conversationId,
-      t,
-      onSocketConnect,
       currentUser?.id,
     ]
   );
@@ -342,23 +275,10 @@ const ContextProvider: FC<{
     }
   }, [flags?.health_check_time?.value]);
 
-  useEffect(() => {
-    if (!socketSession && newSocket) {
-      console.log('vbn:', { socketSession, newSocket });
-    }
-  }, [newSocket, socketSession]);
-
   // Remove ASR ID from session storage on conversation change
-  useEffect(()=> {
+  useEffect(() => {
     sessionStorage.removeItem('asrId');
-  }, [conversationId])
-
-  console.log('vbn: aa', {
-    socketSession,
-    newSocket,
-    isConnected,
-    isMobileAvailable,
-  });
+  }, [conversationId]);
 
   useEffect(() => {
     if (isDown) return;
@@ -372,7 +292,6 @@ const ContextProvider: FC<{
         secondTimer = setTimeout(() => {
           if (isMsgReceiving && loading) {
             toast.error(`${t('message.retry')}`);
-            // updateMsgState({user: { name: '', id: '' }, msg: {content: {title: 'Unable to answer. Please ask your question again.', choices: null, conversationId: sessionStorage.getItem("conversationId")}, messageId: uuidv4()}, media: null})
             setIsMsgReceiving(false);
             setLoading(false);
             fetchIsDown();
@@ -390,6 +309,7 @@ const ContextProvider: FC<{
       clearTimeout(timer);
       clearTimeout(secondTimer);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchIsDown, isMsgReceiving, loading, t, timer1, timer2]);
 
   const values = useMemo(
@@ -402,16 +322,12 @@ const ContextProvider: FC<{
       setMessages,
       loading,
       setLoading,
-      socketSession,
       isMsgReceiving,
       setIsMsgReceiving,
       locale,
       setLocale,
       localeMsgs,
-      isMobileAvailable,
-      setIsMobileAvailable,
       setConversationId,
-      onSocketConnect,
       newSocket,
       isDown,
       fetchIsDown,
@@ -422,12 +338,9 @@ const ContextProvider: FC<{
     }),
     [
       locale,
-      isMobileAvailable,
-      setIsMobileAvailable,
       setLocale,
       localeMsgs,
       currentUser,
-      socketSession,
       users,
       onChangeCurrentUser,
       sendMessage,
@@ -437,7 +350,6 @@ const ContextProvider: FC<{
       isMsgReceiving,
       setIsMsgReceiving,
       setConversationId,
-      onSocketConnect,
       newSocket,
       isDown,
       fetchIsDown,
