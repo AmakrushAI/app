@@ -46,24 +46,6 @@ const Chat: NextPage = () => {
         }}>
         <ChatUiWindow />
       </div>
-      {context?.sttReq && (
-            <div
-              style={{
-                height: '100vh',
-                width: '100vw',
-                zIndex: 1000,
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-                {/* @ts-ignore */}
-              <Spinner />
-            </div>
-          )}
       <Menu />
     </>
   );

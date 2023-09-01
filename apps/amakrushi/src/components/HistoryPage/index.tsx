@@ -143,7 +143,7 @@ const HistoryPage: NextPage = () => {
                 );
               })
             ) : gettingHistory ? (
-              <div style={{ textAlign: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '50vh' }}>
                  {/* @ts-ignore */}
                 <Spinner size="xl" />
               </div>

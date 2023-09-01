@@ -342,7 +342,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
         {!text && rightAction && <Action {...rightAction} />}
 
         {!text && VoiceToText ? (
-          <div style={{ height: '5vh', width: '5vh' }}>
+          <div style={{ height: (text || keyboardClicked) ? '5vh' : '6vh' , width: (text || keyboardClicked) ? '5vh' : '6vh' }}>
             <VoiceToText {...voiceToTextProps} setInputMsg={setText} />
           </div>
         ) : null}

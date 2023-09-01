@@ -1,7 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import Image from 'next/image';
-import Stop from '../../assets/icons/stop.gif';
-import Start from '../../assets/icons/startIcon.png';
+import stop from '../../assets/icons/stop.gif';
+import processing from '../../assets/icons/process.gif';
+import error from '../../assets/icons/error.gif';
+import start from '../../assets/icons/startIcon.png';
 import AudioReactRecorder, { RecordState } from 'audio-react-recorder';
 import { Grid } from '@material-ui/core';
 import styles from './styles.module.css';
@@ -13,6 +15,7 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
   const context = useContext(AppContext);
   const t = useLocalization();
   const [recordAudio, setRecordAudio] = useState(RecordState.NONE);
+  const [apiCallStatus, setApiCallStatus] = useState('idle');
 
   const handleStopRecording = () => {
     setRecordAudio(RecordState.STOP);
@@ -40,15 +43,16 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
   };
 
   const onStopRecording = async (data) => {
-    console.log("test")
     if (recordAudio === RecordState.START) {
       return;
     }
     try {
+      setApiCallStatus('processing');
       const base64Data = await blobToBase64(data.blob);
       makeComputeAPICall(base64Data);
     } catch (error) {
       console.error('Error converting Blob to Base64:', error);
+      setApiCallStatus('error');
     }
   };
 
@@ -75,9 +79,6 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
       // console.log("This is the file", file);
       formData.append('file', blob, 'audio.wav');
 
-      // const audio = new Audio(Object)bbbbb
-
-      context?.setSttReq(true);
       // Send the WAV data to the API
       const resp = await fetch(apiEndpoint + '/aitools/asr', {
         method: 'POST',
@@ -95,10 +96,10 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
         toast.error('Something went wrong. Try again later.');
         console.log(resp);
       }
-      context?.setSttReq(false);
+      setApiCallStatus('idle');
     } catch (error) {
-      context?.setSttReq(false);
       console.error(error);
+      setApiCallStatus('error');
       if (error.message === 'Unexpected end of JSON input') {
         toast.error(`${t('label.no_audio')}`);
       } else {
@@ -109,31 +110,46 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
 
   return (
     <div>
-      <div>
-        {recordAudio === 'start' ? (
-          <div className={styles.center}>
+      {recordAudio === RecordState.START ? (
+        <div className={styles.center}>
+          <Image
+            src={stop}
+            alt="stopIcon"
+            onClick={() => {
+              handleStopRecording();
+            }}
+            style={{ cursor: 'pointer' }}
+            layout="responsive"
+          />
+        </div>
+      ) : (
+        <div className={styles.center}>
+          {apiCallStatus === 'processing' ? (
             <Image
-              src={Stop}
-              alt="stopIcon"
-              onClick={() => handleStopRecording()}
+              src={processing}
+              alt="processingIcon"
               style={{ cursor: 'pointer' }}
               layout="responsive"
-            />{' '}
-          </div>
-        ) : (
-          <div className={styles.center}>
+            />
+          ) : apiCallStatus === 'error' ? (
             <Image
-              src={Start}
+              src={error}
+              alt="errorIcon"
+              onClick={() => handleStartRecording()}
+              style={{ cursor: 'pointer' }}
+              layout="responsive"
+            />
+          ) : (
+            <Image
+              src={start}
               alt="startIcon"
-              onClick={() => {
-                handleStartRecording();
-              }}
+              onClick={() => handleStartRecording()}
               style={{ cursor: 'pointer' }}
               layout="responsive"
-            />{' '}
-          </div>
-        )}
-      </div>
+            />
+          )}
+        </div>
+      )}
       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
         <div style={{ display: 'none' }}>
           <AudioReactRecorder
@@ -142,18 +158,6 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
             style={{ display: 'none' }}
           />
         </div>
-      </Grid>
-      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-        <Grid container spacing={1}>
-          <Grid
-            item
-            xs={4}
-            sm={12}
-            md={2}
-            lg={2}
-            xl={2}
-            className={styles.flexEndStyle}></Grid>
-        </Grid>
       </Grid>
     </div>
   );

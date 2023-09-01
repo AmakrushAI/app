@@ -279,8 +279,8 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
     disabled: disableSend
   })), !isInputText && /*#__PURE__*/React.createElement(Recorder, recorder)), !text && rightAction && /*#__PURE__*/React.createElement(Action, rightAction), !text && VoiceToText ? /*#__PURE__*/React.createElement("div", {
     style: {
-      height: '5vh',
-      width: '5vh'
+      height: text || keyboardClicked ? '5vh' : '6vh',
+      width: text || keyboardClicked ? '5vh' : '6vh'
     }
   }, /*#__PURE__*/React.createElement(VoiceToText, _extends({}, voiceToTextProps, {
     setInputMsg: setText

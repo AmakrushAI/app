@@ -290,8 +290,8 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     disabled: disableSend
   })), !isInputText && /*#__PURE__*/_react.default.createElement(_Recorder.Recorder, recorder)), !text && rightAction && /*#__PURE__*/_react.default.createElement(_Action.Action, rightAction), !text && VoiceToText ? /*#__PURE__*/_react.default.createElement("div", {
     style: {
-      height: '5vh',
-      width: '5vh'
+      height: text || keyboardClicked ? '5vh' : '6vh',
+      width: text || keyboardClicked ? '5vh' : '6vh'
     }
   }, /*#__PURE__*/_react.default.createElement(VoiceToText, (0, _extends2.default)({}, voiceToTextProps, {
     setInputMsg: setText

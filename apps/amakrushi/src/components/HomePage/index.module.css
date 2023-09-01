@@ -104,8 +104,8 @@
 .inputBox input {
   width: 100%;
   padding-left: 10px;
-  margin-right: 5px;
-  border-radius: 40px;
+  padding-right: 5px;
+  /* border-radius: 40px; */
   border: 2px solid var(--secondarygreen);
   outline: none;
 }
@@ -119,7 +119,7 @@
   max-width: 100px !important;
   padding: 4px;
   border: none;
-  border-radius: 40px !important;
+  /* border-radius: 40px !important; */
   background-color: var(--secondarygreen) !important;
 }
 
