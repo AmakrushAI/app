@@ -12,8 +12,7 @@ import { useLocalization } from '../../hooks';
 const RenderVoiceRecorder = ({ setInputMsg }) => {
   const context = useContext(AppContext);
   const t = useLocalization();
-  const [recordAudio, setRecordAudio] = useState(RecordState.STOP);
-  const [base, setBase] = useState('');
+  const [recordAudio, setRecordAudio] = useState(RecordState.NONE);
 
   const handleStopRecording = () => {
     setRecordAudio(RecordState.STOP);
@@ -23,7 +22,7 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
     setRecordAudio(RecordState.START);
   };
 
-  const blobToBase64 = (blob) => {
+  const blobToBase64 = async (blob) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
 
@@ -41,21 +40,21 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
   };
 
   const onStopRecording = async (data) => {
+    console.log("test")
     if (recordAudio === RecordState.START) {
       return;
     }
     try {
       const base64Data = await blobToBase64(data.blob);
-      setBase(base64Data);
-      makeComputeAPICall();
+      makeComputeAPICall(base64Data);
     } catch (error) {
       console.error('Error converting Blob to Base64:', error);
     }
   };
 
-  const makeComputeAPICall = async () => {
+  const makeComputeAPICall = async (base) => {
     try {
-      // console.log("base", base)
+      console.log("base", base);
       const prefix = 'data:audio/wav;base64,';
       const actualBase64 = base.substring(prefix.length);
       const audioData = Uint8Array.from(atob(actualBase64), (c) =>
@@ -75,6 +74,8 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
       const blob = new Blob([audioData], { type: 'audio/wav' });
       // console.log("This is the file", file);
       formData.append('file', blob, 'audio.wav');
+
+      // const audio = new Audio(Object)bbbbb
 
       context?.setSttReq(true);
       // Send the WAV data to the API
