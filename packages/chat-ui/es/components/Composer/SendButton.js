@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '../Button';
 import { useLocale } from '../LocaleProvider';
+import SendIcon from './sendIcon';
 export var SendButton = function SendButton(_ref) {
   var disabled = _ref.disabled,
     onClick = _ref.onClick,
@@ -15,5 +16,5 @@ export var SendButton = function SendButton(_ref) {
     onMouseDown: onClick,
     color: "primary",
     btnColor: btnColor
-  }, trans('send')));
+  }, /*#__PURE__*/React.createElement(SendIcon, null)));
 };

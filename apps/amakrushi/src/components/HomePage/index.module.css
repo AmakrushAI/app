@@ -111,15 +111,9 @@
 }
 
 .sendButton {
-  font-weight: 700;
-  font-size: 14px !important;
-  color: white;
-  font-family: 'Mulish-regular';
-  width: 26vw !important;
-  max-width: 100px !important;
-  padding: 4px;
-  border: none;
-  /* border-radius: 40px !important; */
-  background-color: var(--secondarygreen) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3px;
+  margin-left: 3px;
 }
-

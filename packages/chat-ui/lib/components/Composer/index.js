@@ -278,7 +278,7 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     style: {
       border: text || keyboardClicked ? "2px solid ".concat(btnColor) : 'none',
       flex: text || keyboardClicked ? "1" : '0',
-      borderRadius: '12px'
+      borderRadius: '0px'
     }
   }, !keyboardClicked && !text && /*#__PURE__*/_react.default.createElement("div", {
     onClick: function onClick() {

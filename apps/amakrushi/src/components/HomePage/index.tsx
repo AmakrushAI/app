@@ -16,6 +16,7 @@ import { getInitialMsgs } from '../../utils/textUtility';
 import { AppContext } from '../../context';
 import keyboardIcon from '../../assets/icons/keyboard.svg';
 import RightIcon from '../../assets/icons/right';
+import SendIcon from '../../assets/images/sendButton.png'
 // import reloadIcon from '../../assets/icons/reload.svg';
 import { useLocalization } from '../../hooks';
 import router from 'next/router';
@@ -205,8 +206,9 @@ const HomePage: NextPage = () => {
                 <button
                   type="submit"
                   onClick={() => sendMessage(inputMsg)}
-                  className={styles.sendButton}>
-                  {t('label.send')}
+                  className={styles.sendButton}
+                  >
+                  <Image src={SendIcon} width={50} height={50} alt='sendIcon'/>
                 </button>
               </>
             )}

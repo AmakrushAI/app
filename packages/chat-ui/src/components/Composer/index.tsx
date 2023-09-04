@@ -326,7 +326,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
           style={{
             border: text || keyboardClicked ? `2px solid ${btnColor}` : 'none',
             flex: text || keyboardClicked ? `1` : '0',
-            borderRadius: '12px',
+            borderRadius: '0px',
           }}
         >
           {(!keyboardClicked && !text) && (
