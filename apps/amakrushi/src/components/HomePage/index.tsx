@@ -186,33 +186,37 @@ const HomePage: NextPage = () => {
         </div>
 
         <form onSubmit={(event) => event?.preventDefault()}>
-          <div className={styles.inputBox}>
-            {!showChatBox ? (
-              <div
-                className={styles.keyboard}
-                onClick={() => setShowChatBox(true)}>
-                <Image src={keyboardIcon} alt="keyboard" />{' '}
-                <p>Click here to type</p>{' '}
-              </div>
-            ) : (
-              <>
-                <input
-                  type="text"
-                  value={inputMsg}
-                  onChange={handleInputChange}
-                  placeholder={placeholder}
-                  onClick={() => setShowExampleMessages(true)}
-                />
-                <button
-                  type="submit"
-                  onClick={() => sendMessage(inputMsg)}
-                  className={styles.sendButton}
-                  >
-                  <Image src={SendIcon} width={50} height={50} alt='sendIcon'/>
-                </button>
-              </>
-            )}
-          </div>
+        <div
+  className={`${
+    showChatBox
+      ? `${styles.inputBox} ${styles.inputBoxOpen}`
+      : styles.inputBox
+  }`}
+>
+  {!showChatBox ? (
+    <div className={styles.keyboard} onClick={() => setShowChatBox(true)}>
+      <Image src={keyboardIcon} alt="keyboard" /> <p>Click here to type</p>{" "}
+    </div>
+  ) : (
+    <>
+      <input
+        type="text"
+        value={inputMsg}
+        onChange={handleInputChange}
+        placeholder={placeholder}
+        onClick={() => setShowExampleMessages(true)}
+      />
+      <button
+        type="submit"
+        onClick={() => sendMessage(inputMsg)}
+        className={styles.sendButton}
+      >
+        <Image src={SendIcon} width={50} height={50} alt="sendIcon" />
+      </button>
+    </>
+  )}
+</div>
+
         </form>
       </div>
       
