@@ -44,7 +44,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 70px;
+  bottom: 55px;
   transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out, visibility 0.5s ease-in-out;
 }
 
@@ -69,7 +69,7 @@
   justify-content: space-between;
   min-height: 5vh;
   height: fit-content;
-  width: 90vw;
+  width: 100vw;
   padding: 1vh;
   text-align: left;
   font-size: 16px;
