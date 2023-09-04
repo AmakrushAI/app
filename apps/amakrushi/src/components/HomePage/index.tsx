@@ -177,7 +177,7 @@ const HomePage: NextPage = () => {
                 />
                 {choice.text}
                 <div className={styles.rightIcon}>
-                  <RightIcon width="5.5vh" color="var(--secondarygreen)" />
+                  <RightIcon width="45px" color="var(--secondarygreen)" />
                 </div>
               </button>
             );
