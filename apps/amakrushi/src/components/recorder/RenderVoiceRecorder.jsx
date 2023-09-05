@@ -7,11 +7,11 @@ import styles from './styles.module.css';
 import toast from 'react-hot-toast';
 import { AppContext } from '../../context';
 import { useLocalization } from '../../hooks';
+import { useAudioRecorder } from 'react-audio-voice-recorder';
 
 const RenderVoiceRecorder = ({ setInputMsg }) => {
   const context = useContext(AppContext);
   const t = useLocalization();
-
   const [mediaRecorder, setMediaRecorder] = useState(null);
 
   const startRecording = async () => {
@@ -62,9 +62,6 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
 
       // Append the WAV file to the FormData object
       formData.append('file', blob, 'audio.wav');
-
-      const audioSrc = new Audio(URL.createObjectURL(blob));
-      audioSrc.play();
 
       context?.setSttReq(true);
       // Send the WAV data to the API
