@@ -28,8 +28,6 @@ const ChatUiWindow: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await context?.fetchIsDown();
-        if(!context?.isDown){
           const chatHistory = await axios.get(
             `${
               process.env.NEXT_PUBLIC_BASE_URL
@@ -55,7 +53,6 @@ const ChatUiWindow: React.FC = () => {
           if (normalizedChats.length > 0) {
             context?.setMessages(normalizedChats);
           }
-        }
       } catch (error: any) {
         //@ts-ignore
         logEvent(analytics, "console_error", {
@@ -65,7 +62,7 @@ const ChatUiWindow: React.FC = () => {
     };
     !context?.loading && fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [context?.setMessages, context?.fetchIsDown, context?.isDown]);
+  }, [context?.setMessages]);
 
   const normalizedChat = (chats: any): any => {
     console.log("in normalized");

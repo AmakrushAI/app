@@ -26,6 +26,7 @@ import toast from 'react-hot-toast';
 import { v4 as uuidv4 } from 'uuid';
 import RenderVoiceRecorder from '../recorder/RenderVoiceRecorder';
 import { useFlags } from 'flagsmith/react';
+import DownTimePage from '../down-time-page';
 
 const HomePage: NextPage = () => {
   const context = useContext(AppContext);
@@ -137,6 +138,9 @@ const HomePage: NextPage = () => {
     setShowExampleMessages(inputValue.length === 0);
   };
 
+  if (context?.isDown) {
+    return <DownTimePage />;
+  } else
   return (
     <>
       <div className={styles.main}>

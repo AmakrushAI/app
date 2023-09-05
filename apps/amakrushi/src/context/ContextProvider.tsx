@@ -62,24 +62,27 @@ const ContextProvider: FC<{
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
   useEffect(() => {
-    function onlineHandler() {
-        setIsOnline(true);
+    console.log("online")
+    if (navigator.onLine) {
+      console.log("online")
+      setIsOnline(true);
+    } else {
+      console.log("online")
+      setIsOnline(false);
+      onMessageReceived({
+        content: {
+          title: 'No signal \nCheck your internet connection',
+          choices: null,
+          conversationId: conversationId,
+          msg_type: 'text',
+          timeTaken: 4999,
+          btns: true,
+        },
+        messageId: uuidv4(),
+      });
     }
-
-    function offlineHandler() {
-        setIsOnline(false);
-        onMessageReceived({content: { title: "No signal \nCheck your internet connection", choices: null, conversationId: conversationId, msg_type: 'text', timeTaken: 4999, btns: true }, messageId: uuidv4() });
-    }
-
-    window.addEventListener("online", onlineHandler);
-    window.addEventListener("offline", offlineHandler);
-
-
-    return () => {
-        window.removeEventListener("online", onlineHandler);
-        window.removeEventListener("offline", offlineHandler);
-    };
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigator.onLine]);
 
   useEffect(() => {
     if (localStorage.getItem('userID') && localStorage.getItem('auth')) {
@@ -113,7 +116,7 @@ const ContextProvider: FC<{
         });
     }
     return cleanup;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localStorage.getItem('userID'), localStorage.getItem('auth')]);
 
   const updateMsgState = useCallback(
@@ -123,7 +126,15 @@ const ContextProvider: FC<{
       media,
     }: {
       user: { name: string; id: string };
-      msg: { content: { title: string; choices: any, conversationId: any, btns?: boolean }; messageId: string };
+      msg: {
+        content: {
+          title: string;
+          choices: any;
+          conversationId: any;
+          btns?: boolean;
+        };
+        messageId: string;
+      };
       media: any;
     }) => {
       if (msg.content.title !== '') {
@@ -143,7 +154,10 @@ const ContextProvider: FC<{
         };
 
         //@ts-ignore
-        if (sessionStorage.getItem('conversationId') === msg?.content?.conversationId){
+        if (
+          sessionStorage.getItem('conversationId') ===
+          msg?.content?.conversationId
+        ) {
           setMessages((prev: any) => _.uniq([...prev, newMsg], ['messageId']));
         }
       }
@@ -156,8 +170,8 @@ const ContextProvider: FC<{
   const onMessageReceived = useCallback(
     (msg: any): void => {
       console.log('mssgs:', messages);
-      console.log('#-debug:', msg.content );
-      console.log('#-debug:', msg.content.msg_type );
+      console.log('#-debug:', msg.content);
+      console.log('#-debug:', msg.content.msg_type);
       setLoading(false);
       setIsMsgReceiving(false);
       //@ts-ignore
@@ -191,7 +205,7 @@ const ContextProvider: FC<{
           media: { fileUrl: msg?.content?.media_url },
         });
       } else if (msg.content.msg_type.toUpperCase() === 'TEXT') {
-        if(msg.content.timeTaken < 5000 && isOnline){
+        if (msg.content.timeTaken < 5000 && isOnline) {
           updateMsgState({ user, msg, media: {} });
         }
       }
@@ -224,18 +238,18 @@ const ContextProvider: FC<{
       //@ts-ignore
       logEvent(analytics, 'Query_sent');
 
-      console.log("my mssg:", text)
+      console.log('my mssg:', text);
       newSocket.sendMessage({
-          text: text,
-          to: localStorage.getItem('userID'),
-          from: localStorage.getItem('phoneNumber'),
-          optional: {
-            appId: 'AKAI_App_Id',
-            channel: 'AKAI',
-          },
-          asrId: sessionStorage.getItem('asrId'),
-          userId: localStorage.getItem('userID'),
-          conversationId: sessionStorage.getItem('conversationId')
+        text: text,
+        to: localStorage.getItem('userID'),
+        from: localStorage.getItem('phoneNumber'),
+        optional: {
+          appId: 'AKAI_App_Id',
+          channel: 'AKAI',
+        },
+        asrId: sessionStorage.getItem('asrId'),
+        userId: localStorage.getItem('userID'),
+        conversationId: sessionStorage.getItem('conversationId'),
       });
       if (isVisibile)
         if (media) {
@@ -266,12 +280,7 @@ const ContextProvider: FC<{
           //    console.log('mssgs:',messages)
         }
     },
-    [
-      removeCookie,
-      newSocket,
-      conversationId,
-      currentUser?.id,
-    ]
+    [removeCookie, newSocket, conversationId, currentUser?.id]
   );
 
   const fetchIsDown = useCallback(async () => {
@@ -311,8 +320,18 @@ const ContextProvider: FC<{
         });
         secondTimer = setTimeout(() => {
           if (isMsgReceiving && loading) {
-            toast.error(`${t('message.retry')}`);
-            onMessageReceived({content: { title: "No signal \nCheck your internet connection", choices: null, conversationId: conversationId, msg_type: 'text', timeTaken: 4999, btns: true }, messageId: uuidv4() });
+            // toast.error(`${t('message.retry')}`);
+            onMessageReceived({
+              content: {
+                title: 'No signal \nCheck your internet connection',
+                choices: null,
+                conversationId: conversationId,
+                msg_type: 'text',
+                timeTaken: 4999,
+                btns: true,
+              },
+              messageId: uuidv4(),
+            });
             fetchIsDown();
             //@ts-ignore
             logEvent(analytics, 'Msg_delay', {
@@ -328,7 +347,17 @@ const ContextProvider: FC<{
       clearTimeout(timer);
       clearTimeout(secondTimer);
     };
-  }, [conversationId, fetchIsDown, isDown, isMsgReceiving, loading, onMessageReceived, t, timer1, timer2]);
+  }, [
+    conversationId,
+    fetchIsDown,
+    isDown,
+    isMsgReceiving,
+    loading,
+    onMessageReceived,
+    t,
+    timer1,
+    timer2,
+  ]);
 
   const values = useMemo(
     () => ({

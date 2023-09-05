@@ -78,6 +78,8 @@
 .keyboard{
   margin: auto;
   cursor: pointer;
+  position: relative;
+  bottom: 7vh;
 }
 
 .keyboard p {
