@@ -95,7 +95,7 @@ const ContextProvider: FC<{
     }
     return cleanup;
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [localStorage.getItem('userID'), localStorage.getItem('auth')]);
 
   const updateMsgState = useCallback(
     ({
