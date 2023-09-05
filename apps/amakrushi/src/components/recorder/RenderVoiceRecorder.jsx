@@ -56,7 +56,7 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
       console.log("base", base);
       const prefix = "data:audio/wav;base64,";
       const actualBase64 = base.substring(prefix.length);
-      toast.success(actualBase64)
+      toast.success(actualBase64.length)
       const audioData = Uint8Array.from(atob(actualBase64), c => c.charCodeAt(0));
       
       toast.success(`${t('message.recorder_wait')}`);
