@@ -292,8 +292,8 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     style: {
-      height: text || keyboardClicked ? '5vh' : '6vh',
-      width: text || keyboardClicked ? '5vh' : '6vh'
+      height: text || keyboardClicked ? '45px' : '6vh',
+      width: text || keyboardClicked ? '45px' : '6vh'
     }
   }, /*#__PURE__*/_react.default.createElement(VoiceToText, (0, _extends2.default)({}, voiceToTextProps, {
     setInputMsg: setText
@@ -310,7 +310,10 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     style: {
       textAlign: 'center'
     }
-  }, /*#__PURE__*/_react.default.createElement(_keyboard.default, null), /*#__PURE__*/_react.default.createElement("p", {
+  }, /*#__PURE__*/_react.default.createElement(_keyboard.default, {
+    height: text || keyboardClicked ? '5vh' : '7vh',
+    width: text || keyboardClicked ? '5vh' : '7vh'
+  }), /*#__PURE__*/_react.default.createElement("p", {
     style: {
       marginBottom: '6px',
       fontSize: '12px',

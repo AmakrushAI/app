@@ -15,9 +15,7 @@ var SendButton = function SendButton(_ref) {
     btnColor = _ref.btnColor;
   var _useLocale = (0, _LocaleProvider.useLocale)('Composer'),
     trans = _useLocale.trans;
-  return /*#__PURE__*/_react.default.createElement("div", {
-    className: "Composer-actions"
-  }, /*#__PURE__*/_react.default.createElement(_Button.Button, {
+  return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(_Button.Button, {
     className: "Composer-sendBtn",
     disabled: disabled,
     onMouseDown: onClick,

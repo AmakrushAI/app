@@ -1,8 +1,8 @@
 import React from 'react';
-function Keyboard() {
+function Keyboard(props) {
   return /*#__PURE__*/React.createElement("svg", {
-    width: "56",
-    height: "56",
+    width: props.width,
+    height: props.height,
     viewBox: "0 0 68 53",
     fill: "none",
     xmlns: "http://www.w3.org/2000/svg"

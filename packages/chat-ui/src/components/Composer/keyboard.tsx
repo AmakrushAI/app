@@ -1,8 +1,8 @@
 import React from 'react';
 
-function Keyboard() {
+function Keyboard(props: any) {
   return (
-    <svg width="56" height="56" viewBox="0 0 68 53" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width={props.width} height={props.height} viewBox="0 0 68 53" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g filter="url(#filter0_d_1785_3947)">
         <path
           d="M64 30C64 46.5685 50.5685 60 34 60C17.4315 60 4 46.5685 4 30C4 13.4315 17.4315 0 34 0C50.5685 0 64 13.4315 64 30Z"

@@ -343,8 +343,8 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
           <div style={{display: 'flex', flexDirection: 'column'}}>
             <div
               style={{
-                height: text || keyboardClicked ? '5vh' : '6vh',
-                width: text || keyboardClicked ? '5vh' : '6vh',
+                height: text || keyboardClicked ? '45px' : '6vh',
+                width: text || keyboardClicked ? '45px' : '6vh',
               }}
             >
               <VoiceToText {...voiceToTextProps} setInputMsg={setText} />
@@ -354,7 +354,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
         ) : null}
         {!keyboardClicked && !text && (
           <div onClick={() => setKeyboardClicked(true)} style={{ textAlign: 'center' }}>
-            <Keyboard />
+            <Keyboard height={text || keyboardClicked ? '5vh' : '7vh'} width={text || keyboardClicked ? '5vh' : '7vh'}/>
             <p style={{marginBottom: '6px', fontSize: '12px', fontWeight: 'bold', textAlign: 'center'}}>Type</p>
           </div>
         )}

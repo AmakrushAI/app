@@ -6,10 +6,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var _react = _interopRequireDefault(require("react"));
-function Keyboard() {
+function Keyboard(props) {
   return /*#__PURE__*/_react.default.createElement("svg", {
-    width: "56",
-    height: "56",
+    width: props.width,
+    height: props.height,
     viewBox: "0 0 68 53",
     fill: "none",
     xmlns: "http://www.w3.org/2000/svg"

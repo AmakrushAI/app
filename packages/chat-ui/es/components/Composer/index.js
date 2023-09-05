@@ -281,8 +281,8 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      height: text || keyboardClicked ? '5vh' : '6vh',
-      width: text || keyboardClicked ? '5vh' : '6vh'
+      height: text || keyboardClicked ? '45px' : '6vh',
+      width: text || keyboardClicked ? '45px' : '6vh'
     }
   }, /*#__PURE__*/React.createElement(VoiceToText, _extends({}, voiceToTextProps, {
     setInputMsg: setText
@@ -299,7 +299,10 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
     style: {
       textAlign: 'center'
     }
-  }, /*#__PURE__*/React.createElement(Keyboard, null), /*#__PURE__*/React.createElement("p", {
+  }, /*#__PURE__*/React.createElement(Keyboard, {
+    height: text || keyboardClicked ? '5vh' : '7vh',
+    width: text || keyboardClicked ? '5vh' : '7vh'
+  }), /*#__PURE__*/React.createElement("p", {
     style: {
       marginBottom: '6px',
       fontSize: '12px',
