@@ -7,28 +7,47 @@ import styles from './styles.module.css';
 import toast from 'react-hot-toast';
 import { AppContext } from '../../context';
 import { useLocalization } from '../../hooks';
-import { useAudioRecorder } from 'react-audio-voice-recorder';
 
 const RenderVoiceRecorder = ({ setInputMsg }) => {
   const context = useContext(AppContext);
   const t = useLocalization();
-  const {
-    startRecording,
-    stopRecording,
-    togglePauseResume,
-    recordingBlob,
-    isRecording,
-    isPaused,
-    recordingTime,
-    mediaRecorder,
-  } = useAudioRecorder();
+
+  const [mediaRecorder, setMediaRecorder] = useState(null);
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const recorder = new MediaRecorder(stream);
+
+      recorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          makeComputeAPICall(event.data);
+        }
+      };
+
+      recorder.start();
+      setMediaRecorder(recorder);
+      toast.success('Recording started');
+    } catch (error) {
+      console.error(error);
+      toast.error(`${t('label.recorder_error')}`);
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+      mediaRecorder.stop();
+      toast.success('Recording stopped');
+    }
+  };
 
   useEffect(() => {
-    if(!recordingBlob) return;
-    
-    makeComputeAPICall(recordingBlob);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [recordingBlob])
+    return () => {
+      if (mediaRecorder) {
+        mediaRecorder.stop();
+      }
+    };
+  }, [mediaRecorder]);
   
 
   const makeComputeAPICall = async (blob) => {
@@ -85,7 +104,7 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
   return (
     <div>
       <div>
-        {isRecording ? (
+      {mediaRecorder && mediaRecorder.state === 'recording' ? (
           <div className={styles.center}>
             <Image
               src={Stop}
