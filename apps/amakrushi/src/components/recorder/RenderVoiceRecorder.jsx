@@ -29,6 +29,7 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
       setMediaRecorder(recorder);
     } catch (error) {
       console.error(error);
+      toast.success(`${t('message.recorder_error')}`);
     }
   };
 
