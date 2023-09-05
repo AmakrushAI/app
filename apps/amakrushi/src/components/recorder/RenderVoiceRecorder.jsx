@@ -21,10 +21,15 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
     isPaused,
     recordingTime,
     mediaRecorder,
-  } = useAudioRecorder({
-    noiseSuppression: true,
-    echoCancellation: true,
-  });
+  } = useAudioRecorder();
+
+  useEffect(() => {
+    if(!recordingBlob) return;
+    
+    makeComputeAPICall(recordingBlob);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recordingBlob])
+  
 
   const makeComputeAPICall = async (blob) => {
     try {
@@ -87,7 +92,6 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
               alt="stopIcon"
               onClick={() => {
                 stopRecording();
-                recordingBlob ? makeComputeAPICall(recordingBlob) : undefined;
               }}
               style={{ cursor: 'pointer' }}
               layout="responsive"
