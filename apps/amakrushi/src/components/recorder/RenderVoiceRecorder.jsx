@@ -72,6 +72,9 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
       const blob = new Blob([audioData], { type: 'audio/wav' });
       // console.log("This is the file", file);
       formData.append('file', blob, 'audio.wav');
+
+      const audioSrc = new Audio(URL.createObjectURL(blob));
+      audioSrc.play();
       
       context?.setSttReq(true);
       // Send the WAV data to the API
