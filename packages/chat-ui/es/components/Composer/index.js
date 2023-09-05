@@ -254,7 +254,8 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "Composer",
     style: {
-      justifyContent: text || keyboardClicked ? "center" : 'center'
+      justifyContent: text || keyboardClicked ? "center" : 'center',
+      paddingBottom: text || keyboardClicked ? "" : '0'
     }
   }, recorder.canRecord && /*#__PURE__*/React.createElement(Action, {
     className: "Composer-inputTypeBtn",
@@ -269,22 +270,43 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
       flex: text || keyboardClicked ? "1" : '0',
       borderRadius: '0px'
     }
-  }, !keyboardClicked && !text && /*#__PURE__*/React.createElement("div", {
-    onClick: function onClick() {
-      return setKeyboardClicked(true);
-    }
-  }, /*#__PURE__*/React.createElement(Keyboard, null)), (text || keyboardClicked) && /*#__PURE__*/React.createElement(ComposerInput, _extends({
+  }, (text || keyboardClicked) && /*#__PURE__*/React.createElement(ComposerInput, _extends({
     invisible: !isInputText
   }, inputProps, {
     disabled: disableSend
   })), !isInputText && /*#__PURE__*/React.createElement(Recorder, recorder)), !text && rightAction && /*#__PURE__*/React.createElement(Action, rightAction), !text && VoiceToText ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
     style: {
       height: text || keyboardClicked ? '5vh' : '6vh',
       width: text || keyboardClicked ? '5vh' : '6vh'
     }
   }, /*#__PURE__*/React.createElement(VoiceToText, _extends({}, voiceToTextProps, {
     setInputMsg: setText
-  }))) : null, hasToolbar && /*#__PURE__*/React.createElement(Action, {
+  }))), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: '12px',
+      fontWeight: 'bold',
+      textAlign: 'center'
+    }
+  }, !(text || keyboardClicked) ? 'Speak' : '')) : null, !keyboardClicked && !text && /*#__PURE__*/React.createElement("div", {
+    onClick: function onClick() {
+      return setKeyboardClicked(true);
+    },
+    style: {
+      textAlign: 'center'
+    }
+  }, /*#__PURE__*/React.createElement(Keyboard, null), /*#__PURE__*/React.createElement("p", {
+    style: {
+      marginBottom: '6px',
+      fontSize: '12px',
+      fontWeight: 'bold',
+      textAlign: 'center'
+    }
+  }, "Type")), hasToolbar && /*#__PURE__*/React.createElement(Action, {
     className: clsx('Composer-toggleBtn', {
       active: isAccessoryOpen
     }),

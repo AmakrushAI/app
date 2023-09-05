@@ -311,7 +311,10 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
 
   return (
     <>
-      <div className="Composer" style={{justifyContent: text || keyboardClicked ? `center` : 'center',}}>
+      <div
+        className="Composer"
+        style={{ justifyContent: text || keyboardClicked ? `center` : 'center',  paddingBottom: text || keyboardClicked ? `` : '0'}}
+      >
         {recorder.canRecord && (
           <Action
             className="Composer-inputTypeBtn"
@@ -329,11 +332,6 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
             borderRadius: '0px',
           }}
         >
-          {(!keyboardClicked && !text) && (
-            <div onClick={() => setKeyboardClicked(true)}>
-              <Keyboard />
-            </div>
-          )}
           {(text || keyboardClicked) && (
             <ComposerInput invisible={!isInputText} {...inputProps} disabled={disableSend} />
           )}
@@ -342,10 +340,24 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
         {!text && rightAction && <Action {...rightAction} />}
 
         {!text && VoiceToText ? (
-          <div style={{ height: (text || keyboardClicked) ? '5vh' : '6vh' , width: (text || keyboardClicked) ? '5vh' : '6vh' }}>
-            <VoiceToText {...voiceToTextProps} setInputMsg={setText} />
+          <div style={{display: 'flex', flexDirection: 'column'}}>
+            <div
+              style={{
+                height: text || keyboardClicked ? '5vh' : '6vh',
+                width: text || keyboardClicked ? '5vh' : '6vh',
+              }}
+            >
+              <VoiceToText {...voiceToTextProps} setInputMsg={setText} />
+            </div>
+            <p style={{fontSize: '12px', fontWeight: 'bold', textAlign: 'center'}}>{!(text || keyboardClicked) ? 'Speak' : ''}</p>
           </div>
         ) : null}
+        {!keyboardClicked && !text && (
+          <div onClick={() => setKeyboardClicked(true)} style={{ textAlign: 'center' }}>
+            <Keyboard />
+            <p style={{marginBottom: '6px', fontSize: '12px', fontWeight: 'bold', textAlign: 'center'}}>Type</p>
+          </div>
+        )}
 
         {hasToolbar && (
           <Action

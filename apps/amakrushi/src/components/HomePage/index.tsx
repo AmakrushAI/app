@@ -16,7 +16,7 @@ import { getInitialMsgs } from '../../utils/textUtility';
 import { AppContext } from '../../context';
 import keyboardIcon from '../../assets/icons/keyboard.svg';
 import RightIcon from '../../assets/icons/right';
-import SendIcon from '../../assets/images/sendButton.png'
+import SendIcon from '../../assets/images/sendButton.png';
 // import reloadIcon from '../../assets/icons/reload.svg';
 import { useLocalization } from '../../hooks';
 import router from 'next/router';
@@ -186,40 +186,40 @@ const HomePage: NextPage = () => {
         </div>
 
         <form onSubmit={(event) => event?.preventDefault()}>
-        <div
-  className={`${
-    showChatBox
-      ? `${styles.inputBox} ${styles.inputBoxOpen}`
-      : styles.inputBox
-  }`}
->
-  {!showChatBox ? (
-    <div className={styles.keyboard} onClick={() => setShowChatBox(true)}>
-      <Image src={keyboardIcon} alt="keyboard" /> <p>Click here to type</p>{" "}
-    </div>
-  ) : (
-    <>
-      <input
-        type="text"
-        value={inputMsg}
-        onChange={handleInputChange}
-        placeholder={placeholder}
-        onClick={() => setShowExampleMessages(true)}
-      />
-      <button
-        type="submit"
-        onClick={() => sendMessage(inputMsg)}
-        className={styles.sendButton}
-      >
-        <Image src={SendIcon} width={50} height={50} alt="sendIcon" />
-      </button>
-    </>
-  )}
-</div>
-
+          <div
+            className={`${
+              showChatBox
+                ? `${styles.inputBox} ${styles.inputBoxOpen}`
+                : styles.inputBox
+            }`}>
+            {!showChatBox ? (
+              <div
+                className={styles.keyboard}
+                onClick={() => setShowChatBox(true)}>
+               <Image src={keyboardIcon} alt="keyboard"/>
+                <p>Click here to type</p>
+              </div>
+            ) : (
+              <>
+                <input
+                  type="text"
+                  value={inputMsg}
+                  onChange={handleInputChange}
+                  placeholder={placeholder}
+                  onClick={() => setShowExampleMessages(true)}
+                />
+                <button
+                  type="submit"
+                  onClick={() => sendMessage(inputMsg)}
+                  className={styles.sendButton}>
+                  <Image src={SendIcon} width={50} height={50} alt="sendIcon" />
+                </button>
+              </>
+            )}
+          </div>
         </form>
       </div>
-      
+
       <Menu />
     </>
   );

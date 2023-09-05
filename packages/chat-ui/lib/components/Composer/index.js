@@ -265,7 +265,8 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("div", {
     className: "Composer",
     style: {
-      justifyContent: text || keyboardClicked ? "center" : 'center'
+      justifyContent: text || keyboardClicked ? "center" : 'center',
+      paddingBottom: text || keyboardClicked ? "" : '0'
     }
   }, recorder.canRecord && /*#__PURE__*/_react.default.createElement(_Action.Action, {
     className: "Composer-inputTypeBtn",
@@ -280,22 +281,43 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
       flex: text || keyboardClicked ? "1" : '0',
       borderRadius: '0px'
     }
-  }, !keyboardClicked && !text && /*#__PURE__*/_react.default.createElement("div", {
-    onClick: function onClick() {
-      return setKeyboardClicked(true);
-    }
-  }, /*#__PURE__*/_react.default.createElement(_keyboard.default, null)), (text || keyboardClicked) && /*#__PURE__*/_react.default.createElement(_ComposerInput.ComposerInput, (0, _extends2.default)({
+  }, (text || keyboardClicked) && /*#__PURE__*/_react.default.createElement(_ComposerInput.ComposerInput, (0, _extends2.default)({
     invisible: !isInputText
   }, inputProps, {
     disabled: disableSend
   })), !isInputText && /*#__PURE__*/_react.default.createElement(_Recorder.Recorder, recorder)), !text && rightAction && /*#__PURE__*/_react.default.createElement(_Action.Action, rightAction), !text && VoiceToText ? /*#__PURE__*/_react.default.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column'
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
     style: {
       height: text || keyboardClicked ? '5vh' : '6vh',
       width: text || keyboardClicked ? '5vh' : '6vh'
     }
   }, /*#__PURE__*/_react.default.createElement(VoiceToText, (0, _extends2.default)({}, voiceToTextProps, {
     setInputMsg: setText
-  }))) : null, hasToolbar && /*#__PURE__*/_react.default.createElement(_Action.Action, {
+  }))), /*#__PURE__*/_react.default.createElement("p", {
+    style: {
+      fontSize: '12px',
+      fontWeight: 'bold',
+      textAlign: 'center'
+    }
+  }, !(text || keyboardClicked) ? 'Speak' : '')) : null, !keyboardClicked && !text && /*#__PURE__*/_react.default.createElement("div", {
+    onClick: function onClick() {
+      return setKeyboardClicked(true);
+    },
+    style: {
+      textAlign: 'center'
+    }
+  }, /*#__PURE__*/_react.default.createElement(_keyboard.default, null), /*#__PURE__*/_react.default.createElement("p", {
+    style: {
+      marginBottom: '6px',
+      fontSize: '12px',
+      fontWeight: 'bold',
+      textAlign: 'center'
+    }
+  }, "Type")), hasToolbar && /*#__PURE__*/_react.default.createElement(_Action.Action, {
     className: (0, _clsx.default)('Composer-toggleBtn', {
       active: isAccessoryOpen
     }),
