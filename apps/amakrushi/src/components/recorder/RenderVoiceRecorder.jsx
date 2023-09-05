@@ -27,17 +27,14 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
 
       recorder.start();
       setMediaRecorder(recorder);
-      toast.success('Recording started');
     } catch (error) {
       console.error(error);
-      toast.error(`${t('label.recorder_error')}`);
     }
   };
 
   const stopRecording = () => {
     if (mediaRecorder && mediaRecorder.state === 'recording') {
       mediaRecorder.stop();
-      toast.success('Recording stopped');
     }
   };
 
