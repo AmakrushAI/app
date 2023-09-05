@@ -46,9 +46,6 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
       // Append the WAV file to the FormData object
       formData.append('file', blob, 'audio.wav');
 
-      const audioSrc = new Audio(URL.createObjectURL(blob));
-      audioSrc.play();
-
       context?.setSttReq(true);
       // Send the WAV data to the API
       const resp = await fetch(apiEndpoint + '/aitools/asr', {
