@@ -156,7 +156,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   );
 
   const { content, type } = message;
-  console.log('#-debug:', content);
+  // console.log('#-debug:', content);
   switch (type) {
     case 'loader':
       return <Typing />;

@@ -75,7 +75,7 @@ const ContextProvider: FC<{
           choices: null,
           conversationId: conversationId,
           msg_type: 'text',
-          timeTaken: 4999,
+          timeTaken: 3999,
           btns: true,
         },
         messageId: uuidv4(),
@@ -205,12 +205,12 @@ const ContextProvider: FC<{
           media: { fileUrl: msg?.content?.media_url },
         });
       } else if (msg.content.msg_type.toUpperCase() === 'TEXT') {
-        if (msg.content.timeTaken < 5000 && isOnline) {
+        if (msg.content.timeTaken + 1000 < timer2 && isOnline) {
           updateMsgState({ user, msg, media: {} });
         }
       }
     },
-    [isOnline, messages, updateMsgState]
+    [isOnline, messages, timer2, updateMsgState]
   );
 
   const onChangeCurrentUser = useCallback((newUser: UserType) => {
@@ -327,7 +327,7 @@ const ContextProvider: FC<{
                 choices: null,
                 conversationId: conversationId,
                 msg_type: 'text',
-                timeTaken: 4999,
+                timeTaken: 3999,
                 btns: true,
               },
               messageId: uuidv4(),
@@ -339,7 +339,7 @@ const ContextProvider: FC<{
               phone_number: localStorage.getItem('phoneNumber'),
             });
           }
-        }, 5000);
+        }, timer2);
       }
     }, 10);
 

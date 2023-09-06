@@ -24,9 +24,9 @@ function Keyboard(props) {
     width: "68",
     height: "68",
     filterUnits: "userSpaceOnUse",
-    "color-interpolation-filters": "sRGB"
+    colorInterpolationFilters: "sRGB"
   }, /*#__PURE__*/React.createElement("feFlood", {
-    "flood-opacity": "0",
+    floodOpacity: "0",
     result: "BackgroundImageFix"
   }), /*#__PURE__*/React.createElement("feGaussianBlur", {
     stdDeviation: "2"

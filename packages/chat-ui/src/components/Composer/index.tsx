@@ -43,6 +43,7 @@ export type ComposerProps = {
   onAccessoryToggle?: (isAccessoryOpen: boolean) => void;
   rightAction?: IconButtonProps;
   disableSend: boolean;
+  translation: any;
   btnColor: string;
   voiceToText?: any;
   voiceToTextProps?: any;
@@ -68,6 +69,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
     voiceToText: VoiceToText,
     voiceToTextProps,
     disableSend = false,
+    translation,
     onImageSend,
     onAccessoryToggle,
     toolbar = [],
@@ -349,13 +351,13 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
             >
               <VoiceToText {...voiceToTextProps} setInputMsg={setText} />
             </div>
-            <p style={{fontSize: '12px', fontWeight: 'bold', textAlign: 'center'}}>{!(text || keyboardClicked) ? 'Speak' : ''}</p>
+            <p style={{fontSize: '12px', fontWeight: 'bold', textAlign: 'center'}}>{!(text || keyboardClicked) ? translation('label.speak') : ''}</p>
           </div>
         ) : null}
         {!keyboardClicked && !text && (
           <div onClick={() => setKeyboardClicked(true)} style={{ textAlign: 'center' }}>
             <Keyboard height={text || keyboardClicked ? '5vh' : '7vh'} width={text || keyboardClicked ? '5vh' : '7vh'}/>
-            <p style={{marginBottom: '6px', fontSize: '12px', fontWeight: 'bold', textAlign: 'center'}}>Type</p>
+            <p style={{marginBottom: '6px', fontSize: '12px', fontWeight: 'bold', textAlign: 'center'}}>{translation('label.type')}</p>
           </div>
         )}
 

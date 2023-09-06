@@ -47,6 +47,7 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     voiceToTextProps = props.voiceToTextProps,
     _props$disableSend = props.disableSend,
     disableSend = _props$disableSend === void 0 ? false : _props$disableSend,
+    translation = props.translation,
     onImageSend = props.onImageSend,
     onAccessoryToggle = props.onAccessoryToggle,
     _props$toolbar = props.toolbar,
@@ -303,7 +304,7 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
       fontWeight: 'bold',
       textAlign: 'center'
     }
-  }, !(text || keyboardClicked) ? 'Speak' : '')) : null, !keyboardClicked && !text && /*#__PURE__*/_react.default.createElement("div", {
+  }, !(text || keyboardClicked) ? translation('label.speak') : '')) : null, !keyboardClicked && !text && /*#__PURE__*/_react.default.createElement("div", {
     onClick: function onClick() {
       return setKeyboardClicked(true);
     },
@@ -320,7 +321,7 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
       fontWeight: 'bold',
       textAlign: 'center'
     }
-  }, "Type")), hasToolbar && /*#__PURE__*/_react.default.createElement(_Action.Action, {
+  }, translation('label.type'))), hasToolbar && /*#__PURE__*/_react.default.createElement(_Action.Action, {
     className: (0, _clsx.default)('Composer-toggleBtn', {
       active: isAccessoryOpen
     }),

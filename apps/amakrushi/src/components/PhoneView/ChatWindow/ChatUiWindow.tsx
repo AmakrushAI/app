@@ -44,7 +44,7 @@ const ChatUiWindow: React.FC = () => {
           console.log('history:', chatHistory.data);
 
           const modifiedChatHistory = chatHistory.data.map((chat: any) => {
-            if (chat.response.trim() === '') {
+            if (!chat.response) {
               chat.response =
                 'No signal \nPlease check your internet connection';
             }
@@ -52,6 +52,7 @@ const ChatUiWindow: React.FC = () => {
           });
 
           const normalizedChats = normalizedChat(modifiedChatHistory);
+          console.log("normalized chats", normalizedChats)
           if (normalizedChats.length > 0) {
             context?.setMessages(normalizedChats);
           }
@@ -187,6 +188,7 @@ const ChatUiWindow: React.FC = () => {
           btnColor="var(--secondarygreen)"
           background="var(--bg-color)"
           disableSend={context?.loading}
+          translation={t}
           //@ts-ignore
           messages={msgToRender}
           voiceToText={RenderVoiceRecorder}

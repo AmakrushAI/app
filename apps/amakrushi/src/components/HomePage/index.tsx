@@ -189,7 +189,7 @@ const HomePage: NextPage = () => {
                 className={styles.keyboard}
                 onClick={() => setShowChatBox(true)}>
                <Image src={keyboardIcon} alt="keyboard"/>
-                <p>Click here to type</p>
+                <p>{t('message.click_to_type')}</p>
               </div>
             ) : (
               <>
