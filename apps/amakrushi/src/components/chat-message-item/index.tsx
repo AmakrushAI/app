@@ -233,10 +233,10 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
           {content?.data?.btns ? (
             <div className={styles.offlineBtns}>
               <button onClick={() => window?.location?.reload()}>
-                Refresh
+                {t('label.refresh')}
               </button>
               <button>
-                <a href={`tel:${flags.dialer_number.value}`}>Call Ama Krushi</a>
+                <a href={`tel:${flags.dialer_number.value}`}>{t('label.call_amakrushi')}</a>
               </button>
             </div>
           ) : (
