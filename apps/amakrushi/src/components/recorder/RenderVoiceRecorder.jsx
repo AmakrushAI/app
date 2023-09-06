@@ -32,7 +32,7 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
     } catch (error) {
       console.error(error);
       setApiCallStatus('error');
-      toast.success(`${t('message.recorder_error')}`);
+      toast.error(`${t('message.recorder_error')}`);
     }
   };
 
@@ -82,7 +82,7 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
           setInputMsg(rsp_data.text);
           sessionStorage.setItem('asrId', rsp_data.id);
       } else {
-        toast.error('Something went wrong. Try again later.');
+        toast.error(`${t('message.recorder_error')}`);
         console.log(resp);
       }
       setApiCallStatus('idle');
@@ -92,7 +92,7 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
       if(error.message === "Unexpected end of JSON input"){
         toast.error(`${t('label.no_audio')}`);
       } else {
-        toast.error(error.message);
+        toast.error(`${t('message.recorder_error')}`);
       }
     }
   };

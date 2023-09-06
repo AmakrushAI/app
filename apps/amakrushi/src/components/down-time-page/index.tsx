@@ -2,7 +2,6 @@
 import Menu from '../menu';
 import styles from './index.module.css';
 import Image from 'next/image';
-import downTimeIcon from '../../assets/images/downTimeGIF.gif';
 import { useLocalization } from '../../hooks';
 import { useFlags } from 'flagsmith/react';
 import callIcon from '../../assets/icons/call-icon.svg';

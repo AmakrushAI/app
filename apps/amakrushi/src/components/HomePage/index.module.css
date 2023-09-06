@@ -15,13 +15,6 @@
   font-weight: bold;
 }
 
-.sunIconContainer{
-  height: 12vh;
-  width: 12vh;
-  margin: auto;
-  margin-top: 5vh;
-}
-
 .title {
   position: relative;
   top: 10%;
@@ -115,6 +108,14 @@
   outline: none;
 }
 
+
+.inputBox.inputBoxOpen {
+  width: 99%;
+  left: 0;
+  right: 0;
+  transform: translateX(0);
+}
+
 .sendButton {
   display: flex;
   align-items: center;
@@ -122,12 +123,3 @@
   margin-top: 3px;
   margin-left: 3px;
 }
-
-.inputBox.inputBoxOpen {
-  width: 100%;
-  left: 0;
-  right: 0;
-  transform: translateX(0);
-  margin-left: 2px;
-}
-
