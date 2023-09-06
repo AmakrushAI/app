@@ -14,6 +14,7 @@ import { ComposerInput } from './ComposerInput';
 import { SendButton } from './SendButton';
 import { Action } from './Action';
 import toggleClass from '../../utils/toggleClass';
+import Keyboard from './keyboard';
 export var CLASS_NAME_FOCUSING = 'S--focusing';
 export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
   var _props$text = props.text,
@@ -35,6 +36,7 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
     voiceToTextProps = props.voiceToTextProps,
     _props$disableSend = props.disableSend,
     disableSend = _props$disableSend === void 0 ? false : _props$disableSend,
+    translation = props.translation,
     onImageSend = props.onImageSend,
     onAccessoryToggle = props.onAccessoryToggle,
     _props$toolbar = props.toolbar,
@@ -76,6 +78,10 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
     _useState14 = _slicedToArray(_useState13, 2),
     isWide = _useState14[0],
     setWide = _useState14[1];
+  var _useState15 = useState(false),
+    _useState16 = _slicedToArray(_useState15, 2),
+    keyboardClicked = _useState16[0],
+    setKeyboardClicked = _useState16[1];
   useEffect(function () {
     var mq = wideBreakpoint && window.matchMedia ? window.matchMedia("(min-width: ".concat(wideBreakpoint, ")")) : false;
     function handleMq(e) {
@@ -247,7 +253,11 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
     })));
   }
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "Composer"
+    className: "Composer",
+    style: {
+      justifyContent: text || keyboardClicked ? "center" : 'center',
+      paddingBottom: text || keyboardClicked ? "" : '0'
+    }
   }, recorder.canRecord && /*#__PURE__*/React.createElement(Action, {
     className: "Composer-inputTypeBtn",
     "data-icon": inputTypeIcon,
@@ -257,16 +267,50 @@ export var Composer = /*#__PURE__*/React.forwardRef(function (props, ref) {
   }), /*#__PURE__*/React.createElement("div", {
     className: "Composer-inputWrap",
     style: {
-      border: "2px solid ".concat(btnColor),
-      borderRadius: '12px'
+      border: text || keyboardClicked ? "2px solid ".concat(btnColor) : 'none',
+      flex: text || keyboardClicked ? "1" : '0',
+      borderRadius: '0px'
     }
-  }, /*#__PURE__*/React.createElement(ComposerInput, _extends({
+  }, (text || keyboardClicked) && /*#__PURE__*/React.createElement(ComposerInput, _extends({
     invisible: !isInputText
   }, inputProps, {
     disabled: disableSend
-  })), !isInputText && /*#__PURE__*/React.createElement(Recorder, recorder)), !text && rightAction && /*#__PURE__*/React.createElement(Action, rightAction), !text && VoiceToText ? /*#__PURE__*/React.createElement(VoiceToText, _extends({}, voiceToTextProps, {
+  })), !isInputText && /*#__PURE__*/React.createElement(Recorder, recorder)), !text && rightAction && /*#__PURE__*/React.createElement(Action, rightAction), !text && VoiceToText ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      height: text || keyboardClicked ? '45px' : '6vh',
+      width: text || keyboardClicked ? '45px' : '6vh'
+    }
+  }, /*#__PURE__*/React.createElement(VoiceToText, _extends({}, voiceToTextProps, {
     setInputMsg: setText
-  })) : null, hasToolbar && /*#__PURE__*/React.createElement(Action, {
+  }))), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: '12px',
+      fontWeight: 'bold',
+      textAlign: 'center'
+    }
+  }, !(text || keyboardClicked) ? translation('label.speak') : '')) : null, !keyboardClicked && !text && /*#__PURE__*/React.createElement("div", {
+    onClick: function onClick() {
+      return setKeyboardClicked(true);
+    },
+    style: {
+      textAlign: 'center'
+    }
+  }, /*#__PURE__*/React.createElement(Keyboard, {
+    height: text || keyboardClicked ? '5vh' : '7vh',
+    width: text || keyboardClicked ? '5vh' : '7vh'
+  }), /*#__PURE__*/React.createElement("p", {
+    style: {
+      marginBottom: '6px',
+      fontSize: '12px',
+      fontWeight: 'bold',
+      textAlign: 'center'
+    }
+  }, translation('label.type'))), hasToolbar && /*#__PURE__*/React.createElement(Action, {
     className: clsx('Composer-toggleBtn', {
       active: isAccessoryOpen
     }),

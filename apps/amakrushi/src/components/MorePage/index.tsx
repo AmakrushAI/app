@@ -63,7 +63,7 @@ const MorePage: React.FC = () => {
             <p style={{ fontWeight: 'bold' }}>{profile}</p>
           </div>
           <div className={styles.icon3}>
-          <RightIcon width="5.5vh" color="black" />
+          <RightIcon width="45px" color="black" />
           </div>
         </div>
         <div className={styles.user} onClick={() => router.push('/faq')}>
@@ -74,7 +74,7 @@ const MorePage: React.FC = () => {
             <p style={{ fontWeight: 'bold' }}>{faqs}</p>
           </div>
           <div className={styles.icon3}>
-          <RightIcon width="5.5vh" color="black" />
+          <RightIcon width="45px" color="black" />
           </div>
         </div>
         <div className={styles.user} onClick={() => router.push('/feedback')}>
@@ -85,7 +85,7 @@ const MorePage: React.FC = () => {
             <p style={{ fontWeight: 'bold' }}>{feedback}</p>
           </div>
           <div className={styles.icon3}>
-          <RightIcon width="5.5vh" color="black" />
+          <RightIcon width="45px" color="black" />
           </div>
         </div>
         <div className={styles.user} onClick={() => logout()}>
@@ -96,7 +96,7 @@ const MorePage: React.FC = () => {
             <p style={{ fontWeight: 'bold' }}>{logoutLabel}</p>
           </div>
           <div className={styles.icon3}>
-            <RightIcon width="5.5vh" color="black" />
+            <RightIcon width="45px" color="black" />
           </div>
         </div>
       </div>

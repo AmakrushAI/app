@@ -40,6 +40,7 @@ export var Chat = /*#__PURE__*/React.forwardRef(function (props, ref) {
     onSend = props.onSend,
     disableSend = props.disableSend,
     btnColor = props.btnColor,
+    translation = props.translation,
     background = props.background,
     onImageSend = props.onImageSend,
     inputOptions = props.inputOptions,
@@ -124,6 +125,7 @@ export var Chat = /*#__PURE__*/React.forwardRef(function (props, ref) {
     onBlur: onInputBlur,
     onSend: onSend,
     disableSend: disableSend,
+    translation: translation,
     btnColor: btnColor,
     onImageSend: onImageSend,
     rightAction: rightAction

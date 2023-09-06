@@ -1,4 +1,11 @@
-import React, { useState, useRef, useEffect, useImperativeHandle, useCallback, ReactElement } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useImperativeHandle,
+  useCallback,
+  ReactElement,
+} from 'react';
 import clsx from 'clsx';
 import { IconButtonProps } from '../IconButton';
 import { Recorder, RecorderProps } from '../Recorder';
@@ -11,6 +18,7 @@ import { ComposerInput } from './ComposerInput';
 import { SendButton } from './SendButton';
 import { Action } from './Action';
 import toggleClass from '../../utils/toggleClass';
+import Keyboard from './keyboard';
 
 export const CLASS_NAME_FOCUSING = 'S--focusing';
 
@@ -34,10 +42,11 @@ export type ComposerProps = {
   onToolbarClick?: (item: ToolbarItemProps, event: React.MouseEvent) => void;
   onAccessoryToggle?: (isAccessoryOpen: boolean) => void;
   rightAction?: IconButtonProps;
-  disableSend:boolean;
-  btnColor:string;
-  voiceToText?:any;
-  voiceToTextProps?:any;
+  disableSend: boolean;
+  translation: any;
+  btnColor: string;
+  voiceToText?: any;
+  voiceToTextProps?: any;
 };
 
 export interface ComposerHandle {
@@ -59,7 +68,8 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
     onSend,
     voiceToText: VoiceToText,
     voiceToTextProps,
-    disableSend=false,
+    disableSend = false,
+    translation,
     onImageSend,
     onAccessoryToggle,
     toolbar = [],
@@ -69,7 +79,6 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
     btnColor,
   } = props;
 
-  
   const [text, setText] = useState(initialText);
   const [textOnce, setTextOnce] = useState('');
   const [placeholder, setPlaceholder] = useState(oPlaceholder);
@@ -82,6 +91,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
   const popoverTarget = useRef<any>();
   const isMountRef = useRef(false);
   const [isWide, setWide] = useState(false);
+  const [keyboardClicked, setKeyboardClicked] = useState(false);
 
   useEffect(() => {
     const mq =
@@ -285,10 +295,17 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
           </Popover>
         )}
         <div>
-        <div className="Composer-inputWrap" style={{border: `2px solid ${btnColor}`, borderRadius: '12px'}}>
-          <ComposerInput invisible={false} {...inputProps} disabled={disableSend} />
-        </div>
-        <SendButton btnColor={btnColor} onClick={handleSendBtnClick} disabled={!text || disableSend} />
+          <div
+            className="Composer-inputWrap"
+            style={{ border: `2px solid ${btnColor}`, borderRadius: '12px' }}
+          >
+            <ComposerInput invisible={false} {...inputProps} disabled={disableSend} />
+          </div>
+          <SendButton
+            btnColor={btnColor}
+            onClick={handleSendBtnClick}
+            disabled={!text || disableSend}
+          />
         </div>
       </div>
     );
@@ -296,7 +313,10 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
 
   return (
     <>
-      <div className="Composer">
+      <div
+        className="Composer"
+        style={{ justifyContent: text || keyboardClicked ? `center` : 'center',  paddingBottom: text || keyboardClicked ? `` : '0'}}
+      >
         {recorder.canRecord && (
           <Action
             className="Composer-inputTypeBtn"
@@ -306,13 +326,41 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
             aria-label={isInputText ? 'Switch to voice input' : 'Switch to keyboard input'}
           />
         )}
-        <div className="Composer-inputWrap" style={{border: `2px solid ${btnColor}`, borderRadius: '12px'}}>
-      <ComposerInput invisible={!isInputText} {...inputProps} disabled={disableSend} />
+        <div
+          className={`Composer-inputWrap`}
+          style={{
+            border: text || keyboardClicked ? `2px solid ${btnColor}` : 'none',
+            flex: text || keyboardClicked ? `1` : '0',
+            borderRadius: '0px',
+          }}
+        >
+          {(text || keyboardClicked) && (
+            <ComposerInput invisible={!isInputText} {...inputProps} disabled={disableSend} />
+          )}
           {!isInputText && <Recorder {...recorder} />}
         </div>
         {!text && rightAction && <Action {...rightAction} />}
-       
-        {!text && VoiceToText ? <VoiceToText  {...voiceToTextProps} setInputMsg={setText} /> : null}
+
+        {!text && VoiceToText ? (
+          <div style={{display: 'flex', flexDirection: 'column'}}>
+            <div
+              style={{
+                height: text || keyboardClicked ? '45px' : '6vh',
+                width: text || keyboardClicked ? '45px' : '6vh',
+              }}
+            >
+              <VoiceToText {...voiceToTextProps} setInputMsg={setText} />
+            </div>
+            <p style={{fontSize: '12px', fontWeight: 'bold', textAlign: 'center'}}>{!(text || keyboardClicked) ? translation('label.speak') : ''}</p>
+          </div>
+        ) : null}
+        {!keyboardClicked && !text && (
+          <div onClick={() => setKeyboardClicked(true)} style={{ textAlign: 'center' }}>
+            <Keyboard height={text || keyboardClicked ? '5vh' : '7vh'} width={text || keyboardClicked ? '5vh' : '7vh'}/>
+            <p style={{marginBottom: '6px', fontSize: '12px', fontWeight: 'bold', textAlign: 'center'}}>{translation('label.type')}</p>
+          </div>
+        )}
+
         {hasToolbar && (
           <Action
             className={clsx('Composer-toggleBtn', {
@@ -323,7 +371,9 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
             aria-label={isAccessoryOpen ? 'Close Toolbar' : 'Expand Toolbar'}
           />
         )}
-        {(text || textOnce ) && <SendButton btnColor={btnColor} onClick={handleSendBtnClick} disabled={disableSend} />}
+        {(text || textOnce) && (
+          <SendButton btnColor={btnColor} onClick={handleSendBtnClick} disabled={disableSend} />
+        )}
       </div>
       {isAccessoryOpen && (
         <AccessoryWrap onClickOutside={handleAccessoryBlur}>

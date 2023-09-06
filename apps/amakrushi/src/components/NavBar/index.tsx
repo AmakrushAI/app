@@ -55,14 +55,14 @@ function NavBar() {
       const file = new File([blob], 'Chat.pdf', {type: blob.type});
 
       if (type === 'download') {
-        toast.success("Downloading...");
+        toast.success(`${t('message.downloading')}`);
         const link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
         link.download = 'Chat.pdf';
         link.click();
       } else if (type === 'share') {
         if (navigator.canShare({ files: [file] })) {
-          toast.success("Sharing...");
+          toast.success(`${t('message.sharing')}`);
           await navigator
             .share({
               files: [file],
@@ -74,7 +74,7 @@ function NavBar() {
               console.error('Error sharing', error);
             });
         } else {
-          toast.error("Your system doesn't support sharing this file.");
+          toast.error(`${t('message.cannot_share')}`);
           console.error("Your system doesn't support sharing this file.");
         }
       } else {

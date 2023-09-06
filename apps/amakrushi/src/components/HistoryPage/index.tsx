@@ -1,10 +1,8 @@
 import styles from './index.module.css';
 import React, { useCallback, useEffect, useState } from 'react';
-import searchIcon from '../../assets/icons/search.svg';
-import { Input, InputGroup, InputLeftElement, Spinner } from '@chakra-ui/react';
+import { Spinner } from '@chakra-ui/react';
 import ChatItem from '../chat-item';
 import { NextPage } from 'next';
-import Image from 'next/image';
 
 //@ts-ignore
 import { analytics } from '../../utils/firebase';
@@ -85,14 +83,14 @@ const HistoryPage: NextPage = () => {
       const file = new File([blob], 'Chat.pdf', {type: blob.type});
 
       if (type === 'download') {
-        toast.success("Downloading...");
+        toast.success(`${t('message.downloading')}`);
         const link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
         link.download = 'Chat.pdf';
         link.click();
       } else if (type === 'share') {
         if (navigator.canShare({ files: [file] })) {
-          toast.success("Sharing...");
+          toast.success(`${t('message.sharing')}`);
           await navigator
             .share({
               files: [file],
@@ -104,7 +102,7 @@ const HistoryPage: NextPage = () => {
               console.error('Error sharing', error);
             });
         } else {
-          toast.error("Your system doesn't support sharing this file.");
+          toast.error(`${t('message.cannot_share')}`);
           console.error("Your system doesn't support sharing this file.");
         }
       } else {
@@ -143,7 +141,7 @@ const HistoryPage: NextPage = () => {
                 );
               })
             ) : gettingHistory ? (
-              <div style={{ textAlign: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '50vh' }}>
                  {/* @ts-ignore */}
                 <Spinner size="xl" />
               </div>
