@@ -7,7 +7,7 @@ const More: NextPage = () => {
   return (
     <React.Fragment>
       <Head>
-        <title>Ama KrushAI</title>
+        <title>Ama Krushi AI Chatbot</title>
       </Head>
       <MorePage />
     </React.Fragment>
