@@ -78,55 +78,14 @@ const HomePage: NextPage = () => {
         toast.error(t('error.empty_msg'));
         return;
       }
-      try {
-        if (!(localStorage.getItem('locale') === 'en')) {
-          const words = msg.split(' ');
-          // Call transliteration API
-          const input = words.map((word) => ({
-            source: word,
-          }));
-
-          const response = await axios.post(
-            'https://meity-auth.ulcacontrib.org/ulca/apis/v0/model/compute',
-            {
-              modelId: process.env.NEXT_PUBLIC_TRANSLITERATION_MODELID,
-              task: 'transliteration',
-              input: input,
-            },
-            {
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            }
-          );
-          console.log('transliterated msg: ', response.data.output);
-          const transliteratedArray = [];
-          for (const element of response.data.output) {
-            transliteratedArray.push(element?.target?.[0]);
-          }
-
-          if (context?.newSocket?.socket?.connected) {
-            console.log("clearing mssgs");
-            context?.setMessages([]);
-            router.push('/chat');
-            context?.sendMessage(transliteratedArray.join(' '));
-          } else {
-            toast.error(t('error.disconnected'));
-            return;
-          }
-        } else {
-          if (context?.newSocket?.socket?.connected) {
-            console.log("clearing mssgs");
-            context?.setMessages([]);
-            router.push('/chat');
-            context?.sendMessage(msg);
-          } else {
-            toast.error(t('error.disconnected'));
-            return;
-          }
-        }
-      } catch (error) {
-        console.error(error);
+      if (context?.newSocket?.socket?.connected) {
+        console.log('clearing mssgs');
+        context?.setMessages([]);
+        router.push('/chat');
+        context?.sendMessage(msg);
+      } else {
+        toast.error(t('error.disconnected'));
+        return;
       }
     },
     [context, t]
@@ -141,80 +100,88 @@ const HomePage: NextPage = () => {
   if (context?.isDown) {
     return <DownTimePage />;
   } else
-  return (
-    <>
-      <div className={styles.main}>
-        <div className={styles.title}>{t('label.ask_me')}</div>
-        <div className={styles.voiceRecorder}>
-          <RenderVoiceRecorder setInputMsg={setInputMsg} />
-        </div>
-        <div
-          className={
-            styles.exampleMessages +
-            (showExampleMessages
-              ? ` ${styles.visible}`
-              : ` ${styles.invisible}`)
-          }>
-          {messages?.[0]?.payload?.buttonChoices?.map((choice: any) => {
-            return (
-              <button
-                onClick={() => sendMessage(choice.text)}
-                className={styles.buttonChoice}
-                key={choice.key}>
-                <Image
-                  src={choice.img}
-                  alt="img"
-                  width={60}
-                  height={60}
-                  style={{ marginRight: '2px' }}
-                />
-                {choice.text}
-                <div className={styles.rightIcon}>
-                  <RightIcon width="35px" color="var(--secondarygreen)" />
-                </div>
-              </button>
-            );
-          })}
-        </div>
-
-        <form onSubmit={(event) => event?.preventDefault()}>
-          <div
-            className={`${
-              showChatBox
-                ? `${styles.inputBox} ${styles.inputBoxOpen}`
-                : styles.inputBox
-            }`}>
-            {!showChatBox ? (
-              <div
-                className={styles.keyboard}
-                onClick={() => setShowChatBox(true)}>
-               <Image src={keyboardIcon} alt="keyboard"/>
-                <p>{t('message.click_to_type')}</p>
-              </div>
-            ) : (
-              <>
-                <input
-                  type="text"
-                  value={inputMsg}
-                  onChange={handleInputChange}
-                  placeholder={placeholder}
-                  onClick={() => setShowExampleMessages(true)}
-                />
-                <button
-                  type="submit"
-                  onClick={() => sendMessage(inputMsg)}
-                  className={styles.sendButton}>
-                  <Image src={SendIcon} width={50} height={50} alt="sendIcon" />
-                </button>
-              </>
-            )}
+    return (
+      <>
+        <div className={styles.main}>
+          <div className={styles.title}>{t('label.ask_me')}</div>
+          <div className={styles.voiceRecorder}>
+            <RenderVoiceRecorder setInputMsg={setInputMsg} />
           </div>
-        </form>
-      </div>
+          <div
+            className={
+              styles.exampleMessages +
+              (showExampleMessages
+                ? ` ${styles.visible}`
+                : ` ${styles.invisible}`)
+            }>
+            {messages?.[0]?.payload?.buttonChoices?.map((choice: any) => {
+              return (
+                <button
+                  onClick={() => {
+                    sendMessage(choice.text);
+                    console.log('clicked');
+                  }}
+                  className={styles.buttonChoice}
+                  key={choice.key}>
+                  <Image
+                    src={choice.img}
+                    alt="img"
+                    width={60}
+                    height={60}
+                    style={{ marginRight: '2px' }}
+                  />
+                  {choice.text}
+                  <div className={styles.rightIcon}>
+                    <RightIcon width="35px" color="var(--secondarygreen)" />
+                  </div>
+                </button>
+              );
+            })}
+          </div>
 
-      <Menu />
-    </>
-  );
+          <form onSubmit={(event) => event?.preventDefault()}>
+            <div
+              className={`${
+                showChatBox
+                  ? `${styles.inputBox} ${styles.inputBoxOpen}`
+                  : styles.inputBox
+              }`}>
+              {!showChatBox ? (
+                <div
+                  className={styles.keyboard}
+                  onClick={() => setShowChatBox(true)}>
+                  <Image src={keyboardIcon} alt="keyboard" />
+                  <p>{t('message.click_to_type')}</p>
+                </div>
+              ) : (
+                <>
+                  <input
+                    type="text"
+                    value={inputMsg}
+                    onChange={handleInputChange}
+                    placeholder={placeholder}
+                    onClick={() => setShowExampleMessages(true)}
+                  />
+                  <button
+                    type="submit"
+                    onClick={() => sendMessage(inputMsg)}
+                    className={styles.sendButton}>
+                    <Image
+                      src={SendIcon}
+                      width={50}
+                      height={50}
+                      alt="sendIcon"
+                    />
+                  </button>
+                </>
+              )}
+            </div>
+          </form>
+        </div>
+
+        <Menu />
+      </>
+    );
 };
 
 export default HomePage;

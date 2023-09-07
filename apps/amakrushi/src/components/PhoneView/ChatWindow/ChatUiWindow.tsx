@@ -52,7 +52,7 @@ const ChatUiWindow: React.FC = () => {
           });
 
           const normalizedChats = normalizedChat(modifiedChatHistory);
-          console.log("normalized chats", normalizedChats)
+          console.log('normalized chats', normalizedChats);
           if (normalizedChats.length > 0) {
             context?.setMessages(normalizedChats);
           }
@@ -108,46 +108,8 @@ const ChatUiWindow: React.FC = () => {
         return;
       }
       console.log('mssgs:', context?.messages);
-      try {
-        if (!(localStorage.getItem('locale') === 'en')) {
-          const words = msg.split(' ');
-          // Call transliteration API
-          const input = words.map((word: string) => ({
-            source: word,
-          }));
-
-          const response = await axios.post(
-            'https://meity-auth.ulcacontrib.org/ulca/apis/v0/model/compute',
-            {
-              modelId: process.env.NEXT_PUBLIC_TRANSLITERATION_MODELID,
-              task: 'transliteration',
-              input: input,
-            },
-            {
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            }
-          );
-          console.log('transliterated msg: ', response.data.output);
-          const transliteratedArray = [];
-          for (const element of response.data.output) {
-            transliteratedArray.push(element?.target?.[0]);
-          }
-
-          if (context?.newSocket?.socket?.connected) {
-            context?.sendMessage(transliteratedArray.join(' '));
-          } else {
-            toast.error(t('error.disconnected'));
-            return;
-          }
-        } else {
-          if (type === 'text' && msg.trim()) {
-            context?.sendMessage(msg.trim());
-          }
-        }
-      } catch (error) {
-        console.error(error);
+      if (type === 'text' && msg.trim()) {
+        context?.sendMessage(msg.trim());
       }
     },
     [context, t]
