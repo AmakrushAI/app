@@ -53,8 +53,8 @@ const ContextProvider: FC<{
   const [conversationId, setConversationId] = useState<string | null>(
     sessionStorage.getItem('conversationId')
   );
-  const timer1 = flagsmith.getValue('timer1', { fallback: 5000 });
-  const timer2 = flagsmith.getValue('timer2', { fallback: 25000 });
+  const timer1 = flagsmith.getValue('timer1', { fallback: 30000 });
+  const timer2 = flagsmith.getValue('timer2', { fallback: 45000 });
   const [isDown, setIsDown] = useState(false);
   const [showDialerPopup, setShowDialerPopup] = useState(false);
   // const [isConnected, setIsConnected] = useState(newSocket?.connected || false);
