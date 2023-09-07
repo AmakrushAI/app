@@ -341,7 +341,7 @@ const ContextProvider: FC<{
           }
         }, timer2);
       }
-    }, 10);
+    }, timer1);
 
     return () => {
       clearTimeout(timer);
