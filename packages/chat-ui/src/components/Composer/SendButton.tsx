@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '../Button';
 import { useLocale } from '../LocaleProvider';
+import SendIcon from './sendIcon';
 
 interface SendButtonProps {
   btnColor: string;
@@ -11,7 +12,7 @@ interface SendButtonProps {
 export const SendButton = ({ disabled, onClick, btnColor }: SendButtonProps) => {
   const { trans } = useLocale('Composer');
   return (
-    <div className="Composer-actions">
+    <div>
       <Button
         className="Composer-sendBtn"
         disabled={disabled}
@@ -19,7 +20,8 @@ export const SendButton = ({ disabled, onClick, btnColor }: SendButtonProps) => 
         color="primary"
         btnColor={btnColor}
       >
-        {trans('send')}
+        {/* {trans('send')} */}
+       <SendIcon />
       </Button>
     </div>
   );

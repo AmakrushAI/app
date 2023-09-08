@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { AppContext } from "../context";
 import styles from "../components/dialer-popup/index.module.css";
 import DialerPopUp from "../components/dialer-popup";
+import { Spinner } from "@chakra-ui/react";
 
 const ChatUiWindow = dynamic(
   () => import("../components/PhoneView/ChatWindow/ChatUiWindow"),

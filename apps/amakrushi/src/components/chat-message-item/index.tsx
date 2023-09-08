@@ -47,12 +47,11 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   message,
   onSend,
 }) => {
-  const flags = useFlags(['show_msg_id']);
- 
+  const flags = useFlags(['show_msg_id', 'dialer_number']);
+
   const t = useLocalization();
   const context = useContext(AppContext);
   const [reaction, setReaction] = useState(message?.content?.data?.reaction);
-
 
   useEffect(() => {
     setReaction(message?.content?.data?.reaction);
@@ -86,9 +85,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     [t]
   );
 
-
   async function copyTextToClipboard(text: string) {
-    console.log("here")
+    console.log('here');
     if ('clipboard' in navigator) {
       return await navigator.clipboard.writeText(text);
     } else {
@@ -146,7 +144,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
               <div className="onHover" style={{ display: 'flex' }}>
                 <div>{choice.text}</div>
                 <div style={{ marginLeft: 'auto' }}>
-                  <RightIcon width="5.5vh" color="var(--secondarygreen)" />
+                  <RightIcon width="45px" color="var(--secondarygreen)" />
                 </div>
               </div>
             </ListItem>
@@ -158,7 +156,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   );
 
   const { content, type } = message;
-
+  // console.log('#-debug:', content);
   switch (type) {
     case 'loader':
       return <Typing />;
@@ -169,7 +167,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
             display: 'flex',
             flexDirection: 'column',
             position: 'relative',
-            maxWidth: '90vw'
+            maxWidth: '90vw',
           }}>
           <div
             className={
@@ -187,27 +185,35 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   content?.data?.position === 'right' ? 'white' : 'var(--font)',
               }}>
               {content.text}
-
             </span>
             <div
               style={{
                 display: 'flex',
-                justifyContent: content?.data?.position === 'left' ? 'space-between' : 'flex-end',
+                justifyContent:
+                  content?.data?.position === 'left'
+                    ? 'space-between'
+                    : 'flex-end',
               }}>
-      
-              {content?.data?.position === "left" && flags?.show_msg_id?.enabled &&(
-                <span>
-                  <Button colorScheme='teal' variant='outline' size='xs' onClick={() => copyTextToClipboard(content?.data?.messageId).then(() => {
-                    toast.success("coppied");
-                  })
-                    .catch((err) => {
-                      console.log(err);
-                    })}>
-                    {content?.data?.messageId}
-                  </Button>
-
-                </span>)
-              }
+              {content?.data?.position === 'left' &&
+                flags?.show_msg_id?.enabled && (
+                  <span>
+                    <Button
+                      colorScheme="teal"
+                      variant="outline"
+                      size="xs"
+                      onClick={() =>
+                        copyTextToClipboard(content?.data?.messageId)
+                          .then(() => {
+                            toast.success('coppied');
+                          })
+                          .catch((err) => {
+                            console.log(err);
+                          })
+                      }>
+                      {content?.data?.messageId}
+                    </Button>
+                  </span>
+                )}
 
               <span
                 style={{
@@ -219,45 +225,55 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 }}>
                 {getFormatedTime(
                   content?.data?.sentTimestamp ||
-                  content?.data?.repliedTimestamp
+                    content?.data?.repliedTimestamp
                 )}
               </span>
-
             </div>
           </Bubble>
-          {content?.data?.position === 'left' && (
-            <div className={styles.msgFeedback}>
-              <div className={styles.msgFeedbackIcons}>
-                <div
-                  onClick={() =>
-                    feedbackHandler({
-                      like: 1,
-                      msgId: content?.data?.messageId,
-                    })
-                  }>
-                  <MsgThumbsUp
-                    fill={reaction === 1}
-                    width="20px"
-                    color="var(--secondarygreen)"
-                  />
-                </div>
-                <div
-                  onClick={() =>
-                    feedbackHandler({
-                      like: -1,
-                      msgId: content?.data?.messageId,
-                    })
-                  }>
-                  <MsgThumbsDown
-                    fill={reaction === -1}
-                    width="20px"
-                    color="var(--secondarygreen)"
-                  />
-                </div>
-              </div>
-              &nbsp;
-              <p>{t('message.helpful')}</p>
+          {content?.data?.btns ? (
+            <div className={styles.offlineBtns}>
+              <button onClick={() => window?.location?.reload()}>
+                {t('label.refresh')}
+              </button>
+              <button>
+                <a href={`tel:${flags.dialer_number.value}`}>{t('label.call_amakrushi')}</a>
+              </button>
             </div>
+          ) : (
+            content?.data?.position === 'left' && (
+              <div className={styles.msgFeedback}>
+                <div className={styles.msgFeedbackIcons}>
+                  <div
+                    onClick={() =>
+                      feedbackHandler({
+                        like: 1,
+                        msgId: content?.data?.messageId,
+                      })
+                    }>
+                    <MsgThumbsUp
+                      fill={reaction === 1}
+                      width="20px"
+                      color="var(--secondarygreen)"
+                    />
+                  </div>
+                  <div
+                    onClick={() =>
+                      feedbackHandler({
+                        like: -1,
+                        msgId: content?.data?.messageId,
+                      })
+                    }>
+                    <MsgThumbsDown
+                      fill={reaction === -1}
+                      width="20px"
+                      color="var(--secondarygreen)"
+                    />
+                  </div>
+                </div>
+                &nbsp;
+                <p>{t('message.helpful')}</p>
+              </div>
+            )
           )}
         </div>
       );
@@ -286,7 +302,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                    content?.data?.repliedTimestamp
+                      content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -320,7 +336,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                    content?.data?.repliedTimestamp
+                      content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -358,7 +374,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                    content?.data?.repliedTimestamp
+                      content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -401,5 +417,3 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
 };
 
 export default ChatMessageItem;
-
- 
