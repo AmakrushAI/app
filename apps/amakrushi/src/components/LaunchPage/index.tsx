@@ -4,13 +4,13 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 function LaunchPage() {
-  const [title, setTitle] = useState('ଆମ କୃଷି ଏ ଆଇ ଚାତ୍ ବୋଟ୍');
+  const [title, setTitle] = useState('ଆମ କୃଷି ଏ ଆଇ ଚାଟ୍ ବୋଟ୍');
 
   useEffect(() => {
     if (localStorage.getItem('locale') === 'en') {
       setTitle('Ama Krushi AI Chatbot');
     } else {
-      setTitle('ଆମ କୃଷି ଏ ଆଇ ଚାତ୍ ବୋଟ୍');
+      setTitle('ଆମ କୃଷି ଏ ଆଇ ଚାଟ୍ ବୋଟ୍');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localStorage.getItem('locale')]);
