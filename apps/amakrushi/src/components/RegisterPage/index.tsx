@@ -18,7 +18,7 @@ const RegisterPage = () => {
   return (
     <div className={`${styles.main}`}>
 
-      <div className={styles.title}>Ama KrushAI</div>
+      <div className={styles.title}>Ama Krushi AI Chatbot</div>
 
       <div className={styles.body}>
         <h1>Extension Worker</h1>

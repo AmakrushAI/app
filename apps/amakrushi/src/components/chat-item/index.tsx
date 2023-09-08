@@ -11,15 +11,20 @@ import { logEvent } from 'firebase/analytics';
 import { v4 as uuidv4 } from 'uuid';
 import { AppContext } from '../../context';
 import { useLocalization } from '../../hooks';
+import shareIcon from '../../assets/icons/shareHistory.svg';
+import downloadIcon from '../../assets/icons/downloadHistory.svg';
+import { useFlags } from 'flagsmith/react';
 
 const ChatItem: React.FC<ChatItemPropsType> = ({
   name,
   conversationId,
   deleteConversationById,
+  downloadShareHandler
 }) => {
   const context = useContext(AppContext);
   const t = useLocalization();
   const [isConversationDeleted, setIsConversationDeleted] = useState(false);
+  const flags = useFlags(['show_download_button', 'show_share_button']);
 
   const handleChatPage = useCallback(() => {
     sessionStorage.setItem('conversationId', conversationId || 'null');
@@ -69,10 +74,30 @@ const ChatItem: React.FC<ChatItemPropsType> = ({
             </div>
             <div className={styles.name}>{name}</div>
           </div>
+          <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+          {flags?.show_share_button?.enabled && (
+            <div
+              className={styles.iconContainer}
+              onClick={() => downloadShareHandler('share', conversationId)}>
+              <Image src={shareIcon} alt="shareIcon" layout="responsive" />
+            </div>
+          )}
+          {flags?.show_download_button?.enabled && (
+            <div
+              className={styles.iconContainer}
+              onClick={() => downloadShareHandler('download', conversationId)}>
+              <Image
+                src={downloadIcon}
+                alt="downloadIcon"
+                layout="responsive"
+              />
+            </div>
+          )}
           <div
             onClick={deleteConversation}
             className={styles.deleteIconContainer}>
             <Image src={deleteIcon} alt="deleteIcon" layout="responsive" />
+          </div>
           </div>
         </div>
       )}

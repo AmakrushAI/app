@@ -20,6 +20,7 @@ var _ComposerInput = require("./ComposerInput");
 var _SendButton = require("./SendButton");
 var _Action = require("./Action");
 var _toggleClass = _interopRequireDefault(require("../../utils/toggleClass"));
+var _keyboard = _interopRequireDefault(require("./keyboard"));
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
@@ -46,6 +47,7 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     voiceToTextProps = props.voiceToTextProps,
     _props$disableSend = props.disableSend,
     disableSend = _props$disableSend === void 0 ? false : _props$disableSend,
+    translation = props.translation,
     onImageSend = props.onImageSend,
     onAccessoryToggle = props.onAccessoryToggle,
     _props$toolbar = props.toolbar,
@@ -87,6 +89,10 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     _useState14 = (0, _slicedToArray2.default)(_useState13, 2),
     isWide = _useState14[0],
     setWide = _useState14[1];
+  var _useState15 = (0, _react.useState)(false),
+    _useState16 = (0, _slicedToArray2.default)(_useState15, 2),
+    keyboardClicked = _useState16[0],
+    setKeyboardClicked = _useState16[1];
   (0, _react.useEffect)(function () {
     var mq = wideBreakpoint && window.matchMedia ? window.matchMedia("(min-width: ".concat(wideBreakpoint, ")")) : false;
     function handleMq(e) {
@@ -258,7 +264,11 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     })));
   }
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("div", {
-    className: "Composer"
+    className: "Composer",
+    style: {
+      justifyContent: text || keyboardClicked ? "center" : 'center',
+      paddingBottom: text || keyboardClicked ? "" : '0'
+    }
   }, recorder.canRecord && /*#__PURE__*/_react.default.createElement(_Action.Action, {
     className: "Composer-inputTypeBtn",
     "data-icon": inputTypeIcon,
@@ -268,16 +278,50 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
   }), /*#__PURE__*/_react.default.createElement("div", {
     className: "Composer-inputWrap",
     style: {
-      border: "2px solid ".concat(btnColor),
-      borderRadius: '12px'
+      border: text || keyboardClicked ? "2px solid ".concat(btnColor) : 'none',
+      flex: text || keyboardClicked ? "1" : '0',
+      borderRadius: '0px'
     }
-  }, /*#__PURE__*/_react.default.createElement(_ComposerInput.ComposerInput, (0, _extends2.default)({
+  }, (text || keyboardClicked) && /*#__PURE__*/_react.default.createElement(_ComposerInput.ComposerInput, (0, _extends2.default)({
     invisible: !isInputText
   }, inputProps, {
     disabled: disableSend
-  })), !isInputText && /*#__PURE__*/_react.default.createElement(_Recorder.Recorder, recorder)), !text && rightAction && /*#__PURE__*/_react.default.createElement(_Action.Action, rightAction), !text && VoiceToText ? /*#__PURE__*/_react.default.createElement(VoiceToText, (0, _extends2.default)({}, voiceToTextProps, {
+  })), !isInputText && /*#__PURE__*/_react.default.createElement(_Recorder.Recorder, recorder)), !text && rightAction && /*#__PURE__*/_react.default.createElement(_Action.Action, rightAction), !text && VoiceToText ? /*#__PURE__*/_react.default.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column'
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    style: {
+      height: text || keyboardClicked ? '45px' : '6vh',
+      width: text || keyboardClicked ? '45px' : '6vh'
+    }
+  }, /*#__PURE__*/_react.default.createElement(VoiceToText, (0, _extends2.default)({}, voiceToTextProps, {
     setInputMsg: setText
-  })) : null, hasToolbar && /*#__PURE__*/_react.default.createElement(_Action.Action, {
+  }))), /*#__PURE__*/_react.default.createElement("p", {
+    style: {
+      fontSize: '12px',
+      fontWeight: 'bold',
+      textAlign: 'center'
+    }
+  }, !(text || keyboardClicked) ? translation('label.speak') : '')) : null, !keyboardClicked && !text && /*#__PURE__*/_react.default.createElement("div", {
+    onClick: function onClick() {
+      return setKeyboardClicked(true);
+    },
+    style: {
+      textAlign: 'center'
+    }
+  }, /*#__PURE__*/_react.default.createElement(_keyboard.default, {
+    height: text || keyboardClicked ? '5vh' : '7vh',
+    width: text || keyboardClicked ? '5vh' : '7vh'
+  }), /*#__PURE__*/_react.default.createElement("p", {
+    style: {
+      marginBottom: '6px',
+      fontSize: '12px',
+      fontWeight: 'bold',
+      textAlign: 'center'
+    }
+  }, translation('label.type'))), hasToolbar && /*#__PURE__*/_react.default.createElement(_Action.Action, {
     className: (0, _clsx.default)('Composer-toggleBtn', {
       active: isAccessoryOpen
     }),

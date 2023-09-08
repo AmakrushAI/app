@@ -7,7 +7,7 @@ const Register: NextPage = () => {
   return (
     <React.Fragment>
       <Head>
-        <title>Ama KrushAI</title>
+        <title>Ama Krushi AI Chatbot</title>
       </Head>
       <RegisterPage />
     </React.Fragment>

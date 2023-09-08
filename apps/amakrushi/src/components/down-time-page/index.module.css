@@ -2,9 +2,7 @@
   background-color: var(--bg-color);
   min-height: 100vh;
   min-width: 100vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  text-align: center;
 }
 
 .container span {
@@ -14,23 +12,61 @@
   font-family: Mulish-bold;
   font-size: 2.6vh;
   font-weight: 700; 
+  color: var(--grey);
+}
+
+.title{
+  margin: 12vh 2vh 1vh 2vh;
+  text-align: center;
+  font-family: Mulish-demi;
+  font-size: 2.6vh;
+  font-weight: 400; 
   color: var(--secondarygreen);
 }
 
 .imageContainer {
-  margin-top: 15vh;
-  height: 15vh;
-  width: 15vh;
+  margin: auto;
+  margin-top: 3vh;
+  margin-bottom: 3vh;
+  width: 357px;
+  height: 158px;
+  background: url('../../assets/images/downTimeGIF.gif'), #F6FAFF;
+  background-size: contain; 
+  background-repeat: no-repeat; 
+  background-blend-mode:multiply;
 }
 
+
 .miniText {
+  margin: auto;
   text-align: center;
   width: 80%;
   color: var(--font);
   font-size: 2vh;
 }
 
-.backButton {
+.buttons{
+  display: flex;
+}
+
+.retryButton{
+  font-weight: 700 ;
+  font-size: 2vh !important;
+  color: white ;
+  margin: 4vh auto;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Mulish-regular';
+  /* width: 12vh !important; */
+  padding: 1vh 2vh;
+  border: none ;
+  border-radius: 40px !important;
+  background-color: var(--grey) !important;
+}
+
+.viewPrevChatsButton {
   font-weight: 700 ;
   font-size: 2vh !important;
   color: white ;
@@ -45,4 +81,27 @@
   border: none ;
   border-radius: 40px !important;
   background-color: var(--secondarygreen) !important;
+}
+
+.dialerBox {
+  margin: 2vh;
+  border-radius: 10px;
+  padding-bottom: 1vh;
+}
+
+.callIconBox {
+  height: 8vh;
+  width: 8vh;
+  margin-right: 1vh;
+}
+
+.footerTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2vh;
+  font-family: 'Mulish-Bold';
+  font-size: 4vh;
+  font-weight: 700;
+  color: var(--grey);
 }

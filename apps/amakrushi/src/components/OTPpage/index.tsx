@@ -24,7 +24,7 @@ const OTPpage: React.FC = () => {
   const [isResendingOTP, setIsResendingOTP] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [countdownIntervalId, setCountdownIntervalId] = useState<any>(null);
-  console.log("vbn:", { context });
+
 
   useEffect(() => {
     if(!router.query.state || router.query.state?.length !== 10){
@@ -37,67 +37,70 @@ const OTPpage: React.FC = () => {
     event: React.FormEvent
   ) => {
     event.preventDefault();
-    
-   
-    const inputOTP: string = input1 + input2 + input3 + input4;
-    if (inputOTP.length === 4) {
-      fetch(
-        `${process.env.NEXT_PUBLIC_OTP_BASE_URL}api/login/otp`,
-        {
-          method: "POST",
-          body: JSON.stringify({
-            loginId: router.query.state,
-            password: inputOTP,
-            // eslint-disable-next-line turbo/no-undeclared-env-vars
-            applicationId: process.env.NEXT_PUBLIC_USER_SERVICE_APP_ID,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("token:", { data });
-          if (data.params.status === "Success") {
-            let expires = new Date();
-            expires.setTime(
-              expires.getTime() +
-                data.result.data.user.tokenExpirationInstant * 1000
-            );
-            removeCookie("access_token");
-            setCookie("access_token", data.result.data.user.token, {
-              path: "/",
-              expires,
-            });
-            const phoneNumber = router.query.state;
-            // @ts-ignore
-            localStorage.setItem("phoneNumber", phoneNumber);
-            const decodedToken=jwt_decode(data.result.data.user.token);
-            //@ts-ignore
-            localStorage.setItem("userID", decodedToken?.sub);
-            localStorage.setItem("auth", data.result.data.user.token);
-            // @ts-ignore
-            setUserId(analytics, localStorage.getItem("userID"));
-
-            context?.setIsMobileAvailable(true);
-            setTimeout(() => {
-              router.push("/");
-            }, 10);
-        
-          } else {
-            toast.error(`${t("message.invalid_otp")}`);
+    if(navigator.onLine){
+      const inputOTP: string = input1 + input2 + input3 + input4;
+      if (inputOTP.length === 4) {
+        fetch(
+          `${process.env.NEXT_PUBLIC_OTP_BASE_URL}api/login/otp`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              loginId: router.query.state,
+              password: inputOTP,
+              // eslint-disable-next-line turbo/no-undeclared-env-vars
+              applicationId: process.env.NEXT_PUBLIC_USER_SERVICE_APP_ID,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
-        })
-        .catch((err) => {
-          console.log(err)
-          //@ts-ignore
-          logEvent(analytics, 'console_error', {
-            error_message: err.message,
-          });
-        }
-        );
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("token:", { data });
+            if (data.params.status === "Success") {
+              let expires = new Date();
+              expires.setTime(
+                expires.getTime() +
+                  data.result.data.user.tokenExpirationInstant * 1000
+              );
+              removeCookie("access_token");
+              setCookie("access_token", data.result.data.user.token, {
+                path: "/",
+                expires,
+              });
+              const phoneNumber = router.query.state;
+              // @ts-ignore
+              localStorage.setItem("phoneNumber", phoneNumber);
+              const decodedToken=jwt_decode(data.result.data.user.token);
+              //@ts-ignore
+              localStorage.setItem("userID", decodedToken?.sub);
+              localStorage.setItem("auth", data.result.data.user.token);
+              // @ts-ignore
+              setUserId(analytics, localStorage.getItem("userID"));
+  
+              setTimeout(() => {
+                router.push("/");
+              }, 10);
+          
+            } else {
+              toast.error(`${t("message.invalid_otp")}`);
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+            //@ts-ignore
+            logEvent(analytics, 'console_error', {
+              error_message: err.message,
+            });
+          }
+          );
+      }
+    }else {
+      toast.error(`${t("label.no_internet")}`)
     }
+   
+   
   };
 
   const handleOTP1: React.ChangeEventHandler = (
@@ -150,7 +153,7 @@ const OTPpage: React.FC = () => {
       } else {
         toast.error(`${t("error.otp_not_sent")}`);
       }
-    } catch (error) {
+    } catch (error: any) {
       toast.error(`${t("error.error.sending_otp")}`);
       //@ts-ignore
       logEvent(analytics, 'console_error', {
@@ -202,6 +205,7 @@ const OTPpage: React.FC = () => {
             <b>+91-{router.query.state}</b>
           </div>
           <form onSubmit={handleOTPSubmit}>
+            {/* @ts-ignore */}
             <HStack style={{ marginTop: "34px", justifyContent: "center" }}>
               <PinInput otp placeholder="">
                 <PinInputField
