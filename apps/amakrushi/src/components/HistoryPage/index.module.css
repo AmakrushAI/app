@@ -3,7 +3,7 @@
 }
 
 .chatList{
-  height: 75vh;
+  height: 75dvh;
   overflow-x: hidden;
   overflow-y: scroll !important;
 }
