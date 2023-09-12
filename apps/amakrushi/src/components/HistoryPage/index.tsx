@@ -174,7 +174,7 @@ const HistoryPage: NextPage = () => {
               <button
                 onClick={() => {setConversations([]); handlePageChange(currentPage + 1)}}
                 disabled={currentPage === totalPages}>
-                <Image src={rightArrow} alt="left" width={50} height={50} />
+                <Image src={rightArrow} alt="right" width={50} height={50} />
               </button>
             </div>}
           </div>
