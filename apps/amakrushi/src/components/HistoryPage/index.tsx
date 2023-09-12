@@ -14,11 +14,14 @@ import { useFlags } from 'flagsmith/react';
 import axios from 'axios';
 import _ from 'underscore';
 import { toast } from 'react-hot-toast';
+
 const HistoryPage: NextPage = () => {
   const [conversations, setConversations] = useState([]);
   const flags = useFlags(['show_chat_history_page']);
   const t = useLocalization();
   const [gettingHistory, setGettingHistory] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     //@ts-ignore
@@ -31,8 +34,13 @@ const HistoryPage: NextPage = () => {
         headers: {
           authorization: `Bearer ${localStorage.getItem('auth')}`,
         },
+        params: {
+          page: currentPage,
+          perPage: 10,
+        },
       })
       .then((res) => {
+        setTotalPages(res?.data?.pagination?.totalPages);
         const sortedConversations = _.filter(
           res?.data?.userHistory,
           (conv) => conv?.conversationId !== null
@@ -42,7 +50,6 @@ const HistoryPage: NextPage = () => {
         );
         //@ts-ignore
         setConversations(sortedConversations);
-        console.log('hie', sortedConversations);
         setGettingHistory(false);
       })
       .catch((error) => {
@@ -52,7 +59,12 @@ const HistoryPage: NextPage = () => {
         });
         setGettingHistory(false);
       });
-  }, []);
+  }, [currentPage]);
+
+  const handlePageChange = (newPage) => {
+    console.log("New Page:", newPage);
+    setCurrentPage(newPage);
+  };
 
   // Function to delete conversation by conversationId
   const deleteConversationById = useCallback(
@@ -68,9 +80,7 @@ const HistoryPage: NextPage = () => {
 
   const downloadShareHandler = async (type: string, convId: any) => {
     try {
-      const url = `${
-        process.env.NEXT_PUBLIC_BASE_URL
-      }/user/chathistory/generate-pdf/${convId}`;
+      const url = `${process.env.NEXT_PUBLIC_BASE_URL}/user/chathistory/generate-pdf/${convId}`;
 
       const response = await axios.post(url, null, {
         headers: {
@@ -80,7 +90,7 @@ const HistoryPage: NextPage = () => {
       });
 
       const blob = new Blob([response.data], { type: 'application/pdf' });
-      const file = new File([blob], 'Chat.pdf', {type: blob.type});
+      const file = new File([blob], 'Chat.pdf', { type: blob.type });
 
       if (type === 'download') {
         toast.success(`${t('message.downloading')}`);
@@ -128,7 +138,18 @@ const HistoryPage: NextPage = () => {
             <Input type="text" placeholder="Search" />
           </InputGroup> */}
           <div style={{minHeight: '80vh'}}>
-            {conversations.length > 0 ? (
+            {gettingHistory ? (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: '50vh',
+                }}>
+                {/* @ts-ignore */}
+                <Spinner size="xl" />
+              </div>
+            ) : conversations.length > 0 ? (
               conversations.map((conv: any) => {
                 return (
                   <ChatItem
@@ -140,17 +161,26 @@ const HistoryPage: NextPage = () => {
                   />
                 );
               })
-            ) : gettingHistory ? (
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '50vh' }}>
-                 {/* @ts-ignore */}
-                <Spinner size="xl" />
-              </div>
             ) : (
               <div className={styles.noHistory}>
                 <div>{t('label.no_history')}</div>
                 <p>{t('message.no_history')}</p>
               </div>
             )}
+            {/* Pagination Controls */}
+            {conversations.length > 0 && !gettingHistory && <div className={styles.pagination}>
+              <button
+                onClick={() => {setConversations([]); handlePageChange(currentPage - 1)}}
+                disabled={currentPage === 1}>
+                Previous
+              </button>
+              <p>{currentPage} / {totalPages}</p>
+              <button
+                onClick={() => {setConversations([]); handlePageChange(currentPage + 1)}}
+                disabled={currentPage === totalPages}>
+                Next
+              </button>
+            </div>}
           </div>
         </div>
         <Menu />
