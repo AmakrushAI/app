@@ -1,9 +1,11 @@
 import styles from './index.module.css';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Spinner } from '@chakra-ui/react';
+import leftArrow from '../../assets/icons/leftArrow.svg'
+import rightArrow from '../../assets/icons/rightArrow.svg'
+import Image from 'next/image';
 import ChatItem from '../chat-item';
 import { NextPage } from 'next';
-
 //@ts-ignore
 import { analytics } from '../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
@@ -131,13 +133,7 @@ const HistoryPage: NextPage = () => {
       <>
         <div className={styles.main}>
           <div className={styles.title}>{t('label.chats')}</div>
-          {/* <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <Image src={searchIcon} alt="" width={20} height={20} />
-            </InputLeftElement>
-            <Input type="text" placeholder="Search" />
-          </InputGroup> */}
-          <div style={{minHeight: '80vh'}}>
+          <div className={styles.chatList}>
             {gettingHistory ? (
               <div
                 style={{
@@ -172,13 +168,13 @@ const HistoryPage: NextPage = () => {
               <button
                 onClick={() => {setConversations([]); handlePageChange(currentPage - 1)}}
                 disabled={currentPage === 1}>
-                Previous
+                <Image src={leftArrow} alt="left" width={50} height={50} />
               </button>
               <p>{currentPage} / {totalPages}</p>
               <button
                 onClick={() => {setConversations([]); handlePageChange(currentPage + 1)}}
                 disabled={currentPage === totalPages}>
-                Next
+                <Image src={rightArrow} alt="left" width={50} height={50} />
               </button>
             </div>}
           </div>
