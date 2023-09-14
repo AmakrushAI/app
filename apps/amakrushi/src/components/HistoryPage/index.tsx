@@ -63,7 +63,7 @@ const HistoryPage: NextPage = () => {
       });
   }, [currentPage]);
 
-  const handlePageChange = (newPage) => {
+  const handlePageChange = (newPage: number) => {
     console.log("New Page:", newPage);
     setCurrentPage(newPage);
   };
