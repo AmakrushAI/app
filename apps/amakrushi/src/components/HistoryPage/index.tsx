@@ -22,8 +22,6 @@ const HistoryPage: NextPage = () => {
   const flags = useFlags(['show_chat_history_page']);
   const t = useLocalization();
   const [gettingHistory, setGettingHistory] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     //@ts-ignore
@@ -32,19 +30,14 @@ const HistoryPage: NextPage = () => {
     setGettingHistory(true);
 
     axios
-      .get(`${process.env.NEXT_PUBLIC_BASE_URL}/user/conversations`, {
+      .get(`${process.env.NEXT_PUBLIC_BASE_URL}/user/conversations/all`, {
         headers: {
           authorization: `Bearer ${localStorage.getItem('auth')}`,
         },
-        params: {
-          page: currentPage,
-          perPage: 10,
-        },
       })
       .then((res) => {
-        setTotalPages(res?.data?.pagination?.totalPages);
         const sortedConversations = _.filter(
-          res?.data?.userHistory,
+          res?.data,
           (conv) => conv?.conversationId !== null
         ).sort(
           //@ts-ignore
@@ -61,12 +54,7 @@ const HistoryPage: NextPage = () => {
         });
         setGettingHistory(false);
       });
-  }, [currentPage]);
-
-  const handlePageChange = (newPage: number) => {
-    console.log("New Page:", newPage);
-    setCurrentPage(newPage);
-  };
+  }, []);
 
   // Function to delete conversation by conversationId
   const deleteConversationById = useCallback(
@@ -163,20 +151,6 @@ const HistoryPage: NextPage = () => {
                 <p>{t('message.no_history')}</p>
               </div>
             )}
-            {/* Pagination Controls */}
-            {conversations.length > 0 && !gettingHistory && <div className={styles.pagination}>
-              <button
-                onClick={() => {setConversations([]); handlePageChange(currentPage - 1)}}
-                disabled={currentPage === 1}>
-                <Image src={leftArrow} alt="left" width={50} height={50} />
-              </button>
-              <p>{currentPage} / {totalPages}</p>
-              <button
-                onClick={() => {setConversations([]); handlePageChange(currentPage + 1)}}
-                disabled={currentPage === totalPages}>
-                <Image src={rightArrow} alt="right" width={50} height={50} />
-              </button>
-            </div>}
           </div>
         </div>
         <Menu />
