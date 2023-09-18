@@ -27,6 +27,7 @@
     "label.refresh": "Refresh",
     "label.type":"Type",
     "label.speak":"Speak",
+    "label.manual":"User Manual - For VAWs",
     "message.no_signal":"No signal. \nPlease check your internet connection",
     "message.click_to_type": "Click here to type",
     "message.downloading": "Downloading...",
