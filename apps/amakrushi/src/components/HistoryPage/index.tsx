@@ -41,7 +41,7 @@ const HistoryPage: NextPage = () => {
           (conv) => conv?.conversationId !== null
         ).sort(
           //@ts-ignore
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
         );
         //@ts-ignore
         setConversations(sortedConversations);
@@ -55,7 +55,6 @@ const HistoryPage: NextPage = () => {
         setGettingHistory(false);
       });
   }, []);
-
 
   // Function to delete conversation by conversationId
   const deleteConversationById = useCallback(
