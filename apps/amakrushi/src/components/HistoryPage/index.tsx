@@ -1,9 +1,11 @@
 import styles from './index.module.css';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Spinner } from '@chakra-ui/react';
+import leftArrow from '../../assets/icons/leftArrow.svg'
+import rightArrow from '../../assets/icons/rightArrow.svg'
+import Image from 'next/image';
 import ChatItem from '../chat-item';
 import { NextPage } from 'next';
-
 //@ts-ignore
 import { analytics } from '../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
@@ -14,6 +16,7 @@ import { useFlags } from 'flagsmith/react';
 import axios from 'axios';
 import _ from 'underscore';
 import { toast } from 'react-hot-toast';
+
 const HistoryPage: NextPage = () => {
   const [conversations, setConversations] = useState([]);
   const flags = useFlags(['show_chat_history_page']);
@@ -27,22 +30,21 @@ const HistoryPage: NextPage = () => {
     setGettingHistory(true);
 
     axios
-      .get(`${process.env.NEXT_PUBLIC_BASE_URL}/user/conversations`, {
+      .get(`${process.env.NEXT_PUBLIC_BASE_URL}/user/conversations/all`, {
         headers: {
           authorization: `Bearer ${localStorage.getItem('auth')}`,
         },
       })
       .then((res) => {
         const sortedConversations = _.filter(
-          res?.data?.userHistory,
+          res?.data,
           (conv) => conv?.conversationId !== null
         ).sort(
           //@ts-ignore
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
         );
         //@ts-ignore
         setConversations(sortedConversations);
-        console.log('hie', sortedConversations);
         setGettingHistory(false);
       })
       .catch((error) => {
@@ -68,9 +70,7 @@ const HistoryPage: NextPage = () => {
 
   const downloadShareHandler = async (type: string, convId: any) => {
     try {
-      const url = `${
-        process.env.NEXT_PUBLIC_BASE_URL
-      }/user/chathistory/generate-pdf/${convId}`;
+      const url = `${process.env.NEXT_PUBLIC_BASE_URL}/user/chathistory/generate-pdf/${convId}`;
 
       const response = await axios.post(url, null, {
         headers: {
@@ -80,7 +80,8 @@ const HistoryPage: NextPage = () => {
       });
 
       const blob = new Blob([response.data], { type: 'application/pdf' });
-      const file = new File([blob], 'Chat.pdf', {type: blob.type});
+      
+      const file = new File([blob], 'Chat.pdf', { type: blob.type });
 
       if (type === 'download') {
         toast.success(`${t('message.downloading')}`);
@@ -121,14 +122,19 @@ const HistoryPage: NextPage = () => {
       <>
         <div className={styles.main}>
           <div className={styles.title}>{t('label.chats')}</div>
-          {/* <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <Image src={searchIcon} alt="" width={20} height={20} />
-            </InputLeftElement>
-            <Input type="text" placeholder="Search" />
-          </InputGroup> */}
-          <div style={{minHeight: '80vh'}}>
-            {conversations.length > 0 ? (
+          <div className={styles.chatList}>
+            {gettingHistory ? (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: '50vh',
+                }}>
+                {/* @ts-ignore */}
+                <Spinner size="xl" />
+              </div>
+            ) : conversations.length > 0 ? (
               conversations.map((conv: any) => {
                 return (
                   <ChatItem
@@ -140,11 +146,6 @@ const HistoryPage: NextPage = () => {
                   />
                 );
               })
-            ) : gettingHistory ? (
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '50vh' }}>
-                 {/* @ts-ignore */}
-                <Spinner size="xl" />
-              </div>
             ) : (
               <div className={styles.noHistory}>
                 <div>{t('label.no_history')}</div>
