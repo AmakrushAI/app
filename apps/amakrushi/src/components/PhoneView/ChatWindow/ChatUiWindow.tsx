@@ -46,7 +46,7 @@ const ChatUiWindow: React.FC = () => {
           const modifiedChatHistory = chatHistory.data.map((chat: any) => {
             if (!chat.response) {
               chat.response =
-                'No signal \nPlease check your internet connection';
+                t('message.no_signal');
             }
             return chat;
           });

@@ -71,7 +71,7 @@ const ContextProvider: FC<{
       setIsOnline(false);
       onMessageReceived({
         content: {
-          title: 'No signal \nPlease check your internet connection',
+          title: t('message.no_signal'),
           choices: null,
           conversationId: conversationId,
           msg_type: 'text',
@@ -323,7 +323,7 @@ const ContextProvider: FC<{
             // toast.error(`${t('message.retry')}`);
             onMessageReceived({
               content: {
-                title: 'No signal \nPlease check your internet connection',
+                title: t('message.no_signal'),
                 choices: null,
                 conversationId: conversationId,
                 msg_type: 'text',

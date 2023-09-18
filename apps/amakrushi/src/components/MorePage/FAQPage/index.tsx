@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import styles from './index.module.css';
-import { Box, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import {
   Accordion,
   AccordionItem,
@@ -8,7 +7,6 @@ import {
   AccordionPanel,
   AccordionIcon,
 } from '@chakra-ui/react';
-import searchIcon from '../../../assets/icons/search.svg';
 import callIcon from '../../../assets/icons/call-icon.svg';
 import Image from 'next/image';
 import Menu from '../../menu';
@@ -26,56 +24,55 @@ const FAQPage: React.FC = () => {
     'show_dialer',
     'dialer_number',
     'show_pdf_buttons',
-    'odia_pdf_link',
-    'eng_pdf_link',
+    'manual_pdf_link',
   ]);
-  const [faqData, setFaqData] = useState<any[]>([]);
+  // const [faqData, setFaqData] = useState<any[]>([]);
   console.log(flags);
 
-  useEffect(() => {
-    //@ts-ignore
-    logEvent(analytics, 'FAQ_page');
+  // useEffect(() => {
+  //   //@ts-ignore
+  //   logEvent(analytics, 'FAQ_page');
 
-    const fetchData = async () => {
-      let page = 1;
-      let allData: any[] = [];
+  //   const fetchData = async () => {
+  //     let page = 1;
+  //     let allData: any[] = [];
 
-      while (true) {
-        try {
-          const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_BASE_URL}/faq?page=${page}`,
-            {
-              headers: {
-                authorization: `Bearer ${localStorage.getItem('auth')}`,
-              },
-            }
-          );
-          const newData = response.data.faqs;
+  //     while (true) {
+  //       try {
+  //         const response = await axios.get(
+  //           `${process.env.NEXT_PUBLIC_BASE_URL}/faq?page=${page}`,
+  //           {
+  //             headers: {
+  //               authorization: `Bearer ${localStorage.getItem('auth')}`,
+  //             },
+  //           }
+  //         );
+  //         const newData = response.data.faqs;
 
-          if (!newData.length) {
-            break; // no more data, exit loop
-          }
+  //         if (!newData.length) {
+  //           break; // no more data, exit loop
+  //         }
 
-          allData = [...allData, ...newData];
-          page++;
-        } catch (error) {
-          console.log(error);
-          //@ts-ignore
-          logEvent(analytics, 'console_error', {
-            error_message: error.message,
-          });
-          break;
-        }
-      }
-      setFaqData(allData);
-    };
+  //         allData = [...allData, ...newData];
+  //         page++;
+  //       } catch (error) {
+  //         console.log(error);
+  //         //@ts-ignore
+  //         logEvent(analytics, 'console_error', {
+  //           error_message: error.message,
+  //         });
+  //         break;
+  //       }
+  //     }
+  //     setFaqData(allData);
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   const downloadPDFHandler = useCallback(
-    (filename: any, language: any) => {
-      const link = flags?.[`${language}_pdf_link`]?.value;
+    () => {
+      const link: any = flags?.[`manual_pdf_link`]?.value;
       const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
       window.open(link);
@@ -90,7 +87,7 @@ const FAQPage: React.FC = () => {
           const a = document.createElement('a');
           a.style.display = 'none';
           a.href = url;
-          a.download = `${filename}.pdf`;
+          a.download = `User_Manual_For_VAWs.pdf`;
 
           document.body.appendChild(a);
           a.click();
@@ -116,14 +113,8 @@ const FAQPage: React.FC = () => {
       <>
         <div className={styles.main}>
           <div className={styles.title}>{t('label.faqs')}</div>
-          {/* <InputGroup pb={2}>
-            <InputLeftElement pointerEvents="none">
-              <Image src={searchIcon} alt="" width={20} height={20} />
-            </InputLeftElement>
-            <Input type="text" placeholder={t('label.search')} />
-          </InputGroup> */}
           {/* @ts-ignore */}
-          <Accordion allowMultiple>
+          {/* <Accordion allowMultiple>
             {faqData.map((faq, idx) => (
               <AccordionItem key={idx}>
                 <h2>
@@ -143,19 +134,14 @@ const FAQPage: React.FC = () => {
                 </AccordionPanel>
               </AccordionItem>
             ))}
-          </Accordion>
+          </Accordion> */}
           <section className={styles.bottomSection}>
             {flags?.show_pdf_buttons?.enabled && (
               <div className={styles.manualButtons}>
                 <button
-                  onClick={() => downloadPDFHandler('my_eng_manual', 'eng')}
+                  onClick={downloadPDFHandler}
                   className={styles.submitButton}>
-                  User Manual - &nbsp; English
-                </button>
-                <button
-                  onClick={() => downloadPDFHandler('my_odia_manual', 'odia')}
-                  className={styles.submitButton}>
-                  ବ୍ୟବହାରକାରୀ ମାନୁଆଲ - &nbsp; ଓଡିଆ
+                  {t('label.manual')}
                 </button>
               </div>
             )}
