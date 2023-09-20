@@ -40,16 +40,17 @@ function NavBar() {
     try {
       const url = `${
         process.env.NEXT_PUBLIC_BASE_URL
-      }/user/chathistory/generate-pdf/${sessionStorage.getItem(
+      }/user/chathistory/generate-pdf-url/${sessionStorage.getItem(
         'conversationId'
       )}`;
 
       const response = await axios.post(url, null, {
         headers: {
           authorization: `Bearer ${localStorage.getItem('auth')}`,
-        },
-        responseType: 'arraybuffer', // This is important to handle binary data
+        }
       });
+
+      const pdfUrl = response.data.pdfUrl;
 
       const blob = new Blob([response.data], { type: 'application/pdf' });
       const file = new File([blob], 'Chat.pdf', {type: blob.type});
@@ -57,7 +58,8 @@ function NavBar() {
       if (type === 'download') {
         toast.success(`${t('message.downloading')}`);
         const link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
+        link.href = pdfUrl;
+        // link.href = window.URL.createObjectURL(blob);
         link.download = 'Chat.pdf';
         link.click();
       } else if (type === 'share') {
@@ -81,7 +83,7 @@ function NavBar() {
         console.log(response.data);
       }
     } catch (error: any) {
-      toast.error(error);
+      toast.error(error.message);
       console.error(error);
     }
   };
