@@ -13,6 +13,7 @@
 }
 
 .body {
+  text-align: center;
   margin-top: 3vh;
   max-width: 80vw;
   margin: auto;
