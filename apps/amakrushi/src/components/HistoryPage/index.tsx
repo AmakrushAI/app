@@ -86,6 +86,7 @@ const HistoryPage: NextPage = () => {
       // window.open(pdfUrl)
       const blob = new Blob([response.data], { type: 'application/pdf' });
       const file = new File([blob], 'Chat.pdf', { type: blob.type });
+
       if (type === 'download') {
         toast.success(`${t('message.downloading')}`);
         const link = document.createElement('a');
@@ -99,9 +100,9 @@ const HistoryPage: NextPage = () => {
       } else if (type === 'share') {
         if(!navigator.canShare){
           //@ts-ignore
-          window.AndroidHandler.shareFile(file)
+          window.AndroidHandler.shareFile(blob)
           //@ts-ignore
-          window.AndroidHandler.shareObject(file)
+          window.AndroidHandler.shareObject(blob)
           //@ts-ignore
           window.AndroidHandler.shareUrl(pdfUrl)
 
