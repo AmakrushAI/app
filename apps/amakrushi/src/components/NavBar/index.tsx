@@ -72,9 +72,11 @@ function NavBar() {
       } else if (type === 'share') {
         if(!navigator.canShare){
           //@ts-ignore
-          window.AndroidHandler.share(file)
+          window.AndroidHandler.shareFile(file)
           //@ts-ignore
-          window.AndroidHandler.share(pdfUrl)
+          window.AndroidHandler.shareObject(file)
+          //@ts-ignore
+          window.AndroidHandler.shareUrl(pdfUrl)
 
         }else if (navigator.canShare({ files: [file] })) {
           toast.success(`${t('message.sharing')}`);
