@@ -50,6 +50,9 @@ function NavBar() {
         }
       });
       const pdfUrl = response.data.pdfUrl;
+      if(!pdfUrl){
+        toast.error(`${t('message.no_link')}`);
+      }
       // window.open(pdfUrl)
 
       const blob = new Blob([response.data], { type: 'application/pdf' });
@@ -73,7 +76,7 @@ function NavBar() {
               text: 'Check out my chat with AmaKrushAI!',
             })
             .catch((error) => {
-              toast.error(error);
+              toast.error(error.message);
               console.error('Error sharing', error);
             });
         } else {

@@ -79,6 +79,9 @@ const HistoryPage: NextPage = () => {
       });
       // console.log(response.data)
       const pdfUrl = response.data.pdfUrl;
+      if(!pdfUrl){
+        toast.error(`${t('message.no_link')}`);
+      }
       // window.open(pdfUrl)
       const blob = new Blob([response.data], { type: 'application/pdf' });
       const file = new File([blob], 'Chat.pdf', { type: blob.type });
@@ -100,7 +103,7 @@ const HistoryPage: NextPage = () => {
               text: 'Check out my chat with AmaKrushAI!',
             })
             .catch((error) => {
-              toast.error(error);
+              toast.error(error.message);
               console.error('Error sharing', error);
             });
         } else {
