@@ -86,6 +86,7 @@ const HistoryPage: NextPage = () => {
         toast.success(`${t('message.downloading')}`);
         const link = document.createElement('a');
         link.href = pdfUrl;
+        link.target = "_blank";
         // link.href = window.URL.createObjectURL(blob);
         link.download = 'Chat.pdf';
         link.click();
