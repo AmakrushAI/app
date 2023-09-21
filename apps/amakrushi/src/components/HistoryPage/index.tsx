@@ -79,10 +79,9 @@ const HistoryPage: NextPage = () => {
       });
       // console.log(response.data)
       const pdfUrl = response.data.pdfUrl;
-      
+      window.open(pdfUrl)
       const blob = new Blob([response.data], { type: 'application/pdf' });
       const file = new File([blob], 'Chat.pdf', { type: blob.type });
-
       if (type === 'download') {
         toast.success(`${t('message.downloading')}`);
         const link = document.createElement('a');
