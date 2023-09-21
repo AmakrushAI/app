@@ -72,10 +72,6 @@ function NavBar() {
       } else if (type === 'share') {
         if(!navigator.canShare){
           //@ts-ignore
-          window.AndroidHandler.shareFile(file)
-          //@ts-ignore
-          window.AndroidHandler.shareObject(file)
-          //@ts-ignore
           window.AndroidHandler.shareUrl(pdfUrl)
 
         }else if (navigator.canShare({ files: [file] })) {

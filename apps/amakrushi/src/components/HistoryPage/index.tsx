@@ -94,15 +94,10 @@ const HistoryPage: NextPage = () => {
         link.href = pdfUrl;
         // link.target = "_blank";
         // link.href = window.URL.createObjectURL(blob);
-
         link.download = 'Chat.pdf';
         link.click();
       } else if (type === 'share') {
         if(!navigator.canShare){
-          //@ts-ignore
-          window.AndroidHandler.shareFile(blob)
-          //@ts-ignore
-          window.AndroidHandler.shareObject(blob)
           //@ts-ignore
           window.AndroidHandler.shareUrl(pdfUrl)
 
