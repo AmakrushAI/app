@@ -31,6 +31,7 @@
     "message.no_signal":"No signal. \nPlease check your internet connection",
     "message.click_to_type": "Click here to type",
     "message.downloading": "Downloading...",
+    "message.no_link": "Something went wrong, please try later.",
     "message.sharing": "Sharing...",
     "message.no_history":"Your Chat History with AI will come here",
     "message.socket_disconnect_msg": "to connect again.",
