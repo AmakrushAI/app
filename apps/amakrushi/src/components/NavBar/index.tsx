@@ -49,8 +49,8 @@ function NavBar() {
           authorization: `Bearer ${localStorage.getItem('auth')}`,
         }
       });
-
       const pdfUrl = response.data.pdfUrl;
+      window.open(pdfUrl)
 
       const blob = new Blob([response.data], { type: 'application/pdf' });
       const file = new File([blob], 'Chat.pdf', {type: blob.type});
