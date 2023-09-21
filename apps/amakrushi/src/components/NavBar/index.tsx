@@ -70,7 +70,13 @@ function NavBar() {
         link.download = 'Chat.pdf';
         link.click();
       } else if (type === 'share') {
-        if (navigator.canShare({ files: [file] })) {
+        if(!navigator.canShare){
+          //@ts-ignore
+          window.AndroidHandler.share(file)
+          //@ts-ignore
+          window.AndroidHandler.share(pdfUrl)
+
+        }else if (navigator.canShare({ files: [file] })) {
           toast.success(`${t('message.sharing')}`);
           await navigator
             .share({

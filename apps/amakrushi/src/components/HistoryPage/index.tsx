@@ -97,27 +97,30 @@ const HistoryPage: NextPage = () => {
         link.download = 'Chat.pdf';
         link.click();
       } else if (type === 'share') {
-        //@ts-ignore
-        window.AndroidHandler.share(file)
-        //@ts-ignore
-        window.AndroidHandler.share(pdfUrl)
+        if(!navigator.canShare){
+          //@ts-ignore
+          window.AndroidHandler.shareFile(file)
+          //@ts-ignore
+          window.AndroidHandler.shareObject(file)
+          //@ts-ignore
+          window.AndroidHandler.shareUrl(pdfUrl)
 
-        // if (navigator.canShare({ files: [file] })) {
-        //   toast.success(`${t('message.sharing')}`);
-        //   await navigator
-        //     .share({
-        //       files: [file],
-        //       title: 'Chat',
-        //       text: 'Check out my chat with AmaKrushAI!',
-        //     })
-        //     .catch((error) => {
-        //       toast.error(error.message);
-        //       console.error('Error sharing', error);
-        //     });
-        // } else {
-        //   toast.error(`${t('message.cannot_share')}`);
-        //   console.error("Your system doesn't support sharing this file.");
-        // }
+        }else if (navigator.canShare({ files: [file] })) {
+          toast.success(`${t('message.sharing')}`);
+          await navigator
+            .share({
+              files: [file],
+              title: 'Chat',
+              text: 'Check out my chat with AmaKrushAI!',
+            })
+            .catch((error) => {
+              toast.error(error.message);
+              console.error('Error sharing', error);
+            });
+        } else {
+          toast.error(`${t('message.cannot_share')}`);
+          console.error("Your system doesn't support sharing this file.");
+        }
       } else {
         console.log(response.data);
       }
