@@ -50,12 +50,12 @@ function NavBar() {
         }
       });
       const pdfUrl = response.data.pdfUrl;
+
       if(!pdfUrl){
         toast.error(`${t('message.no_link')}`);
         return;
       }
       // window.open(pdfUrl)
-
       const blob = new Blob([response.data], { type: 'application/pdf' });
       const file = new File([blob], 'Chat.pdf', {type: blob.type});
 
