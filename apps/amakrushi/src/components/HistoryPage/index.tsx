@@ -86,6 +86,7 @@ const HistoryPage: NextPage = () => {
       // window.open(pdfUrl)
       const blob = new Blob([response.data], { type: 'application/pdf' });
       const file = new File([blob], 'Chat.pdf', { type: blob.type });
+
       if (type === 'download') {
         toast.success(`${t('message.downloading')}`);
         const link = document.createElement('a');
@@ -93,11 +94,14 @@ const HistoryPage: NextPage = () => {
         link.href = pdfUrl;
         // link.target = "_blank";
         // link.href = window.URL.createObjectURL(blob);
-
         link.download = 'Chat.pdf';
         link.click();
       } else if (type === 'share') {
-        if (navigator.canShare({ files: [file] })) {
+        if(!navigator.canShare){
+          //@ts-ignore
+          window.AndroidHandler.shareUrl(pdfUrl)
+
+        }else if (navigator.canShare({ files: [file] })) {
           toast.success(`${t('message.sharing')}`);
           await navigator
             .share({
