@@ -86,7 +86,7 @@ const FAQPage: React.FC = () => {
           const url = window.URL.createObjectURL(new Blob([blob]));
           const a = document.createElement('a');
           a.style.display = 'none';
-          a.href = url;
+          a.href = link;
           a.download = `User_Manual_For_VAWs.pdf`;
 
           document.body.appendChild(a);
