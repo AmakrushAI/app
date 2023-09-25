@@ -40,7 +40,7 @@ function NavBar() {
     try {
       const url = `${
         process.env.NEXT_PUBLIC_BASE_URL
-      }/user/chathistory/generate-pdf-url/${sessionStorage.getItem(
+      }/user/chathistory/generate-pdf/${sessionStorage.getItem(
         'conversationId'
       )}`;
 

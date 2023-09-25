@@ -70,7 +70,7 @@ const HistoryPage: NextPage = () => {
 
   const downloadShareHandler = async (type: string, convId: any) => {
     try {
-      const url = `${process.env.NEXT_PUBLIC_BASE_URL}/user/chathistory/generate-pdf-url/${convId}`;
+      const url = `${process.env.NEXT_PUBLIC_BASE_URL}/user/chathistory/generate-pdf/${convId}`;
 
       const response = await axios.post(url, null, {
         headers: {
