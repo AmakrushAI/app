@@ -58,6 +58,7 @@
     "message.review_submitted": "Review Submitted!",
     "message.didnt_receive": "Didn't receive the OTP?",
     "message.resend_again": "Resend again",
+    "message.shareUrl_android_error" : "Share feature coming soon, please download pdf to share",
     "message.coming_soon" : "Coming Soon!",
     "message.coming_soon_description" : "We are going to launch this feature very soon. Stay tuned!",
     "message.dial_description" : "To connect with call centre",

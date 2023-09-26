@@ -59,6 +59,7 @@
     "message.wait_minutes": "ଗୋଟିଏ ଥର ପାସୱାର୍ଡ ପଠାଇବା ପୂର୍ବରୁ ଦୟାକରି {countdown} ସେକେଣ୍ଡ ଅପେକ୍ଷା କରନ୍ତୁ |",
     "message.resend_again":"ପୁନର୍ବାର ପଠାନ୍ତୁ |",
     "message.didnt_receive": "ଗୋଟିଏ ଥର ପାସୱାର୍ଡ ଗ୍ରହଣ କରିନାହାଁନ୍ତି କି?",
+    "message.shareUrl_android_error" : "ଶେୟାର୍ ଫିଚର୍ ଶୀଘ୍ର ଆସୁଛି, ଦୟାକରି ଶେୟାର୍ କରିବାକୁ pdf ଡାଉନଲୋଡ୍ କରନ୍ତୁ",
     "message.coming_soon" : "ଶୀଘ୍ର ଆସୁଅଛି!",
     "message.coming_soon_description" : "ଆମେ ଖୁବ୍ ଶୀଘ୍ର ଏହି ଫିଚର ଲଞ୍ଚ କରିବାକୁ ଯାଉଛୁ , ଶୁଣୁ ଥାନ୍ତୁ",
     "message.dial_description" : "କଲ୍ ସେଣ୍ଟର ସହିତ ସଂଯୋଗ କରିବାକୁ |",
