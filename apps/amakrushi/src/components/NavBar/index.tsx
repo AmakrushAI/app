@@ -60,6 +60,8 @@ function NavBar() {
       const file = new File([blob], 'Chat.pdf', {type: blob.type});
 
       if (type === 'download') {
+        //@ts-ignore
+        logEvent(analytics, 'download_chat_clicked');
         toast.success(`${t('message.downloading')}`);
         const link = document.createElement('a');
 
@@ -70,6 +72,10 @@ function NavBar() {
         link.download = 'Chat.pdf';
         link.click();
       } else if (type === 'share') {
+
+        //@ts-ignore
+        logEvent(analytics, 'share_chat_clicked');
+
         if(!navigator.canShare){
           //@ts-ignore
           window.AndroidHandler.shareUrl(pdfUrl)
@@ -94,6 +100,10 @@ function NavBar() {
         console.log(response.data);
       }
     } catch (error: any) {
+      //@ts-ignore
+      logEvent(analytics, 'console_error', {
+        error_message: error.message,
+      });
       toast.error(error.message);
       console.error(error);
     }
