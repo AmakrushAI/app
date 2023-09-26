@@ -40,7 +40,7 @@ function NavBar() {
     try {
       const url = `${
         process.env.NEXT_PUBLIC_BASE_URL
-      }/user/chathistory/generate-pdf-url/${sessionStorage.getItem(
+      }/user/chathistory/generate-pdf/${sessionStorage.getItem(
         'conversationId'
       )}`;
 
@@ -64,7 +64,7 @@ function NavBar() {
         const link = document.createElement('a');
 
         link.href = pdfUrl;
-        // link.target = "_blank";
+        link.target = "_blank";
         // link.href = window.URL.createObjectURL(blob);
 
         link.download = 'Chat.pdf';
