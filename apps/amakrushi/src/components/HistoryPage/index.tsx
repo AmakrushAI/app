@@ -99,8 +99,10 @@ const HistoryPage: NextPage = () => {
         link.download = 'Chat.pdf';
         link.click();
       } else if (type === 'share') {
+
         //@ts-ignore
         logEvent(analytics, 'share_chat_clicked');
+
         if(!navigator.canShare){
           //@ts-ignore
           window.AndroidHandler.shareUrl(pdfUrl)
