@@ -72,6 +72,7 @@ function NavBar() {
         link.download = 'Chat.pdf';
         link.click();
       } else if (type === 'share') {
+
         //@ts-ignore
         logEvent(analytics, 'share_chat_clicked');
 
@@ -102,12 +103,14 @@ function NavBar() {
       logEvent(analytics, 'console_error', {
         error_message: error.message,
       });
+
       if (
         error.message ===
         "Cannot read properties of undefined (reading 'shareUrl')"
       ) {
         toast.success(`${t('message.coming_soon')}`);
       } else toast.error(error.message);
+
       console.error(error);
     }
   };
