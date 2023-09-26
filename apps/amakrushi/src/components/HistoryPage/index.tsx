@@ -1,8 +1,8 @@
 import styles from './index.module.css';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Spinner } from '@chakra-ui/react';
-import leftArrow from '../../assets/icons/leftArrow.svg'
-import rightArrow from '../../assets/icons/rightArrow.svg'
+import leftArrow from '../../assets/icons/leftArrow.svg';
+import rightArrow from '../../assets/icons/rightArrow.svg';
 import Image from 'next/image';
 import ChatItem from '../chat-item';
 import { NextPage } from 'next';
@@ -75,11 +75,11 @@ const HistoryPage: NextPage = () => {
       const response = await axios.post(url, null, {
         headers: {
           authorization: `Bearer ${localStorage.getItem('auth')}`,
-        }
+        },
       });
       // console.log(response.data)
       const pdfUrl = response.data.pdfUrl;
-      if(!pdfUrl){
+      if (!pdfUrl) {
         toast.error(`${t('message.no_link')}`);
         return;
       }
@@ -94,20 +94,18 @@ const HistoryPage: NextPage = () => {
         const link = document.createElement('a');
 
         link.href = pdfUrl;
-        link.target = "_blank";
+        link.target = '_blank';
         // link.href = window.URL.createObjectURL(blob);
         link.download = 'Chat.pdf';
         link.click();
       } else if (type === 'share') {
-
         //@ts-ignore
         logEvent(analytics, 'share_chat_clicked');
 
-        if(!navigator.canShare){
+        if (!navigator.canShare) {
           //@ts-ignore
-          window.AndroidHandler.shareUrl(pdfUrl)
-
-        }else if (navigator.canShare({ files: [file] })) {
+          window.AndroidHandler.shareUrl(pdfUrl);
+        } else if (navigator.canShare({ files: [file] })) {
           toast.success(`${t('message.sharing')}`);
           await navigator
             .share({
@@ -131,7 +129,12 @@ const HistoryPage: NextPage = () => {
       logEvent(analytics, 'console_error', {
         error_message: error.message,
       });
-      toast.error(error.message);
+      if (
+        error.message ===
+        "Cannot read properties of undefined (reading 'shareUrl')"
+      ) {
+        toast.success(`${t('message.coming_soon')}`);
+      } else toast.error(error.message);
       console.error(error);
     }
   };
