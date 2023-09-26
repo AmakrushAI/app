@@ -108,7 +108,7 @@ function NavBar() {
         error.message ===
         "Cannot read properties of undefined (reading 'shareUrl')"
       ) {
-        toast.success(`${t('message.coming_soon')}`);
+        toast.success(`${t('message.shareUrl_android_error')}`);
       } else toast.error(error.message);
 
       console.error(error);
