@@ -155,6 +155,15 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     [context, t]
   );
 
+  const handleAudio = (url: any) => {
+    // console.log(url)
+    if(url === ''){
+      toast.error('No audio');
+      return;
+    }
+    context?.playAudio(url);
+  }
+
   const { content, type } = message;
   // console.log('#-debug:', content);
   switch (type) {
@@ -271,7 +280,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 &nbsp;
                 <p>{t('message.helpful')}</p>
               </div>
-              <div className={styles.msgSpeaker}>
+              <div className={styles.msgSpeaker} onClick={() => handleAudio(content?.data?.audio_url || '')}>
                   <Image src={SpeakerIcon} width={15} height={15} alt=""/>
               </div>
               </div>

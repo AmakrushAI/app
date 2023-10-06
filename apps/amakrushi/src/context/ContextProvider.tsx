@@ -60,6 +60,31 @@ const ContextProvider: FC<{
   // const [isConnected, setIsConnected] = useState(newSocket?.connected || false);
   const [cookie, setCookie, removeCookie] = useCookies();
   const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [audioElement, setAudioElement] = useState(null);
+
+  const playAudio = useMemo(() => {
+    return (url: string) => {
+        if (!url) {
+          console.error('Audio URL not provided.');
+          return;
+        }
+      
+        if(audioElement){
+          //@ts-ignore
+          audioElement.pause();
+        }
+        const audio = new Audio(url);
+        audio.play().then(() => {
+          console.log('Audio played:', url);
+        }).catch((error) => {
+          console.error('Error playing audio:', error);
+        });
+        
+        // Update the current audio to the new audio element
+        //@ts-ignore
+        setAudioElement(audio);
+  };
+  }, [audioElement]);
 
   useEffect(() => {
     console.log("online")
@@ -132,6 +157,7 @@ const ContextProvider: FC<{
           choices: any;
           conversationId: any;
           btns?: boolean;
+          audio_url: string;
         };
         messageId: string;
       };
@@ -150,6 +176,7 @@ const ContextProvider: FC<{
           conversationId: msg?.content?.conversationId,
           sentTimestamp: Date.now(),
           btns: msg.content.btns,
+          audio_url: msg.content.audio_url,
           ...media,
         };
 
@@ -380,6 +407,8 @@ const ContextProvider: FC<{
       fetchIsDown,
       showDialerPopup,
       setShowDialerPopup,
+      playAudio,
+      audioElement
     }),
     [
       locale,
@@ -400,6 +429,8 @@ const ContextProvider: FC<{
       fetchIsDown,
       showDialerPopup,
       setShowDialerPopup,
+      playAudio,
+      audioElement
     ]
   );
 
