@@ -64,7 +64,7 @@ const LoginPage: React.FC = () => {
       <div className={styles.title}>{t("label.title")}</div>
 
       <div className={styles.body}>
-        <h1>{t("label.welcome")}</h1>
+        {/* <h1>{t("label.welcome")}</h1> */}
 
         {/* <RadioGroup onChange={setValue} value={value}>
           <Radio value="1">{t("label.farmer")}</Radio>

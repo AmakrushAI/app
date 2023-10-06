@@ -4,6 +4,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import { NextPage } from 'next';
@@ -46,6 +47,9 @@ const HomePage: NextPage = () => {
   const [inputMsg, setInputMsg] = useState('');
   const [showExampleMessages, setShowExampleMessages] = useState(false);
   const [showChatBox, setShowChatBox] = useState(false);
+  const voiceRecorderRef = useRef(null);
+  const exampleMessagesRef = useRef(null);
+  const chatBoxButton = useRef(null);
 
   // Show chatbox when audio recorder sends input message
   useEffect(() => {
@@ -97,14 +101,39 @@ const HomePage: NextPage = () => {
     setShowExampleMessages(inputValue.length === 0);
   };
 
+  const handleDocumentClick = useCallback((event: any) => {
+    const target = event.target;
+
+    // Check if clicked outside voiceRecorder and exampleMessages
+    if (
+      //@ts-ignore
+      !voiceRecorderRef.current?.contains(target) &&
+      //@ts-ignore
+      !chatBoxButton.current?.contains(target) &&
+      //@ts-ignore
+      !exampleMessagesRef.current?.contains(target)
+    ) {
+      setShowExampleMessages(false);
+      // setShowChatBox(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener('click', handleDocumentClick);
+
+    return () => {
+      document.removeEventListener('click', handleDocumentClick);
+    };
+  }, [handleDocumentClick]);
+
   if (context?.isDown) {
     return <DownTimePage />;
   } else
     return (
       <>
-        <div className={styles.main}>
+        <div className={styles.main} onClick={handleDocumentClick}>
           <div className={styles.title}>{t('label.ask_me')}</div>
-          <div className={styles.voiceRecorder}>
+          <div className={styles.voiceRecorder} ref={voiceRecorderRef}>
             <RenderVoiceRecorder setInputMsg={setInputMsg} />
           </div>
           <div
@@ -113,14 +142,15 @@ const HomePage: NextPage = () => {
               (showExampleMessages
                 ? ` ${styles.visible}`
                 : ` ${styles.invisible}`)
-            }>
+            }
+            ref={exampleMessagesRef}>
             {messages?.[0]?.payload?.buttonChoices?.map((choice: any) => {
               return (
                 <button
-                  onClick={() => {
-                    sendMessage(choice.text);
-                    console.log('clicked');
-                  }}
+                  // onClick={() => {
+                  //   sendMessage(choice.text);
+                  //   console.log('clicked');
+                  // }}
                   className={styles.buttonChoice}
                   key={choice.key}>
                   <Image
@@ -131,9 +161,9 @@ const HomePage: NextPage = () => {
                     style={{ marginRight: '2px' }}
                   />
                   {choice.text}
-                  <div className={styles.rightIcon}>
+                  {/* <div className={styles.rightIcon}>
                     <RightIcon width="35px" color="var(--secondarygreen)" />
-                  </div>
+                  </div> */}
                 </button>
               );
             })}
@@ -141,6 +171,7 @@ const HomePage: NextPage = () => {
 
           <form onSubmit={(event) => event?.preventDefault()}>
             <div
+              ref={chatBoxButton}
               className={`${
                 showChatBox
                   ? `${styles.inputBox} ${styles.inputBoxOpen}`
