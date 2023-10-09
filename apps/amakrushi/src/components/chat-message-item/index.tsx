@@ -37,6 +37,7 @@ import { useFlags } from 'flagsmith/react';
 import Image from 'next/image';
 import { Button } from '@chakra-ui/react';
 import flagsmith from 'flagsmith/isomorphic';
+import Loader from '../loader';
 
 const getToastMessage = (t: any, reaction: number): string => {
   if (reaction === 1) return t('toast.reaction_like');
@@ -281,7 +282,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 <p>{t('message.helpful')}</p>
               </div>
               <div className={styles.msgSpeaker} onClick={() => handleAudio(content?.data?.audio_url || '')}>
-                  <Image src={SpeakerIcon} width={15} height={15} alt=""/>
+                  {context?.ttsLoader ? <Loader/> : <Image src={SpeakerIcon} width={15} height={15} alt=""/>}
               </div>
               </div>
             )

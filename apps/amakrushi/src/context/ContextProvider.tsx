@@ -61,6 +61,7 @@ const ContextProvider: FC<{
   const [cookie, setCookie, removeCookie] = useCookies();
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [audioElement, setAudioElement] = useState(null);
+  const [ttsLoader, setTtsLoader] = useState(false);
 
   const playAudio = useMemo(() => {
     return (url: string) => {
@@ -69,12 +70,38 @@ const ContextProvider: FC<{
           return;
         }
       
-        if(audioElement){
+        if (audioElement) {
           //@ts-ignore
-          audioElement.pause();
+          if (audioElement.src === url) {
+            // If the same URL is provided and audio is paused, resume playback
+            //@ts-ignore
+            if (audioElement.paused) {
+              setTtsLoader(true);
+              //@ts-ignore
+              audioElement.play().then(() => {
+                setTtsLoader(false);
+                console.log('Resumed audio:', url);
+                //@ts-ignore
+              }).catch((error) => {
+                console.error('Error resuming audio:', error);
+              });
+            } else {
+              // Pause the current audio if it's playing
+              //@ts-ignore
+              audioElement.pause();
+              console.log('Paused audio:', url);
+            }
+            return;
+          } else {
+            // Pause the older audio if it's playing
+            //@ts-ignore
+            audioElement.pause();
+          }
         }
+        setTtsLoader(true);
         const audio = new Audio(url);
         audio.play().then(() => {
+          setTtsLoader(false);
           console.log('Audio played:', url);
         }).catch((error) => {
           console.error('Error playing audio:', error);
@@ -408,7 +435,9 @@ const ContextProvider: FC<{
       showDialerPopup,
       setShowDialerPopup,
       playAudio,
-      audioElement
+      audioElement,
+      ttsLoader,
+      setTtsLoader
     }),
     [
       locale,
@@ -430,7 +459,9 @@ const ContextProvider: FC<{
       showDialerPopup,
       setShowDialerPopup,
       playAudio,
-      audioElement
+      audioElement,
+      ttsLoader,
+      setTtsLoader
     ]
   );
 
