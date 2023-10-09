@@ -17,6 +17,7 @@ const Menu: FC = () => {
   const router = useRouter();
 
   const urlChanger = (link: string) => {
+    if(context?.audioElement) context?.audioElement.pause();
     if (cookies['access_token'] !== undefined) {
       if(link === '/history' && context?.loading){   
         toast.error(`${t("error.wait_new_chat")}`);

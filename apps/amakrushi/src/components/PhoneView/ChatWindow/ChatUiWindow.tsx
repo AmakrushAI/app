@@ -69,7 +69,7 @@ const ChatUiWindow: React.FC = () => {
   }, [context?.setMessages, context?.fetchIsDown, context?.isDown]);
 
   const normalizedChat = (chats: any): any => {
-    console.log('in normalized');
+    console.log('in normalized', chats);
     const conversationId = sessionStorage.getItem('conversationId');
     const history = chats
       .filter(
@@ -91,6 +91,7 @@ const ChatUiWindow: React.FC = () => {
             reaction: item.reaction,
             msgId: item.id,
             messageId: item.id,
+            audio_url: item.audioURL
           },
         ].filter(Boolean)
       );

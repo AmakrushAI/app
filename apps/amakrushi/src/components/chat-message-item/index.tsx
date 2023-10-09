@@ -25,7 +25,7 @@ import styles from './index.module.css';
 import { analytics } from '../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
 import RightIcon from '../../assets/icons/right.jsx';
-import CopyText from '../../assets/icons/copy-text.svg';
+import SpeakerIcon from '../../assets/icons/speaker.svg';
 import MsgThumbsUp from '../../assets/icons/msg-thumbs-up.jsx';
 import MsgThumbsDown from '../../assets/icons/msg-thumbs-down.jsx';
 import { AppContext } from '../../context';
@@ -155,6 +155,15 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     [context, t]
   );
 
+  const handleAudio = (url: any) => {
+    // console.log(url)
+    if(url === ''){
+      toast.error('No audio');
+      return;
+    }
+    context?.playAudio(url);
+  }
+
   const { content, type } = message;
   // console.log('#-debug:', content);
   switch (type) {
@@ -189,10 +198,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
             <div
               style={{
                 display: 'flex',
-                justifyContent:
-                  content?.data?.position === 'left'
-                    ? 'space-between'
-                    : 'flex-end',
+                justifyContent: 'flex-end',
               }}>
               {content?.data?.position === 'left' &&
                 flags?.show_msg_id?.enabled && (
@@ -241,6 +247,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
             </div>
           ) : (
             content?.data?.position === 'left' && (
+              <div style={{display: 'flex', position: 'relative', top: "-10px"}}>
               <div className={styles.msgFeedback}>
                 <div className={styles.msgFeedbackIcons}>
                   <div
@@ -272,6 +279,10 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 </div>
                 &nbsp;
                 <p>{t('message.helpful')}</p>
+              </div>
+              {/* <div className={styles.msgSpeaker} onClick={() => handleAudio(content?.data?.audio_url || '')}>
+                  <Image src={SpeakerIcon} width={15} height={15} alt=""/>
+              </div> */}
               </div>
             )
           )}

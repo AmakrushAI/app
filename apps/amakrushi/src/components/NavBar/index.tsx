@@ -122,6 +122,7 @@ function NavBar() {
     }
     const newConversationId = uuidv4();
     sessionStorage.setItem('conversationId', newConversationId);
+    if(context?.audioElement) context?.audioElement.pause();
     context?.setConversationId(newConversationId);
     context?.setMessages([]);
     context?.setIsMsgReceiving(false);
