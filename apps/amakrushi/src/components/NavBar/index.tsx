@@ -78,7 +78,13 @@ function NavBar() {
 
         if (!navigator.canShare) {
           //@ts-ignore
-          window.AndroidHandler.shareUrl(pdfUrl);
+          if(window.androidHandler.shareUrl){  
+            //@ts-ignore
+            window.AndroidHandler.shareUrl(pdfUrl);
+          }else{
+            //@ts-ignore
+            shareUrl(pdfUrl);
+          }
         } else if (navigator.canShare({ files: [file] })) {
           toast.success(`${t('message.sharing')}`);
           await navigator
