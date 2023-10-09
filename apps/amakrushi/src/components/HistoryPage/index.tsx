@@ -110,7 +110,7 @@ const HistoryPage: NextPage = () => {
             window.AndroidHandler.shareUrl(pdfUrl);
           }else{
             //@ts-ignore
-            window.shareUrl(pdfUrl);
+            window.shareUrl.postMessage(pdfUrl);
           }
         } else if (navigator.canShare({ files: [file] })) {
           toast.success(`${t('message.sharing')}`);
