@@ -1,5 +1,5 @@
 import styles from './index.module.css';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Spinner } from '@chakra-ui/react';
 import leftArrow from '../../assets/icons/leftArrow.svg';
 import rightArrow from '../../assets/icons/rightArrow.svg';
@@ -16,12 +16,14 @@ import { useFlags } from 'flagsmith/react';
 import axios from 'axios';
 import _ from 'underscore';
 import { toast } from 'react-hot-toast';
+import { AppContext } from '../../context';
 
 const HistoryPage: NextPage = () => {
   const [conversations, setConversations] = useState([]);
   const flags = useFlags(['show_chat_history_page']);
   const t = useLocalization();
   const [gettingHistory, setGettingHistory] = useState(false);
+  const context = useContext(AppContext);
 
   useEffect(() => {
     //@ts-ignore
@@ -104,18 +106,7 @@ const HistoryPage: NextPage = () => {
         logEvent(analytics, 'share_chat_clicked');
 
         if (!navigator.canShare) {
-          //@ts-ignore
-          // if(window.AndroidHandler.shareUrl){
-          //   //@ts-ignore
-          //   shareUrl.postMesage("shareUrl");
-          //   //@ts-ignore
-          //   window.AndroidHandler.shareUrl(pdfUrl);
-          // }else{
-            //@ts-ignore
-            // shareUrl.postMesage("shareUrl");
-            //@ts-ignore
-            window.shareUrl.postMesage("window.shareUrl");
-          // }
+          context?.shareChat(pdfUrl);
         } else if (navigator.canShare({ files: [file] })) {
           toast.success(`${t('message.sharing')}`);
           await navigator

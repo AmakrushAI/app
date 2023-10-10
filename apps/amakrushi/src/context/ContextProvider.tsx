@@ -63,6 +63,13 @@ const ContextProvider: FC<{
   const [audioElement, setAudioElement] = useState(null);
   const [ttsLoader, setTtsLoader] = useState(false);
 
+  const shareChat = useMemo(() => {
+    return (e: string) => {
+      //@ts-ignore
+      shareUrl.postMessage(e);
+    }
+  }, []);
+
   const playAudio = useMemo(() => {
     return (url: string) => {
         if (!url) {
@@ -437,7 +444,8 @@ const ContextProvider: FC<{
       playAudio,
       audioElement,
       ttsLoader,
-      setTtsLoader
+      setTtsLoader,
+      shareChat
     }),
     [
       locale,
@@ -461,7 +469,8 @@ const ContextProvider: FC<{
       playAudio,
       audioElement,
       ttsLoader,
-      setTtsLoader
+      setTtsLoader,
+      shareChat
     ]
   );
 
