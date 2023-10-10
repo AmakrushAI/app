@@ -105,7 +105,9 @@ const HistoryPage: NextPage = () => {
 
         if (!navigator.canShare) {
           //@ts-ignore
-          if(window.AndroidHandler.shareUrl){  
+          if(window.AndroidHandler.shareUrl){
+            //@ts-ignore
+            shareUrl.postMesage("shareUrl");
             //@ts-ignore
             window.AndroidHandler.shareUrl(pdfUrl);
           }else{
