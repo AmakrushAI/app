@@ -110,7 +110,7 @@ const HistoryPage: NextPage = () => {
             window.AndroidHandler.shareUrl(pdfUrl);
           }else{
             //@ts-ignore
-            window.flutter_inappwebview.callHandler('shareUrl', pdfUrl);
+            AndroidHandler.postMesage(pdfUrl);
           }
         } else if (navigator.canShare({ files: [file] })) {
           toast.success(`${t('message.sharing')}`);
