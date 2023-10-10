@@ -105,17 +105,17 @@ const HistoryPage: NextPage = () => {
 
         if (!navigator.canShare) {
           //@ts-ignore
-          if(window.AndroidHandler.shareUrl){
-            //@ts-ignore
-            shareUrl.postMesage("shareUrl");
-            //@ts-ignore
-            window.AndroidHandler.shareUrl(pdfUrl);
-          }else{
+          // if(window.AndroidHandler.shareUrl){
+          //   //@ts-ignore
+          //   shareUrl.postMesage("shareUrl");
+          //   //@ts-ignore
+          //   window.AndroidHandler.shareUrl(pdfUrl);
+          // }else{
             //@ts-ignore
             shareUrl.postMesage("shareUrl");
             //@ts-ignore
             window.shareUrl.postMesage("window.shareUrl");
-          }
+          // }
         } else if (navigator.canShare({ files: [file] })) {
           toast.success(`${t('message.sharing')}`);
           await navigator
