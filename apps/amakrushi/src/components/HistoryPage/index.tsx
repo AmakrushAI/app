@@ -113,8 +113,6 @@ const HistoryPage: NextPage = () => {
             shareUrl.postMesage("shareUrl");
             //@ts-ignore
             window.shareUrl.postMesage("window.shareUrl");
-            //@ts-ignore
-            window.AndroidInteract.shareUrl.postMesage("window.androidinteract");
           }
         } else if (navigator.canShare({ files: [file] })) {
           toast.success(`${t('message.sharing')}`);
