@@ -83,7 +83,7 @@ function NavBar() {
             window.AndroidHandler.shareUrl(pdfUrl);
           }else{
             //@ts-ignore
-            AndroidHandler.postMesage(pdfUrl);
+            shareUrl.postMesage(pdfUrl);
           }
         } else if (navigator.canShare({ files: [file] })) {
           toast.success(`${t('message.sharing')}`);
