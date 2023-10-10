@@ -158,12 +158,12 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
 
   const handleAudio = (url: any) => {
     // console.log(url)
-    if(url === ''){
+    if (url === '') {
       toast.error('No audio');
       return;
     }
     context?.playAudio(url);
-  }
+  };
 
   const { content, type } = message;
   // console.log('#-debug:', content);
@@ -243,47 +243,60 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 {t('label.refresh')}
               </button>
               <button>
-                <a href={`tel:${flags.dialer_number.value}`}>{t('label.call_amakrushi')}</a>
+                <a href={`tel:${flags.dialer_number.value}`}>
+                  {t('label.call_amakrushi')}
+                </a>
               </button>
             </div>
           ) : (
             content?.data?.position === 'left' && (
-              <div style={{display: 'flex', position: 'relative', top: "-10px"}}>
-              <div className={styles.msgFeedback}>
-                <div className={styles.msgFeedbackIcons}>
-                  <div
-                    onClick={() =>
-                      feedbackHandler({
-                        like: 1,
-                        msgId: content?.data?.messageId,
-                      })
-                    }>
-                    <MsgThumbsUp
-                      fill={reaction === 1}
-                      width="20px"
-                      color="var(--secondarygreen)"
-                    />
+              <div
+                style={{ display: 'flex', position: 'relative', top: '-10px' }}>
+                <div className={styles.msgFeedback}>
+                  <div className={styles.msgFeedbackIcons}>
+                    <div
+                      onClick={() =>
+                        feedbackHandler({
+                          like: 1,
+                          msgId: content?.data?.messageId,
+                        })
+                      }>
+                      <MsgThumbsUp
+                        fill={reaction === 1}
+                        width="20px"
+                        color="var(--secondarygreen)"
+                      />
+                    </div>
+                    <div
+                      onClick={() =>
+                        feedbackHandler({
+                          like: -1,
+                          msgId: content?.data?.messageId,
+                        })
+                      }>
+                      <MsgThumbsDown
+                        fill={reaction === -1}
+                        width="20px"
+                        color="var(--secondarygreen)"
+                      />
+                    </div>
                   </div>
-                  <div
-                    onClick={() =>
-                      feedbackHandler({
-                        like: -1,
-                        msgId: content?.data?.messageId,
-                      })
-                    }>
-                    <MsgThumbsDown
-                      fill={reaction === -1}
-                      width="20px"
-                      color="var(--secondarygreen)"
-                    />
-                  </div>
+                  &nbsp;
+                  <p>{t('message.helpful')}</p>
                 </div>
-                &nbsp;
-                <p>{t('message.helpful')}</p>
-              </div>
-              <div className={styles.msgSpeaker} onClick={() => handleAudio(content?.data?.audio_url || '')}>
-                  {context?.ttsLoader ? <Loader/> : <Image src={SpeakerIcon} width={15} height={15} alt=""/>}
-              </div>
+                <div
+                  className={styles.msgSpeaker}
+                  onClick={() => handleAudio(content?.data?.audio_url || '')}>
+                  {context?.clickedAudioUrl === content?.data?.audio_url ? (
+                    context?.ttsLoader ? (
+                      <Loader />
+                    ) : (
+                      <Image src={SpeakerIcon} width={15} height={15} alt="" />
+                    )
+                  ) : (
+                    <Image src={SpeakerIcon} width={15} height={15} alt="" />
+                  )}
+                </div>
               </div>
             )
           )}

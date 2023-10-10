@@ -55,6 +55,7 @@ const ContextProvider: FC<{
   );
   const timer1 = flagsmith.getValue('timer1', { fallback: 30000 });
   const timer2 = flagsmith.getValue('timer2', { fallback: 45000 });
+  const audio_playback = flagsmith.getValue('audio_playback', { fallback: 1.5 });
   const [isDown, setIsDown] = useState(false);
   const [showDialerPopup, setShowDialerPopup] = useState(false);
   // const [isConnected, setIsConnected] = useState(newSocket?.connected || false);
@@ -62,6 +63,7 @@ const ContextProvider: FC<{
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [audioElement, setAudioElement] = useState(null);
   const [ttsLoader, setTtsLoader] = useState(false);
+  const [clickedAudioUrl, setClickedAudioUrl] = useState<string | null>(null);
 
   const shareChat = useMemo(() => {
     return (e: string) => {
@@ -76,13 +78,13 @@ const ContextProvider: FC<{
           console.error('Audio URL not provided.');
           return;
         }
-      
         if (audioElement) {
           //@ts-ignore
           if (audioElement.src === url) {
             // If the same URL is provided and audio is paused, resume playback
             //@ts-ignore
             if (audioElement.paused) {
+              setClickedAudioUrl(url);
               setTtsLoader(true);
               //@ts-ignore
               audioElement.play().then(() => {
@@ -105,8 +107,10 @@ const ContextProvider: FC<{
             audioElement.pause();
           }
         }
+        setClickedAudioUrl(url);
         setTtsLoader(true);
         const audio = new Audio(url);
+        audio.playbackRate = audio_playback;
         audio.play().then(() => {
           setTtsLoader(false);
           console.log('Audio played:', url);
@@ -445,7 +449,8 @@ const ContextProvider: FC<{
       audioElement,
       ttsLoader,
       setTtsLoader,
-      shareChat
+      shareChat,
+      clickedAudioUrl
     }),
     [
       locale,
@@ -470,7 +475,8 @@ const ContextProvider: FC<{
       audioElement,
       ttsLoader,
       setTtsLoader,
-      shareChat
+      shareChat,
+      clickedAudioUrl
     ]
   );
 
