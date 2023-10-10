@@ -83,7 +83,7 @@ function NavBar() {
             window.AndroidHandler.shareUrl(pdfUrl);
           }else{
             //@ts-ignore
-            window.shareUrl.postMessage(pdfUrl);
+            window.flutter_inappwebview.callHandler('shareUrl', pdfUrl);
           }
         } else if (navigator.canShare({ files: [file] })) {
           toast.success(`${t('message.sharing')}`);
