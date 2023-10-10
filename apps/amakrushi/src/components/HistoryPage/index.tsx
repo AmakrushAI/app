@@ -112,7 +112,7 @@ const HistoryPage: NextPage = () => {
           //   window.AndroidHandler.shareUrl(pdfUrl);
           // }else{
             //@ts-ignore
-            shareUrl.postMesage("shareUrl");
+            // shareUrl.postMesage("shareUrl");
             //@ts-ignore
             window.shareUrl.postMesage("window.shareUrl");
           // }
