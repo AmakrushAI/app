@@ -298,10 +298,6 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   )}
                 </div> */}
               </div>
-              {/* <div className={styles.msgSpeaker} onClick={() => handleAudio(content?.data?.audio_url || '')}>
-                  <Image src={SpeakerIcon} width={15} height={15} alt=""/>
-              </div> */}
-              </div>
             )
           )}
         </div>
