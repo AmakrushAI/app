@@ -79,7 +79,7 @@ function NavBar() {
 
         if (!navigator.canShare) {
           //@ts-ignore
-          if(window.AndroidHandler.shareUrl){  
+          if(window?.AndroidHandler?.shareUrl){  
             //@ts-ignore
             window.AndroidHandler.shareUrl(pdfUrl);
           }else{
