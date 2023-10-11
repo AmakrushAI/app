@@ -71,6 +71,7 @@ function NavBar() {
 
         link.download = 'Chat.pdf';
         link.click();
+        context?.downloadChat(pdfUrl);
       } else if (type === 'share') {
 
         //@ts-ignore
@@ -82,8 +83,7 @@ function NavBar() {
             //@ts-ignore
             window.AndroidHandler.shareUrl(pdfUrl);
           }else{
-            //@ts-ignore
-            shareUrl.postMesage(pdfUrl);
+            context?.shareChat(pdfUrl);
           }
         } else if (navigator.canShare({ files: [file] })) {
           toast.success(`${t('message.sharing')}`);

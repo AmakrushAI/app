@@ -65,10 +65,25 @@ const ContextProvider: FC<{
   const [ttsLoader, setTtsLoader] = useState(false);
   const [clickedAudioUrl, setClickedAudioUrl] = useState<string | null>(null);
 
+  const downloadChat = useMemo(() => {
+    return (e: string) => {
+      try{
+        //@ts-ignore
+        downloadHandler.postMessage(e);
+      }catch(err){
+        console.log(err)
+      }
+    }
+  }, []);
+
   const shareChat = useMemo(() => {
     return (e: string) => {
-      //@ts-ignore
-      shareUrl.postMessage(e);
+      try{
+        //@ts-ignore
+        shareUrl.postMessage(e);
+      }catch(err){
+        console.log(err)
+      }
     }
   }, []);
 
@@ -450,7 +465,8 @@ const ContextProvider: FC<{
       ttsLoader,
       setTtsLoader,
       shareChat,
-      clickedAudioUrl
+      clickedAudioUrl,
+      downloadChat
     }),
     [
       locale,
@@ -476,7 +492,8 @@ const ContextProvider: FC<{
       ttsLoader,
       setTtsLoader,
       shareChat,
-      clickedAudioUrl
+      clickedAudioUrl,
+      downloadChat
     ]
   );
 

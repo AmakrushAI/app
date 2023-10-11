@@ -100,13 +100,20 @@ const HistoryPage: NextPage = () => {
         // link.href = window.URL.createObjectURL(blob);
         link.download = 'Chat.pdf';
         link.click();
+        context?.downloadChat(pdfUrl);
       } else if (type === 'share') {
 
         //@ts-ignore
         logEvent(analytics, 'share_chat_clicked');
 
         if (!navigator.canShare) {
-          context?.shareChat(pdfUrl);
+          //@ts-ignore
+          if(window.AndroidHandler.shareUrl){  
+            //@ts-ignore
+            window.AndroidHandler.shareUrl(pdfUrl);
+          }else{
+            context?.shareChat(pdfUrl);
+          }
         } else if (navigator.canShare({ files: [file] })) {
           toast.success(`${t('message.sharing')}`);
           await navigator
