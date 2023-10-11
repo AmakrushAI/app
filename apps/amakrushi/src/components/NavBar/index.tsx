@@ -7,6 +7,8 @@ import plusIcon from '../../assets/icons/plus.svg';
 import shareIcon from '../../assets/icons/share.svg';
 import downloadIcon from '../../assets/icons/download.svg';
 import Image from 'next/image';
+import { logEvent } from 'firebase/analytics';
+import { analytics } from '../../utils/firebase';
 import { AppContext } from '../../context';
 import flagsmith from 'flagsmith/isomorphic';
 import router from 'next/router';
