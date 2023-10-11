@@ -55,12 +55,37 @@ const ContextProvider: FC<{
   );
   const timer1 = flagsmith.getValue('timer1', { fallback: 30000 });
   const timer2 = flagsmith.getValue('timer2', { fallback: 45000 });
+  const audio_playback = flagsmith.getValue('audio_playback', { fallback: 1.5 });
   const [isDown, setIsDown] = useState(false);
   const [showDialerPopup, setShowDialerPopup] = useState(false);
   // const [isConnected, setIsConnected] = useState(newSocket?.connected || false);
   const [cookie, setCookie, removeCookie] = useCookies();
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [audioElement, setAudioElement] = useState(null);
+  const [ttsLoader, setTtsLoader] = useState(false);
+  const [clickedAudioUrl, setClickedAudioUrl] = useState<string | null>(null);
+
+  const downloadChat = useMemo(() => {
+    return (e: string) => {
+      try{
+        //@ts-ignore
+        downloadHandler.postMessage(e);
+      }catch(err){
+        console.log(err)
+      }
+    }
+  }, []);
+
+  const shareChat = useMemo(() => {
+    return (e: string) => {
+      try{
+        //@ts-ignore
+        shareUrl.postMessage(e);
+      }catch(err){
+        console.log(err)
+      }
+    }
+  }, []);
 
   const playAudio = useMemo(() => {
     return (url: string) => {
@@ -68,13 +93,41 @@ const ContextProvider: FC<{
           console.error('Audio URL not provided.');
           return;
         }
-      
-        if(audioElement){
+        if (audioElement) {
           //@ts-ignore
-          audioElement.pause();
+          if (audioElement.src === url) {
+            // If the same URL is provided and audio is paused, resume playback
+            //@ts-ignore
+            if (audioElement.paused) {
+              setClickedAudioUrl(url);
+              setTtsLoader(true);
+              //@ts-ignore
+              audioElement.play().then(() => {
+                setTtsLoader(false);
+                console.log('Resumed audio:', url);
+                //@ts-ignore
+              }).catch((error) => {
+                console.error('Error resuming audio:', error);
+              });
+            } else {
+              // Pause the current audio if it's playing
+              //@ts-ignore
+              audioElement.pause();
+              console.log('Paused audio:', url);
+            }
+            return;
+          } else {
+            // Pause the older audio if it's playing
+            //@ts-ignore
+            audioElement.pause();
+          }
         }
+        setClickedAudioUrl(url);
+        setTtsLoader(true);
         const audio = new Audio(url);
+        audio.playbackRate = audio_playback;
         audio.play().then(() => {
+          setTtsLoader(false);
           console.log('Audio played:', url);
         }).catch((error) => {
           console.error('Error playing audio:', error);
@@ -408,7 +461,12 @@ const ContextProvider: FC<{
       showDialerPopup,
       setShowDialerPopup,
       playAudio,
-      audioElement
+      audioElement,
+      ttsLoader,
+      setTtsLoader,
+      shareChat,
+      clickedAudioUrl,
+      downloadChat
     }),
     [
       locale,
@@ -430,7 +488,12 @@ const ContextProvider: FC<{
       showDialerPopup,
       setShowDialerPopup,
       playAudio,
-      audioElement
+      audioElement,
+      ttsLoader,
+      setTtsLoader,
+      shareChat,
+      clickedAudioUrl,
+      downloadChat
     ]
   );
 

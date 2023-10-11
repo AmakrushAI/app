@@ -7,6 +7,8 @@ import plusIcon from '../../assets/icons/plus.svg';
 import shareIcon from '../../assets/icons/share.svg';
 import downloadIcon from '../../assets/icons/download.svg';
 import Image from 'next/image';
+import { logEvent } from 'firebase/analytics';
+import { analytics } from '../../utils/firebase';
 import { AppContext } from '../../context';
 import flagsmith from 'flagsmith/isomorphic';
 import router from 'next/router';
@@ -71,6 +73,7 @@ function NavBar() {
 
         link.download = 'Chat.pdf';
         link.click();
+        context?.downloadChat(pdfUrl);
       } else if (type === 'share') {
 
         //@ts-ignore
@@ -78,7 +81,12 @@ function NavBar() {
 
         if (!navigator.canShare) {
           //@ts-ignore
-          window.AndroidHandler.shareUrl(pdfUrl);
+          if(window?.AndroidHandler?.shareUrl){  
+            //@ts-ignore
+            window.AndroidHandler.shareUrl(pdfUrl);
+          }else{
+            context?.shareChat(pdfUrl);
+          }
         } else if (navigator.canShare({ files: [file] })) {
           toast.success(`${t('message.sharing')}`);
           await navigator
