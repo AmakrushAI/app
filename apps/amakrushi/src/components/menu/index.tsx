@@ -18,6 +18,7 @@ const Menu: FC = () => {
 
   const urlChanger = (link: string) => {
     if(context?.audioElement) context?.audioElement.pause();
+    if(context?.setAudioPlaying) context?.setAudioPlaying(false);
     if (cookies['access_token'] !== undefined) {
       if(link === '/history' && context?.loading){   
         toast.error(`${t("error.wait_new_chat")}`);

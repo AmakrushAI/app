@@ -26,6 +26,7 @@ import { analytics } from '../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
 import RightIcon from '../../assets/icons/right.jsx';
 import SpeakerIcon from '../../assets/icons/speaker.svg';
+import SpeakerPauseIcon from '../../assets/icons/speakerPause.svg';
 import MsgThumbsUp from '../../assets/icons/msg-thumbs-up.jsx';
 import MsgThumbsDown from '../../assets/icons/msg-thumbs-down.jsx';
 import { AppContext } from '../../context';
@@ -158,11 +159,11 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
 
   const handleAudio = (url: any) => {
     // console.log(url)
-    if(url === ''){
+    if (url === '') {
       toast.error('No audio');
       return;
     }
-    context?.playAudio(url);
+    context?.playAudio(url, content);
   };
 
   const { content, type } = message;
@@ -284,19 +285,26 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   &nbsp;
                   <p>{t('message.helpful')}</p>
                 </div>
-                {/* <div
+                <div
                   className={styles.msgSpeaker}
                   onClick={() => handleAudio(content?.data?.audio_url || '')}>
                   {context?.clickedAudioUrl === content?.data?.audio_url ? (
                     context?.ttsLoader ? (
                       <Loader />
                     ) : (
-                      <Image src={SpeakerIcon} width={15} height={15} alt="" />
+                      <Image
+                        src={
+                          !context?.audioPlaying ? SpeakerIcon : SpeakerPauseIcon
+                        }
+                        width={!context?.audioPlaying ? 15 : 40}
+                        height={!context?.audioPlaying ? 15 : 30}
+                        alt=""
+                      />
                     )
                   ) : (
                     <Image src={SpeakerIcon} width={15} height={15} alt="" />
                   )}
-                </div> */}
+                </div>
               </div>
             )
           )}

@@ -55,7 +55,9 @@ const ContextProvider: FC<{
   );
   const timer1 = flagsmith.getValue('timer1', { fallback: 30000 });
   const timer2 = flagsmith.getValue('timer2', { fallback: 45000 });
-  const audio_playback = flagsmith.getValue('audio_playback', { fallback: 1.5 });
+  const audio_playback = flagsmith.getValue('audio_playback', {
+    fallback: 1.5,
+  });
   const [isDown, setIsDown] = useState(false);
   const [showDialerPopup, setShowDialerPopup] = useState(false);
   // const [isConnected, setIsConnected] = useState(newSocket?.connected || false);
@@ -63,89 +65,119 @@ const ContextProvider: FC<{
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [audioElement, setAudioElement] = useState(null);
   const [ttsLoader, setTtsLoader] = useState(false);
+  const [audioPlaying, setAudioPlaying] = useState(false);
   const [clickedAudioUrl, setClickedAudioUrl] = useState<string | null>(null);
 
   const downloadChat = useMemo(() => {
     return (e: string) => {
-      try{
+      try {
         //@ts-ignore
         downloadHandler.postMessage(e);
-      }catch(err){
-        console.log(err)
+      } catch (err) {
+        console.log(err);
       }
-    }
+    };
   }, []);
 
   const shareChat = useMemo(() => {
     return (e: string) => {
-      try{
+      try {
         //@ts-ignore
         shareUrl.postMessage(e);
-      }catch(err){
-        console.log(err)
+      } catch (err) {
+        console.log(err);
       }
-    }
+    };
   }, []);
 
   const playAudio = useMemo(() => {
-    return (url: string) => {
-        if (!url) {
-          console.error('Audio URL not provided.');
-          return;
-        }
-        if (audioElement) {
+    return (url: string, content: any) => {
+      if (!url) {
+        console.error('Audio URL not provided.');
+        return;
+      }
+      if (audioElement) {
+        //@ts-ignore
+        if (audioElement.src === url) {
+          // If the same URL is provided and audio is paused, resume playback
           //@ts-ignore
-          if (audioElement.src === url) {
-            // If the same URL is provided and audio is paused, resume playback
-            //@ts-ignore
-            if (audioElement.paused) {
-              setClickedAudioUrl(url);
-              setTtsLoader(true);
+          if (audioElement.paused) {
+            setClickedAudioUrl(url);
+            setTtsLoader(true);
+            audioElement
               //@ts-ignore
-              audioElement.play().then(() => {
+              .play()
+              .then(() => {
                 setTtsLoader(false);
+                setAudioPlaying(true);
                 console.log('Resumed audio:', url);
-                //@ts-ignore
-              }).catch((error) => {
+              })
+              //@ts-ignore
+              .catch((error) => {
+                setAudioPlaying(false);
+                setTtsLoader(false);
+                setAudioElement(null);
+                setClickedAudioUrl(null);
                 console.error('Error resuming audio:', error);
               });
-            } else {
-              // Pause the current audio if it's playing
-              //@ts-ignore
-              audioElement.pause();
-              console.log('Paused audio:', url);
-            }
-            return;
           } else {
-            // Pause the older audio if it's playing
+            // Pause the current audio if it's playing
             //@ts-ignore
             audioElement.pause();
+            setAudioPlaying(false);
+            console.log('Paused audio:', url);
           }
+          return;
+        } else {
+          // Pause the older audio if it's playing
+          //@ts-ignore
+          audioElement.pause();
+          setAudioPlaying(false);
         }
-        setClickedAudioUrl(url);
-        setTtsLoader(true);
-        const audio = new Audio(url);
-        audio.playbackRate = audio_playback;
-        audio.play().then(() => {
+      }
+      setClickedAudioUrl(url);
+      setTtsLoader(true);
+      const audio = new Audio(url);
+      audio.playbackRate = audio_playback;
+      audio.addEventListener('ended', () => {
+        setAudioElement(null);
+        setAudioPlaying(false);
+      });
+      axios
+        .get(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/incrementaudioused/${content?.data?.messageId}`
+        )
+        .then((res) => {})
+        .catch((err) => {
+          console.log(err);
+        });
+      audio
+        .play()
+        .then(() => {
           setTtsLoader(false);
+          setAudioPlaying(true);
           console.log('Audio played:', url);
-        }).catch((error) => {
+          // Update the current audio to the new audio element
+          //@ts-ignore
+          setAudioElement(audio);
+        })
+        .catch((error) => {
+          setAudioPlaying(false);
+          setTtsLoader(false);
+          setAudioElement(null);
+          setClickedAudioUrl(null);
           console.error('Error playing audio:', error);
         });
-        
-        // Update the current audio to the new audio element
-        //@ts-ignore
-        setAudioElement(audio);
-  };
-  }, [audioElement]);
+    };
+  }, [audioElement, audio_playback]);
 
   useEffect(() => {
-    console.log("online")
+    console.log('online');
     if (navigator.onLine) {
-      console.log("online")
+      console.log('online');
       setIsOnline(true);
     } else {
-      console.log("online")
+      console.log('online');
       setIsOnline(false);
       onMessageReceived({
         content: {
@@ -159,7 +191,7 @@ const ContextProvider: FC<{
         messageId: uuidv4(),
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigator.onLine]);
 
   useEffect(() => {
@@ -466,7 +498,9 @@ const ContextProvider: FC<{
       setTtsLoader,
       shareChat,
       clickedAudioUrl,
-      downloadChat
+      downloadChat,
+      audioPlaying,
+      setAudioPlaying,
     }),
     [
       locale,
@@ -493,7 +527,9 @@ const ContextProvider: FC<{
       setTtsLoader,
       shareChat,
       clickedAudioUrl,
-      downloadChat
+      downloadChat,
+      audioPlaying,
+      setAudioPlaying,
     ]
   );
 
