@@ -163,7 +163,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
       toast.error('No audio');
       return;
     }
-    context?.playAudio(url);
+    context?.playAudio(url, content);
   };
 
   const { content, type } = message;

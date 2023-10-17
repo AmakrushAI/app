@@ -91,7 +91,7 @@ const ContextProvider: FC<{
   }, []);
 
   const playAudio = useMemo(() => {
-    return (url: string) => {
+    return (url: string, content: any) => {
       if (!url) {
         console.error('Audio URL not provided.');
         return;
@@ -143,6 +143,14 @@ const ContextProvider: FC<{
         setAudioElement(null);
         setAudioPlaying(false);
       });
+      axios
+        .get(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/incrementaudioused/${content?.data?.messageId}`
+        )
+        .then((res) => {})
+        .catch((err) => {
+          console.log(err);
+        });
       audio
         .play()
         .then(() => {
@@ -492,7 +500,7 @@ const ContextProvider: FC<{
       clickedAudioUrl,
       downloadChat,
       audioPlaying,
-      setAudioPlaying
+      setAudioPlaying,
     }),
     [
       locale,
@@ -521,7 +529,7 @@ const ContextProvider: FC<{
       clickedAudioUrl,
       downloadChat,
       audioPlaying,
-      setAudioPlaying
+      setAudioPlaying,
     ]
   );
 
