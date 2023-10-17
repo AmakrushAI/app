@@ -26,6 +26,7 @@ import { analytics } from '../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
 import RightIcon from '../../assets/icons/right.jsx';
 import SpeakerIcon from '../../assets/icons/speaker.svg';
+import SpeakerPauseIcon from '../../assets/icons/speakerPause.svg';
 import MsgThumbsUp from '../../assets/icons/msg-thumbs-up.jsx';
 import MsgThumbsDown from '../../assets/icons/msg-thumbs-down.jsx';
 import { AppContext } from '../../context';
@@ -158,7 +159,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
 
   const handleAudio = (url: any) => {
     // console.log(url)
-    if(url === ''){
+    if (url === '') {
       toast.error('No audio');
       return;
     }
@@ -291,7 +292,14 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                     context?.ttsLoader ? (
                       <Loader />
                     ) : (
-                      <Image src={SpeakerIcon} width={15} height={15} alt="" />
+                      <Image
+                        src={
+                          !context?.audioPlaying ? SpeakerIcon : SpeakerPauseIcon
+                        }
+                        width={!context?.audioPlaying ? 15 : 40}
+                        height={!context?.audioPlaying ? 15 : 30}
+                        alt=""
+                      />
                     )
                   ) : (
                     <Image src={SpeakerIcon} width={15} height={15} alt="" />
