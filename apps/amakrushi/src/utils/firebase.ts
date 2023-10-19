@@ -14,7 +14,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const analytics = typeof window !== 'undefined' ? getAnalytics(app) : null;
-export const messaging = typeof window !== 'undefined' ? getMessaging(app) : null;
+export const messaging: any = typeof window !== 'undefined' ? getMessaging(app) : null;
 export const onMessageListener = () =>
   new Promise((resolve) => {    
     onMessage(messaging, (payload) => {

@@ -23,7 +23,7 @@ export const useLogin = () => {
   const login = useCallback(() => {
     // No need to check for auth if access token is not present
     if (cookies.access_token) {
-      const decodedToken = jwt.decode(cookies.access_token);
+      const decodedToken: any = jwt.decode(cookies.access_token);
       const expires = new Date(decodedToken?.exp * 1000);
       // if token not expired then check for auth
       if (expires > new Date()) {

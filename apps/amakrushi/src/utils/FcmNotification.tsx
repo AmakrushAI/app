@@ -3,7 +3,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { onMessageListener } from './firebase';
 
 const FcmNotification = () => {
-  const [notification, setNotification] = useState({
+  const [notification, setNotification] = useState<any>({
     title: '',
     body: '',
     icon: '',
