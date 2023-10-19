@@ -19,6 +19,9 @@ module.exports = withBundleAnalyzer(
     typescript: {
       ignoreBuildErrors: true,    
     },
+    compiler: {
+      removeConsole:  true
+    },
     i18n: {
       locales: ['or', 'en'],
       defaultLocale: 'en',
