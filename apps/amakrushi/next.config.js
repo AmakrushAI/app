@@ -1,28 +1,30 @@
 /** @type {import('next').NextConfig} */
 
-const nextConfig = {
-  reactStrictMode: false,
-  compiler: {
-    removeConsole:  true
-  },
-}
+const withPWA = require("next-pwa");
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  // eslint-disable-next-line turbo/no-undeclared-env-vars
   enabled: process.env.ANALYZE === 'true'
-})
+});
 
-
-
-module.exports = withBundleAnalyzer({
-  env: {
-      NEXT_PUBLIC_ENV: 'PRODUCTION', //your next configs goes here
-  },
-  nextConfig,
-  typescript: {
-    ignoreBuildErrors: true,    
-  },
-  i18n: {
-    locales: ['or','en'],
-    defaultLocale: 'en',
-  }
-})
+module.exports = withBundleAnalyzer(
+  withPWA({
+    pwa: {
+      dest: "public",
+      register: true,
+      skipWaiting: true,
+    },
+    env: {
+      NEXT_PUBLIC_ENV: 'PRODUCTION', // your next configs go here
+    },
+    reactStrictMode: false,
+    typescript: {
+      ignoreBuildErrors: true,    
+    },
+    compiler: {
+      removeConsole:  true
+    },
+    i18n: {
+      locales: ['or', 'en'],
+      defaultLocale: 'en',
+    },
+  })
+);
