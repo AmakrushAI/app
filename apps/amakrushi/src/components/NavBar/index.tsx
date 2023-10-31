@@ -44,7 +44,7 @@ function NavBar() {
         process.env.NEXT_PUBLIC_BASE_URL
       }/user/chathistory/generate-pdf/${sessionStorage.getItem(
         'conversationId'
-      )}`;
+      )}`; 
 
       const response = await axios.post(url, null, {
         headers: {
