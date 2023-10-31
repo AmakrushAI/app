@@ -193,7 +193,7 @@ function NavBar() {
           </button>
         </div>
         <div className={styles.imageContainer}>
-          <Image src={Bhashini} alt="" width={80} height={80} />
+          <Image src={Bhashini} alt="" width={75} height={75} />
           <Image src={PhoneImg} alt="" width={50} height={50} />
           {/* <Image src={KrushakOdisha} alt="" width={50} height={50} /> */}
           <Image src={GovtOfOdisha} alt="" width={60} height={60} />
