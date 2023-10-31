@@ -3,6 +3,7 @@ import styles from './index.module.css';
 import PhoneImg from '../../assets/images/phone.png';
 import GovtOfOdisha from '../../assets/images/logo-green.png';
 import KrushakOdisha from '../../assets/images/krushak_odisha.png';
+import Bhashini from '../../assets/images/bhashini.png';
 import plusIcon from '../../assets/icons/plus.svg';
 import shareIcon from '../../assets/icons/share.svg';
 import downloadIcon from '../../assets/icons/download.svg';
@@ -192,9 +193,10 @@ function NavBar() {
           </button>
         </div>
         <div className={styles.imageContainer}>
-          <Image src={PhoneImg} alt="" width={60} height={60} />
-          <Image src={KrushakOdisha} alt="" width={60} height={60} />
-          <Image src={GovtOfOdisha} alt="" width={70} height={70} />
+          <Image src={PhoneImg} alt="" width={50} height={50} />
+          <Image src={KrushakOdisha} alt="" width={50} height={50} />
+          <Image src={GovtOfOdisha} alt="" width={60} height={60} />
+          <Image src={Bhashini} alt="" width={60} height={60} />
         </div>
       </div>
     );
