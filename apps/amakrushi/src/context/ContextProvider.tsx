@@ -67,6 +67,9 @@ const ContextProvider: FC<{
   const [ttsLoader, setTtsLoader] = useState(false);
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [clickedAudioUrl, setClickedAudioUrl] = useState<string | null>(null);
+  const [startTime, setStartTime] = useState(Date.now());
+  const [endTime, setEndTime] = useState(Date.now());
+  const [lastMsgId, setLastMsgId] = useState('');
 
   const downloadChat = useMemo(() => {
     return (e: string) => {
@@ -318,12 +321,30 @@ const ContextProvider: FC<{
         });
       } else if (msg.content.msg_type.toUpperCase() === 'TEXT') {
         if (msg.content.timeTaken + 1000 < timer2 && isOnline) {
+      setEndTime(Date.now());
+      setLastMsgId(msg?.messageId)
           updateMsgState({ user, msg, media: {} });
         }
       }
     },
     [isOnline, messages, timer2, updateMsgState]
   );
+
+  useEffect(() => {
+    const timeDiff = endTime-startTime;
+    console.log("time taken", timeDiff);
+    axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/timetakenatapplication/${lastMsgId}`, {
+      data: {
+        timeTaken: timeDiff
+      }
+    }).then((res) => {
+      console.log(res);
+    }).catch((err) => {
+      console.log(err)
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [endTime])
+  
 
   const onChangeCurrentUser = useCallback((newUser: UserType) => {
     setCurrentUser({ ...newUser, active: true });
@@ -363,6 +384,7 @@ const ContextProvider: FC<{
         userId: localStorage.getItem('userID'),
         conversationId: sessionStorage.getItem('conversationId'),
       });
+      setStartTime(Date.now());
       if (isVisibile)
         if (media) {
           if (media.mimeType.slice(0, 5) === 'image') {
