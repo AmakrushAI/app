@@ -39,6 +39,7 @@ export function register(config?: Config) {
     }
 
     // Convert environment variables to URL `search` parameters
+    //@ts-ignore
     const firebaseConfig = new URLSearchParams({
       apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
       authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,

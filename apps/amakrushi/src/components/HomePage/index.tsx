@@ -22,7 +22,6 @@ import SendIcon from '../../assets/images/sendButton.png';
 import { useLocalization } from '../../hooks';
 import router from 'next/router';
 import Image from 'next/image';
-import { Button, Spinner } from '@chakra-ui/react';
 import toast from 'react-hot-toast';
 import { v4 as uuidv4 } from 'uuid';
 import RenderVoiceRecorder from '../recorder/RenderVoiceRecorder';
@@ -32,6 +31,7 @@ import DownTimePage from '../down-time-page';
 const HomePage: NextPage = () => {
   const context = useContext(AppContext);
   const t = useLocalization();
+
   const placeholder = useMemo(() => t('message.ask_ur_question'), [t]);
   const flags = useFlags([
     'en_example_ques_one',

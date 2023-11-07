@@ -10,7 +10,7 @@ import DialerPopUp from "../components/dialer-popup";
 import { Spinner } from "@chakra-ui/react";
 
 const ChatUiWindow = dynamic(
-  () => import("../components/PhoneView/ChatWindow/ChatUiWindow"),
+  () => import("../components/ChatWindow/ChatUiWindow"),
   { ssr: false }
 );
 

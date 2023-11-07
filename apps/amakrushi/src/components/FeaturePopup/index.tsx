@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './styles.module.css';
 
 function FeaturePopup() {
-  const [popupData, setPopupData] = useState(null);
+  const [popupData, setPopupData] = useState<any>(null);
   const [dbExists, setDbExists] = useState(false);
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 import ContextProvider from '../context/ContextProvider';
-import { ReactElement, useCallback, useEffect, useState } from 'react';
+import { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import 'chatui/dist/index.css';
 import { Toaster } from 'react-hot-toast';
 import { useCookies } from 'react-cookie';
@@ -17,6 +17,7 @@ import { getToken } from 'firebase/messaging';
 import FcmNotification from '../utils/FcmNotification';
 import { logEvent } from 'firebase/analytics';
 import FeaturePopup from '../components/FeaturePopup';
+import { Button, Modal } from '@material-ui/core';
 
 const LaunchPage = dynamic(() => import('../components/LaunchPage'), {
   ssr: false,
@@ -38,6 +39,8 @@ const App = ({ Component, pageProps }: AppProps) => {
   const [launch, setLaunch] = useState(true);
   const [cookie, setCookie, removeCookie] = useCookies();
   const [flagsmithState, setflagsmithState] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const deferredPromptRef = useRef<any>(null);
 
   useEffect(() => {
     const isEventLogged = sessionStorage.getItem('isSplashScreenLogged');
@@ -147,6 +150,39 @@ const App = ({ Component, pageProps }: AppProps) => {
     globalThis.console.log = () => {};
   }
 
+  // For install PWA dialog box
+  useEffect(() => {
+    if (localStorage.getItem('installPwa') !== 'true') {
+      // Check if the browser has the install event
+      if ('serviceWorker' in navigator && 'PushManager' in window) {
+        setModalOpen(true);
+        window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
+          deferredPromptRef.current = e;
+        });
+      }
+    }
+  }, []);
+
+  const closeAndSetLocalStorage = () => {
+    setModalOpen(false);
+    localStorage.setItem('installPwa', 'true');
+  };
+
+  const openInstallPrompt = () => {
+    closeAndSetLocalStorage();
+    if (deferredPromptRef.current) {
+      deferredPromptRef.current.prompt();
+      deferredPromptRef.current.userChoice.then((choiceResult: any) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('App installed');
+        } else {
+          console.log('App installation declined');
+        }
+      });
+    }
+  };
+  
   if (launch || !flagsmithState) {
     return <LaunchPage />;
   } else {
@@ -157,6 +193,40 @@ const App = ({ Component, pageProps }: AppProps) => {
             <div style={{ height: '100%' }}>
               <FcmNotification />
               <FeaturePopup />
+              {modalOpen && (
+                <Modal
+                  open={modalOpen}
+                  onClose={closeAndSetLocalStorage}
+                  aria-labelledby="install-modal-title"
+                  aria-describedby="install-modal-description"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <div
+                    style={{
+                      backgroundColor: 'lightgreen',
+                      padding: '20px',
+                      borderRadius: '5px',
+                      textAlign: 'center',
+                    }}>
+                    <h2 id="install-modal-title">Install App</h2>
+                    <p id="install-modal-description">
+                      Click the button to install the app.
+                    </p>
+                    <Button
+                      onClick={openInstallPrompt}
+                      style={{
+                        marginTop: '20px',
+                        backgroundColor: 'var(--secondarygreen)',
+                        color: 'white',
+                      }}>
+                      Install
+                    </Button>
+                  </div>
+                </Modal>
+              )}
               <Toaster position="top-center" reverseOrder={false} />
               <NavBar />
               <SafeHydrate>
@@ -178,4 +248,4 @@ const App = ({ Component, pageProps }: AppProps) => {
 //   return { flagsmithState: flagsmith.getState() };
 // };
 
-export default App
+export default App;

@@ -9,16 +9,16 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { analytics } from '../../../utils/firebase';
+import { analytics } from '../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
-import { AppContext } from '../../../context';
-import { useLocalization } from '../../../hooks';
-import { getMsgType } from '../../../utils/getMsgType';
-import ChatMessageItem from '../../chat-message-item';
+import { AppContext } from '../../context';
+import { useLocalization } from '../../hooks';
+import { getMsgType } from '../../utils/getMsgType';
+import ChatMessageItem from '../chat-message-item';
 import { v4 as uuidv4 } from 'uuid';
-import RenderVoiceRecorder from '../../recorder/RenderVoiceRecorder';
+import RenderVoiceRecorder from '../recorder/RenderVoiceRecorder';
 import toast from 'react-hot-toast';
-import DownTimePage from '../../down-time-page';
+import DownTimePage from '../down-time-page';
 
 const ChatUiWindow: React.FC = () => {
   const t = useLocalization();
