@@ -57,9 +57,6 @@ function NavBar() {
         toast.error(`${t('message.no_link')}`);
         return;
       }
-      // window.open(pdfUrl)
-      const blob = new Blob([response.data], { type: 'application/pdf' });
-      const file = new File([blob], 'Chat.pdf', { type: blob.type });
 
       if (type === 'download') {
         //@ts-ignore
@@ -75,6 +72,11 @@ function NavBar() {
         link.click();
         context?.downloadChat(pdfUrl);
       } else if (type === 'share') {
+        const response = await axios.get(pdfUrl, {
+          responseType: 'arraybuffer',
+        });
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const file = new File([blob], 'Chat.pdf', { type: blob.type });
 
         //@ts-ignore
         logEvent(analytics, 'share_chat_clicked');
@@ -89,6 +91,7 @@ function NavBar() {
           }
         } else if (navigator.canShare({ files: [file] })) {
           toast.success(`${t('message.sharing')}`);
+          console.log("hurray", file)
           await navigator
             .share({
               files: [file],
