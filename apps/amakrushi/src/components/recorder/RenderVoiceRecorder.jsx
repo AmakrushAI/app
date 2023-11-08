@@ -54,7 +54,7 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
       const domainData = new Uint8Array(bufferLength);
 
       //loop:
-      const time = new Date();
+      let time = new Date();
       let startTime,
         lastDetectedTime = time.getTime();
       let anySoundDetected = false;
