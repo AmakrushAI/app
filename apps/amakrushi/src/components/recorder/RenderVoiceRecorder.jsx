@@ -9,14 +9,16 @@ import styles from './styles.module.css';
 import toast from 'react-hot-toast';
 // import { AppContext } from '../../context';
 import { useLocalization } from '../../hooks';
+import { useFlags } from 'flagsmith/react';
 
 const RenderVoiceRecorder = ({ setInputMsg }) => {
   // const context = useContext(AppContext);
   const t = useLocalization();
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [apiCallStatus, setApiCallStatus] = useState('idle');
+  const flags = useFlags(['delay_between_dialog'])
   let VOICE_MIN_DECIBELS = -35;
-  let DELAY_BETWEEN_DIALOGS = 1500;
+  let DELAY_BETWEEN_DIALOGS = flags?.delay_between_dialog?.value || 2500;
   let DIALOG_MAX_LENGTH = 60 * 1000;
   let IS_RECORDING = false;
 
