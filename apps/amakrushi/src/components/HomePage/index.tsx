@@ -31,7 +31,7 @@ import DownTimePage from '../down-time-page';
 const HomePage: NextPage = () => {
   const context = useContext(AppContext);
   const t = useLocalization();
-
+  const inputRef = useRef(null);
   const placeholder = useMemo(() => t('message.ask_ur_question'), [t]);
   const flags = useFlags([
     'en_example_ques_one',
@@ -99,6 +99,12 @@ const HomePage: NextPage = () => {
     const inputValue = e.target.value;
     setInputMsg(inputValue);
     setShowExampleMessages(inputValue.length === 0);
+
+    // Adjust textarea height dynamically based on content
+    if (inputRef.current) {
+      inputRef.current.style.height = 'auto';
+      inputRef.current.style.height = `${inputRef.current.scrollHeight}px`;
+    }
   };
 
   const handleDocumentClick = useCallback((event: any) => {
@@ -186,8 +192,9 @@ const HomePage: NextPage = () => {
                 </div>
               ) : (
                 <>
-                  <input
-                    type="text"
+                  <textarea
+                    ref={inputRef}
+                    rows={1}
                     value={inputMsg}
                     onChange={handleInputChange}
                     placeholder={placeholder}
