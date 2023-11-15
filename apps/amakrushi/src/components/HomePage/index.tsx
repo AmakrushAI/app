@@ -102,7 +102,9 @@ const HomePage: NextPage = () => {
 
     // Adjust textarea height dynamically based on content
     if (inputRef.current) {
+      //@ts-ignore
       inputRef.current.style.height = 'auto';
+      //@ts-ignore
       inputRef.current.style.height = `${inputRef.current.scrollHeight}px`;
     }
   };
