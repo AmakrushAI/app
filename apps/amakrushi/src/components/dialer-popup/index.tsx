@@ -51,7 +51,7 @@ const DialerPopup: React.FC<any> = ({ setShowDialerPopup }) => {
         onClick={() => setShowDialerPopup(false)}>
         <Image src={crossIcon} alt="crossIcon" layout="responsive" />
       </div>
-      <p>{t('label.feedback')}</p>
+      <p>{t('label.comment')}</p>
       <div className={styles.dialerBox}>
         <textarea
           value={review}
