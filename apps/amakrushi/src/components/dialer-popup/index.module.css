@@ -18,10 +18,30 @@
 }
 
 .dialerBox {
+  display: flex;
+  flex-direction: column;
+  margin: 1vh auto;
+  padding: 2vh;
+  text-align: center;
+  border-radius: 8px;
   background-color: white;
-  margin: 2vh;
-  border-radius: 10px;
-  padding-bottom: 1vh;
+}
+.dialerBox button {
+  font-weight: 700 ;
+  font-size: 14px;
+  color: white ;
+  margin: 1vh auto 0 auto;
+  font-family: 'Mulish-regular';
+  padding: 10px ;
+  border: none ;
+  border-radius: 40px !important;
+  background-color: var(--secondarygreen) !important;
+}
+
+
+.dialerBox textarea {
+  outline: 1px solid var(--secondarygreen);
+  padding: 10px;
 }
 
 .crossIconBox {

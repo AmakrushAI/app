@@ -26,7 +26,7 @@ const Chat: NextPage = () => {
       {context?.showDialerPopup && (
   <div
     className={styles.overlay}
-    onClick={() => context?.setShowDialerPopup(false)}
+    // onClick={() => context?.setShowDialerPopup(false)}
   >
     {/* Only render the DialerPopup component when showDialerPopup is true */}
       {context?.showDialerPopup && 
