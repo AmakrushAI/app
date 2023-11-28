@@ -16,7 +16,7 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
   const t = useLocalization();
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [apiCallStatus, setApiCallStatus] = useState('idle');
-  const flags = useFlags(['delay_between_dialog'])
+  const flags = useFlags(['delay_between_dialog']);
   let VOICE_MIN_DECIBELS = -35;
   let DELAY_BETWEEN_DIALOGS = flags?.delay_between_dialog?.value || 2500;
   let DIALOG_MAX_LENGTH = 60 * 1000;
@@ -156,9 +156,10 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
   return (
     <div>
       <div>
-        {mediaRecorder && mediaRecorder.state === "recording" ? (
+        {mediaRecorder && mediaRecorder.state === 'recording' ? (
           <div className={styles.center}>
             <Image
+              priority
               src={stop}
               alt="stopIcon"
               onClick={() => {
@@ -172,6 +173,7 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
           <div className={styles.center}>
             {apiCallStatus === 'processing' ? (
               <Image
+                priority
                 src={processing}
                 alt="processingIcon"
                 style={{ cursor: 'pointer' }}
@@ -179,6 +181,7 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
               />
             ) : apiCallStatus === 'error' ? (
               <Image
+                priority
                 src={error}
                 alt="errorIcon"
                 onClick={() => startRecording()}
@@ -187,6 +190,7 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
               />
             ) : (
               <Image
+                priority
                 src={start}
                 alt="startIcon"
                 onClick={() => startRecording()}
