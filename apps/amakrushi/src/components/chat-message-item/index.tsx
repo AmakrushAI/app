@@ -159,7 +159,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
 
   const handleAudio = (url: any) => {
     // console.log(url)
-    if (!url) {
+    if (!url || typeof url !== "string") {
       toast.error('No audio');
       return;
     }
