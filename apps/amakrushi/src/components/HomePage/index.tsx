@@ -120,7 +120,8 @@ const HomePage: NextPage = () => {
       const words = inputMsg.split(' ');
       const wordUnderCursor = words.find(
         (word, index) =>
-          cursorPosition >= inputMsg.indexOf(word) && cursorPosition <= inputMsg.indexOf(word) + word.length
+          cursorPosition >= inputMsg.indexOf(word) &&
+          cursorPosition <= inputMsg.indexOf(word) + word.length
       );
 
       if (!wordUnderCursor) return;
@@ -263,35 +264,37 @@ const HomePage: NextPage = () => {
   const suggestionClickHandler = useCallback(
     (e: any) => {
       const words = inputMsg.split(' ');
-  
+
       // Find the word at the cursor position
       //@ts-ignore
       const cursorPosition = inputRef.current.selectionStart;
       let currentIndex = 0;
       let selectedWord = '';
-  
+
       for (let i = 0; i < words.length; i++) {
         const word = words[i];
-        if (currentIndex <= cursorPosition && cursorPosition <= currentIndex + word.length) {
+        if (
+          currentIndex <= cursorPosition &&
+          cursorPosition <= currentIndex + word.length
+        ) {
           selectedWord = word;
           break;
         }
         currentIndex += word.length + 1; // +1 to account for the space between words
       }
-  
+
       // Replace the selected word with the transliterated suggestion
       if (selectedWord !== '') {
         const newInputMsg = inputMsg.replace(selectedWord, e);
-  
+
         setSuggestions([]);
         setSuggestionClicked(true);
         setActiveSuggestion(0);
 
-      //@ts-ignore
-        setInputMsg(newInputMsg, () => {
-          //@ts-ignore
-          inputRef.current.focus(); // Ensure input is focused
-        });
+        setInputMsg(newInputMsg);
+
+        //@ts-ignore
+        inputRef.current && inputRef.current.focus();
       }
     },
     [inputMsg]
@@ -395,21 +398,21 @@ const HomePage: NextPage = () => {
                 </div>
               ) : (
                 <>
-                <div className={styles.suggestions}>
-                {suggestions.map((elem, index) => {
-                  return (
-                    <div
-                      key={index}
-                      onClick={() => suggestionClickHandler(elem)}
-                      className={`${styles.suggestion} ${
-                        activeSuggestion === index ? styles.active : ''
-                      }`}
-                      onMouseEnter={(e) => suggestionHandler(e, index)}>
-                      {elem}
-                    </div>
-                  );
-                })}
-              </div>
+                  <div className={styles.suggestions}>
+                    {suggestions.map((elem, index) => {
+                      return (
+                        <div
+                          key={index}
+                          onClick={() => suggestionClickHandler(elem)}
+                          className={`${styles.suggestion} ${
+                            activeSuggestion === index ? styles.active : ''
+                          }`}
+                          onMouseEnter={(e) => suggestionHandler(e, index)}>
+                          {elem}
+                        </div>
+                      );
+                    })}
+                  </div>
                   <textarea
                     ref={inputRef}
                     rows={1}

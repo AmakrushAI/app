@@ -184,6 +184,8 @@ export const ComposerInput = ({
           //@ts-ignore
         onChange(newInputMsg, e);
         setCursorPosition(restoredCursorPosition);
+        //@ts-ignore
+        inputRef.current && inputRef.current.focus();
       }
     },
     [value, cursorPosition, onChange]
