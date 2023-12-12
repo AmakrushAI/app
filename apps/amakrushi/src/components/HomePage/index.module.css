@@ -83,6 +83,27 @@
   font-size: 18px;
 }
 
+.suggestions{
+  position: absolute;
+  display: flex;
+  min-width: 50px;
+  width: auto;
+  bottom: 50px;
+  left: 10px;
+  background-color: white;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.suggestion{
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+.active{
+  background-color: #65c3d7;
+  color: white;
+}
+
 .inputBox {
   min-height: 40px;
   /* height: 40px; */

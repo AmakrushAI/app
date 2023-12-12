@@ -152,6 +152,7 @@ const ChatUiWindow: React.FC = () => {
           background="var(--bg-color)"
           disableSend={context?.loading}
           translation={t}
+          showTransliteration={!(localStorage.getItem('locale') === 'en')}
           //@ts-ignore
           messages={msgToRender}
           voiceToText={RenderVoiceRecorder}

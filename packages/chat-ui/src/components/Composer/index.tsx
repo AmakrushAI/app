@@ -42,6 +42,7 @@ export type ComposerProps = {
   onToolbarClick?: (item: ToolbarItemProps, event: React.MouseEvent) => void;
   onAccessoryToggle?: (isAccessoryOpen: boolean) => void;
   rightAction?: IconButtonProps;
+  showTransliteration: boolean;
   disableSend: boolean;
   translation: any;
   btnColor: string;
@@ -68,6 +69,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
     onSend,
     voiceToText: VoiceToText,
     voiceToTextProps,
+    showTransliteration = true,
     disableSend = false,
     translation,
     onImageSend,
@@ -91,6 +93,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
   const popoverTarget = useRef<any>();
   const isMountRef = useRef(false);
   const [isWide, setWide] = useState(false);
+  const [cursorPosition, setCursorPosition] = useState(0);
   const [keyboardClicked, setKeyboardClicked] = useState(false);
 
   useEffect(() => {
@@ -218,6 +221,9 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
   const handleTextChange = useCallback(
     (value: string, e: React.ChangeEvent) => {
       setText(value);
+      if (e.target instanceof HTMLTextAreaElement) {
+        setCursorPosition(e.target.selectionStart);
+      }
 
       if (onChange) {
         onChange(value, e);
@@ -299,7 +305,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
             className="Composer-inputWrap"
             style={{ border: `2px solid ${btnColor}`, borderRadius: '12px' }}
           >
-            <ComposerInput invisible={false} {...inputProps} disabled={disableSend} />
+            <ComposerInput invisible={false} {...inputProps} disabled={disableSend} showTransliteration={showTransliteration} cursorPosition={cursorPosition} setCursorPosition={setCursorPosition}/>
           </div>
           <SendButton
             btnColor={btnColor}
@@ -335,7 +341,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
           }}
         >
           {(text || keyboardClicked) && (
-            <ComposerInput invisible={!isInputText} {...inputProps} disabled={disableSend} />
+            <ComposerInput invisible={false} {...inputProps} disabled={disableSend} showTransliteration={showTransliteration} cursorPosition={cursorPosition} setCursorPosition={setCursorPosition}/>
           )}
           {!isInputText && <Recorder {...recorder} />}
         </div>
