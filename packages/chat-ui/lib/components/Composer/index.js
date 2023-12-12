@@ -45,6 +45,8 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     onSend = props.onSend,
     VoiceToText = props.voiceToText,
     voiceToTextProps = props.voiceToTextProps,
+    _props$showTransliter = props.showTransliteration,
+    showTransliteration = _props$showTransliter === void 0 ? true : _props$showTransliter,
     _props$disableSend = props.disableSend,
     disableSend = _props$disableSend === void 0 ? false : _props$disableSend,
     translation = props.translation,
@@ -89,10 +91,14 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     _useState14 = (0, _slicedToArray2.default)(_useState13, 2),
     isWide = _useState14[0],
     setWide = _useState14[1];
-  var _useState15 = (0, _react.useState)(false),
+  var _useState15 = (0, _react.useState)(0),
     _useState16 = (0, _slicedToArray2.default)(_useState15, 2),
-    keyboardClicked = _useState16[0],
-    setKeyboardClicked = _useState16[1];
+    cursorPosition = _useState16[0],
+    setCursorPosition = _useState16[1];
+  var _useState17 = (0, _react.useState)(false),
+    _useState18 = (0, _slicedToArray2.default)(_useState17, 2),
+    keyboardClicked = _useState18[0],
+    setKeyboardClicked = _useState18[1];
   (0, _react.useEffect)(function () {
     var mq = wideBreakpoint && window.matchMedia ? window.matchMedia("(min-width: ".concat(wideBreakpoint, ")")) : false;
     function handleMq(e) {
@@ -190,6 +196,9 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
   }, [send]);
   var handleTextChange = (0, _react.useCallback)(function (value, e) {
     setText(value);
+    if (e.target instanceof HTMLTextAreaElement) {
+      setCursorPosition(e.target.selectionStart);
+    }
     if (onChange) {
       onChange(value, e);
     }
@@ -256,7 +265,10 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     }, /*#__PURE__*/_react.default.createElement(_ComposerInput.ComposerInput, (0, _extends2.default)({
       invisible: false
     }, inputProps, {
-      disabled: disableSend
+      disabled: disableSend,
+      showTransliteration: showTransliteration,
+      cursorPosition: cursorPosition,
+      setCursorPosition: setCursorPosition
     }))), /*#__PURE__*/_react.default.createElement(_SendButton.SendButton, {
       btnColor: btnColor,
       onClick: handleSendBtnClick,
@@ -283,9 +295,12 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
       borderRadius: '0px'
     }
   }, (text || keyboardClicked) && /*#__PURE__*/_react.default.createElement(_ComposerInput.ComposerInput, (0, _extends2.default)({
-    invisible: !isInputText
+    invisible: false
   }, inputProps, {
-    disabled: disableSend
+    disabled: disableSend,
+    showTransliteration: showTransliteration,
+    cursorPosition: cursorPosition,
+    setCursorPosition: setCursorPosition
   })), !isInputText && /*#__PURE__*/_react.default.createElement(_Recorder.Recorder, recorder)), !text && rightAction && /*#__PURE__*/_react.default.createElement(_Action.Action, rightAction), !text && VoiceToText ? /*#__PURE__*/_react.default.createElement("div", {
     style: {
       display: 'flex',
