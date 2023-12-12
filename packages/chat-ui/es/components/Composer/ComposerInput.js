@@ -181,6 +181,8 @@ export var ComposerInput = function ComposerInput(_ref) {
       //@ts-ignore
       onChange(newInputMsg, e);
       setCursorPosition(restoredCursorPosition);
+      //@ts-ignore
+      inputRef.current && inputRef.current.focus();
     }
   }, [value, cursorPosition, onChange]);
   var suggestionHandler = function suggestionHandler(e, index) {
