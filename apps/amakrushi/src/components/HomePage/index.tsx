@@ -225,7 +225,7 @@ const HomePage: NextPage = () => {
     // Store the cursor position
     const cursorPosition = e.target.selectionStart;
     setCursorPosition(cursorPosition);
-    // setShowExampleMessages(inputValue.length === 0);
+    setShowExampleMessages(inputValue.length === 0);
     // Adjust textarea height dynamically based on content
     if (inputRef.current) {
       //@ts-ignore
@@ -414,6 +414,12 @@ const HomePage: NextPage = () => {
                     })}
                   </div>
                   <textarea
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        sendMessage(inputMsg);
+                      }
+                    }}
                     ref={inputRef}
                     rows={1}
                     value={inputMsg}
@@ -438,7 +444,7 @@ const HomePage: NextPage = () => {
           </form>
         </div>
 
-        <Menu />
+        {/* <Menu /> */}
       </>
     );
 };

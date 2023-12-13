@@ -49,7 +49,7 @@ function DownTimePage() {
           {t('message.down_time_view_prev_chats')}
         </button>
       </div>
-      <Menu />
+      {/* <Menu /> */}
     </div>
   );
 }

@@ -81,3 +81,8 @@ body {
 .hidden{
   display: none;
 }
+
+.css-6e3h0h {
+  max-width: 300px !important;
+  border-radius: 0 10px 10px 0;
+}

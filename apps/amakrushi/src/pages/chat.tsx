@@ -41,12 +41,12 @@ const Chat: NextPage = () => {
         style={{
           position: "fixed",
           width: "100%",
-          bottom: "7vh",
+          bottom: "1vh",
           top: "70px",
         }}>
         <ChatUiWindow />
       </div>
-      <Menu />
+      {/* <Menu /> */}
     </>
   );
 };

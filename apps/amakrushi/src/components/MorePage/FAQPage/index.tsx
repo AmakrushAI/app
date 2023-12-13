@@ -162,7 +162,7 @@ const FAQPage: React.FC = () => {
             )}
           </section>
         </div>
-        <Menu />
+        {/* <Menu /> */}
       </>
     );
 };

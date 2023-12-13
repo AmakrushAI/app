@@ -189,7 +189,7 @@ const HistoryPage: NextPage = () => {
             )}
           </div>
         </div>
-        <Menu />
+        {/* <Menu /> */}
       </>
     );
 };

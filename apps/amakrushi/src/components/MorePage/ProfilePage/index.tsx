@@ -23,7 +23,7 @@ const ProfilePage: React.FC = () => {
         <div className={styles.container}>
           <h1>Profile Page</h1>
         </div>
-        <Menu />
+        {/* <Menu /> */}
       </>
     );
 };

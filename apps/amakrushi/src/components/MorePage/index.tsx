@@ -100,7 +100,7 @@ const MorePage: React.FC = () => {
           </div>
         </div>
       </div>
-      <Menu />
+      {/* <Menu /> */}
     </>
   );
 };

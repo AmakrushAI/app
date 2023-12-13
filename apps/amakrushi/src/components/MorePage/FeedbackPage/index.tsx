@@ -159,7 +159,7 @@ const FeedbackPage: React.FC = () => {
             </button>
           </div>
         </div>
-        <Menu />
+        {/* <Menu /> */}
       </>
     );
 };
