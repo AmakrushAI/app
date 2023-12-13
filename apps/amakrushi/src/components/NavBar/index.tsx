@@ -6,8 +6,6 @@ import KrushakOdisha from '../../assets/images/krushak_odisha.png';
 import plusIcon from '../../assets/icons/plus.svg';
 import homeIcon from '../../assets/icons/home.svg';
 import Image from 'next/image';
-import { logEvent } from 'firebase/analytics';
-import { analytics } from '../../utils/firebase';
 import { AppContext } from '../../context';
 import flagsmith from 'flagsmith/isomorphic';
 import router from 'next/router';
@@ -15,7 +13,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { useFlags } from 'flagsmith/react';
 import { useLocalization } from '../../hooks';
 import toast from 'react-hot-toast';
-const axios = require('axios');
 import { Sidemenu } from '../Sidemenu';
 
 function NavBar() {
@@ -37,94 +34,6 @@ function NavBar() {
     },
     [context]
   );
-
-  const downloadShareHandler = async (type: string) => {
-    try {
-      const url = `${
-        process.env.NEXT_PUBLIC_BASE_URL
-      }/user/chathistory/generate-pdf/${sessionStorage.getItem(
-        'conversationId'
-      )}`;
-
-      const response = await axios.post(url, null, {
-        headers: {
-          authorization: `Bearer ${localStorage.getItem('auth')}`,
-        },
-      });
-      const pdfUrl = response.data.pdfUrl;
-
-      if (!pdfUrl) {
-        toast.error(`${t('message.no_link')}`);
-        return;
-      }
-
-      if (type === 'download') {
-        //@ts-ignore
-        logEvent(analytics, 'download_chat_clicked');
-        toast.success(`${t('message.downloading')}`);
-        const link = document.createElement('a');
-
-        link.href = pdfUrl;
-        link.target = '_blank';
-        // link.href = window.URL.createObjectURL(blob);
-
-        link.download = 'Chat.pdf';
-        link.click();
-        context?.downloadChat(pdfUrl);
-      } else if (type === 'share') {
-        const response = await axios.get(pdfUrl, {
-          responseType: 'arraybuffer',
-        });
-        const blob = new Blob([response.data], { type: 'application/pdf' });
-        const file = new File([blob], 'Chat.pdf', { type: blob.type });
-
-        //@ts-ignore
-        logEvent(analytics, 'share_chat_clicked');
-
-        if (!navigator.canShare) {
-          //@ts-ignore
-          if(window?.AndroidHandler?.shareUrl){  
-            //@ts-ignore
-            window.AndroidHandler.shareUrl(pdfUrl);
-          }else{
-            context?.shareChat(pdfUrl);
-          }
-        } else if (navigator.canShare({ files: [file] })) {
-          toast.success(`${t('message.sharing')}`);
-          console.log("hurray", file)
-          await navigator
-            .share({
-              files: [file],
-              title: 'Chat',
-              text: 'Check out my chat with AmaKrushAI!',
-            })
-            .catch((error) => {
-              toast.error(error.message);
-              console.error('Error sharing', error);
-            });
-        } else {
-          toast.error(`${t('message.cannot_share')}`);
-          console.error("Your system doesn't support sharing this file.");
-        }
-      } else {
-        console.log(response.data);
-      }
-    } catch (error: any) {
-      //@ts-ignore
-      logEvent(analytics, 'console_error', {
-        error_message: error.message,
-      });
-
-      if (
-        error.message ===
-        "Cannot read properties of undefined (reading 'shareUrl')"
-      ) {
-        toast.success(`${t('message.shareUrl_android_error')}`);
-      } else toast.error(error.message);
-
-      console.error(error);
-    }
-  };
 
   const newChatHandler = useCallback(() => {
     if (context?.loading) {

@@ -16,6 +16,8 @@
 }
 
 .title {
+  width: 57%;
+  margin: auto;
   position: relative;
   top: 10%;
   text-align: center;
@@ -27,7 +29,7 @@
 .voiceRecorder {
   position: relative;
   margin: auto;
-  top: 18%;
+  top: 25%;
   text-align: center;
   height: 18vh;
   width: 18vh;
@@ -105,9 +107,11 @@
 }
 
 .inputBox {
+  border-top: 1px solid #dbdbdb;
+  padding: 9px 5px 0 5px;
   min-height: 40px;
-  /* height: 40px; */
   display: flex;
+  align-items: center;
   text-align: center;
   position: absolute;
   left: 50%;
@@ -119,25 +123,22 @@
   margin: auto;
   transition: all 0.5s ease-in-out;
 }
-
 .inputBox textarea {
   width: 100%;
-  margin: 0 auto;
+  margin: 0 5px;
   padding: 10px;
-  /* border-radius: 40px; */
-  border: 2px solid var(--secondarygreen);
+  border: 1px solid #D0D0D0;
+  border-radius: 10px;
   outline: none;
   resize: none;
   overflow: hidden;
 }
-
 .inputBox.inputBoxOpen {
-  width: 99%;
+  width: 100%;
   left: 0;
   right: 0;
   transform: translateX(0);
 }
-
 .sendButton {
   display: flex;
   align-items: center;

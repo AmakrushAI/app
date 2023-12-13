@@ -18,7 +18,6 @@ import { ComposerInput } from './ComposerInput';
 import { SendButton } from './SendButton';
 import { Action } from './Action';
 import toggleClass from '../../utils/toggleClass';
-import Keyboard from './keyboard';
 
 export const CLASS_NAME_FOCUSING = 'S--focusing';
 
@@ -42,8 +41,8 @@ export type ComposerProps = {
   onToolbarClick?: (item: ToolbarItemProps, event: React.MouseEvent) => void;
   onAccessoryToggle?: (isAccessoryOpen: boolean) => void;
   rightAction?: IconButtonProps;
-  showTransliteration: boolean;
   disableSend: boolean;
+  showTransliteration: boolean;
   translation: any;
   btnColor: string;
   voiceToText?: any;
@@ -69,9 +68,8 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
     onSend,
     voiceToText: VoiceToText,
     voiceToTextProps,
-    showTransliteration = true,
     disableSend = false,
-    translation,
+    showTransliteration = true,
     onImageSend,
     onAccessoryToggle,
     toolbar = [],
@@ -94,7 +92,6 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
   const isMountRef = useRef(false);
   const [isWide, setWide] = useState(false);
   const [cursorPosition, setCursorPosition] = useState(0);
-  const [keyboardClicked, setKeyboardClicked] = useState(false);
 
   useEffect(() => {
     const mq =
@@ -303,7 +300,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
         <div>
           <div
             className="Composer-inputWrap"
-            style={{ border: `2px solid ${btnColor}`, borderRadius: '12px' }}
+            style={{ border: `2px solid ${btnColor}`, borderRadius: '10px' }}
           >
             <ComposerInput invisible={false} {...inputProps} disabled={disableSend} showTransliteration={showTransliteration} cursorPosition={cursorPosition} setCursorPosition={setCursorPosition}/>
           </div>
@@ -321,7 +318,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
     <>
       <div
         className="Composer"
-        style={{ justifyContent: text || keyboardClicked ? `center` : 'center',  paddingBottom: text || keyboardClicked ? `` : '0'}}
+        style={{ justifyContent: 'center'}}
       >
         {recorder.canRecord && (
           <Action
@@ -335,14 +332,14 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
         <div
           className={`Composer-inputWrap`}
           style={{
-            border: text || keyboardClicked ? `2px solid ${btnColor}` : 'none',
-            flex: text || keyboardClicked ? `1` : '0',
-            borderRadius: '0px',
+            border: '2px solid #D0D0D0',
+            flex: 1,
+            borderRadius: '10px',
           }}
         >
-          {(text || keyboardClicked) && (
-            <ComposerInput invisible={false} {...inputProps} disabled={disableSend} showTransliteration={showTransliteration} cursorPosition={cursorPosition} setCursorPosition={setCursorPosition}/>
-          )}
+          {
+            <ComposerInput invisible={!isInputText} {...inputProps} disabled={disableSend} showTransliteration={showTransliteration} cursorPosition={cursorPosition} setCursorPosition={setCursorPosition}/>
+          }
           {!isInputText && <Recorder {...recorder} />}
         </div>
         {!text && rightAction && <Action {...rightAction} />}
@@ -351,21 +348,14 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
           <div style={{display: 'flex', flexDirection: 'column'}}>
             <div
               style={{
-                height: text || keyboardClicked ? '45px' : '6vh',
-                width: text || keyboardClicked ? '45px' : '6vh',
+                height: '45px',
+                width: '45px',
               }}
             >
-              <VoiceToText {...voiceToTextProps} setInputMsg={setText} />
+              <VoiceToText {...voiceToTextProps} setInputMsg={setText} tapToSpeak={false} />
             </div>
-            <p style={{fontSize: '12px', fontWeight: 'bold', textAlign: 'center'}}>{!(text || keyboardClicked) ? translation('label.speak') : ''}</p>
           </div>
         ) : null}
-        {!keyboardClicked && !text && (
-          <div onClick={() => setKeyboardClicked(true)} style={{ textAlign: 'center' }}>
-            <Keyboard height={text || keyboardClicked ? '5vh' : '7vh'} width={text || keyboardClicked ? '5vh' : '7vh'}/>
-            <p style={{marginBottom: '6px', fontSize: '12px', fontWeight: 'bold', textAlign: 'center'}}>{translation('label.type')}</p>
-          </div>
-        )}
 
         {hasToolbar && (
           <Action

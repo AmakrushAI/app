@@ -2,19 +2,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 6px;
+  padding: 10px;
   background-color: var(--bg-color);
-  /* min-height: fit-content; */
-  height: 70px;
-}
-
-.navbar2 {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--darkgrey);
-  /* min-height: fit-content; */
-  height: 70px;
+  height: 100px;
+  border-bottom: 1px solid #dbdbdb;
 }
 
 .newChatContainer {

@@ -2,12 +2,10 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import { useLocalization } from "../hooks/useLocalization";
-import Menu from "../components/menu";
 import { useContext } from "react";
 import { AppContext } from "../context";
 import styles from "../components/dialer-popup/index.module.css";
 import DialerPopUp from "../components/dialer-popup";
-import { Spinner } from "@chakra-ui/react";
 
 const ChatUiWindow = dynamic(
   () => import("../components/ChatWindow/ChatUiWindow"),
@@ -42,7 +40,7 @@ const Chat: NextPage = () => {
           position: "fixed",
           width: "100%",
           bottom: "1vh",
-          top: "70px",
+          top: "100px",
         }}>
         <ChatUiWindow />
       </div>
