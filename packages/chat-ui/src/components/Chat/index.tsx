@@ -144,6 +144,7 @@ export type ChatProps = Omit<ComposerProps, 'onFocus' | 'onChange' | 'onBlur'> &
     Composer?: React.ElementType; // FIXME,
     disableSend?:boolean
     btnColor?:string
+    showTransliteration?:boolean;
     background?:string
     translation?:any
   };
@@ -179,6 +180,7 @@ export const Chat = React.forwardRef<HTMLDivElement, ChatProps>((props, ref) => 
     onInputBlur,
     onSend,
     disableSend,
+    showTransliteration,
     btnColor,
     translation,
     background,
@@ -264,6 +266,7 @@ export const Chat = React.forwardRef<HTMLDivElement, ChatProps>((props, ref) => 
             onBlur={onInputBlur}
             onSend={onSend}
             disableSend={disableSend}
+            showTransliteration={showTransliteration}
             translation={translation}
             btnColor={btnColor}
             onImageSend={onImageSend}
