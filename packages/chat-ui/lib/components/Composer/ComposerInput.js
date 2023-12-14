@@ -16,7 +16,7 @@ var _SendConfirm = require("../SendConfirm");
 var _riseInput = _interopRequireDefault(require("./riseInput"));
 var _parseDataTransfer = _interopRequireDefault(require("../../utils/parseDataTransfer"));
 var _canUse = _interopRequireDefault(require("../../utils/canUse"));
-var _excluded = ["inputRef", "invisible", "onImageSend", "disabled", "showTransliteration", "cursorPosition", "setCursorPosition", "onChange", "value"];
+var _excluded = ["inputRef", "invisible", "onImageSend", "disabled", "showTransliteration", "value", "onChange", "cursorPosition", "setCursorPosition"];
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 var canTouch = (0, _canUse.default)('touch');
@@ -26,10 +26,10 @@ var ComposerInput = function ComposerInput(_ref) {
     onImageSend = _ref.onImageSend,
     disabled = _ref.disabled,
     showTransliteration = _ref.showTransliteration,
+    value = _ref.value,
+    onChange = _ref.onChange,
     cursorPosition = _ref.cursorPosition,
     setCursorPosition = _ref.setCursorPosition,
-    onChange = _ref.onChange,
-    value = _ref.value,
     rest = (0, _objectWithoutProperties2.default)(_ref, _excluded);
   var _useState = (0, _react.useState)(null),
     _useState2 = (0, _slicedToArray2.default)(_useState, 2),
