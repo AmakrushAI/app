@@ -64,6 +64,7 @@ const HomePage: NextPage = () => {
   };
 
   useEffect(() => {
+    if(inputMsg.length > 0) setShowChatBox(true);
     if (inputMsg.length > 0 && !(localStorage.getItem('locale') === 'en')) {
       if (suggestionClicked) {
         setSuggestionClicked(false);
