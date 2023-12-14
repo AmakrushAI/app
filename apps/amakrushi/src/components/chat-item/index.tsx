@@ -70,8 +70,8 @@ const ChatItem: React.FC<ChatItemPropsType> = ({
     <>
       {!isConversationDeleted && (
         <div className={styles.chatContainer}>
-          <div style={{display: 'flex', flexDirection: 'column'}}>
-          <div className={styles.sessionContainer} onClick={handleChatPage}>
+          <div style={{display: 'flex', flexDirection: 'column', flex: 1}} onClick={handleChatPage}>
+          <div className={styles.sessionContainer} >
             <div className={styles.messageIconContainer}>
               <Image src={messageIcon} alt="messageIcon" />
             </div>
