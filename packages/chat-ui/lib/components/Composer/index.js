@@ -44,6 +44,8 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     onSend = props.onSend,
     VoiceToText = props.voiceToText,
     voiceToTextProps = props.voiceToTextProps,
+    _props$showTransliter = props.showTransliteration,
+    showTransliteration = _props$showTransliter === void 0 ? true : _props$showTransliter,
     _props$disableSend = props.disableSend,
     disableSend = _props$disableSend === void 0 ? false : _props$disableSend,
     _props$showTransliter = props.showTransliteration,
@@ -93,6 +95,7 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
     _useState16 = (0, _slicedToArray2.default)(_useState15, 2),
     cursorPosition = _useState16[0],
     setCursorPosition = _useState16[1];
+
   (0, _react.useEffect)(function () {
     var mq = wideBreakpoint && window.matchMedia ? window.matchMedia("(min-width: ".concat(wideBreakpoint, ")")) : false;
     function handleMq(e) {
@@ -287,8 +290,10 @@ var Composer = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
       flex: 1,
       borderRadius: '10px'
     }
+
   }, /*#__PURE__*/_react.default.createElement(_ComposerInput.ComposerInput, (0, _extends2.default)({
     invisible: !isInputText
+
   }, inputProps, {
     disabled: disableSend,
     showTransliteration: showTransliteration,

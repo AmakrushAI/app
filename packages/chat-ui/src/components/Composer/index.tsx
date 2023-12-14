@@ -41,6 +41,7 @@ export type ComposerProps = {
   onToolbarClick?: (item: ToolbarItemProps, event: React.MouseEvent) => void;
   onAccessoryToggle?: (isAccessoryOpen: boolean) => void;
   rightAction?: IconButtonProps;
+  showTransliteration: boolean;
   disableSend: boolean;
   showTransliteration: boolean;
   translation: any;
@@ -68,6 +69,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
     onSend,
     voiceToText: VoiceToText,
     voiceToTextProps,
+    showTransliteration = true,
     disableSend = false,
     showTransliteration = true,
     onImageSend,
@@ -92,6 +94,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
   const isMountRef = useRef(false);
   const [isWide, setWide] = useState(false);
   const [cursorPosition, setCursorPosition] = useState(0);
+
 
   useEffect(() => {
     const mq =
@@ -337,9 +340,11 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
             borderRadius: '10px',
           }}
         >
+
           {
             <ComposerInput invisible={!isInputText} {...inputProps} disabled={disableSend} showTransliteration={showTransliteration} cursorPosition={cursorPosition} setCursorPosition={setCursorPosition}/>
           }
+
           {!isInputText && <Recorder {...recorder} />}
         </div>
         {!text && rightAction && <Action {...rightAction} />}

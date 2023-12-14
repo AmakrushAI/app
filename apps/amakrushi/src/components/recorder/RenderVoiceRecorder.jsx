@@ -14,6 +14,7 @@ const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak }) => {
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [apiCallStatus, setApiCallStatus] = useState('idle');
   const [userClickedError, setUserClickedError] = useState(false);
+
   const flags = useFlags(['delay_between_dialog']);
   let VOICE_MIN_DECIBELS = -35;
   let DELAY_BETWEEN_DIALOGS = flags?.delay_between_dialog?.value || 2500;
