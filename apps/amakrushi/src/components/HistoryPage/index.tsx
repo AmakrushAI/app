@@ -175,6 +175,7 @@ const HistoryPage: NextPage = () => {
                   <ChatItem
                     key={conv.id}
                     name={conv.query}
+                    date={conv.updatedAt}
                     conversationId={conv.conversationId}
                     deleteConversationById={deleteConversationById}
                     downloadShareHandler={downloadShareHandler}
@@ -189,7 +190,7 @@ const HistoryPage: NextPage = () => {
             )}
           </div>
         </div>
-        <Menu />
+        {/* <Menu /> */}
       </>
     );
 };

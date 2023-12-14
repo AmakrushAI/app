@@ -22,7 +22,7 @@ function ComingSoonPage() {
         onClick={() => window?.history?.back()}>
         {t("label.back")}
       </button>
-      <Menu />
+      {/* <Menu /> */}
     </div>
   );
 }

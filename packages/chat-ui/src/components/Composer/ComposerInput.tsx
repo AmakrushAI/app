@@ -23,10 +23,10 @@ export const ComposerInput = ({
   onImageSend,
   disabled,
   showTransliteration,
+  value,
+  onChange,
   cursorPosition,
   setCursorPosition,
-  onChange,
-  value,
   ...rest
 }: ComposerInputProps) => {
   const [pastedImage, setPastedImage] = useState<File | null>(null);
@@ -37,12 +37,15 @@ export const ComposerInput = ({
     auth: '',
     serviceId: '',
   });
+
   const handlePaste = useCallback((e: React.ClipboardEvent<any>) => {
     parseDataTransfer(e, setPastedImage);
   }, []);
+
   const handleImageCancel = useCallback(() => {
     setPastedImage(null);
   }, []);
+
   const handleImageSend = useCallback(() => {
     if (onImageSend && pastedImage) {
       Promise.resolve(onImageSend(pastedImage)).then(() => {
@@ -50,12 +53,14 @@ export const ComposerInput = ({
       });
     }
   }, [onImageSend, pastedImage]);
+
   useEffect(() => {
     if (canTouch && inputRef.current) {
       const $composer = document.querySelector('.Composer');
       riseInput(inputRef.current, $composer);
     }
   }, [inputRef]);
+
   useEffect(() => {
     //@ts-ignore
     if (value && value.length > 0 && showTransliteration) {
@@ -100,8 +105,9 @@ export const ComposerInput = ({
             console.error('Error fetching models pipeline:', error);
           });
       }
-      setSuggestions([]);
 
+      setSuggestions([]);
+      
       //@ts-ignore
       const words = value.split(' ');
       const wordUnderCursor = words.find(
@@ -194,6 +200,7 @@ export const ComposerInput = ({
   const suggestionHandler = (e: any, index: number) => {
     setActiveSuggestion(index);
   };
+
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (suggestions.length > 0) {
@@ -229,7 +236,7 @@ export const ComposerInput = ({
       setSuggestions([]);
     }
   }, [suggestions])
-
+  
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
@@ -238,6 +245,7 @@ export const ComposerInput = ({
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [handleKeyDown]);
+
   return (
     <div className={clsx({ 'S--invisible': invisible })}>
       <div className={'suggestions'}>

@@ -23,7 +23,7 @@ const Home: NextPage = () => {
           style={{
             position: "fixed",
             width: "100%",
-            bottom: "7vh",
+            bottom: "1vh",
             top: "75px",
           }}
         >

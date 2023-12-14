@@ -1,7 +1,7 @@
 import _extends from "@babel/runtime/helpers/esm/extends";
 import _slicedToArray from "@babel/runtime/helpers/esm/slicedToArray";
 import _objectWithoutProperties from "@babel/runtime/helpers/esm/objectWithoutProperties";
-var _excluded = ["inputRef", "invisible", "onImageSend", "disabled", "showTransliteration", "cursorPosition", "setCursorPosition", "onChange", "value"];
+var _excluded = ["inputRef", "invisible", "onImageSend", "disabled", "showTransliteration", "value", "onChange", "cursorPosition", "setCursorPosition"];
 import React, { useState, useEffect, useCallback } from 'react';
 import clsx from 'clsx';
 import { Input } from '../Input';
@@ -16,10 +16,10 @@ export var ComposerInput = function ComposerInput(_ref) {
     onImageSend = _ref.onImageSend,
     disabled = _ref.disabled,
     showTransliteration = _ref.showTransliteration,
+    value = _ref.value,
+    onChange = _ref.onChange,
     cursorPosition = _ref.cursorPosition,
     setCursorPosition = _ref.setCursorPosition,
-    onChange = _ref.onChange,
-    value = _ref.value,
     rest = _objectWithoutProperties(_ref, _excluded);
   var _useState = useState(null),
     _useState2 = _slicedToArray(_useState, 2),

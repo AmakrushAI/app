@@ -19,6 +19,10 @@ import { v4 as uuidv4 } from 'uuid';
 import RenderVoiceRecorder from '../recorder/RenderVoiceRecorder';
 import toast from 'react-hot-toast';
 import DownTimePage from '../down-time-page';
+import shareIcon from '../../assets/icons/share.svg';
+import downloadIcon from '../../assets/icons/download.svg';
+import Image from 'next/image';
+import Draggable from 'react-draggable'
 
 const ChatUiWindow: React.FC = () => {
   const t = useLocalization();
@@ -142,6 +146,94 @@ const ChatUiWindow: React.FC = () => {
 
   const placeholder = useMemo(() => t('message.ask_ur_question'), [t]);
 
+  const downloadShareHandler = async (type: string) => {
+    try {
+      const url = `${
+        process.env.NEXT_PUBLIC_BASE_URL
+      }/user/chathistory/generate-pdf/${sessionStorage.getItem(
+        'conversationId'
+      )}`;
+
+      const response = await axios.post(url, null, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem('auth')}`,
+        },
+      });
+      const pdfUrl = response.data.pdfUrl;
+
+      if (!pdfUrl) {
+        toast.error(`${t('message.no_link')}`);
+        return;
+      }
+
+      if (type === 'download') {
+        //@ts-ignore
+        logEvent(analytics, 'download_chat_clicked');
+        toast.success(`${t('message.downloading')}`);
+        const link = document.createElement('a');
+
+        link.href = pdfUrl;
+        link.target = '_blank';
+        // link.href = window.URL.createObjectURL(blob);
+
+        link.download = 'Chat.pdf';
+        link.click();
+        context?.downloadChat(pdfUrl);
+      } else if (type === 'share') {
+        const response = await axios.get(pdfUrl, {
+          responseType: 'arraybuffer',
+        });
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const file = new File([blob], 'Chat.pdf', { type: blob.type });
+
+        //@ts-ignore
+        logEvent(analytics, 'share_chat_clicked');
+
+        if (!navigator.canShare) {
+          //@ts-ignore
+          if(window?.AndroidHandler?.shareUrl){  
+            //@ts-ignore
+            window.AndroidHandler.shareUrl(pdfUrl);
+          }else{
+            context?.shareChat(pdfUrl);
+          }
+        } else if (navigator.canShare({ files: [file] })) {
+          toast.success(`${t('message.sharing')}`);
+          console.log("hurray", file)
+          await navigator
+            .share({
+              files: [file],
+              title: 'Chat',
+              text: 'Check out my chat with AmaKrushAI!',
+            })
+            .catch((error) => {
+              toast.error(error.message);
+              console.error('Error sharing', error);
+            });
+        } else {
+          toast.error(`${t('message.cannot_share')}`);
+          console.error("Your system doesn't support sharing this file.");
+        }
+      } else {
+        console.log(response.data);
+      }
+    } catch (error: any) {
+      //@ts-ignore
+      logEvent(analytics, 'console_error', {
+        error_message: error.message,
+      });
+
+      if (
+        error.message ===
+        "Cannot read properties of undefined (reading 'shareUrl')"
+      ) {
+        toast.success(`${t('message.shareUrl_android_error')}`);
+      } else toast.error(error.message);
+
+      console.error(error);
+    }
+  };
+
   if (context?.isDown) {
     return <DownTimePage />;
   } else
@@ -169,6 +261,32 @@ const ChatUiWindow: React.FC = () => {
           locale="en-US"
           placeholder={placeholder}
         />
+        <Draggable axis="y">
+        <div
+          style={{
+            position: 'absolute',
+            right: 0,
+            top: '40%',
+            background: 'white',
+            padding: '5px',
+            borderRadius: '5px 0 0 5px',
+            boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px'
+          }}>
+          <div onClick={() => downloadShareHandler('share')}>
+            {/* Share */}
+            <Image src={shareIcon} alt="" width={24} height={24} />
+          </div>
+          <div
+            style={{
+              borderBottom: '1px solid var(--secondarygreen)',
+              margin: '5px 0',
+            }}></div>
+          <div onClick={() => downloadShareHandler('download')}>
+            {/* Download */}
+            <Image src={downloadIcon} alt="" width={24} height={24} />
+          </div>
+        </div>
+        </Draggable>
       </div>
     );
 };

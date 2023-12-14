@@ -4,8 +4,8 @@
   overflow-y: scroll !important;
   width: 98%;
   position: fixed;
-  bottom: 7vh;
-  top: 70px;
+  bottom: 1vh;
+  top: 100px;
 }
 .main button {
   box-shadow: none !important;

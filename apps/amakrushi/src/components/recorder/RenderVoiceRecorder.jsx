@@ -1,21 +1,20 @@
-import { useContext, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import stop from '../../assets/icons/stop.gif';
 import processing from '../../assets/icons/process.gif';
 import error from '../../assets/icons/error.gif';
 import start from '../../assets/icons/startIcon.png';
-import { Grid } from '@material-ui/core';
 import styles from './styles.module.css';
 import toast from 'react-hot-toast';
-// import { AppContext } from '../../context';
 import { useLocalization } from '../../hooks';
 import { useFlags } from 'flagsmith/react';
 
-const RenderVoiceRecorder = ({ setInputMsg }) => {
-  // const context = useContext(AppContext);
+const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak }) => {
   const t = useLocalization();
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [apiCallStatus, setApiCallStatus] = useState('idle');
+  const [userClickedError, setUserClickedError] = useState(false);
+
   const flags = useFlags(['delay_between_dialog']);
   let VOICE_MIN_DECIBELS = -35;
   let DELAY_BETWEEN_DIALOGS = flags?.delay_between_dialog?.value || 2500;
@@ -29,7 +28,10 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
 
   const stopRecording = () => {
     IS_RECORDING = false;
-    if (mediaRecorder !== null) mediaRecorder.stop();
+    if (mediaRecorder !== null) {
+      mediaRecorder.stop();
+      setMediaRecorder(null); // Set mediaRecorder state to null after stopping
+    }
   };
 
   //record:
@@ -115,6 +117,13 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
       console.log('base', blob);
       toast.success(`${t('message.recorder_wait')}`);
 
+      // const audioElement = new Audio();
+  
+      // const blobUrl = URL.createObjectURL(blob);
+      // audioElement.src = blobUrl;
+      // console.log(audioElement)
+      // audioElement.play();
+
       // Define the API endpoint
       const apiEndpoint = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -134,22 +143,39 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
       if (resp.ok) {
         const rsp_data = await resp.json();
         console.log('hi', rsp_data);
-        if (
-          rsp_data.text === 'ଦୟାକରି ପୁଣିଥରେ ଚେଷ୍ଟା କରନ୍ତୁ' ||
-          rsp_data.text === ''
-        )
+        if (rsp_data.text === '')
           throw new Error('Unexpected end of JSON input');
         setInputMsg(rsp_data.text);
         sessionStorage.setItem('asrId', rsp_data.id);
       } else {
         toast.error(`${t('message.recorder_error')}`);
         console.log(resp);
+        // Set userClickedError to true when an error occurs
+        setUserClickedError(false);
+
+        // Automatically change back to startIcon after 3 seconds
+        setTimeout(() => {
+          // Check if the user has not clicked the error icon again
+          if (!userClickedError) {
+            setApiCallStatus('idle');
+          }
+        }, 2500);
       }
       setApiCallStatus('idle');
     } catch (error) {
       console.error(error);
       setApiCallStatus('error');
       toast.error(`${t('message.recorder_error')}`);
+      // Set userClickedError to true when an error occurs
+      setUserClickedError(false);
+
+      // Automatically change back to startIcon after 3 seconds
+      setTimeout(() => {
+        // Check if the user has not clicked the error icon again
+        if (!userClickedError) {
+          setApiCallStatus('idle');
+        }
+      }, 2500);
     }
   };
 
@@ -184,35 +210,38 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
                 priority
                 src={error}
                 alt="errorIcon"
-                onClick={() => startRecording()}
+                onClick={() => {
+                  setUserClickedError(true);
+                  startRecording();
+                }}
                 style={{ cursor: 'pointer' }}
                 layout="responsive"
               />
             ) : (
-              <Image
-                priority
-                src={start}
-                alt="startIcon"
-                onClick={() => startRecording()}
-                style={{ cursor: 'pointer' }}
-                layout="responsive"
-              />
+              <>
+                <Image
+                  priority
+                  src={start}
+                  alt="startIcon"
+                  onClick={() => {
+                    setUserClickedError(true);
+                    startRecording();
+                  }}
+                  style={{ cursor: 'pointer' }}
+                  layout="responsive"
+                />
+                {tapToSpeak ? (
+                  <p style={{ color: 'black', fontSize: '12px', marginTop: '4px' }}>
+                    {t('label.tap_to_speak')}
+                  </p>
+                ) : (
+                  <></>
+                )}
+              </>
             )}
           </div>
         )}
       </div>
-      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-        <Grid container spacing={1}>
-          <Grid
-            item
-            xs={4}
-            sm={12}
-            md={2}
-            lg={2}
-            xl={2}
-            className={styles.flexEndStyle}></Grid>
-        </Grid>
-      </Grid>
     </div>
   );
 };

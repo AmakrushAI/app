@@ -14,9 +14,11 @@ import { useLocalization } from '../../hooks';
 import shareIcon from '../../assets/icons/shareHistory.svg';
 import downloadIcon from '../../assets/icons/downloadHistory.svg';
 import { useFlags } from 'flagsmith/react';
+import { formatDate } from '../../utils/formatDate';
 
 const ChatItem: React.FC<ChatItemPropsType> = ({
   name,
+  date,
   conversationId,
   deleteConversationById,
   downloadShareHandler
@@ -68,14 +70,19 @@ const ChatItem: React.FC<ChatItemPropsType> = ({
     <>
       {!isConversationDeleted && (
         <div className={styles.chatContainer}>
-          <div className={styles.sessionContainer} onClick={handleChatPage}>
+          <div style={{display: 'flex', flexDirection: 'column', flex: 1}} onClick={handleChatPage}>
+          <div className={styles.sessionContainer} >
             <div className={styles.messageIconContainer}>
               <Image src={messageIcon} alt="messageIcon" />
             </div>
             <div className={styles.name}>{name}</div>
           </div>
+          <div style={{fontSize: '11px'}}>
+          {formatDate(date)}
+          </div>
+          </div>
           <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-          {flags?.show_share_button?.enabled && (
+          {/* {flags?.show_share_button?.enabled && (
             <div
               className={styles.iconContainer}
               onClick={() => downloadShareHandler('share', conversationId)}>
@@ -92,7 +99,7 @@ const ChatItem: React.FC<ChatItemPropsType> = ({
                 layout="responsive"
               />
             </div>
-          )}
+          )} */}
           <div
             onClick={deleteConversation}
             className={styles.deleteIconContainer}>

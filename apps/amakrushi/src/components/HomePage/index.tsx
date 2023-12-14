@@ -64,7 +64,6 @@ const HomePage: NextPage = () => {
   };
 
   useEffect(() => {
-    if(inputMsg.length > 0) setShowChatBox(true);
     if (inputMsg.length > 0 && !(localStorage.getItem('locale') === 'en')) {
       if (suggestionClicked) {
         setSuggestionClicked(false);
@@ -347,7 +346,7 @@ const HomePage: NextPage = () => {
         <div className={styles.main} onClick={handleDocumentClick}>
           <div className={styles.title}>{t('label.ask_me')}</div>
           <div className={styles.voiceRecorder} ref={voiceRecorderRef}>
-            <RenderVoiceRecorder setInputMsg={setInputMsg} />
+            <RenderVoiceRecorder setInputMsg={setInputMsg} tapToSpeak={true} />
           </div>
           <div
             className={
@@ -385,63 +384,39 @@ const HomePage: NextPage = () => {
           <form onSubmit={(event) => event?.preventDefault()}>
             <div
               ref={chatBoxButton}
-              className={`${
-                showChatBox
-                  ? `${styles.inputBox} ${styles.inputBoxOpen}`
-                  : styles.inputBox
-              }`}>
-              {!showChatBox ? (
-                <div
-                  className={styles.keyboard}
-                  onClick={() => setShowChatBox(true)}>
-                  <Image src={keyboardIcon} alt="keyboard" />
-                  <p>{t('message.click_to_type')}</p>
-                </div>
-              ) : (
-                <>
-                  <div className={styles.suggestions}>
-                    {suggestions.map((elem, index) => {
-                      return (
-                        <div
-                          key={index}
-                          onClick={() => suggestionClickHandler(elem)}
-                          className={`${styles.suggestion} ${
-                            activeSuggestion === index ? styles.active : ''
-                          }`}
-                          onMouseEnter={(e) => suggestionHandler(e, index)}>
-                          {elem}
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <textarea
-                    ref={inputRef}
-                    rows={1}
-                    value={inputMsg}
-                    onChange={handleInputChange}
-                    placeholder={placeholder}
-                    onClick={() => setShowExampleMessages(true)}
-                  />
-                  <button
-                    type="submit"
-                    onClick={() => sendMessage(inputMsg)}
-                    className={styles.sendButton}>
-                    <Image
-                      src={SendIcon}
-                      width={50}
-                      height={50}
-                      alt="sendIcon"
-                    />
-                  </button>
-                </>
-              )}
+              className={`${`${styles.inputBox} ${styles.inputBoxOpen}`}`}>
+              <div className={styles.suggestions}>
+                {suggestions.map((elem, index) => {
+                  return (
+                    <div
+                      key={index}
+                      onClick={() => suggestionClickHandler(elem)}
+                      className={`${styles.suggestion} ${
+                        activeSuggestion === index ? styles.active : ''
+                      }`}
+                      onMouseEnter={(e) => suggestionHandler(e, index)}>
+                      {elem}
+                    </div>
+                  );
+                })}
+              </div>
+              <textarea
+                ref={inputRef}
+                rows={1}
+                value={inputMsg}
+                onChange={handleInputChange}
+                placeholder={placeholder}
+                onClick={() => setShowExampleMessages(true)}
+              />
+              <button
+                type="submit"
+                className={styles.sendButton}>
+                  <Image src={SendIcon} width={50} height={50} alt="sendIcon" onClick={() => sendMessage(inputMsg)}/>
+              </button>
             </div>
           </form>
         </div>
-
-        <Menu />
       </>
     );
 };
-
 export default HomePage;
