@@ -1,4 +1,7 @@
 export const getMsgType = (msg: any): string => {
+	if (isJsonString(msg?.text)) {
+		if (Array.isArray(JSON.parse(msg?.text))) return 'table';
+	}
 	if (msg?.payload?.buttonChoices?.length || msg?.choices?.length) return 'options';
 	if (msg?.imageUrl) return 'image';
 	if (msg?.videoUrl) return 'video';
@@ -22,7 +25,16 @@ export const getMsgType = (msg: any): string => {
 				return 'text';
 		}
 	}
-	if(msg?.payload?.type==="loading")
-	return 'loader'
+	if (msg?.payload?.type === "loading")
+		return 'loader'
 	return 'text';
 };
+
+function isJsonString(str: string) {
+	try {
+		JSON.parse(str);
+	} catch (e) {
+		return false;
+	}
+	return true;
+}

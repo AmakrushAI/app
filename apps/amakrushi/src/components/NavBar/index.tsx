@@ -14,6 +14,7 @@ import { useFlags } from 'flagsmith/react';
 import { useLocalization } from '../../hooks';
 import toast from 'react-hot-toast';
 import { Sidemenu } from '../Sidemenu';
+import { recordUserLocation } from '../../utils/location';
 
 function NavBar() {
   const flags = useFlags(['show_download_button', 'show_share_button']);
@@ -40,10 +41,13 @@ function NavBar() {
       toast.error(`${t('error.wait_new_chat')}`);
       return;
     }
+
+    recordUserLocation();
+
     const newConversationId = uuidv4();
     sessionStorage.setItem('conversationId', newConversationId);
-    if(context?.audioElement) context?.audioElement.pause();
-    if(context?.setAudioPlaying) context?.setAudioPlaying(false);
+    if (context?.audioElement) context?.audioElement.pause();
+    if (context?.setAudioPlaying) context?.setAudioPlaying(false);
     context?.setConversationId(newConversationId);
     context?.setMessages([]);
     context?.setIsMsgReceiving(false);
