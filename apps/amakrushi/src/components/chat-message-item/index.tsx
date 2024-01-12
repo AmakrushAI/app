@@ -458,7 +458,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
               <div>Conditions</div>
             </div>
             <div className={styles.tableData}>
-              {JSON.parse(content?.text)?.map((el: any, idx: any) => <div className={styles.tableDataCol}>
+              {JSON.parse(content?.text)?.map((el: any, idx: any) => <div key={el.datetime + idx} className={styles.tableDataCol}>
                 <div><b> {el.datetime}</b></div>
                 <div>{el.tempmax}</div>
                 <div>{el.tempmin}</div>
