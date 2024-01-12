@@ -150,7 +150,7 @@ const ContextProvider: FC<{
         .get(
           `${process.env.NEXT_PUBLIC_BASE_URL}/incrementaudioused/${content?.data?.messageId}`
         )
-        .then((res) => {})
+        .then((res) => { })
         .catch((err) => {
           console.log(err);
         });
@@ -381,14 +381,18 @@ const ContextProvider: FC<{
       newSocket.sendMessage({
         text: text,
         to: localStorage.getItem('userID'),
-        from: localStorage.getItem('phoneNumber'),
-        optional: {
+        payload: {
+          from: localStorage.getItem('phoneNumber'),
           appId: 'AKAI_App_Id',
           channel: 'AKAI',
-        },
-        asrId: sessionStorage.getItem('asrId'),
-        userId: localStorage.getItem('userID'),
-        conversationId: sessionStorage.getItem('conversationId'),
+          latitude: sessionStorage.getItem('latitude'),
+          longitude: sessionStorage.getItem('longitude'),
+          city: sessionStorage.getItem('city'),
+          state: sessionStorage.getItem('state'),
+          asrId: sessionStorage.getItem('asrId'),
+          userId: localStorage.getItem('userID'),
+          conversationId: sessionStorage.getItem('conversationId')
+        }
       });
       setStartTime(Date.now());
       if (isVisibile)

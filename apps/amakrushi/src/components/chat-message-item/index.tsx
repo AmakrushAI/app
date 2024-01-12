@@ -39,6 +39,7 @@ import Image from 'next/image';
 import { Button } from '@chakra-ui/react';
 import flagsmith from 'flagsmith/isomorphic';
 import Loader from '../loader';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 
 const getToastMessage = (t: any, reaction: number): string => {
   if (reaction === 1) return t('toast.reaction_like');
@@ -233,7 +234,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 }}>
                 {getFormatedTime(
                   content?.data?.sentTimestamp ||
-                    content?.data?.repliedTimestamp
+                  content?.data?.repliedTimestamp
                 )}
               </span>
             </div>
@@ -335,7 +336,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                      content?.data?.repliedTimestamp
+                    content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -369,7 +370,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                      content?.data?.repliedTimestamp
+                    content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -407,7 +408,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                      content?.data?.repliedTimestamp
+                    content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -437,6 +438,43 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
           </Bubble>
         </>
       );
+    }
+
+    case 'table': {
+
+      return (
+        <>
+          <div className={styles.tableContainer}>
+            <div className={styles.tableHeader}>
+              <div><b>Date</b></div>
+              <div>Temp Max</div>
+              <div>Temp Min</div>
+              <div>Temp</div>
+              <div>Humidity</div>
+              <div>Precip</div>
+              <div>Precip Prob</div>
+              <div>Windspeed</div>
+              <div>Cloudcover</div>
+              <div>Conditions</div>
+            </div>
+            <div className={styles.tableData}>
+              {JSON.parse(content?.text)?.map((el: any, idx: any) => <div key={el.datetime + idx} className={styles.tableDataCol}>
+                <div><b> {el.datetime}</b></div>
+                <div>{el.tempmax}</div>
+                <div>{el.tempmin}</div>
+                <div>{el.temp}</div>
+                <div>{el.humidity}</div>
+                <div>{el.precip}</div>
+                <div>{el.precipprob}</div>
+                <div>{el.windspeed}</div>
+                <div>{el.cloudcover}</div>
+                <div>{el.conditions}</div>
+              </div>)}
+            </div>
+
+          </div>
+        </>
+      )
     }
     default:
       return (
