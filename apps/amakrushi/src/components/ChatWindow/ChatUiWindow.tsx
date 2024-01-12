@@ -23,6 +23,7 @@ import shareIcon from '../../assets/icons/share.svg';
 import downloadIcon from '../../assets/icons/download.svg';
 import Image from 'next/image';
 import Draggable from 'react-draggable'
+import { recordUserLocation } from '../../utils/location';
 
 const ChatUiWindow: React.FC = () => {
   const t = useLocalization();
@@ -34,8 +35,7 @@ const ChatUiWindow: React.FC = () => {
         await context?.fetchIsDown();
         if (!context?.isDown) {
           const chatHistory = await axios.get(
-            `${
-              process.env.NEXT_PUBLIC_BASE_URL
+            `${process.env.NEXT_PUBLIC_BASE_URL
             }/user/chathistory/${sessionStorage.getItem('conversationId')}`,
             {
               headers: {
@@ -68,6 +68,7 @@ const ChatUiWindow: React.FC = () => {
         });
       }
     };
+    recordUserLocation();
     !context?.loading && fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context?.setMessages, context?.fetchIsDown, context?.isDown]);
@@ -132,13 +133,13 @@ const ChatUiWindow: React.FC = () => {
   const msgToRender = useMemo(() => {
     return context?.isMsgReceiving
       ? [
-          ...normalizeMsgs,
-          {
-            type: 'loader',
-            position: 'left',
-            botUuid: '1',
-          },
-        ]
+        ...normalizeMsgs,
+        {
+          type: 'loader',
+          position: 'left',
+          botUuid: '1',
+        },
+      ]
       : normalizeMsgs;
   }, [context?.isMsgReceiving, normalizeMsgs]);
 
@@ -148,11 +149,10 @@ const ChatUiWindow: React.FC = () => {
 
   const downloadShareHandler = async (type: string) => {
     try {
-      const url = `${
-        process.env.NEXT_PUBLIC_BASE_URL
-      }/user/chathistory/generate-pdf/${sessionStorage.getItem(
-        'conversationId'
-      )}`;
+      const url = `${process.env.NEXT_PUBLIC_BASE_URL
+        }/user/chathistory/generate-pdf/${sessionStorage.getItem(
+          'conversationId'
+        )}`;
 
       const response = await axios.post(url, null, {
         headers: {
@@ -191,10 +191,10 @@ const ChatUiWindow: React.FC = () => {
 
         if (!navigator.canShare) {
           //@ts-ignore
-          if(window?.AndroidHandler?.shareUrl){  
+          if (window?.AndroidHandler?.shareUrl) {
             //@ts-ignore
             window.AndroidHandler.shareUrl(pdfUrl);
-          }else{
+          } else {
             context?.shareChat(pdfUrl);
           }
         } else if (navigator.canShare({ files: [file] })) {
@@ -262,30 +262,30 @@ const ChatUiWindow: React.FC = () => {
           placeholder={placeholder}
         />
         <Draggable axis="y">
-        <div
-          style={{
-            position: 'absolute',
-            right: 0,
-            top: '40%',
-            background: 'white',
-            padding: '5px',
-            borderRadius: '5px 0 0 5px',
-            boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px'
-          }}>
-          <div onClick={() => downloadShareHandler('share')}>
-            {/* Share */}
-            <Image src={shareIcon} alt="" width={24} height={24} />
-          </div>
           <div
             style={{
-              borderBottom: '1px solid var(--secondarygreen)',
-              margin: '5px 0',
-            }}></div>
-          <div onClick={() => downloadShareHandler('download')}>
-            {/* Download */}
-            <Image src={downloadIcon} alt="" width={24} height={24} />
+              position: 'absolute',
+              right: 0,
+              top: '40%',
+              background: 'white',
+              padding: '5px',
+              borderRadius: '5px 0 0 5px',
+              boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px'
+            }}>
+            <div onClick={() => downloadShareHandler('share')}>
+              {/* Share */}
+              <Image src={shareIcon} alt="" width={24} height={24} />
+            </div>
+            <div
+              style={{
+                borderBottom: '1px solid var(--secondarygreen)',
+                margin: '5px 0',
+              }}></div>
+            <div onClick={() => downloadShareHandler('download')}>
+              {/* Download */}
+              <Image src={downloadIcon} alt="" width={24} height={24} />
+            </div>
           </div>
-        </div>
         </Draggable>
       </div>
     );
