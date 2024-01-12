@@ -27,6 +27,7 @@ import { v4 as uuidv4 } from 'uuid';
 import RenderVoiceRecorder from '../recorder/RenderVoiceRecorder';
 import { useFlags } from 'flagsmith/react';
 import DownTimePage from '../down-time-page';
+import { recordUserLocation } from '../../utils/location';
 
 const HomePage: NextPage = () => {
   const context = useContext(AppContext);
@@ -197,6 +198,9 @@ const HomePage: NextPage = () => {
       sessionStorage.setItem('conversationId', newConversationId);
       context?.setConversationId(newConversationId);
     }
+    recordUserLocation();
+
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -391,9 +395,8 @@ const HomePage: NextPage = () => {
                     <div
                       key={index}
                       onClick={() => suggestionClickHandler(elem)}
-                      className={`${styles.suggestion} ${
-                        activeSuggestion === index ? styles.active : ''
-                      }`}
+                      className={`${styles.suggestion} ${activeSuggestion === index ? styles.active : ''
+                        }`}
                       onMouseEnter={(e) => suggestionHandler(e, index)}>
                       {elem}
                     </div>
@@ -411,7 +414,7 @@ const HomePage: NextPage = () => {
               <button
                 type="submit"
                 className={styles.sendButton}>
-                  <Image src={SendIcon} width={50} height={50} alt="sendIcon" onClick={() => sendMessage(inputMsg)}/>
+                <Image src={SendIcon} width={50} height={50} alt="sendIcon" onClick={() => sendMessage(inputMsg)} />
               </button>
             </div>
           </form>

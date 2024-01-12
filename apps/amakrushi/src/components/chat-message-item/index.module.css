@@ -110,7 +110,7 @@
   padding: 2px 8px;
 }
 
-.msgSpeaker{
+.msgSpeaker {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -122,4 +122,65 @@
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   margin-left: auto;
   margin-right: 3rem;
+}
+
+.tableContainer {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  max-width: 90vw;
+  background: #fff;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+}
+
+.tableHeader {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem;
+  gap: 0.5rem;
+  white-space: nowrap;
+  color: var(--secondarygreen);
+  font-weight: bold;
+}
+
+.tableData {
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+}
+
+/* .tableData::-webkit-scrollbar {
+  display: none;
+} */
+
+/* width */
+.tableData::-webkit-scrollbar {
+  height: 7px;
+}
+
+/* Track */
+.tableData::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.tableData::-webkit-scrollbar-thumb {
+  background: var(--secondarygreen);
+}
+
+.tableDataCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  white-space: nowrap;
+  padding: 0rem 1rem;
+  margin: 0.5rem 0rem;
+  gap: 0.5rem;
+}
+
+.tableDataCol:nth-child(odd) {
+  background: #F2F2F2;
 }

@@ -39,6 +39,8 @@ import Image from 'next/image';
 import { Button } from '@chakra-ui/react';
 import flagsmith from 'flagsmith/isomorphic';
 import Loader from '../loader';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { useIntl } from 'react-intl';
 
 const getToastMessage = (t: any, reaction: number): string => {
   if (reaction === 1) return t('toast.reaction_like');
@@ -50,7 +52,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   onSend,
 }) => {
   const flags = useFlags(['show_msg_id', 'dialer_number']);
-
+  const intl = useIntl();
   const t = useLocalization();
   const context = useContext(AppContext);
   const [reaction, setReaction] = useState(message?.content?.data?.reaction);
@@ -166,6 +168,18 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     context?.playAudio(url, content);
   };
 
+  const getFormattedDate = (datestr: string) => {
+    const today = new Date(datestr);
+    const yyyy = today.getFullYear();
+    let mm: any = today.getMonth() + 1; // Months start at 0!
+    let dd: any = today.getDate();
+
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+
+    return dd + '/' + mm + '/' + yyyy;
+  }
+
   const { content, type } = message;
   // console.log('#-debug:', content);
   switch (type) {
@@ -233,7 +247,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 }}>
                 {getFormatedTime(
                   content?.data?.sentTimestamp ||
-                    content?.data?.repliedTimestamp
+                  content?.data?.repliedTimestamp
                 )}
               </span>
             </div>
@@ -335,7 +349,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                      content?.data?.repliedTimestamp
+                    content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -369,7 +383,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                      content?.data?.repliedTimestamp
+                    content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -407,7 +421,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                      content?.data?.repliedTimestamp
+                    content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -437,6 +451,43 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
           </Bubble>
         </>
       );
+    }
+
+    case 'table': {
+
+      return (
+        <>
+          <div className={styles.tableContainer}>
+            <div className={styles.tableHeader}>
+              <div><b>{t('table.header_date')}</b></div>
+              <div>{t('table.header_temp_max')}</div>
+              <div>{t('table.header_temp_min')}</div>
+              <div>{t('table.header_temp')}</div>
+              <div>{t('table.header_humidity')}</div>
+              <div>{t('table.header_precip')}</div>
+              <div>{t('table.header_precip_prob')}</div>
+              <div>{t('table.header_windspeed')}</div>
+              <div>{t('table.header_cloudcover')}</div>
+              <div>{t('table.header_conditions')}</div>
+            </div>
+            <div className={styles.tableData}>
+              {JSON.parse(content?.text)?.map((el: any, idx: any) => <div key={el.datetime + idx} className={styles.tableDataCol}>
+                <div><b> {getFormattedDate(el.datetime)}</b></div>
+                <div>{el.tempmax} °C </div>
+                <div>{el.tempmin} °C </div>
+                <div>{el.temp} °C </div>
+                <div>{el.humidity} %</div>
+                <div>{el.precip} mm</div>
+                <div>{el.precipprob} % </div>
+                <div>{el.windspeed} m/s</div>
+                <div>{el.cloudcover} %</div>
+                <div> {intl.locale == 'or' ? 'ପାର୍ଟିଆଲ କ୍ଲାଉଡି' : el.conditions}</div>
+              </div>)}
+            </div>
+
+          </div>
+        </>
+      )
     }
     default:
       return (

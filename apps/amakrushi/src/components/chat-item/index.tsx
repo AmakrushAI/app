@@ -15,6 +15,7 @@ import shareIcon from '../../assets/icons/shareHistory.svg';
 import downloadIcon from '../../assets/icons/downloadHistory.svg';
 import { useFlags } from 'flagsmith/react';
 import { formatDate } from '../../utils/formatDate';
+import { recordUserLocation } from '../../utils/location';
 
 const ChatItem: React.FC<ChatItemPropsType> = ({
   name,
@@ -49,6 +50,7 @@ const ChatItem: React.FC<ChatItemPropsType> = ({
         .then((res) => {
           console.log('deleting conversation');
           if (conversationId === sessionStorage.getItem('conversationId')) {
+            recordUserLocation();
             const newConversationId = uuidv4();
             sessionStorage.setItem('conversationId', newConversationId);
             context?.setConversationId(newConversationId);
@@ -70,19 +72,19 @@ const ChatItem: React.FC<ChatItemPropsType> = ({
     <>
       {!isConversationDeleted && (
         <div className={styles.chatContainer}>
-          <div style={{display: 'flex', flexDirection: 'column', flex: 1}} onClick={handleChatPage}>
-          <div className={styles.sessionContainer} >
-            <div className={styles.messageIconContainer}>
-              <Image src={messageIcon} alt="messageIcon" />
+          <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }} onClick={handleChatPage}>
+            <div className={styles.sessionContainer} >
+              <div className={styles.messageIconContainer}>
+                <Image src={messageIcon} alt="messageIcon" />
+              </div>
+              <div className={styles.name}>{name}</div>
             </div>
-            <div className={styles.name}>{name}</div>
+            <div style={{ fontSize: '11px' }}>
+              {formatDate(date)}
+            </div>
           </div>
-          <div style={{fontSize: '11px'}}>
-          {formatDate(date)}
-          </div>
-          </div>
-          <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-          {/* {flags?.show_share_button?.enabled && (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {/* {flags?.show_share_button?.enabled && (
             <div
               className={styles.iconContainer}
               onClick={() => downloadShareHandler('share', conversationId)}>
@@ -100,11 +102,11 @@ const ChatItem: React.FC<ChatItemPropsType> = ({
               />
             </div>
           )} */}
-          <div
-            onClick={deleteConversation}
-            className={styles.deleteIconContainer}>
-            <Image src={deleteIcon} alt="deleteIcon" layout="responsive" />
-          </div>
+            <div
+              onClick={deleteConversation}
+              className={styles.deleteIconContainer}>
+              <Image src={deleteIcon} alt="deleteIcon" layout="responsive" />
+            </div>
           </div>
         </div>
       )}
