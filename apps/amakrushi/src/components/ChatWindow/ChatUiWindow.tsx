@@ -96,7 +96,8 @@ const ChatUiWindow: React.FC = () => {
             reaction: item.reaction,
             msgId: item.id,
             messageId: item.id,
-            audio_url: item.audioURL
+            audio_url: item.audioURL,
+            isEnd: true,
           },
         ].filter(Boolean)
       );
