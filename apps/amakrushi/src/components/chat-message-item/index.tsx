@@ -236,7 +236,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
           }
         );
         setAudioFetched(true);
-        cacheAudio(response.data);
+        // cacheAudio(response.data);
         return response.data;
       } catch (error) {
         console.error('Error fetching audio:', error);
