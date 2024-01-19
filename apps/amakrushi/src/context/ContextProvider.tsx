@@ -61,8 +61,7 @@ const ContextProvider: FC<{
   const [cookie, setCookie, removeCookie] = useCookies();
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [audioElement, setAudioElement] = useState(null);
-  const [ttsLoader, setTtsLoader] = useState(false);
-  const [audioPlaying, setAudioPlaying] = useState(false);
+  const [audioPlaying, setAudioPlaying] = useState(true);
   const [clickedAudioUrl, setClickedAudioUrl] = useState<string | null>(null);
   const [startTime, setStartTime] = useState(Date.now());
   const [endTime, setEndTime] = useState(Date.now());
@@ -103,19 +102,19 @@ const ContextProvider: FC<{
           //@ts-ignore
           if (audioElement.paused) {
             setClickedAudioUrl(url);
-            setTtsLoader(true);
+            // setTtsLoader(true);
             audioElement
               //@ts-ignore
               .play()
               .then(() => {
-                setTtsLoader(false);
+                // setTtsLoader(false);
                 setAudioPlaying(true);
                 console.log('Resumed audio:', url);
               })
               //@ts-ignore
               .catch((error) => {
                 setAudioPlaying(false);
-                setTtsLoader(false);
+                // setTtsLoader(false);
                 setAudioElement(null);
                 setClickedAudioUrl(null);
                 console.error('Error resuming audio:', error);
@@ -136,7 +135,7 @@ const ContextProvider: FC<{
         }
       }
       setClickedAudioUrl(url);
-      setTtsLoader(true);
+      // setTtsLoader(true);
       const audio = new Audio(url);
       audio.playbackRate = audio_playback;
       audio.addEventListener('ended', () => {
@@ -154,7 +153,7 @@ const ContextProvider: FC<{
       audio
         .play()
         .then(() => {
-          setTtsLoader(false);
+          // setTtsLoader(false);
           setAudioPlaying(true);
           console.log('Audio played:', url);
           // Update the current audio to the new audio element
@@ -163,7 +162,7 @@ const ContextProvider: FC<{
         })
         .catch((error) => {
           setAudioPlaying(false);
-          setTtsLoader(false);
+          // setTtsLoader(false);
           setAudioElement(null);
           setClickedAudioUrl(null);
           console.error('Error playing audio:', error);
@@ -629,8 +628,6 @@ const ContextProvider: FC<{
       setShowDialerPopup,
       playAudio,
       audioElement,
-      ttsLoader,
-      setTtsLoader,
       shareChat,
       clickedAudioUrl,
       downloadChat,
@@ -655,8 +652,6 @@ const ContextProvider: FC<{
       setShowDialerPopup,
       playAudio,
       audioElement,
-      ttsLoader,
-      setTtsLoader,
       shareChat,
       clickedAudioUrl,
       downloadChat,

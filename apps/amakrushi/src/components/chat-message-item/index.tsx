@@ -64,6 +64,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   const t = useLocalization();
   const context = useContext(AppContext);
   const [reaction, setReaction] = useState(message?.content?.data?.reaction);
+  const [audioFetched, setAudioFetched] = useState(false);
+  const [ttsLoader, setTtsLoader] = useState(false);
 
   useEffect(() => {
     setReaction(message?.content?.data?.reaction);
@@ -167,15 +169,6 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     [context, t]
   );
 
-  const handleAudio = (url: any) => {
-    // console.log(url)
-    if (!url || typeof url !== 'string') {
-      toast.error('No audio');
-      return;
-    }
-    context?.playAudio(url, content);
-  };
-
   const getFormattedDate = (datestr: string) => {
     const today = new Date(datestr);
     const yyyy = today.getFullYear();
@@ -190,6 +183,94 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
 
   const { content, type } = message;
   // console.log('#-debug:', content);
+
+  const handleAudio = useCallback(
+    (url: any) => {
+      // console.log(url)
+      if (!url) {
+        if (audioFetched) toast.error('No audio');
+        // else {
+        //   const toastId = toast.loading('Downloading audio');
+        //   setTimeout(() => {
+        //     toast.dismiss(toastId);
+        //   }, 1000);
+        // }
+        return;
+      }
+      context?.playAudio(url, content);
+      setTtsLoader(false);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [audioFetched, content, context?.playAudio]
+  );
+
+  const downloadAudio = useCallback(() => {
+    const cacheAudio = async (url: string) => {
+      const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/storeaudio`;
+
+      const requestData = {
+        queryId: message?.content?.data?.messageId,
+        audioUrl: url,
+      };
+
+      axios
+        .post(apiUrl, requestData, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then((response) => {
+          console.log('Cache Audio Response:', response.data);
+        })
+        .catch((error) => {
+          console.error('Cache Audio Error:', error);
+        });
+    };
+
+    const fetchAudio = async (text: string) => {
+      try {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/aitools/t2s`,
+          {
+            text: text,
+          }
+        );
+        setAudioFetched(true);
+        cacheAudio(response.data);
+        return response.data;
+      } catch (error) {
+        console.error('Error fetching audio:', error);
+        setAudioFetched(true);
+        return null;
+      }
+    };
+
+    const fetchData = async () => {
+      if (
+        !message?.content?.data?.audio_url &&
+        message?.content?.data?.position === 'left' &&
+        message?.content?.text
+      ) {
+        const toastId = toast.loading(`${t('message.download_audio')}`);
+        setTimeout(() => {
+          toast.dismiss(toastId);
+        }, 1500);
+        const audioUrl = await fetchAudio(message?.content?.text);
+        setTtsLoader(false);
+        if (audioUrl) {
+          message.content.data.audio_url = audioUrl;
+          handleAudio(audioUrl);
+        } else setTtsLoader(false);
+      }
+    };
+    if (message.content?.data?.audio_url) {
+      handleAudio(message.content.data.audio_url);
+    } else {
+      setTtsLoader(true);
+      fetchData();
+    }
+  }, [handleAudio, message.content?.data, message.content?.text, t]);
+
   switch (type) {
     case 'loader':
       return <Typing />;
@@ -311,12 +392,22 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   <p>{t('message.helpful')}</p>
                 </div>
                 <div
-                  className={styles.msgSpeaker}
-                  onClick={() => handleAudio(content?.data?.audio_url || '')}>
-                  {context?.clickedAudioUrl === content?.data?.audio_url ? (
-                    context?.ttsLoader ? (
-                      <Loader />
-                    ) : (
+                    className={styles.msgSpeaker}
+                    onClick={!ttsLoader ? downloadAudio : () => { }}
+                    style={
+                      !content?.data?.isEnd
+                        ? {
+                          pointerEvents: 'none',
+                          filter: 'grayscale(100%)',
+                          opacity: '0.5',
+                        }
+                        : {
+                          pointerEvents: 'auto',
+                          opacity: '1',
+                          filter: 'grayscale(0%)',
+                        }
+                    }>
+                    {context?.clickedAudioUrl === content?.data?.audio_url ? (
                       <Image
                         src={
                           !context?.audioPlaying
@@ -324,14 +415,27 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                             : SpeakerPauseIcon
                         }
                         width={!context?.audioPlaying ? 15 : 40}
-                        height={!context?.audioPlaying ? 15 : 30}
+                        height={!context?.audioPlaying ? 15 : 40}
                         alt=""
                       />
-                    )
-                  ) : (
-                    <Image src={SpeakerIcon} width={15} height={15} alt="" />
-                  )}
-                </div>
+                    ) : ttsLoader ? (
+                      <Loader />
+                    ) : (
+                      <Image src={SpeakerIcon} width={15} height={15} alt="" />
+                    )}
+                    {/* <p
+                      style={{
+                        fontSize: '11px',
+                        color: 'var(--font)',
+                        fontFamily: 'Mulish-bold',
+                        display: 'flex',
+                        alignItems: 'flex-end',
+                        marginRight: '1px',
+                        padding: '0 5px',
+                      }}>
+                      {t('message.speaker')}
+                    </p> */}
+                  </div>
               </div>
             )
           )}
