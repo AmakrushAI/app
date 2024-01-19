@@ -39,15 +39,23 @@ import Image from 'next/image';
 import { Button } from '@chakra-ui/react';
 import flagsmith from 'flagsmith/isomorphic';
 import Loader from '../loader';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@material-ui/core';
 import { useIntl } from 'react-intl';
+import BlinkingSpinner from '../blinking-spinner/index';
 
 const getToastMessage = (t: any, reaction: number): string => {
   if (reaction === 1) return t('toast.reaction_like');
   return t('toast.reaction_reset');
 };
 const ChatMessageItem: FC<ChatMessageItemPropType> = ({
-  currentUser,
   message,
   onSend,
 }) => {
@@ -161,7 +169,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
 
   const handleAudio = (url: any) => {
     // console.log(url)
-    if (!url || typeof url !== "string") {
+    if (!url || typeof url !== 'string') {
       toast.error('No audio');
       return;
     }
@@ -178,7 +186,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     if (mm < 10) mm = '0' + mm;
 
     return dd + '/' + mm + '/' + yyyy;
-  }
+  };
 
   const { content, type } = message;
   // console.log('#-debug:', content);
@@ -209,7 +217,10 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 color:
                   content?.data?.position === 'right' ? 'white' : 'var(--font)',
               }}>
-              {content.text}
+              {content.text}{' '}
+              {content?.data?.position === 'right'
+                ? null
+                : !content?.data?.isEnd && <BlinkingSpinner />}
             </span>
             <div
               style={{
@@ -247,7 +258,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 }}>
                 {getFormatedTime(
                   content?.data?.sentTimestamp ||
-                  content?.data?.repliedTimestamp
+                    content?.data?.repliedTimestamp
                 )}
               </span>
             </div>
@@ -308,7 +319,9 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                     ) : (
                       <Image
                         src={
-                          !context?.audioPlaying ? SpeakerIcon : SpeakerPauseIcon
+                          !context?.audioPlaying
+                            ? SpeakerIcon
+                            : SpeakerPauseIcon
                         }
                         width={!context?.audioPlaying ? 15 : 40}
                         height={!context?.audioPlaying ? 15 : 30}
@@ -349,7 +362,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                    content?.data?.repliedTimestamp
+                      content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -383,7 +396,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                    content?.data?.repliedTimestamp
+                      content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -421,7 +434,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                    content?.data?.repliedTimestamp
+                      content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -454,12 +467,13 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     }
 
     case 'table': {
-
       return (
         <>
           <div className={styles.tableContainer}>
             <div className={styles.tableHeader}>
-              <div><b>{t('table.header_date')}</b></div>
+              <div>
+                <b>{t('table.header_date')}</b>
+              </div>
               <div>{t('table.header_temp_max')}</div>
               <div>{t('table.header_temp_min')}</div>
               <div>{t('table.header_temp')}</div>
@@ -471,23 +485,29 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
               <div>{t('table.header_conditions')}</div>
             </div>
             <div className={styles.tableData}>
-              {JSON.parse(content?.text)?.map((el: any, idx: any) => <div key={el.datetime + idx} className={styles.tableDataCol}>
-                <div><b> {getFormattedDate(el.datetime)}</b></div>
-                <div>{el.tempmax} °C </div>
-                <div>{el.tempmin} °C </div>
-                <div>{el.temp} °C </div>
-                <div>{el.humidity} %</div>
-                <div>{el.precip} mm</div>
-                <div>{el.precipprob} % </div>
-                <div>{el.windspeed} m/s</div>
-                <div>{el.cloudcover} %</div>
-                <div> {intl.locale == 'or' ? 'ପାର୍ଟିଆଲ କ୍ଲାଉଡି' : el.conditions}</div>
-              </div>)}
+              {JSON.parse(content?.text)?.map((el: any, idx: any) => (
+                <div key={el.datetime + idx} className={styles.tableDataCol}>
+                  <div>
+                    <b> {getFormattedDate(el.datetime)}</b>
+                  </div>
+                  <div>{el.tempmax} °C </div>
+                  <div>{el.tempmin} °C </div>
+                  <div>{el.temp} °C </div>
+                  <div>{el.humidity} %</div>
+                  <div>{el.precip} mm</div>
+                  <div>{el.precipprob} % </div>
+                  <div>{el.windspeed} m/s</div>
+                  <div>{el.cloudcover} %</div>
+                  <div>
+                    {' '}
+                    {intl.locale == 'or' ? 'ପାର୍ଟିଆଲ କ୍ଲାଉଡି' : el.conditions}
+                  </div>
+                </div>
+              ))}
             </div>
-
           </div>
         </>
-      )
+      );
     }
     default:
       return (
