@@ -413,7 +413,7 @@ const ContextProvider: FC<{
           conversationId: sessionStorage.getItem('conversationId'),
         }
       });
-      // setStartTime(Date.now());
+      setStartTime(Date.now());
       if (isVisibile)
         if (media) {
           if (media.mimeType.slice(0, 5) === 'image') {
