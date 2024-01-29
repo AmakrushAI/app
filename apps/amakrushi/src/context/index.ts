@@ -1,4 +1,14 @@
 
 import { createContext } from 'react';
+import { ToChangeCurrentUserType, UserType } from '../types';
 
-export const AppContext = createContext<any>(null);
+
+type AppContextType =
+	| {
+			toChangeCurrentUser: ToChangeCurrentUserType;
+			currentUser: UserType;
+			allUsers: Array<UserType>;
+	  }
+	| any;
+
+export const AppContext = createContext<AppContextType | null>(null);

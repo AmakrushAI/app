@@ -96,8 +96,7 @@ const ChatUiWindow: React.FC = () => {
             reaction: item.reaction,
             msgId: item.id,
             messageId: item.id,
-            audio_url: item.audioURL,
-            isEnd: true,
+            audio_url: item.audioURL
           },
         ].filter(Boolean)
       );
@@ -132,7 +131,7 @@ const ChatUiWindow: React.FC = () => {
   );
   console.log('fghj:', { messages: context?.messages });
   const msgToRender = useMemo(() => {
-    return context?.loading
+    return context?.isMsgReceiving
       ? [
         ...normalizeMsgs,
         {
@@ -142,7 +141,7 @@ const ChatUiWindow: React.FC = () => {
         },
       ]
       : normalizeMsgs;
-  }, [context?.loading, normalizeMsgs]);
+  }, [context?.isMsgReceiving, normalizeMsgs]);
 
   console.log('debug:', { msgToRender });
 
@@ -243,7 +242,7 @@ const ChatUiWindow: React.FC = () => {
         <Chat
           btnColor="var(--secondarygreen)"
           background="var(--bg-color)"
-          disableSend={context?.isMsgReceiving}
+          disableSend={context?.loading}
           translation={t}
           showTransliteration={!(localStorage.getItem('locale') === 'en')}
           //@ts-ignore
@@ -254,6 +253,7 @@ const ChatUiWindow: React.FC = () => {
             <ChatMessageItem
               key={props}
               message={props}
+              currentUser={context?.currentUser}
               onSend={handleSend}
             />
           )}

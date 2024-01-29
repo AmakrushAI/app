@@ -22,7 +22,6 @@ import { useCookies } from 'react-cookie';
 import router from 'next/router';
 import { logEvent } from 'firebase/analytics';
 import { analytics } from '../../utils/firebase';
-import toast from 'react-hot-toast';
 
 export const Sidemenu = () => {
   const t = useLocalization();
@@ -122,11 +121,6 @@ export const Sidemenu = () => {
             <div
               className={styles.user}
               onClick={() => {
-                if (context?.isMsgReceiving) {
-                  toast.error(`${t('error.wait_new_chat')}`);
-                  onClose();
-                  return;
-                }
                 router.push('/history');
                 onClose();
               }}>
@@ -143,11 +137,6 @@ export const Sidemenu = () => {
             <div
               className={styles.user}
               onClick={() => {
-                if (context?.isMsgReceiving) {
-                  toast.error(`${t('error.wait_new_chat')}`);
-                  onClose();
-                  return;
-                }
                 router.push('/faq');
                 onClose();
               }}>
@@ -164,11 +153,6 @@ export const Sidemenu = () => {
             <div
               className={styles.user}
               onClick={() => {
-                if (context?.isMsgReceiving) {
-                  toast.error(`${t('error.wait_new_chat')}`);
-                  onClose();
-                  return;
-                }
                 router.push('/feedback');
                 onClose();
               }}>
