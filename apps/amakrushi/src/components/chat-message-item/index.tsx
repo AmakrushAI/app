@@ -20,7 +20,7 @@ import React, {
 } from 'react';
 
 import { toast } from 'react-hot-toast';
-
+import { oriaWeatherTranslates } from '../../utils/getWeatherTranslation';
 import styles from './index.module.css';
 import { analytics } from '../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
@@ -481,7 +481,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 <div>{el.precipprob} % </div>
                 <div>{el.windspeed} m/s</div>
                 <div>{el.cloudcover} %</div>
-                <div> {intl.locale == 'or' ? 'ପାର୍ଟିଆଲ କ୍ଲାଉଡି' : el.conditions}</div>
+                <div> {intl.locale == 'or' ? oriaWeatherTranslates[el?.conditions?.trim()?.split(" ")?.join("")?.toLowerCase()] : el.conditions}</div>
               </div>)}
             </div>
 
