@@ -139,7 +139,7 @@ const HomePage: NextPage = () => {
                 transliterationConfig.serviceId ||
                 'ai4bharat/indicxlit--cpu-fsv2',
               isSentence: false,
-              numSuggestions: 5,
+              numSuggestions: 3,
             },
           },
         ],
@@ -289,7 +289,10 @@ const HomePage: NextPage = () => {
 
       // Replace the selected word with the transliterated suggestion
       if (selectedWord !== '') {
-        const newInputMsg = inputMsg.replace(selectedWord, e);
+        const newInputMsg = inputMsg.replace(
+          selectedWord,
+          cursorPosition === inputMsg.length ? e + ' ' : e
+        );
 
         setSuggestions([]);
         setSuggestionClicked(true);

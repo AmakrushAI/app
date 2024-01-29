@@ -137,7 +137,7 @@ export const ComposerInput = ({
                 },
                 serviceId: transliterationConfig.serviceId || 'ai4bharat/indicxlit--cpu-fsv2',
                 isSentence: false,
-                numSuggestions: 5,
+                numSuggestions: 3,
               },
             },
           ],
@@ -178,16 +178,21 @@ export const ComposerInput = ({
       if (selectedWord) {
         // Replace the selected word with the transliterated suggestion
         //@ts-ignore
-        const newInputMsg = value.replace(selectedWord, e);
+        const newInputMsg = value.replace(
+          selectedWord,
+          //@ts-ignore
+          cursorPosition === value.length ? e + ' ' : e,
+        );
 
         setSuggestions([]);
         setSuggestionClicked(true);
         setActiveSuggestion(0);
 
         // Save and restore the cursor position
+        const restoredCursorPosition =
         //@ts-ignore
-        const restoredCursorPosition = cursorPosition - value.indexOf(selectedWord) + value.indexOf(e);
-          //@ts-ignore
+          cursorPosition - value.indexOf(selectedWord) + value.indexOf(e);
+        //@ts-ignore
         onChange(newInputMsg, e);
         setCursorPosition(restoredCursorPosition);
         //@ts-ignore
