@@ -83,6 +83,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
         })
         .then((res: any) => {
           if (value === -1) {
+            context?.setCurrentQuery(msgId);
             context?.setShowDialerPopup(true);
           } else {
             toast.success(`${getToastMessage(t, value)}`);

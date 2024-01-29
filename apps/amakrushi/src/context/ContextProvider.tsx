@@ -57,6 +57,7 @@ const ContextProvider: FC<{
   });
   const [isDown, setIsDown] = useState(false);
   const [showDialerPopup, setShowDialerPopup] = useState(false);
+  const [currentQuery, setCurrentQuery] = useState("");
   // const [isConnected, setIsConnected] = useState(newSocket?.connected || false);
   const [cookie, setCookie, removeCookie] = useCookies();
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -626,6 +627,8 @@ const ContextProvider: FC<{
       fetchIsDown,
       showDialerPopup,
       setShowDialerPopup,
+      currentQuery,
+      setCurrentQuery,
       playAudio,
       audioElement,
       shareChat,
@@ -650,6 +653,8 @@ const ContextProvider: FC<{
       fetchIsDown,
       showDialerPopup,
       setShowDialerPopup,
+      currentQuery,
+      setCurrentQuery,
       playAudio,
       audioElement,
       shareChat,

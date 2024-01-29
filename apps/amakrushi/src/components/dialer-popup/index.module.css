@@ -51,7 +51,7 @@
 
 .dialerBox textarea {
   padding: 10px;
-  outline: 1px solid var(--primary);
+  outline: 1px solid var(--secondarygreen);
 }
 
 .dialerBox button {
@@ -87,7 +87,7 @@
   font-family: 'Mulish-Bold';
   font-size: 3vh;
   font-weight: 700;
-  color: var(--primary);
+  color: var(--secondarygreen);
 }
 
 .overlay {
