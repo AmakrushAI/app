@@ -20,7 +20,7 @@ import React, {
 } from 'react';
 
 import { toast } from 'react-hot-toast';
-
+import { oriaWeatherTranslates } from '../../utils/getWeatherTranslation';
 import styles from './index.module.css';
 import { analytics } from '../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
@@ -339,7 +339,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 }}>
                 {getFormatedTime(
                   content?.data?.sentTimestamp ||
-                    content?.data?.repliedTimestamp
+                  content?.data?.repliedTimestamp
                 )}
               </span>
             </div>
@@ -392,38 +392,38 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   <p>{t('message.helpful')}</p>
                 </div>
                 <div
-                    className={styles.msgSpeaker}
-                    onClick={!ttsLoader ? downloadAudio : () => { }}
-                    style={
-                      !content?.data?.isEnd
-                        ? {
-                          pointerEvents: 'none',
-                          filter: 'grayscale(100%)',
-                          opacity: '0.5',
-                        }
-                        : {
-                          pointerEvents: 'auto',
-                          opacity: '1',
-                          filter: 'grayscale(0%)',
-                        }
-                    }>
-                    {context?.clickedAudioUrl === content?.data?.audio_url ? (
-                      <Image
-                        src={
-                          !context?.audioPlaying
-                            ? SpeakerIcon
-                            : SpeakerPauseIcon
-                        }
-                        width={!context?.audioPlaying ? 15 : 40}
-                        height={!context?.audioPlaying ? 15 : 40}
-                        alt=""
-                      />
-                    ) : ttsLoader ? (
-                      <Loader />
-                    ) : (
-                      <Image src={SpeakerIcon} width={15} height={15} alt="" />
-                    )}
-                    {/* <p
+                  className={styles.msgSpeaker}
+                  onClick={!ttsLoader ? downloadAudio : () => { }}
+                  style={
+                    !content?.data?.isEnd
+                      ? {
+                        pointerEvents: 'none',
+                        filter: 'grayscale(100%)',
+                        opacity: '0.5',
+                      }
+                      : {
+                        pointerEvents: 'auto',
+                        opacity: '1',
+                        filter: 'grayscale(0%)',
+                      }
+                  }>
+                  {context?.clickedAudioUrl === content?.data?.audio_url ? (
+                    <Image
+                      src={
+                        !context?.audioPlaying
+                          ? SpeakerIcon
+                          : SpeakerPauseIcon
+                      }
+                      width={!context?.audioPlaying ? 15 : 40}
+                      height={!context?.audioPlaying ? 15 : 40}
+                      alt=""
+                    />
+                  ) : ttsLoader ? (
+                    <Loader />
+                  ) : (
+                    <Image src={SpeakerIcon} width={15} height={15} alt="" />
+                  )}
+                  {/* <p
                       style={{
                         fontSize: '11px',
                         color: 'var(--font)',
@@ -435,7 +435,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                       }}>
                       {t('message.speaker')}
                     </p> */}
-                  </div>
+                </div>
               </div>
             )
           )}
@@ -466,7 +466,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                      content?.data?.repliedTimestamp
+                    content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -500,7 +500,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                      content?.data?.repliedTimestamp
+                    content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -538,7 +538,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                      content?.data?.repliedTimestamp
+                    content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -602,10 +602,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   <div>{el.precipprob} % </div>
                   <div>{el.windspeed} m/s</div>
                   <div>{el.cloudcover} %</div>
-                  <div>
-                    {' '}
-                    {intl.locale == 'or' ? 'ପାର୍ଟିଆଲ କ୍ଲାଉଡି' : el.conditions}
-                  </div>
+                  <div> {intl.locale == 'or' ? oriaWeatherTranslates[el?.conditions?.trim()?.split(" ")?.join("")?.toLowerCase()] : el.conditions}</div>
                 </div>
               ))}
             </div>
