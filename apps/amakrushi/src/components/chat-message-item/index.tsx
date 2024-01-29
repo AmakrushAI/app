@@ -20,7 +20,7 @@ import React, {
 } from 'react';
 
 import { toast } from 'react-hot-toast';
-
+import { oriaWeatherTranslates } from '../../utils/getWeatherTranslation';
 import styles from './index.module.css';
 import { analytics } from '../../utils/firebase';
 import { logEvent } from 'firebase/analytics';
@@ -39,15 +39,23 @@ import Image from 'next/image';
 import { Button } from '@chakra-ui/react';
 import flagsmith from 'flagsmith/isomorphic';
 import Loader from '../loader';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@material-ui/core';
 import { useIntl } from 'react-intl';
+import BlinkingSpinner from '../blinking-spinner/index';
 
 const getToastMessage = (t: any, reaction: number): string => {
   if (reaction === 1) return t('toast.reaction_like');
   return t('toast.reaction_reset');
 };
 const ChatMessageItem: FC<ChatMessageItemPropType> = ({
-  currentUser,
   message,
   onSend,
 }) => {
@@ -56,6 +64,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   const t = useLocalization();
   const context = useContext(AppContext);
   const [reaction, setReaction] = useState(message?.content?.data?.reaction);
+  const [audioFetched, setAudioFetched] = useState(false);
+  const [ttsLoader, setTtsLoader] = useState(false);
 
   useEffect(() => {
     setReaction(message?.content?.data?.reaction);
@@ -159,15 +169,6 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     [context, t]
   );
 
-  const handleAudio = (url: any) => {
-    // console.log(url)
-    if (!url || typeof url !== "string") {
-      toast.error('No audio');
-      return;
-    }
-    context?.playAudio(url, content);
-  };
-
   const getFormattedDate = (datestr: string) => {
     const today = new Date(datestr);
     const yyyy = today.getFullYear();
@@ -178,10 +179,98 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     if (mm < 10) mm = '0' + mm;
 
     return dd + '/' + mm + '/' + yyyy;
-  }
+  };
 
   const { content, type } = message;
   // console.log('#-debug:', content);
+
+  const handleAudio = useCallback(
+    (url: any) => {
+      // console.log(url)
+      if (!url) {
+        if (audioFetched) toast.error('No audio');
+        // else {
+        //   const toastId = toast.loading('Downloading audio');
+        //   setTimeout(() => {
+        //     toast.dismiss(toastId);
+        //   }, 1000);
+        // }
+        return;
+      }
+      context?.playAudio(url, content);
+      setTtsLoader(false);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [audioFetched, content, context?.playAudio]
+  );
+
+  const downloadAudio = useCallback(() => {
+    const cacheAudio = async (url: string) => {
+      const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/storeaudio`;
+
+      const requestData = {
+        queryId: message?.content?.data?.messageId,
+        audioUrl: url,
+      };
+
+      axios
+        .post(apiUrl, requestData, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then((response) => {
+          console.log('Cache Audio Response:', response.data);
+        })
+        .catch((error) => {
+          console.error('Cache Audio Error:', error);
+        });
+    };
+
+    const fetchAudio = async (text: string) => {
+      try {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/aitools/t2s`,
+          {
+            text: text,
+          }
+        );
+        setAudioFetched(true);
+        // cacheAudio(response.data);
+        return response.data;
+      } catch (error) {
+        console.error('Error fetching audio:', error);
+        setAudioFetched(true);
+        return null;
+      }
+    };
+
+    const fetchData = async () => {
+      if (
+        !message?.content?.data?.audio_url &&
+        message?.content?.data?.position === 'left' &&
+        message?.content?.text
+      ) {
+        const toastId = toast.loading(`${t('message.download_audio')}`);
+        setTimeout(() => {
+          toast.dismiss(toastId);
+        }, 1500);
+        const audioUrl = await fetchAudio(message?.content?.text);
+        setTtsLoader(false);
+        if (audioUrl) {
+          message.content.data.audio_url = audioUrl;
+          handleAudio(audioUrl);
+        } else setTtsLoader(false);
+      }
+    };
+    if (message.content?.data?.audio_url) {
+      handleAudio(message.content.data.audio_url);
+    } else {
+      setTtsLoader(true);
+      fetchData();
+    }
+  }, [handleAudio, message.content?.data, message.content?.text, t]);
+
   switch (type) {
     case 'loader':
       return <Typing />;
@@ -209,7 +298,10 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 color:
                   content?.data?.position === 'right' ? 'white' : 'var(--font)',
               }}>
-              {content.text}
+              {content.text}{' '}
+              {content?.data?.position === 'right'
+                ? null
+                : !content?.data?.isEnd && <BlinkingSpinner />}
             </span>
             <div
               style={{
@@ -301,23 +393,48 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 </div>
                 <div
                   className={styles.msgSpeaker}
-                  onClick={() => handleAudio(content?.data?.audio_url || '')}>
+                  onClick={!ttsLoader ? downloadAudio : () => { }}
+                  style={
+                    !content?.data?.isEnd
+                      ? {
+                        pointerEvents: 'none',
+                        filter: 'grayscale(100%)',
+                        opacity: '0.5',
+                      }
+                      : {
+                        pointerEvents: 'auto',
+                        opacity: '1',
+                        filter: 'grayscale(0%)',
+                      }
+                  }>
                   {context?.clickedAudioUrl === content?.data?.audio_url ? (
-                    context?.ttsLoader ? (
-                      <Loader />
-                    ) : (
-                      <Image
-                        src={
-                          !context?.audioPlaying ? SpeakerIcon : SpeakerPauseIcon
-                        }
-                        width={!context?.audioPlaying ? 15 : 40}
-                        height={!context?.audioPlaying ? 15 : 30}
-                        alt=""
-                      />
-                    )
+                    <Image
+                      src={
+                        !context?.audioPlaying
+                          ? SpeakerIcon
+                          : SpeakerPauseIcon
+                      }
+                      width={!context?.audioPlaying ? 15 : 40}
+                      height={!context?.audioPlaying ? 15 : 40}
+                      alt=""
+                    />
+                  ) : ttsLoader ? (
+                    <Loader />
                   ) : (
                     <Image src={SpeakerIcon} width={15} height={15} alt="" />
                   )}
+                  {/* <p
+                      style={{
+                        fontSize: '11px',
+                        color: 'var(--font)',
+                        fontFamily: 'Mulish-bold',
+                        display: 'flex',
+                        alignItems: 'flex-end',
+                        marginRight: '1px',
+                        padding: '0 5px',
+                      }}>
+                      {t('message.speaker')}
+                    </p> */}
                 </div>
               </div>
             )
@@ -454,12 +571,13 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     }
 
     case 'table': {
-
       return (
         <>
           <div className={styles.tableContainer}>
             <div className={styles.tableHeader}>
-              <div><b>{t('table.header_date')}</b></div>
+              <div>
+                <b>{t('table.header_date')}</b>
+              </div>
               <div>{t('table.header_temp_max')}</div>
               <div>{t('table.header_temp_min')}</div>
               <div>{t('table.header_temp')}</div>
@@ -471,23 +589,26 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
               <div>{t('table.header_conditions')}</div>
             </div>
             <div className={styles.tableData}>
-              {JSON.parse(content?.text)?.map((el: any, idx: any) => <div key={el.datetime + idx} className={styles.tableDataCol}>
-                <div><b> {getFormattedDate(el.datetime)}</b></div>
-                <div>{el.tempmax} °C </div>
-                <div>{el.tempmin} °C </div>
-                <div>{el.temp} °C </div>
-                <div>{el.humidity} %</div>
-                <div>{el.precip} mm</div>
-                <div>{el.precipprob} % </div>
-                <div>{el.windspeed} m/s</div>
-                <div>{el.cloudcover} %</div>
-                <div> {intl.locale == 'or' ? 'ପାର୍ଟିଆଲ କ୍ଲାଉଡି' : el.conditions}</div>
-              </div>)}
+              {JSON.parse(content?.text)?.map((el: any, idx: any) => (
+                <div key={el.datetime + idx} className={styles.tableDataCol}>
+                  <div>
+                    <b> {getFormattedDate(el.datetime)}</b>
+                  </div>
+                  <div>{el.tempmax} °C </div>
+                  <div>{el.tempmin} °C </div>
+                  <div>{el.temp} °C </div>
+                  <div>{el.humidity} %</div>
+                  <div>{el.precip} mm</div>
+                  <div>{el.precipprob} % </div>
+                  <div>{el.windspeed} m/s</div>
+                  <div>{el.cloudcover} %</div>
+                  <div> {intl.locale == 'or' ? oriaWeatherTranslates[el?.conditions?.trim()?.split(" ")?.join("")?.toLowerCase()] : el.conditions}</div>
+                </div>
+              ))}
             </div>
-
           </div>
         </>
-      )
+      );
     }
     default:
       return (

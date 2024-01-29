@@ -20534,10 +20534,10 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
-socket-package@0.13.0:
-  version "0.13.0"
-  resolved "https://registry.npmjs.org/socket-package/-/socket-package-0.13.0.tgz"
-  integrity sha512-xLJ423aFMlnVRhFq2rdM125QDc7mTi+o4seOiECjZAbcTyupdfTSNI6l+OpltMUDjWjXMrQ4Vxy4wK2YnU8Pig==
+socket-package@0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/socket-package/-/socket-package-0.14.0.tgz#64e30cb740a79de026ebf7356bc1ff757eabfaf3"
+  integrity sha512-A2JhHljXHwl07C6kbMJc5kwhq7Gen2eZAVJ6uvZ0Ld5ajoNY8HG+uPt7/gToYmTSd/6fl+bz+7nvn9HG9h9oJw==
   dependencies:
     socket.io "^4.7.1"
     socket.io-client "^4.7.1"
