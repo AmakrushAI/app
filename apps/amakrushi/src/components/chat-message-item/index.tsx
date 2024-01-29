@@ -181,6 +181,18 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     return dd + '/' + mm + '/' + yyyy;
   };
 
+  const getFormattedDate = (datestr: string) => {
+    const today = new Date(datestr);
+    const yyyy = today.getFullYear();
+    let mm: any = today.getMonth() + 1; // Months start at 0!
+    let dd: any = today.getDate();
+
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+
+    return dd + '/' + mm + '/' + yyyy;
+  }
+
   const { content, type } = message;
   // console.log('#-debug:', content);
 
