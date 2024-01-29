@@ -23,9 +23,37 @@
   margin: 1vh auto;
   padding: 2vh;
   text-align: center;
+  /* box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16); */
   border-radius: 8px;
   background-color: white;
 }
+
+.suggestions{
+  position: absolute;
+  display: flex;
+  min-width: 50px;
+  width: auto;
+  top: 55px;
+  left: 10px;
+  background-color: white;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.suggestion{
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+.active{
+  background-color: #65c3d7;
+  color: white;
+}
+
+.dialerBox textarea {
+  padding: 10px;
+  outline: 1px solid var(--primary);
+}
+
 .dialerBox button {
   font-weight: 700 ;
   font-size: 14px;
@@ -35,13 +63,7 @@
   padding: 10px ;
   border: none ;
   border-radius: 40px !important;
-  background-color: var(--secondarygreen) !important;
-}
-
-
-.dialerBox textarea {
-  outline: 1px solid var(--secondarygreen);
-  padding: 10px;
+  background-color: #1E6231 !important;
 }
 
 .crossIconBox {
@@ -65,7 +87,7 @@
   font-family: 'Mulish-Bold';
   font-size: 3vh;
   font-weight: 700;
-  color: var(--secondarygreen);
+  color: var(--primary);
 }
 
 .overlay {
