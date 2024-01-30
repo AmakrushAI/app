@@ -17,6 +17,7 @@ export async function recordUserLocation() {
                 locationRes = await locationRes.json();
                 sessionStorage.setItem('city', locationRes.city);
                 sessionStorage.setItem('state', locationRes.regionName);
+                sessionStorage.setItem('ip', apiRes?.ip);
 
                 if (res.state != 'granted') {
                     sessionStorage.setItem('latitude', locationRes.lat);
