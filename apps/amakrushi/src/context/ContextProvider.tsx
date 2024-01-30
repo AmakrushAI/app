@@ -408,6 +408,7 @@ const ContextProvider: FC<{
           longitude: sessionStorage.getItem('longitude'),
           city: sessionStorage.getItem('city'),
           state: sessionStorage.getItem('state'),
+          ip: sessionStorage.getItem('ip'),
           asrId: sessionStorage.getItem('asrId'),
           userId: localStorage.getItem('userID'),
           conversationId: sessionStorage.getItem('conversationId'),
