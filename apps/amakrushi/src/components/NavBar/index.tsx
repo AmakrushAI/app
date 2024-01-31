@@ -37,7 +37,7 @@ function NavBar() {
   );
 
   const newChatHandler = useCallback(() => {
-    if (context?.loading) {
+    if (context?.isMsgReceiving) {
       toast.error(`${t('error.wait_new_chat')}`);
       return;
     }
