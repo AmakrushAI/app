@@ -407,6 +407,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                         alignItems: 'flex-end',
                         marginRight: '1px',
                         padding: '0 5px',
+                        marginTop: !context?.audioPlaying ? 0 : '-14px'
                       }}>
                       {t('message.speaker')}
                     </p>
