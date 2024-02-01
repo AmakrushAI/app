@@ -111,15 +111,10 @@ var MessageContainer = /*#__PURE__*/_react.default.forwardRef(function (props, r
     }
     if (lastMessage.position === 'right') {
       // 自己发的消息，强制滚动到底部
-      scrollToEnd({
-        force: true
-      });
+      // scrollToEnd({ force: true });
     } else if (isNearBottom(wrapper, 2)) {
       var animated = !!wrapper.scrollTop;
-      scrollToEnd({
-        animated: animated,
-        force: true
-      });
+      // scrollToEnd({ animated, force: true });
     } else {
       setNewCount(function (c) {
         return c + 1;
