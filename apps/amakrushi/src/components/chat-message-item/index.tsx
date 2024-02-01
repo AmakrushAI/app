@@ -359,10 +359,68 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
           ) : (
             content?.data?.position === 'left' && (
               <div
-                style={{ display: 'flex', position: 'relative', top: '-10px' }}>
+                style={{
+                  display: 'flex',
+                  position: 'relative',
+                  top: '-10px',
+                  justifyContent: 'space-between',
+                }}>
+                <div style={{ display: 'flex' }}>
+                  <div
+                    className={styles.msgSpeaker}
+                    onClick={!ttsLoader ? downloadAudio : () => { }}
+                    style={
+                      !content?.data?.isEnd
+                        ? {
+                          pointerEvents: 'none',
+                          filter: 'grayscale(100%)',
+                          opacity: '0.5',
+                        }
+                        : {
+                          pointerEvents: 'auto',
+                          opacity: '1',
+                          filter: 'grayscale(0%)',
+                        }
+                    }>
+                    {context?.clickedAudioUrl === content?.data?.audio_url ? (
+                      <Image
+                        src={
+                          !context?.audioPlaying
+                            ? SpeakerIcon
+                            : SpeakerPauseIcon
+                        }
+                        width={!context?.audioPlaying ? 15 : 40}
+                        height={!context?.audioPlaying ? 15 : 40}
+                        alt=""
+                      />
+                    ) : ttsLoader ? (
+                      <Loader />
+                    ) : (
+                      <Image src={SpeakerIcon} width={15} height={15} alt="" />
+                    )}
+                    <p
+                      style={{
+                        fontSize: '11px',
+                        color: 'var(--font)',
+                        fontFamily: 'Mulish-bold',
+                        display: 'flex',
+                        alignItems: 'flex-end',
+                        marginRight: '1px',
+                        padding: '0 5px',
+                      }}>
+                      {t('message.speaker')}
+                    </p>
+                  </div>
+                </div>
                 <div className={styles.msgFeedback}>
                   <div className={styles.msgFeedbackIcons}>
                     <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                        paddingRight: '6px',
+                      }}
                       onClick={() =>
                         feedbackHandler({
                           like: 1,
@@ -374,8 +432,25 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                         width="20px"
                         color="var(--secondarygreen)"
                       />
+                      <p
+                        style={{ fontSize: '11px', fontFamily: 'Mulish-bold' }}>
+                        {t('label.helpful')}
+                      </p>
                     </div>
                     <div
+                      style={{
+                        height: '32px',
+                        width: '1px',
+                        backgroundColor: 'var(--secondarygreen)',
+                        margin: '6px 0',
+                      }}></div>
+
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                      }}
                       onClick={() =>
                         feedbackHandler({
                           like: -1,
@@ -385,57 +460,14 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                       <MsgThumbsDown
                         fill={reaction === -1}
                         width="20px"
-                        color="var(--secondarygreen)"
+                        color="var(--primary)"
                       />
+                      <p
+                        style={{ fontSize: '11px', fontFamily: 'Mulish-bold' }}>
+                        {t('label.not_helpful')}
+                      </p>
                     </div>
                   </div>
-                  &nbsp;
-                  <p>{t('message.helpful')}</p>
-                </div>
-                <div
-                  className={styles.msgSpeaker}
-                  onClick={!ttsLoader ? downloadAudio : () => { }}
-                  style={
-                    !content?.data?.isEnd
-                      ? {
-                        pointerEvents: 'none',
-                        filter: 'grayscale(100%)',
-                        opacity: '0.5',
-                      }
-                      : {
-                        pointerEvents: 'auto',
-                        opacity: '1',
-                        filter: 'grayscale(0%)',
-                      }
-                  }>
-                  {context?.clickedAudioUrl === content?.data?.audio_url ? (
-                    <Image
-                      src={
-                        !context?.audioPlaying
-                          ? SpeakerIcon
-                          : SpeakerPauseIcon
-                      }
-                      width={!context?.audioPlaying ? 15 : 40}
-                      height={!context?.audioPlaying ? 15 : 40}
-                      alt=""
-                    />
-                  ) : ttsLoader ? (
-                    <Loader />
-                  ) : (
-                    <Image src={SpeakerIcon} width={15} height={15} alt="" />
-                  )}
-                  {/* <p
-                      style={{
-                        fontSize: '11px',
-                        color: 'var(--font)',
-                        fontFamily: 'Mulish-bold',
-                        display: 'flex',
-                        alignItems: 'flex-end',
-                        marginRight: '1px',
-                        padding: '0 5px',
-                      }}>
-                      {t('message.speaker')}
-                    </p> */}
                 </div>
               </div>
             )

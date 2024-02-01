@@ -41,6 +41,7 @@
   display: flex;
   align-items: flex-end;
   width: fit-content;
+  margin-right: 3rem;
 }
 
 .msgFeedbackIcons {
@@ -48,8 +49,7 @@
   align-items: center;
   justify-content: space-evenly;
   background-color: white;
-  height: 26px;
-  width: 60px;
+  width: 130px;
   border: 1px solid var(--secondarygreen);
   border-radius: 30px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -113,15 +113,17 @@
 .msgSpeaker {
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: space-evenly;
   background-color: white;
-  height: 26px;
-  width: 40px;
+  /* height: 26px;
+  width: 40px; */
+  padding: 0 5px;
   border: 1px solid var(--secondarygreen);
   border-radius: 30px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   margin-left: auto;
-  margin-right: 3rem;
+  /* margin-right: 3rem; */
 }
 
 .tableContainer {
