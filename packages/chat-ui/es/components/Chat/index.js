@@ -57,10 +57,7 @@ export var Chat = /*#__PURE__*/React.forwardRef(function (props, ref) {
     Composer = _props$Composer === void 0 ? DComposer : _props$Composer;
   function handleInputFocus(e) {
     if (messagesRef && messagesRef.current) {
-      messagesRef.current.scrollToEnd({
-        animated: false,
-        force: true
-      });
+      // messagesRef.current.scrollToEnd({ animated: false, force: true });
     }
     if (onInputFocus) {
       onInputFocus(e);
