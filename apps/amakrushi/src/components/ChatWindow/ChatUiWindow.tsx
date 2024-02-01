@@ -22,13 +22,15 @@ import DownTimePage from '../down-time-page';
 import shareIcon from '../../assets/icons/share.svg';
 import downloadIcon from '../../assets/icons/download.svg';
 import Image from 'next/image';
+import Loader from '../loader';
 import Draggable from 'react-draggable'
 import { recordUserLocation } from '../../utils/location';
 
 const ChatUiWindow: React.FC = () => {
   const t = useLocalization();
   const context = useContext(AppContext);
-
+  const [shareLoader, setShareLoader] = useState(false);
+  const [downloadLoader, setDownloadLoader] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -154,7 +156,9 @@ const ChatUiWindow: React.FC = () => {
         }/user/chathistory/generate-pdf/${sessionStorage.getItem(
           'conversationId'
         )}`;
-
+      if (type === 'download') {
+        setDownloadLoader(true);
+      } else setShareLoader(true);
       const response = await axios.post(url, null, {
         headers: {
           authorization: `Bearer ${localStorage.getItem('auth')}`,
@@ -168,6 +172,7 @@ const ChatUiWindow: React.FC = () => {
       }
 
       if (type === 'download') {
+        setDownloadLoader(false);
         //@ts-ignore
         logEvent(analytics, 'download_chat_clicked');
         toast.success(`${t('message.downloading')}`);
@@ -179,8 +184,11 @@ const ChatUiWindow: React.FC = () => {
 
         link.download = 'Chat.pdf';
         link.click();
+        setDownloadLoader(false);
+
         context?.downloadChat(pdfUrl);
       } else if (type === 'share') {
+        setShareLoader(false);
         const response = await axios.get(pdfUrl, {
           responseType: 'arraybuffer',
         });
@@ -189,6 +197,7 @@ const ChatUiWindow: React.FC = () => {
 
         //@ts-ignore
         logEvent(analytics, 'share_chat_clicked');
+        setShareLoader(false);
 
         if (!navigator.canShare) {
           //@ts-ignore
@@ -217,13 +226,16 @@ const ChatUiWindow: React.FC = () => {
         }
       } else {
         console.log(response.data);
+        setDownloadLoader(false);
+        setShareLoader(false);
       }
     } catch (error: any) {
       //@ts-ignore
       logEvent(analytics, 'console_error', {
         error_message: error.message,
       });
-
+      setDownloadLoader(false);
+      setShareLoader(false);
       if (
         error.message ===
         "Cannot read properties of undefined (reading 'shareUrl')"
@@ -272,8 +284,69 @@ const ChatUiWindow: React.FC = () => {
               borderRadius: '5px 0 0 5px',
               boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px'
             }}>
-            <div onClick={() => downloadShareHandler('share')}>
+            <div onClick={() => downloadShareHandler('share')} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               {/* Share */}
+              {shareLoader ? (
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '24px',
+                    height: '24px',
+                  }}>
+                  <Loader />
+                </div>
+              ) : (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Image src={shareIcon} alt="" width={22} height={22} />{' '}
+                </div>
+              )}
+              <p style={{ fontSize: '10px', margin: 0, color: 'var(--font)', fontFamily: 'Mulish-bold' }}>
+                {t('label.share')}
+              </p>
+            </div>
+            <div
+              style={{
+                borderBottom: '1px solid var(--font)',
+                margin: '5px 0',
+              }}></div>
+            <div onClick={() => downloadShareHandler('download')} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              {/* Download */}
+              {downloadLoader ? (
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '24px',
+                    height: '24px',
+                  }}>
+                  <Loader />
+                </div>
+              ) : (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Image src={downloadIcon} alt="" width={24} height={24} />
+                </div>
+              )}
+              <p style={{ fontSize: '10px', margin: 0, color: 'var(--font)', fontFamily: 'Mulish-bold' }}>
+                {t('label.download')}
+              </p>
+            </div>
+            {/* <div onClick={() => downloadShareHandler('share')}>
+       
               <Image src={shareIcon} alt="" width={24} height={24} />
             </div>
             <div
@@ -282,9 +355,9 @@ const ChatUiWindow: React.FC = () => {
                 margin: '5px 0',
               }}></div>
             <div onClick={() => downloadShareHandler('download')}>
-              {/* Download */}
+              
               <Image src={downloadIcon} alt="" width={24} height={24} />
-            </div>
+            </div> */}
           </div>
         </Draggable>
       </div>
