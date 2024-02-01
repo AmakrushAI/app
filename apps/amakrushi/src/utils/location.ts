@@ -26,7 +26,6 @@ export async function recordUserLocation() {
         }
     } catch (err) {
         console.log(err)
-        toast.error('Unable to record user location')
     }
 }
 

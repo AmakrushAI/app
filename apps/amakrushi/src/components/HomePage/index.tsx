@@ -229,7 +229,7 @@ const HomePage: NextPage = () => {
     // Store the cursor position
     const cursorPosition = e.target.selectionStart;
     setCursorPosition(cursorPosition);
-    setShowExampleMessages(inputValue.length === 0);
+    // setShowExampleMessages(inputValue.length === 0);
     // Adjust textarea height dynamically based on content
     if (inputRef.current) {
       //@ts-ignore
@@ -412,7 +412,6 @@ const HomePage: NextPage = () => {
                 value={inputMsg}
                 onChange={handleInputChange}
                 placeholder={placeholder}
-                onClick={() => setShowExampleMessages(true)}
               />
               <button
                 type="submit"

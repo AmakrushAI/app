@@ -123,10 +123,10 @@ export const MessageContainer = React.forwardRef<MessageContainerHandle, Message
 
       if (lastMessage.position === 'right') {
         // 自己发的消息，强制滚动到底部
-        scrollToEnd({ force: true });
+        // scrollToEnd({ force: true });
       } else if (isNearBottom(wrapper, 2)) {
         const animated = !!wrapper.scrollTop;
-        scrollToEnd({ animated, force: true });
+        // scrollToEnd({ animated, force: true });
       } else {
         setNewCount((c) => c + 1);
         setShowBackBottom(true);
