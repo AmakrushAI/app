@@ -55,10 +55,7 @@ const getToastMessage = (t: any, reaction: number): string => {
   if (reaction === 1) return t('toast.reaction_like');
   return t('toast.reaction_reset');
 };
-const ChatMessageItem: FC<ChatMessageItemPropType> = ({
-  message,
-  onSend,
-}) => {
+const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
   const flags = useFlags(['show_msg_id', 'dialer_number']);
   const intl = useIntl();
   const t = useLocalization();
@@ -132,7 +129,9 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     },
     [onLikeDislike, reaction]
   );
-const [optionDisabled, setOptionDisabled] = useState(message?.content?.data?.optionClicked || false);
+  const [optionDisabled, setOptionDisabled] = useState(
+    message?.content?.data?.optionClicked || false
+  );
   const getLists = useCallback(
     ({ choices }: { choices: any }) => {
       console.log('qwer12:', { choices, optionDisabled });
@@ -143,7 +142,15 @@ const [optionDisabled, setOptionDisabled] = useState(message?.content?.data?.opt
             <ListItem
               key={`${index}_${choice?.key}`}
               className={`${styles.onHover} ${styles.listItem}`}
-              style={optionDisabled ? {background: 'var(--grey)'} : null}
+              style={
+                optionDisabled
+                  ? {
+                      background: 'var(--lightgrey)',
+                      color: 'var(--font)',
+                      boxShadow: 'none',
+                    }
+                  : null
+              }
               onClick={(e: any): void => {
                 e.preventDefault();
                 if (optionDisabled) {
@@ -157,11 +164,26 @@ const [optionDisabled, setOptionDisabled] = useState(message?.content?.data?.opt
                   setOptionDisabled(true);
                 }
               }}>
-              <div className="onHover" style={{ display: 'flex', alignItems: 'center', color:
-                  content?.data?.position === 'right' ? 'white' : 'var(--font)' }}>
+              <div
+                className="onHover"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  color:
+                    content?.data?.position === 'right'
+                      ? 'white'
+                      : optionDisabled
+                      ? 'var(--font)'
+                      : 'var(--secondarygreen)',
+                }}>
                 <div>{choice}</div>
                 <div style={{ marginLeft: 'auto' }}>
-                  <RightIcon width="40px" color="var(--font)" />
+                  <RightIcon
+                    width="30px"
+                    color={
+                      optionDisabled ? 'var(--font)' : 'var(--secondarygreen)'
+                    }
+                  />
                 </div>
               </div>
             </ListItem>
@@ -342,7 +364,7 @@ const [optionDisabled, setOptionDisabled] = useState(message?.content?.data?.opt
                 }}>
                 {getFormatedTime(
                   content?.data?.sentTimestamp ||
-                  content?.data?.repliedTimestamp
+                    content?.data?.repliedTimestamp
                 )}
               </span>
             </div>
@@ -370,19 +392,19 @@ const [optionDisabled, setOptionDisabled] = useState(message?.content?.data?.opt
                 <div style={{ display: 'flex' }}>
                   <div
                     className={styles.msgSpeaker}
-                    onClick={!ttsLoader ? downloadAudio : () => { }}
+                    onClick={!ttsLoader ? downloadAudio : () => {}}
                     style={
                       !content?.data?.isEnd
                         ? {
-                          pointerEvents: 'none',
-                          filter: 'grayscale(100%)',
-                          opacity: '0.5',
-                        }
+                            pointerEvents: 'none',
+                            filter: 'grayscale(100%)',
+                            opacity: '0.5',
+                          }
                         : {
-                          pointerEvents: 'auto',
-                          opacity: '1',
-                          filter: 'grayscale(0%)',
-                        }
+                            pointerEvents: 'auto',
+                            opacity: '1',
+                            filter: 'grayscale(0%)',
+                          }
                     }>
                     {context?.clickedAudioUrl === content?.data?.audio_url ? (
                       <Image
@@ -409,7 +431,7 @@ const [optionDisabled, setOptionDisabled] = useState(message?.content?.data?.opt
                         alignItems: 'flex-end',
                         marginRight: '1px',
                         padding: '0 5px',
-                        marginTop: !context?.audioPlaying ? 0 : '-14px'
+                        marginTop: !context?.audioPlaying ? 0 : '-14px',
                       }}>
                       {t('message.speaker')}
                     </p>
@@ -502,7 +524,7 @@ const [optionDisabled, setOptionDisabled] = useState(message?.content?.data?.opt
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                    content?.data?.repliedTimestamp
+                      content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -536,7 +558,7 @@ const [optionDisabled, setOptionDisabled] = useState(message?.content?.data?.opt
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                    content?.data?.repliedTimestamp
+                      content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -574,7 +596,7 @@ const [optionDisabled, setOptionDisabled] = useState(message?.content?.data?.opt
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                    content?.data?.repliedTimestamp
+                      content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -598,7 +620,7 @@ const [optionDisabled, setOptionDisabled] = useState(message?.content?.data?.opt
             </div>
             {getLists({
               choices:
-                content?.data?.payload?.buttonChoices ?? content?.data?.choices
+                content?.data?.payload?.buttonChoices ?? content?.data?.choices,
             })}
           </Bubble>
         </>
@@ -620,42 +642,57 @@ const [optionDisabled, setOptionDisabled] = useState(message?.content?.data?.opt
                 ? styles.messageTriangleRight
                 : styles.messageTriangleLeft
             }></div>
-        <Bubble type="text"> 
-          <div className={styles.tableContainer}>
-            <div className={styles.tableHeader}>
-              <div>
-                <b>{t('table.header_date')}</b>
-              </div>
-              <div>{t('table.header_temp_max')}</div>
-              <div>{t('table.header_temp_min')}</div>
-              <div>{t('table.header_temp')}</div>
-              <div>{t('table.header_humidity')}</div>
-              <div>{t('table.header_precip')}</div>
-              <div>{t('table.header_precip_prob')}</div>
-              <div>{t('table.header_windspeed')}</div>
-              <div>{t('table.header_cloudcover')}</div>
-              <div>{t('table.header_conditions')}</div>
-            </div>
-            <div className={styles.tableData}>
-              {JSON.parse(content?.text)?.weatherData?.map((el: any, idx: any) => (
-                <div key={el.datetime + idx} className={styles.tableDataCol}>
-                  <div>
-                    <b> {getFormattedDate(el.datetime)}</b>
-                  </div>
-                  <div>{el.tempmax} °C </div>
-                  <div>{el.tempmin} °C </div>
-                  <div>{el.temp} °C </div>
-                  <div>{el.humidity} %</div>
-                  <div>{el.precip} mm</div>
-                  <div>{el.precipprob} % </div>
-                  <div>{el.windspeed} m/s</div>
-                  <div>{el.cloudcover} %</div>
-                  <div> {intl.locale == 'or' ? oriaWeatherTranslates[el?.conditions?.trim()?.split(" ")?.join("")?.toLowerCase()] : el.conditions}</div>
+          <Bubble type="text">
+            <div className={styles.tableContainer}>
+              <div className={styles.tableHeader}>
+                <div>
+                  <b>{t('table.header_date')}</b>
                 </div>
-              ))}
+                <div>{t('table.header_temp_max')}</div>
+                <div>{t('table.header_temp_min')}</div>
+                <div>{t('table.header_temp')}</div>
+                <div>{t('table.header_humidity')}</div>
+                <div>{t('table.header_precip')}</div>
+                <div>{t('table.header_precip_prob')}</div>
+                <div>{t('table.header_windspeed')}</div>
+                <div>{t('table.header_cloudcover')}</div>
+                <div>{t('table.header_conditions')}</div>
+              </div>
+              <div className={styles.tableData}>
+                {JSON.parse(content?.text)?.weatherData?.map(
+                  (el: any, idx: any) => (
+                    <div
+                      key={el.datetime + idx}
+                      className={styles.tableDataCol}>
+                      <div>
+                        <b> {getFormattedDate(el.datetime)}</b>
+                      </div>
+                      <div>{el.tempmax} °C </div>
+                      <div>{el.tempmin} °C </div>
+                      <div>{el.temp} °C </div>
+                      <div>{el.humidity} %</div>
+                      <div>{el.precip} mm</div>
+                      <div>{el.precipprob} % </div>
+                      <div>{el.windspeed} m/s</div>
+                      <div>{el.cloudcover} %</div>
+                      <div>
+                        {' '}
+                        {intl.locale == 'or'
+                          ? oriaWeatherTranslates[
+                              el?.conditions
+                                ?.trim()
+                                ?.split(' ')
+                                ?.join('')
+                                ?.toLowerCase()
+                            ]
+                          : el.conditions}
+                      </div>
+                    </div>
+                  )
+                )}
+              </div>
             </div>
-          </div>
-          <span
+            <span
               className="onHover"
               style={{
                 fontWeight: 600,
@@ -663,13 +700,15 @@ const [optionDisabled, setOptionDisabled] = useState(message?.content?.data?.opt
                 color:
                   content?.data?.position === 'right' ? 'white' : 'var(--font)',
               }}>
-              {`\n` + JSON.parse(content?.text)?.generalAdvice}{' '}
+              {`\n` +
+                JSON.parse(content?.text)?.generalAdvice +
+                `\n\n` +
+                t('message.options')}
               {getLists({
-              choices: JSON.parse(content?.text)?.crops
-            })}
+                choices: JSON.parse(content?.text)?.crops,
+              })}
             </span>
-            
-        </Bubble>
+          </Bubble>
         </div>
       );
     }

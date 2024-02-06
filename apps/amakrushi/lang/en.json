@@ -46,6 +46,7 @@
     "table.header_cloudcover": "Cloudcover",
     "table.header_conditions": "Conditions",
     "message.speaker": "Click to hear",
+    "message.options":"To know the advisory for your crop, please click on the relevant button below:",
     "message.no_signal":"No signal. \nPlease check your internet connection",
     "message.click_to_type": "Click here to type",
     "message.downloading": "Downloading...",
