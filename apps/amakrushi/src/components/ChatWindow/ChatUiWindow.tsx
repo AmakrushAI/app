@@ -100,6 +100,7 @@ const ChatUiWindow: React.FC = () => {
             messageId: item.id,
             audio_url: item.audioURL,
             isEnd: true,
+            optionClicked: true
           },
         ].filter(Boolean)
       );
