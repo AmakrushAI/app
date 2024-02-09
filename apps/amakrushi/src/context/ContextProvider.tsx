@@ -318,7 +318,7 @@ const ContextProvider: FC<{
         ) {
           await updateMsgState({
             msg: msg,
-            media: { imageUrls: msg?.content?.media_url },
+            media: { imageUrl: msg?.content?.media_url },
           });
         }
       } else if (msg.content.msg_type.toUpperCase() === 'AUDIO') {

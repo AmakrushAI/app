@@ -570,23 +570,14 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
 
     case 'video': {
       const url = content?.data?.payload?.media?.url || content?.data?.videoUrl;
+      const videoId = url.split("=")[1];
       return (
         <>
-          {content?.data?.position === 'left' && (
-            <div
-              style={{
-                width: '40px',
-                marginRight: '4px',
-                textAlign: 'center',
-              }}></div>
-          )}
           <Bubble type="image">
             <div style={{ padding: '7px' }}>
-              <Video
-                cover="https://uxwing.com/wp-content/themes/uxwing/download/video-photography-multimedia/video-icon.png"
-                src={url}
-              />
-
+            <iframe width="100%" height="fit-content"
+                src={`https://www.youtube.com/embed/`+videoId}
+                frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
               <div
                 style={{
                   display: 'flex',
