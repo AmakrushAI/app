@@ -133,7 +133,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
     message?.content?.data?.optionClicked || false
   );
   const getLists = useCallback(
-    ({ choices }: { choices: any }) => {
+    ({ choices, isWeather = false }: { choices: any, isWeather: Boolean }) => {
       console.log('qwer12:', { choices, optionDisabled });
       return (
         <List className={`${styles.list}`}>
@@ -145,23 +145,27 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
               style={
                 optionDisabled
                   ? {
-                      background: 'var(--lightgrey)',
-                      color: 'var(--font)',
-                      boxShadow: 'none',
-                    }
+                    background: 'var(--lightgrey)',
+                    color: 'var(--font)',
+                    boxShadow: 'none',
+                  }
                   : null
               }
               onClick={(e: any): void => {
                 e.preventDefault();
                 if (optionDisabled) {
-                  toast.error(`${t('message.cannot_answer_again')}`);
+                  toast.error(`${isWeather ? t('message.wait_before_choosing') : t('message.cannot_answer_again')}`);
                 } else {
                   if (context?.messages?.[0]?.exampleOptions) {
                     console.log('clearing chat');
                     context?.setMessages([]);
                   }
                   context?.sendMessage(choice);
-                  // setOptionDisabled(true);
+                  setOptionDisabled(true);
+                  if (isWeather)
+                    setTimeout(() => {
+                      setOptionDisabled(false);
+                    }, 7000)
                 }
               }}>
               <div
@@ -173,8 +177,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                     content?.data?.position === 'right'
                       ? 'white'
                       : optionDisabled
-                      ? 'var(--font)'
-                      : 'var(--secondarygreen)',
+                        ? 'var(--font)'
+                        : 'var(--secondarygreen)',
                 }}>
                 <div>{choice}</div>
                 <div style={{ marginLeft: 'auto' }}>
@@ -364,7 +368,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                 }}>
                 {getFormatedTime(
                   content?.data?.sentTimestamp ||
-                    content?.data?.repliedTimestamp
+                  content?.data?.repliedTimestamp
                 )}
               </span>
             </div>
@@ -392,19 +396,19 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                 <div style={{ display: 'flex' }}>
                   <div
                     className={styles.msgSpeaker}
-                    onClick={!ttsLoader ? downloadAudio : () => {}}
+                    onClick={!ttsLoader ? downloadAudio : () => { }}
                     style={
                       !content?.data?.isEnd
                         ? {
-                            pointerEvents: 'none',
-                            filter: 'grayscale(100%)',
-                            opacity: '0.5',
-                          }
+                          pointerEvents: 'none',
+                          filter: 'grayscale(100%)',
+                          opacity: '0.5',
+                        }
                         : {
-                            pointerEvents: 'auto',
-                            opacity: '1',
-                            filter: 'grayscale(0%)',
-                          }
+                          pointerEvents: 'auto',
+                          opacity: '1',
+                          filter: 'grayscale(0%)',
+                        }
                     }>
                     {context?.clickedAudioUrl === content?.data?.audio_url ? (
                       <Image
@@ -524,7 +528,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                      content?.data?.repliedTimestamp
+                    content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -558,7 +562,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                      content?.data?.repliedTimestamp
+                    content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -575,8 +579,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
         <>
           <Bubble type="image">
             <div style={{ padding: '7px' }}>
-            <iframe width="100%" height="fit-content"
-                src={`https://www.youtube.com/embed/`+videoId}
+              <iframe width="100%" height="fit-content"
+                src={`https://www.youtube.com/embed/` + videoId}
                 frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
               <div
                 style={{
@@ -587,7 +591,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                      content?.data?.repliedTimestamp
+                    content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -612,6 +616,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
             {getLists({
               choices:
                 content?.data?.payload?.buttonChoices ?? content?.data?.choices,
+              isWeather: true
             })}
           </Bubble>
         </>
@@ -670,12 +675,12 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                         {' '}
                         {intl.locale == 'or'
                           ? oriaWeatherTranslates[
-                              el?.conditions
-                                ?.trim()
-                                ?.split(' ')
-                                ?.join('')
-                                ?.toLowerCase()
-                            ]
+                          el?.conditions
+                            ?.trim()
+                            ?.split(' ')
+                            ?.join('')
+                            ?.toLowerCase()
+                          ]
                           : el.conditions}
                       </div>
                     </div>
@@ -697,6 +702,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                 t('message.options')}
               {getLists({
                 choices: JSON.parse(content?.text)?.crops,
+                isWeather: true
               })}
             </span>
           </Bubble>

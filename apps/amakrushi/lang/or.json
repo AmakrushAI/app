@@ -68,6 +68,7 @@
     "message.otp_not_sent":"ୱାନ୍ ଟାଇମ଼ ପାସୱାର୍ଡ ପଠାଯାଇ ନାହିଁ",
     "message.otp_sent_again": "OTP ପୁନର୍ବାର ପଠାଗଲା |",
     "message.wait_resending_otp": "OTP ପଠାଇବା ପୂର୍ବରୁ ଦୟାକରି ଅପେକ୍ଷା କରନ୍ତୁ |",
+    "message.wait_before_choosing": "ପୁନର୍ବାର ବାଛିବା ପୂର୍ବରୁ ଦୟାକରି ଅପେକ୍ଷା କରନ୍ତୁ |",
     "message.helpful": "ଏହା ସାହାଯ୍ୟକାରୀ ଥିଲା କି?",
     "message.retry":"ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ",
     "message.down_time_title":"ଆମେ ରକ୍ଷଣାବେକ୍ଷଣ ଅଧୀନରେ ଅଛୁ",
