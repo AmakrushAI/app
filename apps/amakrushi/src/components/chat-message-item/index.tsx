@@ -161,7 +161,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                     context?.setMessages([]);
                   }
                   context?.sendMessage(choice);
-                  setOptionDisabled(true);
+                  // setOptionDisabled(true);
                 }
               }}>
               <div
