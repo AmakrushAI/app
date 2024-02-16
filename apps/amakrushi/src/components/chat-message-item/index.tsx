@@ -167,7 +167,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                   if (isWeather)
                     setTimeout(() => {
                       setOptionDisabled(false);
-                    }, 7000)
+                    }, 4000)
                 }
               }}>
               <div
