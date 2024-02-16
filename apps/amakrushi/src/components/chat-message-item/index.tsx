@@ -134,7 +134,6 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
   );
   const getLists = useCallback(
     ({ choices, isWeather = false }: { choices: any, isWeather: Boolean }) => {
-      console.log('qwer12:', { choices, optionDisabled });
       return (
         <List className={`${styles.list}`}>
           {choices?.map((choice: any, index: string) => (
@@ -160,12 +159,15 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                     console.log('clearing chat');
                     context?.setMessages([]);
                   }
-                  context?.sendMessage(choice);
+                  if (isWeather)
+                    context?.sendMessage(choice?.textInEnglish, false, true, choice);
+                  else
+                    context?.sendMessage(choice);
                   setOptionDisabled(true);
                   if (isWeather)
                     setTimeout(() => {
                       setOptionDisabled(false);
-                    }, 7000)
+                    }, 4000)
                 }
               }}>
               <div
@@ -180,7 +182,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                         ? 'var(--font)'
                         : 'var(--secondarygreen)',
                 }}>
-                <div>{choice}</div>
+                <div>{isWeather ? choice?.textInEnglish : choice}</div>
                 <div style={{ marginLeft: 'auto' }}>
                   <RightIcon
                     width="30px"
@@ -709,7 +711,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                 `\n\n` +
                 t('message.options')}
               {getLists({
-                choices: JSON.parse(content?.text)?.crops,
+                choices: JSON.parse(content?.text)?.buttons,
                 isWeather: true
               })}
             </span>
