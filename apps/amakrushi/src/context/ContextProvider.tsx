@@ -410,6 +410,7 @@ const ContextProvider: FC<{
           state: sessionStorage.getItem('state'),
           subDistrict: sessionStorage.getItem('subDistrict'),
           village: sessionStorage.getItem('village'),
+          captureMode: sessionStorage.getItem('captureMode'),
           ip: sessionStorage.getItem('ip'),
           asrId: sessionStorage.getItem('asrId'),
           userId: localStorage.getItem('userID'),

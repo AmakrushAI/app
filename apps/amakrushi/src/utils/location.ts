@@ -40,6 +40,7 @@ export async function recordUserLocation() {
                     sessionStorage.setItem('ip', apiRes?.ip);
                     sessionStorage.setItem('latitude', locationRes.lat);
                     sessionStorage.setItem('longitude', locationRes.lon);
+                    sessionStorage.setItem('captureMode', 'ip');
                 }
             } else {
                 // If user has provided geolocation access then
@@ -52,6 +53,7 @@ export async function recordUserLocation() {
                 sessionStorage.setItem('subDistrict', locationRes?.subDistrict)
                 sessionStorage.setItem('village', locationRes?.village || '')
                 sessionStorage.setItem('ip', apiRes?.ip);
+                sessionStorage.setItem('captureMode', 'gps');
             }
 
         })
