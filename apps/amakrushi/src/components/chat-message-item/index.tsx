@@ -160,7 +160,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                     context?.setMessages([]);
                   }
                   if (isWeather)
-                    context?.sendMessage(choice?.textInEnglish, false, true, choice);
+                    context?.sendMessage(choice?.text, false, true, choice);
                   else
                     context?.sendMessage(choice);
                   setOptionDisabled(true);
@@ -182,7 +182,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                         ? 'var(--font)'
                         : 'var(--secondarygreen)',
                 }}>
-                <div>{isWeather ? choice?.textInEnglish : choice}</div>
+                <div>{isWeather ? choice?.text : choice}</div>
                 <div style={{ marginLeft: 'auto' }}>
                   <RightIcon
                     width="30px"
