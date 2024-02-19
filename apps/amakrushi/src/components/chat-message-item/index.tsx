@@ -706,8 +706,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
               }}>
               {`\n` +
                 JSON.parse(content?.text)?.generalAdvice +
-                `\n\n` +
-                t('message.options')}
+                `\n\n` + JSON.parse(content?.text)?.buttonDescription}
               {getLists({
                 choices: JSON.parse(content?.text)?.buttons,
                 isWeather: true
