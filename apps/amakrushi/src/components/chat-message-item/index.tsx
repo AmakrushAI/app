@@ -165,9 +165,14 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                     context?.sendMessage(choice);
                   setOptionDisabled(true);
                   if (isWeather)
-                    setTimeout(() => {
-                      setOptionDisabled(false);
-                    }, 4000)
+                    setTimeout(() => document.getElementsByClassName('PullToRefresh')?.[0]?.scrollTo({
+                      top: 999999,
+                      left: 0,
+                      behavior: "smooth",
+                    }), 500)
+                  setTimeout(() => {
+                    setOptionDisabled(false);
+                  }, 4000)
                 }
               }}>
               <div
@@ -193,8 +198,9 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                 </div>
               </div>
             </ListItem>
-          ))}
-        </List>
+          ))
+          }
+        </List >
       );
     },
     [context, t]
