@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './index.module.css';
 import {
   Drawer,
   DrawerOverlay,
   DrawerContent,
   useDisclosure,
+  Select,
 } from '@chakra-ui/react';
 import hamburgerIcon from '../../assets/icons/hamburger.svg';
 import Image from 'next/image';
@@ -27,6 +28,7 @@ import toast from 'react-hot-toast';
 export const Sidemenu = () => {
   const t = useLocalization();
   const context = React.useContext(AppContext);
+  const [lang, setLang] = useState('or');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [cookie, setCookie, removeCookie] = useCookies();
   const defaultLang = flagsmith.getValue('default_lang', { fallback: 'hi' });
@@ -46,14 +48,12 @@ export const Sidemenu = () => {
       : defaultLang === 'en'
   );
 
-  const toggleLanguage = React.useCallback(
-    (newLanguage: string) => () => {
-      localStorage.setItem('locale', newLanguage);
-      context?.setLocale(newLanguage);
-      setIsEngActive((prev) => (prev === true ? false : true));
-    },
-    [context]
-  );
+  const toggleLanguage = (newLanguage: string) => {
+    setLang(newLanguage)
+    localStorage.setItem('locale', newLanguage);
+    context?.setLocale(newLanguage);
+    setIsEngActive((prev) => (prev === true ? false : true));
+  }
 
   function logout() {
     removeCookie('access_token', { path: '/' });
@@ -91,7 +91,15 @@ export const Sidemenu = () => {
                 height={30}
                 onClick={onClose}
               />
-              <div
+              <select onChange={(e: any) => { toggleLanguage(e.target.value) }} className={styles.langSelect}>
+                <option selected={lang == 'en'} value='en'>English</option>
+                <option selected={lang == 'or'} value='or'>Oria</option>
+                <option selected={lang == 'ta'} value='ta'>Tamil</option>
+                <option selected={lang == 'tel'} value='tel'>Telugu</option>
+                <option selected={lang == 'mar'} value='mar'>Marathi</option>
+                <option selected={lang == 'kn'} value='kn'>Kannada</option>
+              </select>
+              {/* <div
                 style={{ display: 'flex', alignItems: 'center' }}
                 onClick={onClose}>
                 <button
@@ -108,7 +116,7 @@ export const Sidemenu = () => {
                   onClick={toggleLanguage('or')}>
                   ଓଡ଼ିଆ
                 </button>
-              </div>
+              </div> */}
             </div>
             <div className={styles.user}>
               <div className={styles.icon1}>
@@ -200,7 +208,7 @@ export const Sidemenu = () => {
             </div>
           </div>
         </DrawerContent>
-      </Drawer>
+      </Drawer >
     </>
   );
 };

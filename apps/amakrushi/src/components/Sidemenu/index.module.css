@@ -11,7 +11,8 @@
 }
 
 .hamburgerContainer,
-.imageContainer, .imageContainer2 {
+.imageContainer,
+.imageContainer2 {
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -55,12 +56,12 @@
   left: 0;
 }
 
-.iconContainer{
+.iconContainer {
   height: 40px;
   width: 40px;
 }
 
-.user{
+.user {
   width: 100%;
   display: flex;
   padding: 1vh 2vh;
@@ -97,6 +98,15 @@
   width: 24px;
 }
 
-.icon3{
+.icon3 {
   margin-left: auto;
+}
+
+.langSelect {
+  color: var(--secondarygreen);
+  background: #fff;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  margin-right: 5px;
 }

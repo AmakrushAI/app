@@ -28,6 +28,14 @@ function loadMessages(locale: string) {
       return import('../../lang/en.json');
     case 'or':
       return import('../../lang/or.json');
+    case 'ta':
+      return import('../../lang/ta.json');
+    case 'tel':
+      return import('../../lang/tel.json');
+    case 'mar':
+      return import('../../lang/mar.json');
+    case 'kn':
+      return import('../../lang/kn.json');
     default:
       return import('../../lang/en.json');
   }

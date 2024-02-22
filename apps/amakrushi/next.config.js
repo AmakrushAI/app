@@ -17,13 +17,13 @@ module.exports = withBundleAnalyzer(
     },
     reactStrictMode: false,
     typescript: {
-      ignoreBuildErrors: true,    
+      ignoreBuildErrors: true,
     },
     compiler: {
-      removeConsole:  true
+      removeConsole: true
     },
     i18n: {
-      locales: ['or', 'en'],
+      locales: ['or', 'en', 'ta', 'tel', 'mar', 'kn'],
       defaultLocale: 'en',
     },
   })

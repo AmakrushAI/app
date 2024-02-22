@@ -19,6 +19,7 @@ import { recordUserLocation } from '../../utils/location';
 function NavBar() {
   const flags = useFlags(['show_download_button', 'show_share_button']);
   const defaultLang = flagsmith.getValue('default_lang', { fallback: 'or' });
+  const [lang, setLang] = useState('or');
   const [isEngActive, setIsEngActive] = useState(
     localStorage.getItem('locale')
       ? localStorage.getItem('locale') === 'en'
@@ -27,14 +28,12 @@ function NavBar() {
   const context = useContext(AppContext);
   const t = useLocalization();
 
-  const toggleLanguage = useCallback(
-    (newLanguage: string) => () => {
-      localStorage.setItem('locale', newLanguage);
-      context?.setLocale(newLanguage);
-      setIsEngActive((prev) => (prev === true ? false : true));
-    },
-    [context]
-  );
+  const toggleLanguage = (newLanguage: string) => {
+    setLang(newLanguage)
+    localStorage.setItem('locale', newLanguage);
+    context?.setLocale(newLanguage);
+    setIsEngActive((prev) => (prev === true ? false : true));
+  }
 
   const newChatHandler = useCallback(() => {
     if (context?.isMsgReceiving) {
@@ -140,22 +139,30 @@ function NavBar() {
             ) : null}
           </div>
         ) : (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <button
-              id="eng"
-              className={isEngActive ? styles.active : styles.btn}
-              style={{ borderRadius: '10px 0px 0px 10px' }}
-              onClick={toggleLanguage('en')}>
-              ENG
-            </button>
-            <button
-              id="hindi"
-              className={!isEngActive ? styles.active : styles.btn}
-              style={{ borderRadius: '0px 10px 10px 0px' }}
-              onClick={toggleLanguage('or')}>
-              ଓଡ଼ିଆ
-            </button>
-          </div>
+          // <div style={{ display: 'flex', alignItems: 'center' }}>
+          //   <button
+          //     id="eng"
+          //     className={isEngActive ? styles.active : styles.btn}
+          //     style={{ borderRadius: '10px 0px 0px 10px' }}
+          //     onClick={toggleLanguage('en')}>
+          //     ENG
+          //   </button>
+          //   <button
+          //     id="hindi"
+          //     className={!isEngActive ? styles.active : styles.btn}
+          //     style={{ borderRadius: '0px 10px 10px 0px' }}
+          //     onClick={toggleLanguage('or')}>
+          //     ଓଡ଼ିଆ
+          //   </button>
+          // </div>
+          <select onChange={(e: any) => { toggleLanguage(e.target.value) }} className={styles.langSelect}>
+            <option selected={lang == 'en'} value='en'>English</option>
+            <option selected={lang == 'or'} value='or'>Oria</option>
+            <option selected={lang == 'ta'} value='ta'>Tamil</option>
+            <option selected={lang == 'tel'} value='tel'>Telugu</option>
+            <option selected={lang == 'mar'} value='mar'>Marathi</option>
+            <option selected={lang == 'kn'} value='kn'>Kannada</option>
+          </select>
         )}
         <div
         // style={{
