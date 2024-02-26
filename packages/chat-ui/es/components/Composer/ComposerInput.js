@@ -85,7 +85,7 @@ export var ComposerInput = function ComposerInput(_ref) {
               config: {
                 language: {
                   sourceLanguage: 'en',
-                  targetLanguage: 'or'
+                  targetLanguage: localStorage.getItem('locale')
                 }
               }
             }],
@@ -130,7 +130,7 @@ export var ComposerInput = function ComposerInput(_ref) {
             config: {
               language: {
                 sourceLanguage: 'en',
-                targetLanguage: 'or'
+                targetLanguage: localStorage.getItem('locale')
               },
               serviceId: transliterationConfig.serviceId || 'ai4bharat/indicxlit--cpu-fsv2',
               isSentence: false,

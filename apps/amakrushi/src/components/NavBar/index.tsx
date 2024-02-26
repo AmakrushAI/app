@@ -159,8 +159,8 @@ function NavBar() {
             <option selected={lang == 'en'} value='en'>English</option>
             <option selected={lang == 'or'} value='or'>Oria</option>
             <option selected={lang == 'ta'} value='ta'>Tamil</option>
-            <option selected={lang == 'tel'} value='tel'>Telugu</option>
-            <option selected={lang == 'mar'} value='mar'>Marathi</option>
+            <option selected={lang == 'te'} value='te'>Telugu</option>
+            <option selected={lang == 'mr'} value='mr'>Marathi</option>
             <option selected={lang == 'kn'} value='kn'>Kannada</option>
           </select>
         )}

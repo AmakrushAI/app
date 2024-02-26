@@ -79,7 +79,7 @@ const HomePage: NextPage = () => {
               config: {
                 language: {
                   sourceLanguage: 'en',
-                  targetLanguage: 'or',
+                  targetLanguage: localStorage.getItem('locale'),
                 },
               },
             },
@@ -133,7 +133,7 @@ const HomePage: NextPage = () => {
             config: {
               language: {
                 sourceLanguage: 'en',
-                targetLanguage: 'or',
+                targetLanguage: localStorage.getItem('locale'),
               },
               serviceId:
                 transliterationConfig.serviceId ||

@@ -175,7 +175,7 @@ const DialerPopup: React.FC<any> = ({ setShowDialerPopup }) => {
                   config: {
                     language: {
                       sourceLanguage: 'en',
-                      targetLanguage: 'or',
+                      targetLanguage: localStorage.getItem('locale'),
                     },
                   },
                 },
@@ -226,7 +226,7 @@ const DialerPopup: React.FC<any> = ({ setShowDialerPopup }) => {
               config: {
                 language: {
                   sourceLanguage: 'en',
-                  targetLanguage: 'or',
+                  targetLanguage: localStorage.getItem('locale'),
                 },
                 serviceId:
                   transliterationConfig.serviceId ||

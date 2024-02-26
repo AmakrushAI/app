@@ -23,7 +23,7 @@ module.exports = withBundleAnalyzer(
       removeConsole: true
     },
     i18n: {
-      locales: ['or', 'en', 'ta', 'tel', 'mar', 'kn'],
+      locales: ['or', 'en', 'ta', 'te', 'mr', 'kn'],
       defaultLocale: 'en',
     },
   })

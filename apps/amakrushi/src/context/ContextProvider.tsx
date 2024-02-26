@@ -30,10 +30,10 @@ function loadMessages(locale: string) {
       return import('../../lang/or.json');
     case 'ta':
       return import('../../lang/ta.json');
-    case 'tel':
-      return import('../../lang/tel.json');
-    case 'mar':
-      return import('../../lang/mar.json');
+    case 'te':
+      return import('../../lang/te.json');
+    case 'mr':
+      return import('../../lang/mr.json');
     case 'kn':
       return import('../../lang/kn.json');
     default:
