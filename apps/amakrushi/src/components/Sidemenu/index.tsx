@@ -29,7 +29,7 @@ export const Sidemenu = () => {
   const context = React.useContext(AppContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [cookie, setCookie, removeCookie] = useCookies();
-  const defaultLang = flagsmith.getValue('default_lang', { fallback: 'hi' });
+  const defaultLang = flagsmith.getValue('default_lang', { fallback: 'or' });
   const [welcome, chats, faqs, feedback, logoutLabel] = React.useMemo(
     () => [
       t('label.welcome'),
