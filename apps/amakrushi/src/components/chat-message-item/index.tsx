@@ -51,6 +51,10 @@ import {
 import { useIntl } from 'react-intl';
 import BlinkingSpinner from '../blinking-spinner/index';
 
+interface FormattedTextProps {
+  content: string;
+}
+
 const getToastMessage = (t: any, reaction: number): string => {
   if (reaction === 1) return t('toast.reaction_like');
   return t('toast.reaction_reset');
@@ -308,6 +312,37 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
     }
   }, [handleAudio, message.content?.data, message.content?.text, t]);
 
+  const FormattedText = ({ content }: FormattedTextProps) => {
+    let words = content.split(' ');
+    if (words?.[words?.length - 1] == '' || words?.[words?.length - 1] == " ") {
+      words = words.slice(0, words?.length - 1);
+    }
+
+    if (words?.[0] == ":") {
+      words = words.slice(1)
+    }
+
+    if (words?.[0]?.includes('null')) {
+      words[0] = words[0].replace('null', localStorage.getItem('locale') == 'en' ? "I'm here to help with any agriculture-related questions you might have. Feel free to ask!" : "ଆପଣଙ୍କ ପାଖରେ ଥିବା କୃଷି ସମ୍ବନ୍ଧୀୟ ପ୍ରଶ୍ନଗୁଡ଼ିକରେ ସାହାଯ୍ୟ କରିବାକୁ ମୁଁ ଏଠାରେ ଅଛି | ପଚାରିବାକୁ ମୁକ୍ତ ହୁଅନ୍ତୁ!");
+    }
+
+    if (words?.[1]?.includes('null')) {
+      words[1] = words[1].replace('null', localStorage.getItem('locale') == 'en' ? "I'm here to help with any agriculture-related questions you might have. Feel free to ask!" : "ଆପଣଙ୍କ ପାଖରେ ଥିବା କୃଷି ସମ୍ବନ୍ଧୀୟ ପ୍ରଶ୍ନଗୁଡ଼ିକରେ ସାହାଯ୍ୟ କରିବାକୁ ମୁଁ ଏଠାରେ ଅଛି | ପଚାରିବାକୁ ମୁକ୍ତ ହୁଅନ୍ତୁ!");
+    }
+
+    if (words?.[words?.length - 2]?.includes('Thank') && words?.[words?.length - 1]?.includes('you')) {
+      words[words.length - 2] = words[words.length - 2].replace('Thank', '\nThank')
+    }
+
+    return (
+      <p>
+        {words.map((word) => {
+          return word + ' '
+        })}
+      </p>
+    );
+  }
+
   switch (type) {
     case 'loader':
       return <Typing />;
@@ -335,7 +370,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                 color:
                   content?.data?.position === 'right' ? 'white' : 'var(--font)',
               }}>
-              {content.text}{' '}
+              <FormattedText content={content?.text} />{' '}
               {content?.data?.position === 'right'
                 ? null
                 : !content?.data?.isEnd && <BlinkingSpinner />}
