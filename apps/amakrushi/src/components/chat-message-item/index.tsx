@@ -132,10 +132,10 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     },
     [onLikeDislike, reaction]
   );
-
+const [optionDisabled, setOptionDisabled] = useState(message?.content?.data?.optionClicked || false);
   const getLists = useCallback(
-    ({ choices, isDisabled }: { choices: any; isDisabled: boolean }) => {
-      console.log('qwer12:', { choices, isDisabled });
+    ({ choices }: { choices: any }) => {
+      console.log('qwer12:', { choices, optionDisabled });
       return (
         <List className={`${styles.list}`}>
           {choices?.map((choice: any, index: string) => (
@@ -143,23 +143,25 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
             <ListItem
               key={`${index}_${choice?.key}`}
               className={`${styles.onHover} ${styles.listItem}`}
+              style={optionDisabled ? {background: 'var(--grey)'} : null}
               onClick={(e: any): void => {
                 e.preventDefault();
-                console.log('qwer12 trig', { key: choice.key, isDisabled });
-                if (isDisabled) {
+                if (optionDisabled) {
                   toast.error(`${t('message.cannot_answer_again')}`);
                 } else {
                   if (context?.messages?.[0]?.exampleOptions) {
                     console.log('clearing chat');
                     context?.setMessages([]);
                   }
-                  context?.sendMessage(choice.text);
+                  context?.sendMessage(choice);
+                  setOptionDisabled(true);
                 }
               }}>
-              <div className="onHover" style={{ display: 'flex' }}>
-                <div>{choice.text}</div>
+              <div className="onHover" style={{ display: 'flex', alignItems: 'center', color:
+                  content?.data?.position === 'right' ? 'white' : 'var(--font)' }}>
+                <div>{choice}</div>
                 <div style={{ marginLeft: 'auto' }}>
-                  <RightIcon width="45px" color="var(--secondarygreen)" />
+                  <RightIcon width="40px" color="var(--font)" />
                 </div>
               </div>
             </ListItem>
@@ -183,7 +185,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   };
 
   const { content, type } = message;
-  // console.log('#-debug:', content);
+  console.log('#-debug:', content);
 
   const handleAudio = useCallback(
     (url: any) => {
@@ -596,8 +598,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
             </div>
             {getLists({
               choices:
-                content?.data?.payload?.buttonChoices ?? content?.data?.choices,
-              isDisabled: false,
+                content?.data?.payload?.buttonChoices ?? content?.data?.choices
             })}
           </Bubble>
         </>
@@ -606,7 +607,20 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
 
     case 'table': {
       return (
-        <>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative',
+            maxWidth: '90vw',
+          }}>
+          <div
+            className={
+              content?.data?.position === 'right'
+                ? styles.messageTriangleRight
+                : styles.messageTriangleLeft
+            }></div>
+        <Bubble type="text"> 
           <div className={styles.tableContainer}>
             <div className={styles.tableHeader}>
               <div>
@@ -623,7 +637,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
               <div>{t('table.header_conditions')}</div>
             </div>
             <div className={styles.tableData}>
-              {JSON.parse(content?.text)?.map((el: any, idx: any) => (
+              {JSON.parse(content?.text)?.weatherData?.map((el: any, idx: any) => (
                 <div key={el.datetime + idx} className={styles.tableDataCol}>
                   <div>
                     <b> {getFormattedDate(el.datetime)}</b>
@@ -641,7 +655,22 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
               ))}
             </div>
           </div>
-        </>
+          <span
+              className="onHover"
+              style={{
+                fontWeight: 600,
+                fontSize: '1rem',
+                color:
+                  content?.data?.position === 'right' ? 'white' : 'var(--font)',
+              }}>
+              {`\n` + JSON.parse(content?.text)?.generalAdvice}{' '}
+              {getLists({
+              choices: JSON.parse(content?.text)?.crops
+            })}
+            </span>
+            
+        </Bubble>
+        </div>
       );
     }
     default:

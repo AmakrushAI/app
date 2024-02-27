@@ -66,6 +66,7 @@
 }
 
 .list {
+  margin-top: 15px;
   background: none !important;
 }
 
@@ -81,20 +82,21 @@
 }
 
 .optionsText {
-  font-size: 1.5rem;
-  color: var(--secondarygreen);
   font-weight: bold;
-  margin: auto;
+  /* color: var(--secondarygreen); */
+  background-color: white;
+  height: fit-content !important;
 }
 
 .listItem {
   border: 2px solid var(--lightgrey) !important;
   border-radius: 0px 25px;
-  margin-bottom: 25px;
+  margin-bottom: 10px;
   background-color: white;
-  height: 10vh;
-  width: 85vw;
+  height: fit-content;
+  width: 100%;
   box-shadow: 0px 4px 10px 5px rgba(0, 0, 0, 0.25);
+  padding: 0 10px !important;
 }
 
 .offlineBtns {
