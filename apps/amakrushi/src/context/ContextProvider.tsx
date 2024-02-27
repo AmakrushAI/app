@@ -423,7 +423,8 @@ const ContextProvider: FC<{
           asrId: sessionStorage.getItem('asrId'),
           userId: localStorage.getItem('userID'),
           conversationId: sessionStorage.getItem('conversationId'),
-          selectedButton: selectedButton || null
+          selectedButton: selectedButton || null,
+          locale: localStorage.getItem('locale')
         }
       });
       setStartTime(Date.now());
