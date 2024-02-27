@@ -323,11 +323,11 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
     }
 
     if (words?.[0]?.includes('null')) {
-      words[0] = words[0].replace('null', "I'm here to help with any agriculture-related questions you might have. Feel free to ask!");
+      words[0] = words[0].replace('null', localStorage.getItem('locale') == 'en' ? "I'm here to help with any agriculture-related questions you might have. Feel free to ask!" : "ଆପଣଙ୍କ ପାଖରେ ଥିବା କୃଷି ସମ୍ବନ୍ଧୀୟ ପ୍ରଶ୍ନଗୁଡ଼ିକରେ ସାହାଯ୍ୟ କରିବାକୁ ମୁଁ ଏଠାରେ ଅଛି | ପଚାରିବାକୁ ମୁକ୍ତ ହୁଅନ୍ତୁ!");
     }
 
     if (words?.[1]?.includes('null')) {
-      words[1] = words[1].replace('null', "I'm here to help with any agriculture-related questions you might have. Feel free to ask!");
+      words[1] = words[1].replace('null', localStorage.getItem('locale') == 'en' ? "I'm here to help with any agriculture-related questions you might have. Feel free to ask!" : "ଆପଣଙ୍କ ପାଖରେ ଥିବା କୃଷି ସମ୍ବନ୍ଧୀୟ ପ୍ରଶ୍ନଗୁଡ଼ିକରେ ସାହାଯ୍ୟ କରିବାକୁ ମୁଁ ଏଠାରେ ଅଛି | ପଚାରିବାକୁ ମୁକ୍ତ ହୁଅନ୍ତୁ!");
     }
 
     if (words?.[words?.length - 2]?.includes('Thank') && words?.[words?.length - 1]?.includes('you')) {
