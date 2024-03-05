@@ -67,6 +67,7 @@ const ContextProvider: FC<{
   const [startTime, setStartTime] = useState(Date.now());
   const [endTime, setEndTime] = useState(Date.now());
   const [lastMsgId, setLastMsgId] = useState('');
+  const [kaliaClicked, setKaliaClicked] = useState(false);
 
   const downloadChat = useMemo(() => {
     return (e: string) => {
@@ -641,6 +642,8 @@ const ContextProvider: FC<{
       downloadChat,
       audioPlaying,
       setAudioPlaying,
+      kaliaClicked,
+      setKaliaClicked
     }),
     [
       locale,
@@ -667,6 +670,8 @@ const ContextProvider: FC<{
       downloadChat,
       audioPlaying,
       setAudioPlaying,
+      kaliaClicked,
+      setKaliaClicked
     ]
   );
 

@@ -2,9 +2,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 5px;
   background-color: var(--bg-color);
-  height: 100px;
+  height: 85px;
   border-bottom: 1px solid #dbdbdb;
 }
 
