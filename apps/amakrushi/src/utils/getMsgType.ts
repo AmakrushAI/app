@@ -1,6 +1,7 @@
 export const getMsgType = (msg: any): string => {
 	if (isJsonString(msg?.text)) {
 		if (Array.isArray(JSON.parse(msg?.text)?.weatherData)) return 'table';
+		else if(JSON.parse(msg?.text)?.personalDetails) return 'kaliaTable';
 	}
 	if (msg?.payload?.buttonChoices?.length || msg?.choices?.length) return 'options';
 	if (msg?.imageUrl) return 'image';

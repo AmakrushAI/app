@@ -217,7 +217,7 @@ const HomePage: NextPage = () => {
         context?.setMessages([]);
         router.push('/chat');
         if(context?.kaliaClicked){
-          context?.sendMessage("Aadhar number - "+msg);
+          context?.sendMessage("Aadhar number - " + msg, null, true, null, true);
         }else context?.sendMessage(msg);
       } else {
         toast.error(t('error.disconnected'));

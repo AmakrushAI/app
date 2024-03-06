@@ -376,7 +376,7 @@ const ContextProvider: FC<{
 
   //@ts-ignore
   const sendMessage = useCallback(
-    (text: string, media: any, isVisibile = true, selectedButton: any): void => {
+    (text: string, media: any, isVisibile = true, selectedButton: any, kaliaSchemeClicked = false): void => {
       if (!sessionStorage.getItem('conversationId')) {
         const cId = uuidv4();
         console.log('convId', cId);
@@ -416,7 +416,8 @@ const ContextProvider: FC<{
           asrId: sessionStorage.getItem('asrId'),
           userId: localStorage.getItem('userID'),
           conversationId: sessionStorage.getItem('conversationId'),
-          selectedButton: selectedButton || null
+          selectedButton: selectedButton || null,
+          kaliaSchemeClicked: kaliaSchemeClicked
         }
       });
       setStartTime(Date.now());
