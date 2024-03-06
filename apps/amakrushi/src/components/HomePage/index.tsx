@@ -359,7 +359,14 @@ const HomePage: NextPage = () => {
     return (
       <>
         <div className={styles.main} onClick={handleDocumentClick}>
-          <div className={styles.title}>{t('label.ask_me')}</div>
+          {context?.kaliaClicked ? <div className={styles.kaliaImg}>
+            <Image
+                  src={kaliaStatusImg}
+                  width={180}
+                  height={120}
+                  alt="kaliastatus"
+                />
+          </div> : <><div className={styles.title}>{t('label.ask_me')}</div>
           <div className={styles.imgButtons}>
             <div
               style={{
@@ -403,7 +410,7 @@ const HomePage: NextPage = () => {
           </div>
           <div className={styles.voiceRecorder} ref={voiceRecorderRef}>
             <RenderVoiceRecorder setInputMsg={setInputMsg} tapToSpeak={true} />
-          </div>
+          </div></>}
 
           {/* <div
             className={
