@@ -216,9 +216,9 @@ const HomePage: NextPage = () => {
         console.log('clearing mssgs');
         context?.setMessages([]);
         router.push('/chat');
-        if(context?.kaliaClicked){
+        if (context?.kaliaClicked) {
           context?.sendMessage("Aadhar number - " + msg, null, true, null, true);
-        }else context?.sendMessage(msg);
+        } else context?.sendMessage(msg);
       } else {
         toast.error(t('error.disconnected'));
         return;
@@ -229,12 +229,12 @@ const HomePage: NextPage = () => {
 
   const handleInputChange = (e: any) => {
     const inputValue = e.target.value;
-    if(context?.kaliaClicked){
-      if(!/^[0-9]*$/.test(inputValue) || inputValue.length > 12){
+    if (context?.kaliaClicked) {
+      if (!/^[0-9]*$/.test(inputValue) || inputValue.length > 12) {
         toast.error('Please enter valid aadhaar number');
         // setInputMsg(inputValue.slice(0, 12));
-      }else setInputMsg(inputValue);
-    }else setInputMsg(inputValue);
+      } else setInputMsg(inputValue);
+    } else setInputMsg(inputValue);
     const cursorPosition = e.target.selectionStart;
     setCursorPosition(cursorPosition);
     // setShowExampleMessages(inputValue.length === 0);
@@ -361,56 +361,56 @@ const HomePage: NextPage = () => {
         <div className={styles.main} onClick={handleDocumentClick}>
           {context?.kaliaClicked ? <div className={styles.kaliaImg}>
             <Image
-                  src={kaliaStatusImg}
-                  width={180}
-                  height={120}
-                  alt="kaliastatus"
-                />
+              src={kaliaStatusImg}
+              width={180}
+              height={120}
+              alt="kaliastatus"
+            />
           </div> : <><div className={styles.title}>{t('label.ask_me')}</div>
-          <div className={styles.imgButtons}>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-evenly',
-                width: '100%',
-                maxWidth: '500px',
-              }}>
-              <div className={styles.imgBtn} onClick={() => {context?.setKaliaClicked((props: boolean) => !props);}}>
-                <p>KALIA status</p>
-                <Image
-                  src={kaliaStatusImg}
-                  width={80}
-                  height={57}
-                  alt="kaliastatus"
-                />
+            <div className={styles.imgButtons}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-evenly',
+                  width: '100%',
+                  maxWidth: '500px',
+                }}>
+                <div className={styles.imgBtn} onClick={() => { context?.setKaliaClicked((props: boolean) => !props); }}>
+                  <p>{t('label.kalia_status')}</p>
+                  <Image
+                    src={kaliaStatusImg}
+                    width={80}
+                    height={57}
+                    alt="kaliastatus"
+                  />
+                </div>
+                <div className={styles.imgBtn} onClick={() => {
+                  toast('Coming Soon!')
+                }}>
+                  <p>{t('label.plant_protection')}</p>
+                  <Image
+                    src={plantProtectionImg}
+                    width={60}
+                    height={60}
+                    alt="plantprotection"
+                  />
+                </div>
               </div>
-              <div className={styles.imgBtn} onClick={() => {
-                toast('Coming Soon!')
+              <div className={styles.imgBtn} style={{ marginTop: '20px' }} onClick={() => {
+                sendMessage('weather advisory');
               }}>
-                <p>Plant Protection</p>
+                <p>{t('label.weather_advisory')}</p>
                 <Image
-                  src={plantProtectionImg}
-                  width={60}
-                  height={60}
-                  alt="plantprotection"
+                  src={weatherAdvisoryImg}
+                  width={50}
+                  height={70}
+                  alt="weatheradvisory"
                 />
               </div>
             </div>
-            <div className={styles.imgBtn} style={{ marginTop: '20px' }} onClick={() => {
-              sendMessage('weather advisory');
-            }}>
-              <p>Weather Advisory</p>
-              <Image
-                src={weatherAdvisoryImg}
-                width={50}
-                height={70}
-                alt="weatheradvisory"
-              />
-            </div>
-          </div>
-          <div className={styles.voiceRecorder} ref={voiceRecorderRef}>
-            <RenderVoiceRecorder setInputMsg={setInputMsg} tapToSpeak={true} />
-          </div></>}
+            <div className={styles.voiceRecorder} ref={voiceRecorderRef}>
+              <RenderVoiceRecorder setInputMsg={setInputMsg} tapToSpeak={true} />
+            </div></>}
 
           {/* <div
             className={
@@ -453,9 +453,8 @@ const HomePage: NextPage = () => {
                   <div
                     key={index}
                     onClick={() => suggestionClickHandler(elem)}
-                    className={`${styles.suggestion} ${
-                      activeSuggestion === index ? styles.active : ''
-                    }`}
+                    className={`${styles.suggestion} ${activeSuggestion === index ? styles.active : ''
+                      }`}
                     onMouseEnter={(e) => suggestionHandler(e, index)}>
                     {elem}
                   </div>
@@ -467,7 +466,7 @@ const HomePage: NextPage = () => {
               rows={1}
               value={inputMsg}
               onChange={handleInputChange}
-              placeholder={!context?.kaliaClicked ? placeholder: 'Enter you Aadhar number'}
+              placeholder={!context?.kaliaClicked ? placeholder : 'Enter you Aadhar number'}
             />
             <button type="submit" className={styles.sendButton}>
               <Image

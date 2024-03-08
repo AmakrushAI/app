@@ -10,3 +10,11 @@
   -ms-user-select: none;
   user-select: none;
 }
+
+.imgContainer {
+  position: relative;
+  overflow: hidden;
+  margin: auto;
+  width: 6rem;
+  height: 6rem;
+}

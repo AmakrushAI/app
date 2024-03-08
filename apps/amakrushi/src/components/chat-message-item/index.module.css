@@ -140,6 +140,7 @@
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
 }
+
 .tableContainerKalia {
   position: relative;
   display: flex;
@@ -210,16 +211,30 @@
 .tableDataColKalia {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  white-space: nowrap;
   padding: 0rem 1rem;
   /* margin: 0.5rem 0rem; */
+  width: 100%;
   gap: 0.5rem;
   border: 1px solid black;
+  font-size: 13px;
+  font-weight: 500;
 }
+
 .tableDataCol:nth-child(odd) {
   background: #F2F2F2;
 }
+
 .tableDataColKalia:nth-child(odd) {
   background: #F2F2F2;
+}
+
+.kaliaCell {
+  width: 50%;
+}
+
+.divider {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  height: 2px;
+  margin: 1rem 0rem 1rem 0rem;
 }

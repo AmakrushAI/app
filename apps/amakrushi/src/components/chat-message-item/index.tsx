@@ -737,8 +737,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                   <div key={rowIndex} className={styles.tableDataRow}>
                     {chunk.map(([field, value]: [any, any], colIndex) => (
                       <div key={`${rowIndex}-${colIndex}`} className={styles.tableDataColKalia}>
-                        <div style={{ flex: 1 }}>{field}</div>
-                        <div style={{ flex: 1 }}>{value}</div>
+                        <div style={{ borderRight: '1px solid grey' }} className={styles.kaliaCell}>{field}</div>
+                        <div style={{}} className={styles.kaliaCell}>{value}</div>
                       </div>
                     ))}
                   </div>
@@ -887,7 +887,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
               </div>
             </div>
             {/* Disclaimer Text */}
-            {dataKeys?.['Disclaimer'] && <span style={{ marginTop: '500px' }}> <b>{t('lable.disclaimer')}</b>: {dataKeys?.['Disclaimer']}</span>}
+            <div className={styles.divider}></div>
+            {dataKeys?.['Disclaimer'] && <div > <b>{t('lable.disclaimer')}</b>: {dataKeys?.['Eligibility Status'] ? t('label.eleg_disclaimer') : t('label.grievance_disclaimer')}</div>}
             <span
               className="onHover"
               style={{
@@ -929,12 +930,14 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
             }></div>
           <Bubble type="text">
             <div className={styles.tableContainer}>
-              <div className={styles.tableHeader}>
+              <div className={styles.tableHeader}
+                style={{ fontSize: '13px' }}
+              >
                 <div>
-                  <b>Name of Bank</b>
+                  <b>Name of<br></br> Bank</b>
                 </div>
                 <div>IFSC Code</div>
-                <div>Payment processed <br></br> Date</div>
+                <div>Payment<br></br> processed Date</div>
                 <div>Saving Bank <br></br>Account No</div>
                 <div>Payment Status </div>
                 <div>UTR No</div>
@@ -944,13 +947,15 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                   (el: any, idx: any) => (
                     <div
                       key={el?.['Name of Bank'] + idx}
-                      className={styles.tableDataCol}>
+                      className={styles.tableDataCol}
+                      style={{ fontSize: '13px' }}
+                    >
                       <div>
                         <b> {el['Name of Bank']}</b>
                       </div>
                       <div>{el['IFSC Code']} </div>
                       <div>{el['Payment processed Date']}</div><br></br>
-                      <div>{el['Saving Bank Account No.']}</div><br></br>
+                      <div>{el['Saving Bank Account No.']}</div>
                       <div>{el['Payment Status']}</div>
                       <div>{el['UTR No.']}</div>
                     </div>
@@ -958,7 +963,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                 )}
               </div>
             </div>
-            {disclaimer && <span style={{ marginTop: '500px' }}> <b>{t('lable.disclaimer')}</b>: {disclaimer}</span>}
+            <div className={styles.divider}></div>
+            {disclaimer && <div> <b>{t('lable.disclaimer')}</b>: {t('label.disbursal_disclaimer')}</div>}
           </Bubble>
         </div>
       );
