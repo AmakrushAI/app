@@ -1,7 +1,10 @@
 export const getMsgType = (msg: any): string => {
 	if (isJsonString(msg?.text)) {
 		if (Array.isArray(JSON.parse(msg?.text)?.weatherData)) return 'table';
-		else if(JSON.parse(msg?.text)?.personalDetails) return 'kaliaTable';
+		if (JSON.parse(msg?.text)?.['Online Grievance Application Status']) return 'singleTable'
+		if (JSON.parse(msg?.text)?.['Eligibility Status']) return 'singleTable'
+		if (JSON.parse(msg?.text)?.['Personal Details']) return 'kaliaTable';
+		if (JSON.parse(msg?.text)?.['Payment Account Details']) return 'disbursalHistory';
 	}
 	if (msg?.payload?.buttonChoices?.length || msg?.choices?.length) return 'options';
 	if (msg?.imageUrl) return 'image';
