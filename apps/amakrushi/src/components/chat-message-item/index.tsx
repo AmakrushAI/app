@@ -137,7 +137,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
     message?.content?.data?.optionClicked || false
   );
   const getLists = useCallback(
-    ({ choices, isWeather = false }: { choices: any, isWeather: Boolean }) => {
+    ({ choices, isWeather = false }: { choices: any; isWeather: Boolean }) => {
       return (
         <List className={`${styles.list}`}>
           {choices?.map((choice: any, index: string) => (
@@ -157,7 +157,12 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
               onClick={(e: any): void => {
                 e.preventDefault();
                 if (optionDisabled) {
-                  toast.error(`${isWeather ? t('message.wait_before_choosing') : t('message.cannot_answer_again')}`);
+                  toast.error(
+                    `${isWeather
+                      ? t('message.wait_before_choosing')
+                      : t('message.cannot_answer_again')
+                    }`
+                  );
                 } else {
                   if (context?.messages?.[0]?.exampleOptions) {
                     console.log('clearing chat');
@@ -165,18 +170,23 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                   }
                   if (isWeather)
                     context?.sendMessage(choice?.text, false, true, choice);
-                  else
-                    context?.sendMessage(choice);
+                  else context?.sendMessage(choice);
                   setOptionDisabled(true);
                   if (isWeather)
-                    setTimeout(() => document.getElementsByClassName('PullToRefresh')?.[0]?.scrollTo({
-                      top: 999999,
-                      left: 0,
-                      behavior: "smooth",
-                    }), 500)
+                    setTimeout(
+                      () =>
+                        document
+                          .getElementsByClassName('PullToRefresh')?.[0]
+                          ?.scrollTo({
+                            top: 999999,
+                            left: 0,
+                            behavior: 'smooth',
+                          }),
+                      500
+                    );
                   setTimeout(() => {
                     setOptionDisabled(false);
-                  }, 4000)
+                  }, 4000);
                 }
               }}>
               <div
@@ -202,9 +212,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                 </div>
               </div>
             </ListItem>
-          ))
-          }
-        </List >
+          ))}
+        </List>
       );
     },
     [context, t]
@@ -314,34 +323,50 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
 
   const FormattedText = ({ content }: FormattedTextProps) => {
     let words = content.split(' ');
-    if (words?.[words?.length - 1] == '' || words?.[words?.length - 1] == " ") {
+    if (words?.[words?.length - 1] == '' || words?.[words?.length - 1] == ' ') {
       words = words.slice(0, words?.length - 1);
     }
 
-    if (words?.[0] == ":") {
-      words = words.slice(1)
+    if (words?.[0] == ':') {
+      words = words.slice(1);
     }
 
     if (words?.[0]?.includes('null')) {
-      words[0] = words[0].replace('null', localStorage.getItem('locale') == 'en' ? "I'm here to help with any agriculture-related questions you might have. Feel free to ask!" : "ଆପଣଙ୍କ ପାଖରେ ଥିବା କୃଷି ସମ୍ବନ୍ଧୀୟ ପ୍ରଶ୍ନଗୁଡ଼ିକରେ ସାହାଯ୍ୟ କରିବାକୁ ମୁଁ ଏଠାରେ ଅଛି | ପଚାରିବାକୁ ମୁକ୍ତ ହୁଅନ୍ତୁ!");
+      words[0] = words[0].replace(
+        'null',
+        localStorage.getItem('locale') == 'en'
+          ? "I'm here to help with any agriculture-related questions you might have. Feel free to ask!"
+          : 'ଆପଣଙ୍କ ପାଖରେ ଥିବା କୃଷି ସମ୍ବନ୍ଧୀୟ ପ୍ରଶ୍ନଗୁଡ଼ିକରେ ସାହାଯ୍ୟ କରିବାକୁ ମୁଁ ଏଠାରେ ଅଛି | ପଚାରିବାକୁ ମୁକ୍ତ ହୁଅନ୍ତୁ!'
+      );
     }
 
     if (words?.[1]?.includes('null')) {
-      words[1] = words[1].replace('null', localStorage.getItem('locale') == 'en' ? "I'm here to help with any agriculture-related questions you might have. Feel free to ask!" : "ଆପଣଙ୍କ ପାଖରେ ଥିବା କୃଷି ସମ୍ବନ୍ଧୀୟ ପ୍ରଶ୍ନଗୁଡ଼ିକରେ ସାହାଯ୍ୟ କରିବାକୁ ମୁଁ ଏଠାରେ ଅଛି | ପଚାରିବାକୁ ମୁକ୍ତ ହୁଅନ୍ତୁ!");
+      words[1] = words[1].replace(
+        'null',
+        localStorage.getItem('locale') == 'en'
+          ? "I'm here to help with any agriculture-related questions you might have. Feel free to ask!"
+          : 'ଆପଣଙ୍କ ପାଖରେ ଥିବା କୃଷି ସମ୍ବନ୍ଧୀୟ ପ୍ରଶ୍ନଗୁଡ଼ିକରେ ସାହାଯ୍ୟ କରିବାକୁ ମୁଁ ଏଠାରେ ଅଛି | ପଚାରିବାକୁ ମୁକ୍ତ ହୁଅନ୍ତୁ!'
+      );
     }
 
-    if (words?.[words?.length - 2]?.includes('Thank') && words?.[words?.length - 1]?.includes('you')) {
-      words[words.length - 2] = words[words.length - 2].replace('Thank', '\nThank')
+    if (
+      words?.[words?.length - 2]?.includes('Thank') &&
+      words?.[words?.length - 1]?.includes('you')
+    ) {
+      words[words.length - 2] = words[words.length - 2].replace(
+        'Thank',
+        '\nThank'
+      );
     }
 
     return (
       <p>
         {words.map((word) => {
-          return word + ' '
+          return word + ' ';
         })}
       </p>
     );
-  }
+  };
 
   switch (type) {
     case 'loader':
@@ -617,14 +642,18 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
 
     case 'video': {
       const url = content?.data?.payload?.media?.url || content?.data?.videoUrl;
-      const videoId = url.split("=")[1];
+      const videoId = url.split('=')[1];
       return (
         <>
           <Bubble type="image">
             <div style={{ padding: '7px' }}>
-              <iframe width="100%" height="fit-content"
+              <iframe
+                width="100%"
+                height="fit-content"
                 src={`https://www.youtube.com/embed/` + videoId}
-                frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen></iframe>
               <div
                 style={{
                   display: 'flex',
@@ -659,13 +688,84 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
             {getLists({
               choices:
                 content?.data?.payload?.buttonChoices ?? content?.data?.choices,
-              isWeather: true
+              isWeather: true,
             })}
           </Bubble>
         </>
       );
     }
 
+    case 'kaliaTable': {
+      const personalDetails = JSON.parse(content?.text)?.['Personal Details'];
+      const entries = Object.entries(personalDetails);
+      const chunkedEntries = [];
+      for (let i = 0; i < entries.length; i += 4) {
+        chunkedEntries.push(entries.slice(i, i + 4));
+      }
+      return (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative',
+            maxWidth: '90vw',
+          }}>
+          <div
+            className={
+              content?.data?.position === 'right'
+                ? styles.messageTriangleRight
+                : styles.messageTriangleLeft
+            }></div>
+          <Bubble type="text">
+            <div className={styles.tableContainerKalia}>
+              <div className={styles.tableHeaderKalia}>
+                <div>
+                  <b>{t('table.personalDetails')}</b>
+                </div>
+                {/* <div>{t('table.header_temp_max')}</div>
+                <div>{t('table.header_temp_min')}</div>
+                <div>{t('table.header_temp')}</div>
+                <div>{t('table.header_humidity')}</div>
+                <div>{t('table.header_precip')}</div>
+                <div>{t('table.header_precip_prob')}</div>
+                <div>{t('table.header_windspeed')}</div>
+                <div>{t('table.header_cloudcover')}</div>
+                <div>{t('table.header_conditions')}</div> */}
+              </div>
+              <div className={styles.tableData}>
+                {chunkedEntries.map((chunk, rowIndex) => (
+                  <div key={rowIndex} className={styles.tableDataRow}>
+                    {chunk.map(([field, value]: [any, any], colIndex) => (
+                      <div key={`${rowIndex}-${colIndex}`} className={styles.tableDataColKalia}>
+                        <div style={{ borderRight: '1px solid grey' }} className={styles.kaliaCell}>{field}</div>
+                        <div style={{}} className={styles.kaliaCell}>{value}</div>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <span
+              className="onHover"
+              style={{
+                fontWeight: 600,
+                fontSize: '1rem',
+                color:
+                  content?.data?.position === 'right' ? 'white' : 'var(--font)',
+              }}>
+              {/* {`\n` +
+                JSON.parse(content?.text)?.generalAdvice +
+                `\n\n` +
+                JSON.parse(content?.text)?.buttonDescription} */}
+              {getLists({
+                choices: JSON.parse(content?.text)?.buttons,
+                isWeather: true,
+              })}
+            </span>
+          </Bubble>
+        </div>
+      );
+    }
     case 'table': {
       return (
         <div
@@ -741,12 +841,130 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
               }}>
               {`\n` +
                 JSON.parse(content?.text)?.generalAdvice +
-                `\n\n` + JSON.parse(content?.text)?.buttonDescription}
+                `\n\n` +
+                JSON.parse(content?.text)?.buttonDescription}
               {getLists({
                 choices: JSON.parse(content?.text)?.buttons,
-                isWeather: true
+                isWeather: true,
               })}
             </span>
+          </Bubble>
+        </div>
+      );
+    }
+    case 'singleTable': {
+      const dataKeys = JSON.parse(content?.text);
+      const entries = Object.keys(dataKeys);
+      const innerData = dataKeys?.[entries?.[0]]?.Object?.keys(dataKeys?.[entries?.[0]])?.[0];
+      console.log({ dataKeys, entries })
+      return (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative',
+            maxWidth: '90vw',
+          }}>
+          <div
+            className={
+              content?.data?.position === 'right'
+                ? styles.messageTriangleRight
+                : styles.messageTriangleLeft
+            }></div>
+          <Bubble type="text">
+            <div className={styles.tableContainerKalia}>
+              <div className={styles.tableHeaderKalia}>
+                <div>
+                  <b>{entries?.[0]}</b>
+                </div>
+              </div>
+              <div className={styles.tableData}>
+                <div style={{ width: '100%' }} className={styles.tableDataRow}>
+                  <div className={styles.tableDataColKalia}>
+                    <div >{dataKeys[entries?.[0]]}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* Disclaimer Text */}
+            <div className={styles.divider}></div>
+            {dataKeys?.['Disclaimer'] && <div > <b>{t('lable.disclaimer')}</b>: {dataKeys?.['Eligibility Status'] ? t('label.eleg_disclaimer') : t('label.grievance_disclaimer')}</div>}
+            <span
+              className="onHover"
+              style={{
+                fontWeight: 600,
+                fontSize: '1rem',
+                color:
+                  content?.data?.position === 'right' ? 'white' : 'var(--font)',
+              }}>
+              {/* {`\n` +
+              JSON.parse(content?.text)?.generalAdvice +
+              `\n\n` +
+              JSON.parse(content?.text)?.buttonDescription} */}
+              {getLists({
+                choices: JSON.parse(content?.text)?.buttons,
+                isWeather: true,
+              })}
+            </span>
+          </Bubble>
+        </div>
+      );
+    }
+
+    case 'disbursalHistory': {
+      const disclaimer = JSON.parse(content?.text)?.['Disclaimer'] || '';
+      const data = JSON.parse(content?.text)?.['Payment Account Details']
+      return (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative',
+            maxWidth: '90vw',
+          }}>
+          <div
+            className={
+              content?.data?.position === 'right'
+                ? styles.messageTriangleRight
+                : styles.messageTriangleLeft
+            }></div>
+          <Bubble type="text">
+            <div className={styles.tableContainer}>
+              <div className={styles.tableHeader}
+                style={{ fontSize: '13px' }}
+              >
+                <div>
+                  <b>Name of<br></br> Bank</b>
+                </div>
+                <div>IFSC Code</div>
+                <div>Payment<br></br> processed Date</div>
+                <div>Saving Bank <br></br>Account No</div>
+                <div>Payment Status </div>
+                <div>UTR No</div>
+              </div>
+              <div className={styles.tableData}>
+                {data?.map(
+                  (el: any, idx: any) => (
+                    <div
+                      key={el?.['Name of Bank'] + idx}
+                      className={styles.tableDataCol}
+                      style={{ fontSize: '13px' }}
+                    >
+                      <div>
+                        <b> {el['Name of Bank']}</b>
+                      </div>
+                      <div>{el['IFSC Code']} </div>
+                      <div>{el['Payment processed Date']}</div><br></br>
+                      <div>{el['Saving Bank Account No.']}</div>
+                      <div>{el['Payment Status']}</div>
+                      <div>{el['UTR No.']}</div>
+                    </div>
+                  )
+                )}
+              </div>
+            </div>
+            <div className={styles.divider}></div>
+            {disclaimer && <div> <b>{t('lable.disclaimer')}</b>: {t('label.disbursal_disclaimer')}</div>}
           </Bubble>
         </div>
       );

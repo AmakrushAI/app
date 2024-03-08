@@ -118,7 +118,7 @@ const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak }) => {
       toast.success(`${t('message.recorder_wait')}`);
 
       // const audioElement = new Audio();
-  
+
       // const blobUrl = URL.createObjectURL(blob);
       // audioElement.src = blobUrl;
       // console.log(audioElement)
@@ -184,45 +184,37 @@ const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak }) => {
       <div>
         {mediaRecorder && mediaRecorder.state === 'recording' ? (
           <div className={styles.center}>
-            <Image
-              priority
-              src={stop}
-              alt="stopIcon"
-              onClick={() => {
-                stopRecording();
-              }}
-              style={{ cursor: 'pointer' }}
-              layout="responsive"
-            />
-          </div>
-        ) : (
-          <div className={styles.center}>
-            {apiCallStatus === 'processing' ? (
+            <div className={styles.imgContainer}>
               <Image
                 priority
-                src={processing}
-                alt="processingIcon"
-                style={{ cursor: 'pointer' }}
-                layout="responsive"
-              />
-            ) : apiCallStatus === 'error' ? (
-              <Image
-                priority
-                src={error}
-                alt="errorIcon"
+                src={stop}
+                alt="stopIcon"
                 onClick={() => {
-                  setUserClickedError(true);
-                  startRecording();
+                  stopRecording();
                 }}
                 style={{ cursor: 'pointer' }}
                 layout="responsive"
               />
-            ) : (
-              <>
+            </div>
+          </div>
+        ) : (
+          <div className={styles.center}>
+            {apiCallStatus === 'processing' ? (
+              <div className={styles.imgContainer}>
                 <Image
                   priority
-                  src={start}
-                  alt="startIcon"
+                  src={processing}
+                  alt="processingIcon"
+                  style={{ cursor: 'pointer' }}
+                  layout="responsive"
+                />
+              </div>
+            ) : apiCallStatus === 'error' ? (
+              <div className={styles.imgContainer}>
+                <Image
+                  priority
+                  src={error}
+                  alt="errorIcon"
                   onClick={() => {
                     setUserClickedError(true);
                     startRecording();
@@ -230,6 +222,24 @@ const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak }) => {
                   style={{ cursor: 'pointer' }}
                   layout="responsive"
                 />
+              </div>
+            ) : (
+              <>
+                <div className={styles.imgContainer}>
+                  <Image
+                    priority
+                    src={start}
+                    alt="startIcon"
+                    onClick={() => {
+                      setUserClickedError(true);
+                      startRecording();
+                    }}
+                    style={{ cursor: 'pointer' }}
+                    height={'10px !important'}
+                    width={'10px !important'}
+                    layout="responsive"
+                  />
+                </div>
                 {tapToSpeak ? (
                   <p style={{ color: 'black', fontSize: '12px', marginTop: '4px' }}>
                     {t('label.tap_to_speak')}

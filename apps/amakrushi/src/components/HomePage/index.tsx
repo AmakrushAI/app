@@ -28,6 +28,9 @@ import RenderVoiceRecorder from '../recorder/RenderVoiceRecorder';
 import { useFlags } from 'flagsmith/react';
 import DownTimePage from '../down-time-page';
 import { recordUserLocation } from '../../utils/location';
+import kaliaStatusImg from '../../assets/images/kalia_status.png';
+import plantProtectionImg from '../../assets/images/plant_protection.png';
+import weatherAdvisoryImg from '../../assets/images/weather_advisory.png';
 
 const HomePage: NextPage = () => {
   const context = useContext(AppContext);
@@ -65,7 +68,7 @@ const HomePage: NextPage = () => {
   };
 
   useEffect(() => {
-    if (inputMsg.length > 0 && !(localStorage.getItem('locale') === 'en')) {
+    if (inputMsg.length > 0 && !(localStorage.getItem('locale') === 'en') && !context?.kaliaClicked) {
       if (suggestionClicked) {
         setSuggestionClicked(false);
         return;
@@ -200,7 +203,6 @@ const HomePage: NextPage = () => {
     }
     recordUserLocation();
 
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -214,7 +216,9 @@ const HomePage: NextPage = () => {
         console.log('clearing mssgs');
         context?.setMessages([]);
         router.push('/chat');
-        context?.sendMessage(msg);
+        if (context?.kaliaClicked) {
+          context?.sendMessage("Aadhar number - " + msg, null, true, null, true);
+        } else context?.sendMessage(msg);
       } else {
         toast.error(t('error.disconnected'));
         return;
@@ -225,8 +229,12 @@ const HomePage: NextPage = () => {
 
   const handleInputChange = (e: any) => {
     const inputValue = e.target.value;
-    setInputMsg(inputValue);
-    // Store the cursor position
+    if (context?.kaliaClicked) {
+      if (!/^[0-9]*$/.test(inputValue) || inputValue.length > 12) {
+        toast.error('Please enter valid aadhaar number');
+        // setInputMsg(inputValue.slice(0, 12));
+      } else setInputMsg(inputValue);
+    } else setInputMsg(inputValue);
     const cursorPosition = e.target.selectionStart;
     setCursorPosition(cursorPosition);
     // setShowExampleMessages(inputValue.length === 0);
@@ -351,11 +359,60 @@ const HomePage: NextPage = () => {
     return (
       <>
         <div className={styles.main} onClick={handleDocumentClick}>
-          <div className={styles.title}>{t('label.ask_me')}</div>
-          <div className={styles.voiceRecorder} ref={voiceRecorderRef}>
-            <RenderVoiceRecorder setInputMsg={setInputMsg} tapToSpeak={true} />
-          </div>
-          <div
+          {context?.kaliaClicked ? <div className={styles.kaliaImg}>
+            <Image
+              src={kaliaStatusImg}
+              width={180}
+              height={120}
+              alt="kaliastatus"
+            />
+          </div> : <><div className={styles.title}>{t('label.ask_me')}</div>
+            <div className={styles.imgButtons}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-evenly',
+                  width: '100%',
+                  maxWidth: '500px',
+                }}>
+                <div className={styles.imgBtn} onClick={() => { context?.setKaliaClicked((props: boolean) => !props); }}>
+                  <p>{t('label.kalia_status')}</p>
+                  <Image
+                    src={kaliaStatusImg}
+                    width={80}
+                    height={57}
+                    alt="kaliastatus"
+                  />
+                </div>
+                <div className={styles.imgBtn} onClick={() => {
+                  toast('Coming Soon!')
+                }}>
+                  <p>{t('label.plant_protection')}</p>
+                  <Image
+                    src={plantProtectionImg}
+                    width={60}
+                    height={60}
+                    alt="plantprotection"
+                  />
+                </div>
+              </div>
+              <div className={styles.imgBtn} style={{ marginTop: '20px' }} onClick={() => {
+                sendMessage('weather advisory');
+              }}>
+                <p>{t('label.weather_advisory')}</p>
+                <Image
+                  src={weatherAdvisoryImg}
+                  width={50}
+                  height={70}
+                  alt="weatheradvisory"
+                />
+              </div>
+            </div>
+            <div className={styles.voiceRecorder} ref={voiceRecorderRef}>
+              <RenderVoiceRecorder setInputMsg={setInputMsg} tapToSpeak={true} />
+            </div></>}
+
+          {/* <div
             className={
               styles.exampleMessages +
               (showExampleMessages
@@ -380,46 +437,47 @@ const HomePage: NextPage = () => {
                     style={{ marginRight: '2px' }}
                   />
                   {choice.text}
-                  {/* <div className={styles.rightIcon}>
+                  <div className={styles.rightIcon}>
                     <RightIcon width="35px" color="var(--secondarygreen)" />
-                  </div> */}
+                  </div>
                 </button>
               );
             })}
-          </div>
-
-          <form onSubmit={(event) => event?.preventDefault()}>
-            <div
-              ref={chatBoxButton}
-              className={`${`${styles.inputBox} ${styles.inputBoxOpen}`}`}>
-              <div className={styles.suggestions}>
-                {suggestions.map((elem, index) => {
-                  return (
-                    <div
-                      key={index}
-                      onClick={() => suggestionClickHandler(elem)}
-                      className={`${styles.suggestion} ${activeSuggestion === index ? styles.active : ''
-                        }`}
-                      onMouseEnter={(e) => suggestionHandler(e, index)}>
-                      {elem}
-                    </div>
-                  );
-                })}
-              </div>
-              <textarea
-                ref={inputRef}
-                rows={1}
-                value={inputMsg}
-                onChange={handleInputChange}
-                placeholder={placeholder}
-              />
-              <button
-                type="submit"
-                className={styles.sendButton}>
-                <Image src={SendIcon} width={50} height={50} alt="sendIcon" onClick={() => sendMessage(inputMsg)} />
-              </button>
+          </div> */}
+          <div
+            ref={chatBoxButton}
+            className={`${`${styles.inputBox} ${styles.inputBoxOpen}`}`}>
+            <div className={styles.suggestions}>
+              {suggestions.map((elem, index) => {
+                return (
+                  <div
+                    key={index}
+                    onClick={() => suggestionClickHandler(elem)}
+                    className={`${styles.suggestion} ${activeSuggestion === index ? styles.active : ''
+                      }`}
+                    onMouseEnter={(e) => suggestionHandler(e, index)}>
+                    {elem}
+                  </div>
+                );
+              })}
             </div>
-          </form>
+            <textarea
+              ref={inputRef}
+              rows={1}
+              value={inputMsg}
+              onChange={handleInputChange}
+              placeholder={!context?.kaliaClicked ? placeholder : 'Enter you Aadhar number'}
+            />
+            <button type="submit" className={styles.sendButton}>
+              <Image
+                src={SendIcon}
+                width={50}
+                height={50}
+                alt="sendIcon"
+                onClick={() => sendMessage(inputMsg)}
+              />
+            </button>
+          </div>
         </div>
       </>
     );
