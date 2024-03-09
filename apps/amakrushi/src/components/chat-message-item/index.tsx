@@ -931,16 +931,14 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
           <Bubble type="text">
             <div className={styles.tableContainer}>
               <div className={styles.tableHeader}
-                style={{ fontSize: '13px' }}
+                style={{ fontSize: '13px', width: '30%', wordWrap: 'break-word', wordBreak: 'break-word', display: 'flex' }}
               >
-                <div>
-                  <b>Name of<br></br> Bank</b>
-                </div>
-                <div>IFSC Code</div>
-                <div>Payment<br></br> processed Date</div>
-                <div>Saving Bank <br></br>Account No</div>
-                <div>Payment Status </div>
-                <div>UTR No</div>
+                <p className={styles.tableDataCellHeader}>Name of<br></br> Bank</p>
+                <p className={styles.tableDataCellHeader}>IFSC Code</p>
+                <p className={styles.tableDataCellHeader}>Payment <br></br>processed Date</p>
+                <p className={styles.tableDataCellHeader}>Saving Bank<br></br> Account No</p>
+                <p className={styles.tableDataCellHeader}>Payment <br></br>Status </p>
+                <p className={styles.tableDataCellHeader}>UTR No</p>
               </div>
               <div className={styles.tableData}>
                 {data?.map(
@@ -948,16 +946,14 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                     <div
                       key={el?.['Name of Bank'] + idx}
                       className={styles.tableDataCol}
-                      style={{ fontSize: '13px' }}
+                      style={{ fontSize: '13px', padding: '0rem' }}
                     >
-                      <div>
-                        <b> {el['Name of Bank']}</b>
-                      </div>
-                      <div>{el['IFSC Code']} </div>
-                      <div>{el['Payment processed Date']}</div><br></br>
-                      <div>{el['Saving Bank Account No.']}</div>
-                      <div>{el['Payment Status']}</div>
-                      <div>{el['UTR No.']}</div>
+                      <div className={styles.tableDataCell}>{el['Name of Bank']}</div>
+                      <div className={styles.tableDataCell}>{el['IFSC Code']} </div>
+                      <div className={styles.tableDataCell}>{el['Payment processed Date']}</div>
+                      <div className={styles.tableDataCell}>{el['Saving Bank Account No.']}</div>
+                      <div className={styles.tableDataCell}>{el['Payment Status']}</div>
+                      <div className={styles.tableDataCell}>{el['UTR No.']}</div>
                     </div>
                   )
                 )}
