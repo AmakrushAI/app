@@ -158,9 +158,9 @@
   flex-direction: column;
   margin: 0.5rem;
   gap: 0.5rem;
-  white-space: nowrap;
   color: var(--secondarygreen);
   font-weight: bold;
+  min-width: 7rem;
 }
 
 .tableHeaderKalia {
@@ -224,6 +224,10 @@
   background: #F2F2F2;
 }
 
+.tableDataCol:nth-child(even) {
+  background: #fff
+}
+
 .tableDataColKalia:nth-child(odd) {
   background: #F2F2F2;
 }
@@ -237,4 +241,27 @@
   background: rgba(0, 0, 0, 0.1);
   height: 2px;
   margin: 1rem 0rem 1rem 0rem;
+}
+
+.disbursalTable {
+  table-layout: fixed;
+  width: 100%;
+  margin-left: -100px;
+  /*ie7*/
+}
+
+.tableDataCell {
+  border-bottom: 1px solid grey;
+  width: 100%;
+  height: 3rem;
+  text-align: center;
+  padding: 0rem 0.5rem;
+}
+
+.tableDataCellHeader {
+  min-width: 10rem;
+  height: 3rem;
+  padding: 0rem 0.5rem;
+  word-wrap: break-word;
+  white-space: break-spaces;
 }

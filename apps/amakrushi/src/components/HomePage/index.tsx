@@ -217,7 +217,7 @@ const HomePage: NextPage = () => {
         context?.setMessages([]);
         router.push('/chat');
         if (context?.kaliaClicked) {
-          context?.sendMessage("Aadhar number - " + msg, null, true, null, true);
+          context?.sendMessage("Aadhaar number - " + msg, null, true, null, true);
         } else context?.sendMessage(msg);
       } else {
         toast.error(t('error.disconnected'));
@@ -397,7 +397,7 @@ const HomePage: NextPage = () => {
                 </div>
               </div>
               <div className={styles.imgBtn} style={{ marginTop: '20px' }} onClick={() => {
-                sendMessage('weather advisory');
+                sendMessage(t('label.weather_advisory'));
               }}>
                 <p>{t('label.weather_advisory')}</p>
                 <Image
@@ -409,7 +409,7 @@ const HomePage: NextPage = () => {
               </div>
             </div>
             <div className={styles.voiceRecorder} ref={voiceRecorderRef}>
-              <RenderVoiceRecorder setInputMsg={setInputMsg} tapToSpeak={true} />
+              <RenderVoiceRecorder setInputMsg={setInputMsg} tapToSpeak={true} includeDiv={true} />
             </div></>}
 
           {/* <div
@@ -466,7 +466,7 @@ const HomePage: NextPage = () => {
               rows={1}
               value={inputMsg}
               onChange={handleInputChange}
-              placeholder={!context?.kaliaClicked ? placeholder : 'Enter you Aadhar number'}
+              placeholder={!context?.kaliaClicked ? placeholder : 'Enter you Aadhaar number'}
             />
             <button type="submit" className={styles.sendButton}>
               <Image

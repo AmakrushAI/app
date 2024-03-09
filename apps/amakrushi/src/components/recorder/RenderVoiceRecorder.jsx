@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import { useLocalization } from '../../hooks';
 import { useFlags } from 'flagsmith/react';
 
-const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak }) => {
+const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak, includeDiv = false }) => {
   const t = useLocalization();
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [apiCallStatus, setApiCallStatus] = useState('idle');
@@ -184,7 +184,7 @@ const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak }) => {
       <div>
         {mediaRecorder && mediaRecorder.state === 'recording' ? (
           <div className={styles.center}>
-            <div className={styles.imgContainer}>
+            {includeDiv ? <div className={styles.imgContainer}>
               <Image
                 priority
                 src={stop}
@@ -196,11 +196,23 @@ const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak }) => {
                 layout="responsive"
               />
             </div>
+              :
+              <Image
+                priority
+                src={stop}
+                alt="stopIcon"
+                onClick={() => {
+                  stopRecording();
+                }}
+                style={{ cursor: 'pointer' }}
+                layout="responsive"
+              />
+            }
           </div>
         ) : (
           <div className={styles.center}>
             {apiCallStatus === 'processing' ? (
-              <div className={styles.imgContainer}>
+              includeDiv ? <div className={styles.imgContainer}>
                 <Image
                   priority
                   src={processing}
@@ -208,9 +220,16 @@ const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak }) => {
                   style={{ cursor: 'pointer' }}
                   layout="responsive"
                 />
-              </div>
+              </div> :
+                <Image
+                  priority
+                  src={processing}
+                  alt="processingIcon"
+                  style={{ cursor: 'pointer' }}
+                  layout="responsive"
+                />
             ) : apiCallStatus === 'error' ? (
-              <div className={styles.imgContainer}>
+              includeDiv ? <div className={styles.imgContainer}>
                 <Image
                   priority
                   src={error}
@@ -223,9 +242,20 @@ const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak }) => {
                   layout="responsive"
                 />
               </div>
+                : <Image
+                  priority
+                  src={error}
+                  alt="errorIcon"
+                  onClick={() => {
+                    setUserClickedError(true);
+                    startRecording();
+                  }}
+                  style={{ cursor: 'pointer' }}
+                  layout="responsive"
+                />
             ) : (
               <>
-                <div className={styles.imgContainer}>
+                {includeDiv ? <div className={styles.imgContainer}>
                   <Image
                     priority
                     src={start}
@@ -240,6 +270,20 @@ const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak }) => {
                     layout="responsive"
                   />
                 </div>
+                  : <Image
+                    priority
+                    src={start}
+                    alt="startIcon"
+                    onClick={() => {
+                      setUserClickedError(true);
+                      startRecording();
+                    }}
+                    style={{ cursor: 'pointer' }}
+                    height={'10px !important'}
+                    width={'10px !important'}
+                    layout="responsive"
+                  />
+                }
                 {tapToSpeak ? (
                   <p style={{ color: 'black', fontSize: '12px', marginTop: '4px' }}>
                     {t('label.tap_to_speak')}
