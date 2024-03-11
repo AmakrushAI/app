@@ -149,7 +149,7 @@ const ChatUiWindow: React.FC = () => {
 
   console.log('debug:', { msgToRender });
 
-  const placeholder = useMemo(() => t('message.ask_ur_question'), [t]);
+  const placeholder = useMemo(() => context?.kaliaClicked ? t('message.return_to_home_screen') : t('message.ask_ur_question'), [t]);
 
   const downloadShareHandler = async (type: string) => {
     try {

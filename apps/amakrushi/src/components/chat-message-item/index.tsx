@@ -931,7 +931,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
           <Bubble type="text">
             <div className={styles.tableContainer}>
               <div className={styles.tableHeader}
-                style={{ fontSize: '13px', width: '30%', wordWrap: 'break-word', wordBreak: 'break-word', display: 'flex' }}
+                style={{ fontSize: '13px', width: '30%', wordWrap: 'break-word', wordBreak: 'break-word', display: 'flex', gap: '0rem' }}
               >
                 <p className={styles.tableDataCellHeader}>Name of<br></br> Bank</p>
                 <p className={styles.tableDataCellHeader}>IFSC Code</p>
@@ -940,15 +940,15 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                 <p className={styles.tableDataCellHeader}>Payment <br></br>Status </p>
                 <p className={styles.tableDataCellHeader}>UTR No</p>
               </div>
-              <div className={styles.tableData}>
+              <div className={styles.tableData} >
                 {data?.map(
                   (el: any, idx: any) => (
                     <div
                       key={el?.['Name of Bank'] + idx}
                       className={styles.tableDataCol}
-                      style={{ fontSize: '13px', padding: '0rem' }}
+                      style={{ fontSize: '13px', padding: '0rem', gap: '0rem', minWidth: '7rem', wordWrap: 'break-word', wordBreak: 'break-word' }}
                     >
-                      <div className={styles.tableDataCell}>{el['Name of Bank']}</div>
+                      <div className={styles.tableDataCell} style={{ wordWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'break-spaces' }}>{el['Name of Bank']}</div>
                       <div className={styles.tableDataCell}>{el['IFSC Code']} </div>
                       <div className={styles.tableDataCell}>{el['Payment processed Date']}</div>
                       <div className={styles.tableDataCell}>{el['Saving Bank Account No.']}</div>
