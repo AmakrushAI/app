@@ -362,8 +362,8 @@ const HomePage: NextPage = () => {
           {context?.kaliaClicked ? <div className={styles.kaliaImg}>
             <Image
               src={kaliaStatusImg}
-              width={180}
-              height={180}
+              width={200}
+              height={200}
               alt="kaliastatus"
             />
           </div> : <><div className={styles.title}>{t('label.ask_me')}</div>
