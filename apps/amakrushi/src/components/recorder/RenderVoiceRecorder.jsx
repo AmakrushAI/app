@@ -1,19 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Image from 'next/image';
 import stop from '../../assets/icons/stop.gif';
 import processing from '../../assets/icons/process.gif';
 import error from '../../assets/icons/error.gif';
 import start from '../../assets/icons/startIcon.png';
+import disabledStart from '../../assets/icons/startIconDisable.png';
 import styles from './styles.module.css';
 import toast from 'react-hot-toast';
 import { useLocalization } from '../../hooks';
 import { useFlags } from 'flagsmith/react';
+import { AppContext } from '../../context';
 
-const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak }) => {
+const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak, includeDiv = false }) => {
   const t = useLocalization();
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [apiCallStatus, setApiCallStatus] = useState('idle');
   const [userClickedError, setUserClickedError] = useState(false);
+  const context = useContext(AppContext);
 
   const flags = useFlags(['delay_between_dialog']);
   let VOICE_MIN_DECIBELS = -35;
@@ -118,7 +121,7 @@ const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak }) => {
       toast.success(`${t('message.recorder_wait')}`);
 
       // const audioElement = new Audio();
-  
+
       // const blobUrl = URL.createObjectURL(blob);
       // audioElement.src = blobUrl;
       // console.log(audioElement)
@@ -184,45 +187,56 @@ const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak }) => {
       <div>
         {mediaRecorder && mediaRecorder.state === 'recording' ? (
           <div className={styles.center}>
-            <Image
-              priority
-              src={stop}
-              alt="stopIcon"
-              onClick={() => {
-                stopRecording();
-              }}
-              style={{ cursor: 'pointer' }}
-              layout="responsive"
-            />
-          </div>
-        ) : (
-          <div className={styles.center}>
-            {apiCallStatus === 'processing' ? (
+            {includeDiv ? <div className={styles.imgContainer}>
               <Image
                 priority
-                src={processing}
-                alt="processingIcon"
-                style={{ cursor: 'pointer' }}
-                layout="responsive"
-              />
-            ) : apiCallStatus === 'error' ? (
-              <Image
-                priority
-                src={error}
-                alt="errorIcon"
+                src={stop}
+                alt="stopIcon"
                 onClick={() => {
-                  setUserClickedError(true);
-                  startRecording();
+                  stopRecording();
                 }}
                 style={{ cursor: 'pointer' }}
                 layout="responsive"
               />
-            ) : (
-              <>
+            </div>
+              :
+              <Image
+                priority
+                src={stop}
+                alt="stopIcon"
+                onClick={() => {
+                  stopRecording();
+                }}
+                style={{ cursor: 'pointer' }}
+                layout="responsive"
+              />
+            }
+          </div>
+        ) : (
+          <div className={styles.center}>
+            {apiCallStatus === 'processing' ? (
+              includeDiv ? <div className={styles.imgContainer}>
                 <Image
                   priority
-                  src={start}
-                  alt="startIcon"
+                  src={processing}
+                  alt="processingIcon"
+                  style={{ cursor: 'pointer' }}
+                  layout="responsive"
+                />
+              </div> :
+                <Image
+                  priority
+                  src={processing}
+                  alt="processingIcon"
+                  style={{ cursor: 'pointer' }}
+                  layout="responsive"
+                />
+            ) : apiCallStatus === 'error' ? (
+              includeDiv ? <div className={styles.imgContainer}>
+                <Image
+                  priority
+                  src={error}
+                  alt="errorIcon"
                   onClick={() => {
                     setUserClickedError(true);
                     startRecording();
@@ -230,6 +244,50 @@ const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak }) => {
                   style={{ cursor: 'pointer' }}
                   layout="responsive"
                 />
+              </div>
+                : <Image
+                  priority
+                  src={error}
+                  alt="errorIcon"
+                  onClick={() => {
+                    setUserClickedError(true);
+                    startRecording();
+                  }}
+                  style={{ cursor: 'pointer' }}
+                  layout="responsive"
+                />
+            ) : (
+              <>
+                {includeDiv ? <div className={styles.imgContainer}>
+                  <Image
+                    priority
+                    src={start}
+                    alt="startIcon"
+                    onClick={() => {
+                      setUserClickedError(true);
+                      startRecording();
+                    }}
+                    style={{ cursor: 'pointer' }}
+                    height={'10px !important'}
+                    width={'10px !important'}
+                    layout="responsive"
+                  />
+                </div>
+                  : <Image
+                    priority
+                    src={context?.kaliaClicked ? disabledStart : start}
+                    alt="startIcon"
+                    onClick={() => {
+                      if (context?.kaliaClicked) return;
+                      setUserClickedError(true);
+                      startRecording();
+                    }}
+                    style={{ cursor: context?.kaliaClicked ? 'not-allowed' : 'pointer' }}
+                    height={'10px !important'}
+                    width={'10px !important'}
+                    layout="responsive"
+                  />
+                }
                 {tapToSpeak ? (
                   <p style={{ color: 'black', fontSize: '12px', marginTop: '4px' }}>
                     {t('label.tap_to_speak')}

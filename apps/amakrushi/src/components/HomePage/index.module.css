@@ -4,6 +4,14 @@
   color: var(--secondarygreen);
 }
 
+.kaliaImg{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
 .disconnected {
   padding-top: 0.5vh;
   display: flex;
@@ -19,20 +27,58 @@
   width: 57%;
   margin: auto;
   position: relative;
-  top: 10%;
+  top: 3%;
   text-align: center;
   font-family: 'Mulish-Bold';
   font-size: 3.5vh;
   font-weight: 700;
 }
 
+.imgButtons{
+  position: relative;
+  top: 7%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.imgBtn {
+  background-color: white;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  padding: 10px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+  width: 110px;
+  height: 110px;
+}
+
+.imgBtn:active{
+  transform: scale(0.9);
+}
+
+.imgBtn img{
+  min-width: 80% !important;
+}
+
+.imgBtn p{
+  color: var(--font);
+  font-family: 'Mulish-bold';
+  text-align: center;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+
 .voiceRecorder {
   position: relative;
   margin: auto;
-  top: 25%;
+  top: 15%;
   text-align: center;
-  height: 18vh;
-  width: 18vh;
+  height: 15vh;
+  width: 15vh;
 }
 
 .exampleMessages {
@@ -116,7 +162,7 @@
   position: absolute;
   left: 50%;
   right: 50%;
-  bottom: 1vh;
+  bottom: 0;
   transform: translateX(-50%);
   color: var(--font);
   width: 70%;

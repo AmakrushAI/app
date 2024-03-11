@@ -125,7 +125,7 @@ function NavBar() {
             {/* <div> */}
             <Sidemenu />
             {/* </div> */}
-            {router.pathname !== '/chat' && router.pathname !== '/' ? (
+            {router.pathname !== '/chat' && router.pathname !== '/' || (router.pathname === '/' && context?.kaliaClicked) ? (
               <div style={{ paddingLeft: '15px' }}>
                 <Image
                   src={homeIcon}
@@ -133,6 +133,7 @@ function NavBar() {
                   width={30}
                   height={30}
                   onClick={() => {
+                    if(context?.kaliaClicked) context?.setKaliaClicked(false);
                     router.push('/');
                   }}
                 />
