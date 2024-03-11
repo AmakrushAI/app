@@ -363,7 +363,7 @@ const HomePage: NextPage = () => {
             <Image
               src={kaliaStatusImg}
               width={180}
-              height={120}
+              height={180}
               alt="kaliastatus"
             />
           </div> : <><div className={styles.title}>{t('label.ask_me')}</div>
@@ -380,7 +380,7 @@ const HomePage: NextPage = () => {
                   <Image
                     src={kaliaStatusImg}
                     width={80}
-                    height={57}
+                    height={80}
                     alt="kaliastatus"
                   />
                 </div>
@@ -466,7 +466,7 @@ const HomePage: NextPage = () => {
               rows={1}
               value={inputMsg}
               onChange={handleInputChange}
-              placeholder={!context?.kaliaClicked ? placeholder : 'Enter you Aadhaar number'}
+              placeholder={!context?.kaliaClicked ? placeholder : t('label.enter_aadhaar_number')}
             />
             <button type="submit" className={styles.sendButton}>
               <Image

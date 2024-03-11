@@ -251,7 +251,7 @@
 }
 
 .tableDataCell {
-  border-bottom: 1px solid grey;
+  border: 1px solid grey;
   width: 100%;
   height: 3rem;
   text-align: center;
@@ -264,4 +264,6 @@
   padding: 0rem 0.5rem;
   word-wrap: break-word;
   white-space: break-spaces;
+  border: 1px solid var(--secondarygreen);
+
 }
