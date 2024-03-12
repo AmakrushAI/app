@@ -854,9 +854,11 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
     }
     case 'singleTable': {
       const dataKeys = JSON.parse(content?.text);
-      const entries = Object.keys(dataKeys);
-      const innerData = dataKeys?.[entries?.[0]]?.Object?.keys(dataKeys?.[entries?.[0]])?.[0];
-      console.log({ dataKeys, entries })
+      const filteredData = { ...dataKeys };
+      delete filteredData['Disclaimer']
+      const entries = Object.keys(filteredData);
+      const innerData = filteredData?.[entries?.[0]]
+      // console.log({ innerData, type: typeof innerData })
       return (
         <div
           style={{
@@ -880,9 +882,16 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
               </div>
               <div className={styles.tableData}>
                 <div style={{ width: '100%' }} className={styles.tableDataRow}>
-                  <div className={styles.tableDataColKalia}>
-                    <div >{dataKeys[entries?.[0]]}</div>
-                  </div>
+                  {typeof innerData == 'string' ?
+                    <div className={styles.tableDataColKalia} style={{ flexDirection: 'row' }}>
+                      <div className={styles.kaliaCell}>{innerData}</div>
+                    </div>
+                    : Object?.keys(innerData)?.map((el, idx) => {
+                      return <div key={`${idx}_${el}`} className={styles.tableDataColKalia} style={{ flexDirection: 'row' }}>
+                        <div style={{ borderRight: '1px solid grey' }} className={styles.kaliaCell}>{el}</div>
+                        <div style={{}} className={styles.kaliaCell}>{innerData[el]}</div>
+                      </div>
+                    })}
                 </div>
               </div>
             </div>
@@ -906,8 +915,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                 isWeather: true,
               })}
             </span>
-          </Bubble>
-        </div>
+          </Bubble >
+        </div >
       );
     }
 
