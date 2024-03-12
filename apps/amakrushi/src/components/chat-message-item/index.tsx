@@ -186,7 +186,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                     );
                   setTimeout(() => {
                     setOptionDisabled(false);
-                  }, 4000);
+                  }, 4001);
                 }
               }}>
               <div
