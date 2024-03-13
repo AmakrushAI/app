@@ -156,6 +156,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
               }
               onClick={(e: any): void => {
                 e.preventDefault();
+                console.log("Option Disabled", optionDisabled)
                 if (optionDisabled) {
                   toast.error(
                     `${isWeather
@@ -184,7 +185,9 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                           }),
                       500
                     );
+                  console.log("Outside setTimeout", { isWeather })
                   setTimeout(() => {
+                    console.log("Enabling optiosn again")
                     setOptionDisabled(false);
                   }, 4001);
                 }
