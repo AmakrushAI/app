@@ -141,13 +141,13 @@ const App = ({ Component, pageProps }: AppProps) => {
         console.log({ permissionPromise });
         await updateUser(permissionPromise);
       };
-
+// 
       updateAndRequestPermission();
     }
   }, [isAuthenticated, updateUser]);
 
   if (process.env.NODE_ENV === 'production') {
-    // globalThis.console.log = () => {};
+    globalThis.console.log = () => {};
   }
 
   // For install PWA dialog box
