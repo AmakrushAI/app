@@ -147,7 +147,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   }, [isAuthenticated, updateUser]);
 
   if (process.env.NODE_ENV === 'production') {
-    globalThis.console.log = () => {};
+    // globalThis.console.log = () => {};
   }
 
   // For install PWA dialog box
