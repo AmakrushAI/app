@@ -141,7 +141,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         console.log({ permissionPromise });
         await updateUser(permissionPromise);
       };
-
+// 
       updateAndRequestPermission();
     }
   }, [isAuthenticated, updateUser]);

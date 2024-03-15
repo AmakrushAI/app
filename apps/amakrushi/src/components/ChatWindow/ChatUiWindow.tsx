@@ -25,6 +25,7 @@ import Image from 'next/image';
 import Loader from '../loader';
 import Draggable from 'react-draggable'
 import { recordUserLocation } from '../../utils/location';
+import router from 'next/router';
 
 const ChatUiWindow: React.FC = () => {
   const t = useLocalization();
@@ -149,7 +150,7 @@ const ChatUiWindow: React.FC = () => {
 
   console.log('debug:', { msgToRender });
 
-  const placeholder = useMemo(() => t('message.ask_ur_question'), [t]);
+  const placeholder = useMemo(() => context?.kaliaClicked ? t('message.return_to_home_screen') : t('message.ask_ur_question'), [t]);
 
   const downloadShareHandler = async (type: string) => {
     try {
@@ -248,6 +249,13 @@ const ChatUiWindow: React.FC = () => {
     }
   };
 
+  const handleInputFocus = () => {
+    if (context?.kaliaClicked) {
+      context?.setKaliaClicked(false);
+      router.push('/');
+    }
+  }
+
   if (context?.isDown) {
     return <DownTimePage />;
   } else
@@ -270,6 +278,7 @@ const ChatUiWindow: React.FC = () => {
               onSend={handleSend}
             />
           )}
+          onInputFocus={handleInputFocus}
           onSend={handleSend}
           locale="en-US"
           placeholder={placeholder}

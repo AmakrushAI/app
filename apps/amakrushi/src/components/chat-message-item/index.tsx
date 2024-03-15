@@ -148,20 +148,20 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
               style={
                 optionDisabled
                   ? {
-                      background: 'var(--lightgrey)',
-                      color: 'var(--font)',
-                      boxShadow: 'none',
-                    }
+                    background: 'var(--lightgrey)',
+                    color: 'var(--font)',
+                    boxShadow: 'none',
+                  }
                   : null
               }
               onClick={(e: any): void => {
                 e.preventDefault();
+                console.log("Option Disabled", optionDisabled)
                 if (optionDisabled) {
                   toast.error(
-                    `${
-                      isWeather
-                        ? t('message.wait_before_choosing')
-                        : t('message.cannot_answer_again')
+                    `${isWeather
+                      ? t('message.wait_before_choosing')
+                      : t('message.cannot_answer_again')
                     }`
                   );
                 } else {
@@ -185,9 +185,11 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                           }),
                       500
                     );
+                  console.log("Outside setTimeout", { isWeather })
                   setTimeout(() => {
+                    console.log("Enabling optiosn again")
                     setOptionDisabled(false);
-                  }, 4000);
+                  }, 4001);
                 }
               }}>
               <div
@@ -199,8 +201,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                     content?.data?.position === 'right'
                       ? 'white'
                       : optionDisabled
-                      ? 'var(--font)'
-                      : 'var(--secondarygreen)',
+                        ? 'var(--font)'
+                        : 'var(--secondarygreen)',
                 }}>
                 <div>{isWeather ? choice?.text : choice}</div>
                 <div style={{ marginLeft: 'auto' }}>
@@ -213,8 +215,9 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                 </div>
               </div>
             </ListItem>
-          ))}
-        </List>
+          ))
+          }
+        </List >
       );
     },
     [context, t]
@@ -437,7 +440,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                 }}>
                 {getFormatedTime(
                   content?.data?.sentTimestamp ||
-                    content?.data?.repliedTimestamp
+                  content?.data?.repliedTimestamp
                 )}
               </span>
             </div>
@@ -465,19 +468,19 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                 <div style={{ display: 'flex' }}>
                   <div
                     className={styles.msgSpeaker}
-                    onClick={!ttsLoader ? downloadAudio : () => {}}
+                    onClick={!ttsLoader ? downloadAudio : () => { }}
                     style={
                       !content?.data?.isEnd
                         ? {
-                            pointerEvents: 'none',
-                            filter: 'grayscale(100%)',
-                            opacity: '0.5',
-                          }
+                          pointerEvents: 'none',
+                          filter: 'grayscale(100%)',
+                          opacity: '0.5',
+                        }
                         : {
-                            pointerEvents: 'auto',
-                            opacity: '1',
-                            filter: 'grayscale(0%)',
-                          }
+                          pointerEvents: 'auto',
+                          opacity: '1',
+                          filter: 'grayscale(0%)',
+                        }
                     }>
                     {context?.clickedAudioUrl === content?.data?.audio_url ? (
                       <Image
@@ -597,7 +600,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                      content?.data?.repliedTimestamp
+                    content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -631,7 +634,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                      content?.data?.repliedTimestamp
+                    content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -664,7 +667,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                 <span style={{ color: 'var(--font)', fontSize: '10px' }}>
                   {getFormatedTime(
                     content?.data?.sentTimestamp ||
-                      content?.data?.repliedTimestamp
+                    content?.data?.repliedTimestamp
                   )}
                 </span>
               </div>
@@ -697,7 +700,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
     }
 
     case 'kaliaTable': {
-      const personalDetails = JSON.parse(content?.text)?.personalDetails;
+      const personalDetails = JSON.parse(content?.text)?.['Personal Details'];
       const entries = Object.entries(personalDetails);
       const chunkedEntries = [];
       for (let i = 0; i < entries.length; i += 4) {
@@ -734,16 +737,16 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                 <div>{t('table.header_conditions')}</div> */}
               </div>
               <div className={styles.tableData}>
-              {chunkedEntries.map((chunk, rowIndex) => (
-      <div key={rowIndex} className={styles.tableDataRow}>
-        {chunk.map(([field, value]: [any, any], colIndex) => (
-          <div key={`${rowIndex}-${colIndex}`} className={styles.tableDataColKalia}>
-            <div style={{flex: 1}}>{field}</div>
-            <div style={{flex: 1}}>{value}</div>
-          </div>
-        ))}
-      </div>
-    ))}
+                {chunkedEntries.map((chunk, rowIndex) => (
+                  <div key={rowIndex} className={styles.tableDataRow}>
+                    {chunk.map(([field, value]: [any, any], colIndex) => (
+                      <div key={`${rowIndex}-${colIndex}`} className={styles.tableDataColKalia}>
+                        <div style={{ borderRight: '1px solid grey' }} className={styles.kaliaCell}>{field}</div>
+                        <div style={{}} className={styles.kaliaCell}>{value}</div>
+                      </div>
+                    ))}
+                  </div>
+                ))}
               </div>
             </div>
             <span
@@ -819,12 +822,12 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                         {' '}
                         {intl.locale == 'or'
                           ? oriaWeatherTranslates[
-                              el?.conditions
-                                ?.trim()
-                                ?.split(' ')
-                                ?.join('')
-                                ?.toLowerCase()
-                            ]
+                          el?.conditions
+                            ?.trim()
+                            ?.split(' ')
+                            ?.join('')
+                            ?.toLowerCase()
+                          ]
                           : el.conditions}
                       </div>
                     </div>
@@ -849,6 +852,128 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                 isWeather: true,
               })}
             </span>
+          </Bubble>
+        </div>
+      );
+    }
+    case 'singleTable': {
+      const dataKeys = JSON.parse(content?.text);
+      const filteredData = { ...dataKeys };
+      delete filteredData['Disclaimer']
+      const entries = Object.keys(filteredData);
+      const innerData = filteredData?.[entries?.[0]]
+      // console.log({ innerData, type: typeof innerData })
+      return (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative',
+            maxWidth: '90vw',
+          }}>
+          <div
+            className={
+              content?.data?.position === 'right'
+                ? styles.messageTriangleRight
+                : styles.messageTriangleLeft
+            }></div>
+          <Bubble type="text">
+            <div className={styles.tableContainerKalia}>
+              <div className={styles.tableHeaderKalia}>
+                <div>
+                  <b>{entries?.[0]}</b>
+                </div>
+              </div>
+              <div className={styles.tableData}>
+                <div style={{ width: '100%' }} className={styles.tableDataRow}>
+                  {typeof innerData == 'string' ?
+                    <div className={styles.tableDataColKalia} style={{ flexDirection: 'row' }}>
+                      <div className={styles.kaliaCell}>{innerData}</div>
+                    </div>
+                    : Object?.keys(innerData)?.map((el, idx) => {
+                      return <div key={`${idx}_${el}`} className={styles.tableDataColKalia} style={{ flexDirection: 'row' }}>
+                        <div style={{ borderRight: '1px solid grey' }} className={styles.kaliaCell}>{el}</div>
+                        <div style={{}} className={styles.kaliaCell}>{innerData[el]}</div>
+                      </div>
+                    })}
+                </div>
+              </div>
+            </div>
+            {/* Disclaimer Text */}
+            <div className={styles.divider}></div>
+            {dataKeys?.['Disclaimer'] && <div > <b>{t('lable.disclaimer')}</b>: {dataKeys?.['Eligibility Status'] ? t('label.eleg_disclaimer') : t('label.grievance_disclaimer')}</div>}
+            <span
+              className="onHover"
+              style={{
+                fontWeight: 600,
+                fontSize: '1rem',
+                color:
+                  content?.data?.position === 'right' ? 'white' : 'var(--font)',
+              }}>
+              {/* {`\n` +
+              JSON.parse(content?.text)?.generalAdvice +
+              `\n\n` +
+              JSON.parse(content?.text)?.buttonDescription} */}
+              {getLists({
+                choices: JSON.parse(content?.text)?.buttons,
+                isWeather: true,
+              })}
+            </span>
+          </Bubble >
+        </div >
+      );
+    }
+
+    case 'disbursalHistory': {
+      const disclaimer = JSON.parse(content?.text)?.['Disclaimer'] || '';
+      const data = JSON.parse(content?.text)?.['Payment Account Details']
+      return (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative',
+            maxWidth: '90vw',
+          }}>
+          <div
+            className={
+              content?.data?.position === 'right'
+                ? styles.messageTriangleRight
+                : styles.messageTriangleLeft
+            }></div>
+          <Bubble type="text">
+            <div className={styles.tableContainer}>
+              <div className={styles.tableHeader}
+                style={{ fontSize: '13px', width: '30%', wordWrap: 'break-word', wordBreak: 'break-word', display: 'flex', gap: '0rem' }}
+              >
+                <p className={styles.tableDataCellHeader}>Name of<br></br> Bank</p>
+                <p className={styles.tableDataCellHeader}>IFSC Code</p>
+                <p className={styles.tableDataCellHeader}>Payment <br></br>processed Date</p>
+                <p className={styles.tableDataCellHeader}>Saving Bank<br></br> Account No</p>
+                <p className={styles.tableDataCellHeader}>Payment <br></br>Status </p>
+                <p className={styles.tableDataCellHeader}>UTR No</p>
+              </div>
+              <div className={styles.tableData} >
+                {data?.map(
+                  (el: any, idx: any) => (
+                    <div
+                      key={el?.['Name of Bank'] + idx}
+                      className={styles.tableDataCol}
+                      style={{ fontSize: '13px', padding: '0rem', gap: '0rem', minWidth: '7rem', wordWrap: 'break-word', wordBreak: 'break-word' }}
+                    >
+                      <div className={styles.tableDataCell} style={{ wordWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'break-spaces' }}>{el['Name of Bank']}</div>
+                      <div className={styles.tableDataCell}>{el['IFSC Code']} </div>
+                      <div className={styles.tableDataCell}>{el['Payment processed Date']}</div>
+                      <div className={styles.tableDataCell}>{el['Saving Bank Account No.']}</div>
+                      <div className={styles.tableDataCell}>{el['Payment Status']}</div>
+                      <div className={styles.tableDataCell}>{el['UTR No.']}</div>
+                    </div>
+                  )
+                )}
+              </div>
+            </div>
+            <div className={styles.divider}></div>
+            {disclaimer && <div> <b>{t('lable.disclaimer')}</b>: {t('label.disbursal_disclaimer')}</div>}
           </Bubble>
         </div>
       );
