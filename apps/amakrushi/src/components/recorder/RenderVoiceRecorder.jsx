@@ -14,6 +14,16 @@ const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak }) => {
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [apiCallStatus, setApiCallStatus] = useState('idle');
   const [userClickedError, setUserClickedError] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+  const handleUpload = () => {
+    setIsModalOpen(false)
+    selectedFile && makeComputeAPICall(selectedFile);
+  };
 
   const flags = useFlags(['delay_between_dialog']);
   let VOICE_MIN_DECIBELS = -35;
@@ -22,8 +32,10 @@ const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak }) => {
   let IS_RECORDING = false;
 
   const startRecording = async () => {
-    IS_RECORDING = true;
-    record();
+    // IS_RECORDING = true;
+
+    setIsModalOpen(true);
+    selectedFile && makeComputeAPICall(selectedFile);
   };
 
   const stopRecording = () => {
@@ -118,7 +130,7 @@ const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak }) => {
       toast.success(`${t('message.recorder_wait')}`);
 
       // const audioElement = new Audio();
-  
+
       // const blobUrl = URL.createObjectURL(blob);
       // audioElement.src = blobUrl;
       // console.log(audioElement)
@@ -231,7 +243,12 @@ const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak }) => {
                   layout="responsive"
                 />
                 {tapToSpeak ? (
-                  <p style={{ color: 'black', fontSize: '12px', marginTop: '4px' }}>
+                  <p
+                    style={{
+                      color: 'black',
+                      fontSize: '12px',
+                      marginTop: '4px',
+                    }}>
                     {t('label.tap_to_speak')}
                   </p>
                 ) : (
@@ -242,6 +259,24 @@ const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak }) => {
           </div>
         )}
       </div>
+      { isModalOpen && (
+        <div className="modal">
+          <div className="modal-content"  >
+            <span className="close" onClick={() => setIsModalOpen(false)}>
+              &times;
+            </span>
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', height: '280px'}}>
+
+            <h2 className='file-heading'>Select File</h2>
+            <input type="file" accept="audio/*" onChange={handleFileChange} />
+            <br /><br />
+            <button onClick={handleUpload} style={{background: "green", padding: '8px 20px', color: 'white', fontWeight: "bold" }}>Upload</button>
+            </div>
+          
+            
+          </div>
+        </div>
+      )}
     </div>
   );
 };
