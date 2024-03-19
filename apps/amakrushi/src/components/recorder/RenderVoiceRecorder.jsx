@@ -325,7 +325,7 @@ const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak, includeDiv = false }) =>
             </span>
             <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', height: '280px'}}>
 
-            <h2 className='file-heading'>Select File</h2>
+            <label for='fileInput' className='file-heading'>Select File</label>
             <input type="file" accept="audio/*" onChange={handleFileChange} />
             <br /><br />
             <button onClick={handleUpload} style={{background: "green", padding: '8px 20px', color: 'white', fontWeight: "bold" }}>Upload</button>
