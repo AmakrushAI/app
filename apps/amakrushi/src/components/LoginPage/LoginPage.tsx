@@ -1,15 +1,12 @@
 import styles from "./login.module.css";
 import { NumberInput, NumberInputField, Spinner } from "@chakra-ui/react";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useLocalization } from "../../hooks/useLocalization";
 import { logEvent } from "firebase/analytics";
 import { analytics } from "../../utils/firebase";
 import toast from "react-hot-toast";
-import { AppContext } from "../../context";
-import DownTimePage from "../down-time-page";
 const LoginPage: React.FC = () => {
-  const context = useContext(AppContext);
   const router = useRouter();
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -60,10 +57,9 @@ const LoginPage: React.FC = () => {
   useEffect(() => {
     //@ts-ignore
     logEvent(analytics, "Login_page");
-    context?.fetchIsDown();
   }, []);
 
-  return context?.isDown ? <DownTimePage /> : (
+  return (
     <div className={`${styles.main}`}>
       <div className={styles.title}>{t("label.title")}</div>
 
