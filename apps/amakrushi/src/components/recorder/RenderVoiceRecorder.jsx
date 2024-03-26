@@ -138,7 +138,7 @@ const RenderVoiceRecorder = ({ setInputMsg, tapToSpeak, includeDiv = false }) =>
       formData.append('phoneNumber', localStorage.getItem('phoneNumber'));
 
       // Send the WAV data to the API
-      const resp = await fetch(apiEndpoint + `/aitools/asr?language=${localStorage.getItem('locale')}`, {
+      const resp = await fetch(apiEndpoint + `/aitools/asr?language=${localStorage.getItem('locale') || 'or'}`, {
         method: 'POST',
         body: formData,
       });
