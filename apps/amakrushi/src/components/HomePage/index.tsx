@@ -375,15 +375,13 @@ const HomePage: NextPage = () => {
                   width: '100%',
                   maxWidth: '500px',
                 }}>
-                <div className={styles.imgBtn} onClick={() => {
-                  sendMessage(t('label.weather_advisory'));
-                }}>
-                  <p>{t('label.weather_advisory')}</p>
+                <div className={styles.imgBtn} onClick={() => { context?.setKaliaClicked((props: boolean) => !props); }}>
+                  <p>{t('label.kalia_status')}</p>
                   <Image
-                    src={weatherAdvisoryImg}
-                    width={50}
-                    height={70}
-                    alt="weatheradvisory"
+                    src={kaliaStatusImg}
+                    width={80}
+                    height={80}
+                    alt="kaliastatus"
                   />
                 </div>
                 <div className={styles.imgBtn} onClick={() => {
@@ -398,15 +396,17 @@ const HomePage: NextPage = () => {
                   />
                 </div>
               </div>
-              {/* <div className={styles.imgBtn} onClick={() => { context?.setKaliaClicked((props: boolean) => !props); }}>
-                <p>{t('label.kalia_status')}</p>
+              <div className={styles.imgBtn} style={{ marginTop: '20px' }} onClick={() => {
+                sendMessage(t('label.weather_advisory'));
+              }}>
+                <p>{t('label.weather_advisory')}</p>
                 <Image
-                  src={kaliaStatusImg}
-                  width={80}
-                  height={80}
-                  alt="kaliastatus"
+                  src={weatherAdvisoryImg}
+                  width={50}
+                  height={70}
+                  alt="weatheradvisory"
                 />
-              </div> */}
+              </div>
             </div>
             <div className={styles.voiceRecorder} ref={voiceRecorderRef}>
               <RenderVoiceRecorder setInputMsg={setInputMsg} tapToSpeak={true} includeDiv={true} />
