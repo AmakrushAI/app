@@ -376,8 +376,7 @@ const HomePage: NextPage = () => {
                   maxWidth: '500px',
                 }}>
                 <div className={styles.imgBtn} onClick={() => {
-                  toast('Coming Soon!')
-                  // sendMessage(t('label.weather_advisory'));
+                  sendMessage(t('label.weather_advisory'));
                 }}>
                   <p>{t('label.weather_advisory')}</p>
                   <Image
