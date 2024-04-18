@@ -75,7 +75,7 @@ const FAQPage: React.FC = () => {
       const link: any = flags?.[`manual_pdf_link`]?.value;
       const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
-      window.open(link);
+      // window.open(link);
 
       fetch(proxyUrl + link, {
         method: 'GET',

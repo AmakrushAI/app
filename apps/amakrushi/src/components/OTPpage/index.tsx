@@ -93,6 +93,7 @@ const OTPpage: React.FC = () => {
             logEvent(analytics, 'console_error', {
               error_message: err.message,
             });
+            toast.error(`${t("message.no_link")}`);
           }
           );
       }
