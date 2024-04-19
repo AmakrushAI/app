@@ -187,7 +187,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
                     );
                   console.log("Outside setTimeout", { isWeather })
                   setTimeout(() => {
-                    console.log("Enabling optiosn again")
+                    console.log("Enabling options again")
                     setOptionDisabled(false);
                   }, 4001);
                 }
@@ -220,7 +220,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({ message, onSend }) => {
         </List >
       );
     },
-    [context, t]
+    [context, t, optionDisabled]
   );
 
   const getFormattedDate = (datestr: string) => {
