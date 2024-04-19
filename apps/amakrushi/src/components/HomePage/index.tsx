@@ -375,7 +375,7 @@ const HomePage: NextPage = () => {
                   width: '100%',
                   maxWidth: '500px',
                 }}>
-                <div className={styles.imgBtn} onClick={() => { context?.setKaliaClicked((props: boolean) => !props); }}>
+                {/* <div className={styles.imgBtn} onClick={() => { context?.setKaliaClicked((props: boolean) => !props); }}>
                   <p>{t('label.kalia_status')}</p>
                   <Image
                     src={kaliaStatusImg}
@@ -383,7 +383,7 @@ const HomePage: NextPage = () => {
                     height={80}
                     alt="kaliastatus"
                   />
-                </div>
+                </div> */}
                 <div className={styles.imgBtn} onClick={() => {
                   toast('Coming Soon!')
                 }}>
